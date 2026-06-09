@@ -171,26 +171,6 @@ table{width:100%;border-collapse:collapse;font-size:13px}
 .players tr.top td{background:rgba(212,175,55,.05)}
 .players .ptot{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:16px;color:var(--gold)}
 
-/* ===== UPDATE / ADMIN ===== */
-details.admin{margin-top:36px;background:var(--panel);border:1px solid var(--line2);border-radius:12px;overflow:hidden}
-details.admin summary{cursor:pointer;padding:16px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);list-style:none}
-details.admin summary::-webkit-details-marker{display:none}
-details.admin summary::before{content:'⚙ ';}
-.admin-body{padding:0 20px 22px;border-top:1px solid var(--line)}
-.admin-body p{font-size:13px;color:var(--muted);margin:14px 0 8px}
-.admin-body code,.admin-body pre{font-family:'JetBrains Mono',monospace;font-size:12px;background:#0a0d11;border:1px solid var(--line);border-radius:6px;color:#cfe3c0}
-.admin-body code{padding:1px 6px}
-.admin-body pre{padding:12px 14px;overflow:auto;color:var(--ink);line-height:1.6}
-.helper{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:12px 0;align-items:end}
-.helper label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);display:block;margin-bottom:4px}
-.helper select,.helper input{width:100%;background:#0a0d11;border:1px solid var(--line2);color:var(--ink);border-radius:7px;padding:8px;font-family:'Archivo',sans-serif;font-size:13px}
-.helper .go{background:var(--gold);color:#1a1205;border:none;font-weight:700;cursor:pointer;font-family:'JetBrains Mono',monospace;letter-spacing:.05em}
-.helper .go:hover{filter:brightness(1.08)}
-.out-line{margin-top:10px;display:flex;gap:8px;align-items:center}
-.out-line code{flex:1;padding:9px 12px}
-.copy{background:var(--panel2);border:1px solid var(--line2);color:var(--ink);border-radius:7px;padding:8px 12px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px}
-.copy:hover{background:var(--raise)}
-
 footer{margin-top:40px;border-top:1px solid var(--line);padding-top:18px;color:var(--faint);font-size:11px;font-family:'JetBrains Mono',monospace;line-height:1.8}
 
 /* responsive */
@@ -485,32 +465,6 @@ const SCORERS = [
     <div class="pane" id="pane-giant"><div id="giantBoard"></div></div>
   </section>
 
-  <!-- ADMIN -->
-  <details class="admin">
-    <summary>How to update this dashboard</summary>
-    <div class="admin-body">
-      <p>This whole page is driven by the data block near the top of the file. To keep it current after each match, edit two lists — then save and re-upload.</p>
-      <p><b>1 · Add a result.</b> In the <code>RESULTS</code> list, add a line. The helper below writes it for you:</p>
-      <div class="helper">
-        <div><label>Home</label><select id="hHome"></select></div>
-        <div><label>Score</label><input id="hHs" type="number" min="0" value="0"></div>
-        <div><label>Away</label><select id="hAway"></select></div>
-        <div><label>Score</label><input id="hAs" type="number" min="0" value="0"></div>
-        <div><label>&nbsp;</label><button class="go" id="hMake">Write line</button></div>
-      </div>
-      <div class="out-line"><code id="hOut">{ home:"…", away:"…", hs:0, as:0 },</code><button class="copy" id="hCopy">Copy</button></div>
-      <p style="margin-top:18px"><b>2 · Add / update a goalscorer.</b> In the <code>SCORERS</code> list:</p>
-      <div class="helper">
-        <div><label>Player</label><input id="sName" type="text" placeholder="e.g. Mohamed Salah"></div>
-        <div><label>Team</label><select id="sTeam"></select></div>
-        <div><label>Goals</label><input id="sGoals" type="number" min="1" value="1"></div>
-        <div><label>&nbsp;</label><button class="go" id="sMake">Write line</button></div>
-      </div>
-      <div class="out-line"><code id="sOut">{ player:"…", team:"…", goals:1 },</code><button class="copy" id="sCopy">Copy</button></div>
-      <p style="margin-top:18px"><b>3 · Other bits.</b> Set <code>CHAMPION = "Team"</code> after the final, bump <code>META.lastUpdated</code>, and refresh <code>RANKINGS</code> when FIFA updates them (next: 9–11 June 2026). Knockout ties live in <code>KNOCKOUTS</code> — swap the placeholder labels for real team names as the bracket fills in, and they'll pick up owners automatically.</p>
-    </div>
-  </details>
-
   <footer id="foot"></footer>
 </div>
 
@@ -769,30 +723,6 @@ function renderMeta(){
      Wooden spoon mode: ${META.woodenSpoonMode==='team'?'worst team (owner wins)':'worst player aggregate'} · 48 teams · 104 matches · prize pot £160.`;
 }
 
-// ---------- admin helpers ----------
-function fillSelects(){
-  const teams=Object.keys(OWNERS).sort();
-  ['hHome','hAway','sTeam'].forEach(id=>{
-    const el=document.getElementById(id);
-    el.innerHTML=teams.map(t=>`<option>${t}</option>`).join('');
-  });
-}
-function wireAdmin(){
-  const set=(id,v)=>document.getElementById(id).textContent=v;
-  document.getElementById('hMake').onclick=()=>{
-    set('hOut',`{ home:"${document.getElementById('hHome').value}", away:"${document.getElementById('hAway').value}", hs:${+document.getElementById('hHs').value||0}, as:${+document.getElementById('hAs').value||0} },`);
-  };
-  document.getElementById('sMake').onclick=()=>{
-    const n=document.getElementById('sName').value||'…';
-    set('sOut',`{ player:"${n}", team:"${document.getElementById('sTeam').value}", goals:${+document.getElementById('sGoals').value||1} },`);
-  };
-  const cp=(srcId,btnId)=>{ document.getElementById(btnId).onclick=()=>{
-    navigator.clipboard?.writeText(document.getElementById(srcId).textContent);
-    const b=document.getElementById(btnId); const o=b.textContent; b.textContent='Copied'; setTimeout(()=>b.textContent=o,1200);
-  };};
-  cp('hOut','hCopy'); cp('sOut','sCopy');
-}
-
 // ---------- tabs & day nav ----------
 function wireTabs(){
   document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{
@@ -815,7 +745,7 @@ function wireDays(){
   if(!fixturesOn(viewDate).length){ const nx=nextMatchDateFrom(viewDate); if(nx) viewDate=nx; }
   renderMeta(); renderPrizes(); renderDay();
   renderGroups(); renderPlayers(); renderScorers(); renderGiant();
-  fillSelects(); wireAdmin(); wireTabs(); wireDays();
+  wireTabs(); wireDays();
 })();
 </script>
 </body>
