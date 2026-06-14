@@ -197,7 +197,7 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding-top:18px;color:v
 <script>
 const META = {
   rankingDate : "1 April 2026",        // FIFA ranking snapshot used for giant-killing
-  lastUpdated : "13 June 2026",         // bump this when you update results
+  lastUpdated : "14 June 2026",         // bump this when you update results
   woodenSpoonMode : "player"             // "team" = worst team's owner wins ; "player" = worst player aggregate
 };
 
@@ -408,6 +408,9 @@ const RESULTS = [
    { home:"Canada", away:"Bosnia and Herzegovina", hs:1, as:1 },
    { home:"USA", away:"Paraguay", hs:4, as:1 },
    { home:"Qatar", away:"Switzerland", hs:1, as:1 },
+   { home:"Brazil", away:"Morocco", hs:1, as:1 },
+   { home:"Haiti", away:"Scotland", hs:0, as:1 },
+   { home:"Australia", away:"Türkiye", hs:2, as:0 },
 ];
 
 /* =================================================================
@@ -428,6 +431,11 @@ const SCORERS = [
    { player:"Mauricio", team:"Paraguay", goals:1 },
    { player:"Breel Embolo", team:"Switzerland", goals:1 },
    { player:"Boualem Khoukhi", team:"Qatar", goals:1 },
+   { player:"Vinícius Júnior", team:"Brazil", goals:1 },
+   { player:"Ismael Saibari", team:"Morocco", goals:1 },
+   { player:"John McGinn", team:"Scotland", goals:1 },
+   { player:"Nestory Irankunda", team:"Australia", goals:1 },
+   { player:"Connor Metcalfe", team:"Australia", goals:1 },
 ];
 </script>
 
@@ -735,7 +743,7 @@ function renderMeta(){
   document.getElementById('metaline').innerHTML=
     `<span class="label">Updated</span> ${META.lastUpdated}`;
   document.getElementById('foot').innerHTML=
-    `Rankings: FIFA / Coca-Cola Men's World Ranking, ${META.rankingDate} snapshot (next update 9–11 June 2026).<br>
+    `Rankings: FIFA / Coca-Cola Men's World Ranking, ${META.rankingDate} updated immediatley before start of tournament.<br>
      Fixtures: 2026 FIFA World Cup official schedule, times shown in your local timezone.<br>
      Wooden spoon mode: ${META.woodenSpoonMode==='team'?'worst team (owner wins)':'worst player aggregate'} · 48 teams · 104 matches · prize pot £160.`;
 }
