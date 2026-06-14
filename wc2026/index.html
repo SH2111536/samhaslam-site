@@ -585,7 +585,7 @@ function renderPrizes(){
 
   // Giant-killing
   let gkHolder, gkExtra="";
-  if(gk.length){ const u=gk[0]; gkHolder=`<span class="team">${chip(u.w)} ${u.w} bt ${u.l}</span><span class="who">${owner(u.w)||'—'}</span>`; gkExtra=`+${u.gap} ranking places (#${u.rw} beat #${u.rl})`; }
+  if(gk.length){ const u=gk[0]; gkHolder=`<span class="team">${chip(u.w)} ${u.w} beat ${u.l}</span><span class="who">${owner(u.w)||'—'}</span>`; gkExtra=`+${u.gap} ranking places (#${u.rw} beat #${u.rl})`; }
   else gkHolder=`<span class="tbd">Awaiting an upset</span>`;
   cards.push(prizeCard("£25","Biggest giant-killing",gkHolder,gkExtra));
 
