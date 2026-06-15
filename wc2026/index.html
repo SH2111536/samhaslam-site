@@ -709,9 +709,25 @@ function renderGroups(){
 // ---------- render: player league ----------
 function renderPlayers(){
   const T=buildTables();
-  const stat={}; Object.values(OWNERS).forEach(p=>stat[p]={p,Pts:0,GD:0,W:0,P:0,teams:[]});
-  for(const g in T) for(const t in T[g]){ const r=T[g][t],p=owner(t); if(!p)continue;
-    stat[p].Pts+=r.Pts;stat[p].GD+=r.GD;stat[p].W+=r.W;stat[p].P+=r.P;stat[p].teams.push(t); }
+  const stat={}; 
+  Object.values(OWNERS).forEach(p=>stat[p]={p,Pts:0,GD:0,W:0,P:0,teams:[]});
+
+  // Count actual matches played per player (avoids double-counting when two of
+  // the same player's teams face each other — e.g. Chané's Sweden vs Tunisia)
+  RESULTS.forEach(r=>{
+    if(r.stage && !GROUPS[r.stage]) return; // skip knockout results
+    const pH=owner(r.home), pA=owner(r.away);
+    const players=new Set([pH,pA].filter(Boolean));
+    players.forEach(p=>{ if(stat[p]) stat[p].P++; });
+  });
+
+  // Points / GD / wins still come from team table rows (correct as-is)
+  for(const g in T) for(const t in T[g]){ 
+    const r=T[g][t],p=owner(t); if(!p)continue;
+    stat[p].Pts+=r.Pts; stat[p].GD+=r.GD; stat[p].W+=r.W;
+    stat[p].teams.push(t); 
+  }
+
   const rows=Object.values(stat).sort((a,b)=> b.Pts-a.Pts || b.GD-a.GD || b.W-a.W || a.p.localeCompare(b.p));
   const anyPlayed=rows.some(r=>r.P>0);
   const body=rows.map((r,i)=>{
