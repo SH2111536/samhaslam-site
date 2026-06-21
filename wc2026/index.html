@@ -197,7 +197,7 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding-top:18px;color:v
 <script>
 const META = {
   rankingDate : "09 June 2026",        // FIFA ranking snapshot used for giant-killing
-  lastUpdated : "19 June 2026",         // bump this when you update results
+  lastUpdated : "21 June 2026",         // bump this when you update results
   woodenSpoonMode : "player"             // "team" = worst team's owner wins ; "player" = worst player aggregate
 };
 
@@ -431,6 +431,14 @@ const RESULTS = [
    { home:"Switzerland", away:"Bosnia and Herzegovina", hs:4, as:1 },
    { home:"Canada", away:"Qatar", hs:6, as:0 },
    { home:"Mexico", away:"South Korea", hs:1, as:0 },
+   { home:"Türkiye", away:"Paraguay", hs:0, as:1 },
+   { home:"USA", away:"Australia", hs:2, as:0 },
+   { home:"Scotland", away:"Morocco", hs:0, as:1 },
+   { home:"Brazil", away:"Haiti", hs:3, as:0 },
+   { home:"Tunisia", away:"Japan", hs:0, as:4 },
+   { home:"Netherlands", away:"Sweden", hs:5, as:1 },
+   { home:"Germany", away:"Côte d'Ivoire", hs:2, as:1 },
+   { home:"Ecuador", away:"Curaçao", hs:0, as:0 },
 ];
 
 /* =================================================================
@@ -454,14 +462,17 @@ const SCORERS = [
    { player:"Ermin Mahmic", team:"Bosnia and Herzegovina", goals:1 },
    { player:"Folarin Balogun", team:"USA", goals:2 },
    { player:"Giovanni Reyna", team:"USA", goals:1 },
+   { player:"Alex Freeman", team:"USA", goals:1 },
    { player:"Mauricio", team:"Paraguay", goals:1 },
+   { player:"Matias Galarza", team:"Paraguay", goals:1 },
    { player:"Breel Embolo", team:"Switzerland", goals:1 },
    { player:"Johan Manzambi", team:"Switzerland", goals:2 },
    { player:"Ruben Vargas", team:"Switzerland", goals:1 },
    { player:"Granit Xhaka", team:"Switzerland", goals:1 },
    { player:"Boualem Khoukhi", team:"Qatar", goals:1 },
-   { player:"Vinícius Júnior", team:"Brazil", goals:1 },
-   { player:"Ismael Saibari", team:"Morocco", goals:1 },
+   { player:"Vinícius Júnior", team:"Brazil", goals:2 },
+   { player:"Matheus Cunha", team:"Brazil", goals:2 },
+   { player:"Ismael Saibari", team:"Morocco", goals:2 },
    { player:"John McGinn", team:"Scotland", goals:1 },
    { player:"Nestory Irankunda", team:"Australia", goals:1 },
    { player:"Connor Metcalfe", team:"Australia", goals:1 },
@@ -470,17 +481,23 @@ const SCORERS = [
    { player:"Kai Havertz", team:"Germany", goals:2 },
    { player:"Jamal Musiala", team:"Germany", goals:1 },
    { player:"Nathaniel Brown", team:"Germany", goals:1 },
-   { player:"Deniz Undav", team:"Germany", goals:1 },
+   { player:"Deniz Undav", team:"Germany", goals:3 },
    { player:"Livano Comenencia", team:"Curaçao", goals:1 },
    { player:"Virgil van Dijk", team:"Netherlands", goals:1 },
-   { player:"Crysencio Summerville", team:"Netherlands", goals:1 },
+   { player:"Crysencio Summerville", team:"Netherlands", goals:2 },
+   { player:"Brian Brobbey", team:"Netherlands", goals:2 },
+   { player:"Cody Gakpo", team:"Netherlands", goals:2 },
    { player:"Keito Nakamura", team:"Japan", goals:1 },
-   { player:"Daichi Kamada", team:"Japan", goals:1 },
+   { player:"Daichi Kamada", team:"Japan", goals:2 },
+   { player:"Ayase Ueda", team:"Japan", goals:2 },
+   { player:"Junya Ito", team:"Japan", goals:1 },
    { player:"Amad Diallo", team:"Côte d'Ivoire", goals:1 },
+   { player:"Franck Kessie", team:"Côte d'Ivoire", goals:1 },
    { player:"Yasin Ayari", team:"Sweden", goals:2 },
    { player:"Alexander Isak", team:"Sweden", goals:1 },
    { player:"Viktor Gyokeres", team:"Sweden", goals:1 },
    { player:"Mattias Svanberg", team:"Sweden", goals:1 },
+   { player:"Anthony Elanga", team:"Sweden", goals:1 },
    { player:"Omar Rekik", team:"Tunisia", goals:1 },
    { player:"Abdulelah Al Amri", team:"Saudi Arabia", goals:1 },
    { player:"Maxi Araujo", team:"Uruguay", goals:1 },
