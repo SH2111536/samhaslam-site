@@ -197,7 +197,7 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding-top:18px;color:v
 <script>
 const META = {
   rankingDate : "09 June 2026",        // FIFA ranking snapshot used for giant-killing
-  lastUpdated : "24 June 2026",         // bump this when you update results
+  lastUpdated : "25 June 2026",         // bump this when you update results
   woodenSpoonMode : "player"             // "team" = worst team's owner wins ; "player" = worst player aggregate
 };
 
@@ -451,6 +451,13 @@ const RESULTS = [
    { home:"England", away:"Ghana", hs:0, as:0 },
    { home:"Panama", away:"Croatia", hs:0, as:1 },
    { home:"Colombia", away:"DR Congo", hs:1, as:0 },
+   { home:"Bosnia and Herzegovina", away:"Qatar", hs:3, as:1 },
+   { home:"Switzerland", away:"Canada", hs:2, as:1 },
+   { home:"Scotland", away:"Brazil", hs:0, as:3 },
+   { home:"Morocco", away:"Haiti", hs:4, as:2 },
+   { home:"Czechia", away:"Mexico", hs:0, as:3 },
+   { home:"South Africa", away:"South Korea", hs:1, as:0 },
+   
 ];
 
 /* =================================================================
@@ -459,10 +466,13 @@ const RESULTS = [
    ================================================================= */
 const SCORERS = [
   // e.g. { player:"Erling Haaland", team:"Norway", goals:4 },
-   { player:"Julian Quinones", team:"Mexico", goals:1 },
+   { player:"Julian Quinones", team:"Mexico", goals:2 },
    { player:"Raul Jimenez", team:"Mexico", goals:1 },
    { player:"Luis Romo", team:"Mexico", goals:1 },
+   { player:"Mateo Chavez", team:"Mexico", goals:1 },
+   { player:"Alvaro Fidalgo", team:"Mexico", goals:1 },
    { player:"Teboho Mokoena", team:"South Africa", goals:1 },
+   { player:"Thapelo Maseko", team:"South Africa", goals:1 },
    { player:"Hwang In-Beom", team:"South Korea", goals:1 },
    { player:"Oh Hyeon-Gyu", team:"South Korea", goals:1 },
    { player:"Ladislav Krejci", team:"Czechia", goals:1 },
@@ -471,7 +481,8 @@ const SCORERS = [
    { player:"Jonathan David", team:"Canada", goals:3 },
    { player:"Nathan Saliba", team:"Canada", goals:1 },
    { player:"Jovo Lukic", team:"Bosnia and Herzegovina", goals:1 },
-   { player:"Ermin Mahmic", team:"Bosnia and Herzegovina", goals:1 },
+   { player:"Ermin Mahmic", team:"Bosnia and Herzegovina", goals:2 },
+   { player:"Kerim Alajbegovic", team:"Bosnia and Herzegovina", goals:1 },
    { player:"Folarin Balogun", team:"USA", goals:2 },
    { player:"Giovanni Reyna", team:"USA", goals:1 },
    { player:"Alex Freeman", team:"USA", goals:1 },
@@ -482,9 +493,14 @@ const SCORERS = [
    { player:"Ruben Vargas", team:"Switzerland", goals:1 },
    { player:"Granit Xhaka", team:"Switzerland", goals:1 },
    { player:"Boualem Khoukhi", team:"Qatar", goals:1 },
-   { player:"Vinícius Júnior", team:"Brazil", goals:2 },
-   { player:"Matheus Cunha", team:"Brazil", goals:2 },
-   { player:"Ismael Saibari", team:"Morocco", goals:2 },
+   { player:"Hassan Al Haydos", team:"Qatar", goals:1 },
+   { player:"Vinícius Júnior", team:"Brazil", goals:4 },
+   { player:"Matheus Cunha", team:"Brazil", goals:3 },
+   { player:"Ismael Saibari", team:"Morocco", goals:3 },
+   { player:"Achraf Hakimi", team:"Morocco", goals:1 },
+   { player:"Soufiane Rahimi", team:"Morocco", goals:1 },
+   { player:"Gessime Yassine", team:"Morocco", goals:1 },
+   { player:"William Isidor", team:"Haiti", goals:1 },
    { player:"John McGinn", team:"Scotland", goals:1 },
    { player:"Nestory Irankunda", team:"Australia", goals:1 },
    { player:"Connor Metcalfe", team:"Australia", goals:1 },
