@@ -170,6 +170,22 @@ table{width:100%;border-collapse:collapse;font-size:13px}
 .players .teams .mini.out{opacity:.4;text-decoration:line-through}
 .players tr.top td{background:rgba(212,175,55,.05)}
 .players .ptot{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:16px;color:var(--gold)}
+   
+   /* ===== PLAYER LEAGUE HERO MURAL ===== */
+#playerHero{margin-bottom:14px;display:none}
+#playerHero.show{display:block}
+#playerHero .frame{
+  position:relative;border:1px solid var(--line2);border-radius:12px;overflow:hidden;
+  background:var(--panel);box-shadow:0 2px 14px var(--shadow);
+}
+#playerHero img{display:block;width:100%;height:clamp(180px,32vw,300px);object-fit:cover;object-position:center 28%}
+#playerHero .cap{
+  position:absolute;left:0;right:0;bottom:0;padding:16px 18px 14px;
+  background:linear-gradient(180deg,transparent,rgba(13,16,21,.92));
+}
+#playerHero .cap .lead{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+#playerHero .cap .name{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:.03em;line-height:1;margin-top:3px}
+#playerHero .cap .name small{font-family:'Fraunces',serif;font-style:italic;font-size:.5em;color:var(--gold);margin-left:8px}
 
 footer{margin-top:40px;border-top:1px solid var(--line);padding-top:18px;color:var(--faint);font-size:11px;font-family:'JetBrains Mono',monospace;line-height:1.8}
 
@@ -642,7 +658,7 @@ const SCORERS = [
       <button data-pane="giant">Giant-killing</button>
     </div>
     <div class="pane active" id="pane-groups"><div class="groups-grid" id="groupsGrid"></div></div>
-    <div class="pane" id="pane-players"><div class="players" id="playersTable"></div></div>
+    <div class="pane" id="pane-players"><div id="playerHero"></div><div class="players" id="playersTable"></div></div>
     <div class="pane" id="pane-scorers"><div id="scorersBoard"></div></div>
     <div class="pane" id="pane-giant"><div id="giantBoard"></div></div>
   </section>
@@ -868,6 +884,22 @@ function renderPlayers(){
       <td class="ptot">${r.Pts}</td>
     </tr>`;
   }).join('');
+   // Hero mural — shows when the leader's defining team is Spain
+  const hero=document.getElementById('playerHero');
+  const leader=rows[0];
+  if(anyPlayed && leader && leader.teams.includes('Spain')){
+    hero.className='show';
+    hero.innerHTML=`<div class="frame">
+      <img src="dad-spain-mural.jpeg" alt="${leader.p} immortalised in Spain colours">
+      <div class="cap">
+        <div class="lead">Top of the league</div>
+        <div class="name">${leader.p}<small>¡Vamos España!</small></div>
+      </div>
+    </div>`;
+  } else {
+    hero.className='';
+    hero.innerHTML='';
+  }
   document.getElementById('playersTable').innerHTML=
     `<table><thead><tr><th>#</th><th class="tl">Player</th><th class="tl">Teams</th><th>Pld</th><th>W</th><th>GD</th><th>Pts</th></tr></thead><tbody>${body}</tbody></table>
      <div style="padding:10px 16px;color:var(--faint);font-size:11px;font-family:'JetBrains Mono',monospace">Combined group-stage points of each player's three teams.</div>`;
