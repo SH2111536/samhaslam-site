@@ -197,7 +197,7 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding-top:18px;color:v
 <script>
 const META = {
   rankingDate : "09 June 2026",        // FIFA ranking snapshot used for giant-killing
-  lastUpdated : "25 June 2026",         // bump this when you update results
+  lastUpdated : "26 June 2026",         // bump this when you update results
   woodenSpoonMode : "player"             // "team" = worst team's owner wins ; "player" = worst player aggregate
 };
 
@@ -361,22 +361,22 @@ const FIXTURES = [
 // To activate a tie, change home/away to the real team names once known.
 function ko(iso,stage,home,away){return{iso,stage,home,away,ko:true,timeTBD:true};}
 const KNOCKOUTS = [
-  ko("2026-06-28T18:00:00-04:00","R32","A2 v B2","—"),
-  ko("2026-06-29T18:00:00-04:00","R32","E1 v 3rd","—"),
-  ko("2026-06-29T19:00:00-04:00","R32","F1 v C2","—"),
-  ko("2026-06-29T20:00:00-04:00","R32","C1 v F2","—"),
+  ko("2026-06-28T18:00:00-04:00","R32","South Africa","Canada"),
+  ko("2026-06-29T18:00:00-04:00","R32","Germany","TBD"),
+  ko("2026-06-29T19:00:00-04:00","R32","Netherlands","Morocco"),
+  ko("2026-06-29T20:00:00-04:00","R32","Brazil","Japan"),
   ko("2026-06-30T18:00:00-04:00","R32","I1 v 3rd","—"),
-  ko("2026-06-30T19:00:00-04:00","R32","E2 v I2","—"),
-  ko("2026-06-30T20:00:00-04:00","R32","A1 v 3rd","—"),
+  ko("2026-06-30T19:00:00-04:00","R32","Ecuador","TBD"),
+  ko("2026-06-30T20:00:00-04:00","R32","Mexico","TBD"),
   ko("2026-07-01T18:00:00-04:00","R32","L1 v 3rd","—"),
-  ko("2026-07-01T19:00:00-04:00","R32","D1 v 3rd","—"),
+  ko("2026-07-01T19:00:00-04:00","R32","USA","Bosnia and Herzegovina"),
   ko("2026-07-01T20:00:00-04:00","R32","G1 v 3rd","—"),
   ko("2026-07-02T18:00:00-04:00","R32","K2 v L2","—"),
   ko("2026-07-02T19:00:00-04:00","R32","H1 v J2","—"),
-  ko("2026-07-02T20:00:00-04:00","R32","B1 v 3rd","—"),
+  ko("2026-07-02T20:00:00-04:00","R32","Switzerland","TBD"),
   ko("2026-07-03T18:00:00-04:00","R32","J1 v H2","—"),
   ko("2026-07-03T19:00:00-04:00","R32","K1 v 3rd","—"),
-  ko("2026-07-03T20:00:00-04:00","R32","D2 v G2","—"),
+  ko("2026-07-03T20:00:00-04:00","R32","Australia","TBD"),
   ko("2026-07-04T18:00:00-04:00","R16","R32 winners","—"),
   ko("2026-07-04T19:00:00-04:00","R16","R32 winners","—"),
   ko("2026-07-05T18:00:00-04:00","R16","R32 winners","—"),
@@ -457,6 +457,12 @@ const RESULTS = [
    { home:"Morocco", away:"Haiti", hs:4, as:2 },
    { home:"Czechia", away:"Mexico", hs:0, as:3 },
    { home:"South Africa", away:"South Korea", hs:1, as:0 },
+   { home:"Ecuador", away:"Germany", hs:2, as:1 },
+   { home:"Curaçao", away:"Côte d'Ivoire", hs:0, as:2 },
+   { home:"Tunisia", away:"Netherlands", hs:1, as:3 },
+   { home:"Japan", away:"Sweden", hs:1, as:1 },
+   { home:"Türkiye", away:"USA", hs:3, as:2 },
+   { home:"Paraguay", away:"Australia", hs:0, as:0 },
    
 ];
 
@@ -486,6 +492,8 @@ const SCORERS = [
    { player:"Folarin Balogun", team:"USA", goals:2 },
    { player:"Giovanni Reyna", team:"USA", goals:1 },
    { player:"Alex Freeman", team:"USA", goals:1 },
+   { player:"Auston Trusty", team:"USA", goals:1 },
+   { player:"Sebastian Berhalter", team:"USA", goals:1 },
    { player:"Mauricio", team:"Paraguay", goals:1 },
    { player:"Matias Galarza", team:"Paraguay", goals:1 },
    { player:"Breel Embolo", team:"Switzerland", goals:1 },
@@ -510,22 +518,28 @@ const SCORERS = [
    { player:"Jamal Musiala", team:"Germany", goals:1 },
    { player:"Nathaniel Brown", team:"Germany", goals:1 },
    { player:"Deniz Undav", team:"Germany", goals:3 },
+   { player:"Leroy Sane", team:"Germany", goals:1 },
+   { player:"Nilson Angulo", team:"Ecuador", goals:1 },
+   { player:"Gonzalo Plata", team:"Ecuador", goals:1 },
    { player:"Livano Comenencia", team:"Curaçao", goals:1 },
    { player:"Virgil van Dijk", team:"Netherlands", goals:1 },
    { player:"Crysencio Summerville", team:"Netherlands", goals:2 },
-   { player:"Brian Brobbey", team:"Netherlands", goals:2 },
+   { player:"Brian Brobbey", team:"Netherlands", goals:3 },
    { player:"Cody Gakpo", team:"Netherlands", goals:2 },
+   { player:"Jan Paul van Hecke", team:"Netherlands", goals:1 },
    { player:"Keito Nakamura", team:"Japan", goals:1 },
    { player:"Daichi Kamada", team:"Japan", goals:2 },
    { player:"Ayase Ueda", team:"Japan", goals:2 },
    { player:"Junya Ito", team:"Japan", goals:1 },
+   { player:"Daizen Maeda", team:"Japan", goals:1 },
    { player:"Amad Diallo", team:"Côte d'Ivoire", goals:1 },
    { player:"Franck Kessie", team:"Côte d'Ivoire", goals:1 },
+   { player:"Nicolas Pepe", team:"Côte d'Ivoire", goals:2 },
    { player:"Yasin Ayari", team:"Sweden", goals:2 },
    { player:"Alexander Isak", team:"Sweden", goals:1 },
    { player:"Viktor Gyokeres", team:"Sweden", goals:1 },
    { player:"Mattias Svanberg", team:"Sweden", goals:1 },
-   { player:"Anthony Elanga", team:"Sweden", goals:1 },
+   { player:"Anthony Elanga", team:"Sweden", goals:2 },
    { player:"Omar Rekik", team:"Tunisia", goals:1 },
    { player:"Abdulelah Al Amri", team:"Saudi Arabia", goals:1 },
    { player:"Maxi Araujo", team:"Uruguay", goals:2 },
@@ -574,6 +588,10 @@ const SCORERS = [
    { player:"Jaminton Campaz", team:"Colombia", goals:1 },
    { player:"Nadhir Benbouali", team:"Algeria", goals:1 },
    { player:"Amine Gouiri", team:"Algeria", goals:1 },
+   { player:"Hazem Mastouri", team:"Tunisia", goals:1 },
+   { player:"Arda Guler", team:"Türkiye", goals:1 },
+   { player:"Baris Alper Yilmaz", team:"Türkiye", goals:1 },
+   { player:"Kaan Ayhan", team:"Türkiye", goals:1 },
 
 ];
 </script>
