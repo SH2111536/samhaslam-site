@@ -213,7 +213,7 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding-top:18px;color:v
 <script>
 const META = {
   rankingDate : "09 June 2026",        // FIFA ranking snapshot used for giant-killing
-  lastUpdated : "26 June 2026",         // bump this when you update results
+  lastUpdated : "27 June 2026",         // bump this when you update results
   woodenSpoonMode : "player"             // "team" = worst team's owner wins ; "player" = worst player aggregate
 };
 
@@ -381,11 +381,12 @@ const KNOCKOUTS = [
   ko("2026-06-29T18:00:00-04:00","R32","Germany","TBD"),
   ko("2026-06-29T19:00:00-04:00","R32","Netherlands","Morocco"),
   ko("2026-06-29T20:00:00-04:00","R32","Brazil","Japan"),
-  ko("2026-06-30T18:00:00-04:00","R32","I1 v 3rd","—"),
-  ko("2026-06-30T19:00:00-04:00","R32","Ecuador","TBD"),
+  ko("2026-06-30T12:00:00-04:00","R32","Côte d'Ivoire","Norway"),
+  ko("2026-06-30T18:00:00-04:00","R32","France","TBD"),
+  ko("2026-06-30T19:00:00-04:00","R32","TBD","TBD"),
   ko("2026-06-30T20:00:00-04:00","R32","Mexico","TBD"),
   ko("2026-07-01T18:00:00-04:00","R32","L1 v 3rd","—"),
-  ko("2026-07-01T19:00:00-04:00","R32","USA","Bosnia and Herzegovina"),
+  ko("2026-07-01T19:00:00-04:00","R32","USA","TBD"),
   ko("2026-07-01T20:00:00-04:00","R32","G1 v 3rd","—"),
   ko("2026-07-02T18:00:00-04:00","R32","K2 v L2","—"),
   ko("2026-07-02T19:00:00-04:00","R32","H1 v J2","—"),
@@ -479,6 +480,12 @@ const RESULTS = [
    { home:"Japan", away:"Sweden", hs:1, as:1 },
    { home:"Türkiye", away:"USA", hs:3, as:2 },
    { home:"Paraguay", away:"Australia", hs:0, as:0 },
+   { home:"Norway", away:"France", hs:1, as:4 },
+   { home:"Senegal", away:"Iraq", hs:5, as:0 },
+   { home:"Cape Verde", away:"Saudi Arabia", hs:0, as:0 },
+   { home:"Uruguay", away:"Spain", hs:0, as:1 },
+   { home:"New Zealand", away:"Belgium", hs:1, as:5 },
+   { home:"Egypt", away:"Iran", hs:1, as:1 },
    
 ];
 
@@ -562,24 +569,35 @@ const SCORERS = [
    { player:"Agustin Canobbio", team:"Uruguay", goals:1 },
    { player:"Lamine Yamal", team:"Spain", goals:1 },
    { player:"Mikel Oyarzabal", team:"Spain", goals:2 },
+   { player:"Álex Baena", team:"Spain", goals:1 },
    { player:"Kevin Pina", team:"Cape Verde", goals:1 },
    { player:"Helio Varela", team:"Cape Verde", goals:1 },
    { player:"Emam Ashour", team:"Egypt", goals:1 },
    { player:"Mostafa Zico", team:"Egypt", goals:1 },
    { player:"Mohamed Salah", team:"Egypt", goals:1 },
+   { player:"Mahmoud Saber", team:"Egypt", goals:1 },
    { player:"Trezeguet", team:"Egypt", goals:1 },
-   { player:"Ramin Rezaeian", team:"Iran", goals:1 },
+   { player:"Ramin Rezaeian", team:"Iran", goals:2 },
    { player:"Mohammad Mohebbi", team:"Iran", goals:1 },
-   { player:"Elijah Just", team:"New Zealand", goals:2 },
+   { player:"Elijah Just", team:"New Zealand", goals:3 },
    { player:"Finn Surman", team:"New Zealand", goals:1 },
+   { player:"Leandro Trossard", team:"Belgium", goals:2 },
+   { player:"Kevin de Bruyne", team:"Belgium", goals:1 },
+   { player:"Romelu Lukaku", team:"Belgium", goals:1 },
+   { player:"Alexis Saelemaekers", team:"Belgium", goals:1 },
    { player:"Kylian Mbappe", team:"France", goals:4 },
-   { player:"Ousmane Dembele", team:"France", goals:1 },
+   { player:"Ousmane Dembele", team:"France", goals:4 },
    { player:"Bradley Barcola", team:"France", goals:1 },
+   { player:"Desire Doue", team:"France", goals:1 },
    { player:"Ibrahim Mbaye", team:"Senegal", goals:1 },
-   { player:"Ismaila Sarr", team:"Senegal", goals:2 },
+   { player:"Ismaila Sarr", team:"Senegal", goals:3 },
+   { player:"Habib Diarra", team:"Senegal", goals:1 },
+   { player:"Pape Gueye", team:"Senegal", goals:2 },
+   { player:"Iliman Ndiaye", team:"Senegal", goals:1 },
    { player:"Erling Haaland", team:"Norway", goals:4 },
    { player:"Marcus Pederson", team:"Norway", goals:1 },
    { player:"Leo Ostigard", team:"Norway", goals:1 },
+   { player:"Thelo Aasgaard", team:"Norway", goals:1 },
    { player:"Aymen Hussein", team:"Iraq", goals:1 },
    { player:"Lionel Messi", team:"Argentina", goals:5 },
    { player:"Romano Schmid", team:"Austria", goals:1 },
