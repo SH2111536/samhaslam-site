@@ -135,10 +135,15 @@ table{width:100%;border-collapse:collapse;font-size:13px}
 .grp td.tl{text-align:left;padding-left:14px}
 .grp tr.qual td{background:rgba(70,196,106,.06)}
 .grp tr.qual td:first-child{box-shadow:inset 3px 0 0 var(--win)}
+/* eliminated at the group stage (or knocked out later) — struck through */
+.grp tr.out td{opacity:.4}
+.grp tr.out .nm{text-decoration:line-through}
 .team-cell{display:flex;align-items:center;gap:8px}
 .team-cell .chip{width:14px;height:14px;border-radius:4px;flex-shrink:0;border:1px solid rgba(255,255,255,.25)}
 .team-cell .nm{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .team-cell .ow{font-size:10px;color:var(--muted)}
+/* "qualified as a best third" tag */
+.q3tag{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.08em;color:#1a1205;background:var(--gold);border-radius:10px;padding:1px 5px;margin-left:6px;vertical-align:middle;font-weight:700}
 .pts{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--ink)}
 .gd-pos{color:var(--win)} .gd-neg{color:var(--loss)}
 
@@ -169,8 +174,11 @@ table{width:100%;border-collapse:collapse;font-size:13px}
 .players .teams .mini .chip{width:11px;height:11px;border-radius:3px;border:1px solid rgba(255,255,255,.25)}
 .players .teams .mini.out{opacity:.4;text-decoration:line-through}
 .players tr.top td{background:rgba(212,175,55,.05)}
+/* player with all three teams knocked out — whole line struck through */
+.players tr.pout td{opacity:.4}
+.players tr.pout .pname{text-decoration:line-through}
 .players .ptot{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:16px;color:var(--gold)}
-   
+
    /* ===== PLAYER LEAGUE HERO MURAL ===== */
 #playerHero{margin-bottom:14px;display:none}
 #playerHero.show{display:block}
@@ -187,6 +195,30 @@ table{width:100%;border-collapse:collapse;font-size:13px}
 #playerHero .cap .name{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:.03em;line-height:1;margin-top:3px}
 #playerHero .cap .name small{font-family:'Fraunces',serif;font-style:italic;font-size:.5em;color:var(--gold);margin-left:8px}
 
+/* ===== KNOCKOUT BRACKET ===== */
+#bracketBoard{overflow-x:auto;padding-bottom:12px;-webkit-overflow-scrolling:touch}
+.bracket{display:flex;align-items:stretch;min-width:1040px}
+.bk-col{display:flex;flex-direction:column;flex:1;min-width:206px;padding:0 9px}
+.bk-head{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-align:center;padding:7px 0;margin-bottom:6px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:2}
+.bk-ties{display:flex;flex-direction:column;justify-content:space-around;flex:1;gap:8px}
+.bk-tie{background:var(--panel);border:1px solid var(--line);border-radius:9px;overflow:hidden;position:relative}
+.bk-tie.derby{border-color:var(--gold-d);box-shadow:0 0 0 1px rgba(212,175,55,.25)}
+.bk-col:not(:first-child) .bk-tie::before{content:'';position:absolute;left:-9px;top:50%;width:9px;height:1px;background:var(--line2)}
+.bk-col:not(:last-child) .bk-tie::after{content:'';position:absolute;right:-9px;top:50%;width:9px;height:1px;background:var(--line2)}
+.bk-row{display:flex;align-items:center;gap:7px;padding:7px 9px}
+.bk-row + .bk-row{border-top:1px solid var(--line)}
+.bk-row .chip{width:12px;height:12px;border-radius:3px;flex-shrink:0;border:1px solid rgba(255,255,255,.25)}
+.bk-tm{font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
+.bk-ow{font-size:10px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:62px;flex-shrink:0}
+.bk-sc{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--muted);margin-left:2px;min-width:12px;text-align:right}
+.bk-row.win{background:rgba(70,196,106,.07)}
+.bk-row.win .bk-tm{color:var(--ink)}
+.bk-row.win .bk-sc{color:var(--win)}
+.bk-row.lose{opacity:.5}
+.bk-row.lose .bk-tm{text-decoration:line-through}
+.bk-row.tbd .bk-tm{color:var(--faint);font-weight:400;font-style:italic}
+.bk-meta{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);text-align:center;padding:3px 0;border-top:1px solid var(--line);background:var(--panel2)}
+
 footer{margin-top:40px;border-top:1px solid var(--line);padding-top:18px;color:var(--faint);font-size:11px;font-family:'JetBrains Mono',monospace;line-height:1.8}
 
 /* responsive */
@@ -200,6 +232,7 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding-top:18px;color:v
   .fx{grid-template-columns:1fr auto 1fr}
   .players .teams{display:none}
   .brand h1{font-size:40px}
+  .bracket{min-width:960px}
 }
 </style>
 </head>
@@ -209,15 +242,26 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding-top:18px;color:v
      DATA BLOCK  —  edit here to update the dashboard
      The two you'll touch most often are RESULTS and SCORERS.
      Team names MUST be spelled exactly as in the OWNERS list below.
+
+     KNOCKOUTS now run on autopilot:
+       • Log a knockout result in RESULTS with a stage tag, e.g.
+            { home:"Spain", away:"Austria", hs:2, as:0, stage:"R32" },
+       • If a tie is level after extra time and decided on penalties,
+         add a win field so the bracket knows who went through:
+            { home:"Portugal", away:"Croatia", hs:1, as:1, stage:"R32", win:"Croatia" },
+       • The Matchday block and the Knockout bracket tab both advance
+         automatically — you never hand-fill the next round's teams.
+       • Stage tags: "R32","R16","QF","SF","3P","F".
      ================================================================= -->
 <script>
 const META = {
-  rankingDate : "09 June 2026",        // FIFA ranking snapshot used for giant-killing
-  lastUpdated : "28 June 2026",         // bump this when you update results
+  rankingDate : "09 June 2026",        // FIFA ranking snapshot used for giant-killing (frozen)
+  lastUpdated : "29 June 2026",         // bump this when you update results
   woodenSpoonMode : "player"             // "team" = worst team's owner wins ; "player" = worst player aggregate
 };
 
-// CHAMPION — set to a team name (in quotes) once the final is won, else null
+// CHAMPION — optional manual override. Normally leave null:
+// once you log the Final result, the winner fills in automatically.
 const CHAMPION = null;
 
 // ---- Who drew whom (team : player) ----
@@ -255,6 +299,22 @@ const GROUPS = {
   K:["Portugal","DR Congo","Uzbekistan","Colombia"],
   L:["England","Croatia","Ghana","Panama"]
 };
+
+/* =================================================================
+   ELIMINATED — the single source of truth for strikethroughs.
+   Pre-loaded with the 16 teams knocked out at the group stage.
+   As the knockouts unfold, just add the losing team's name here
+   and it will strike through in the group tables and the player
+   league (and a player's whole row strikes through once all three
+   of their teams are listed).
+   ================================================================= */
+const ELIMINATED = [
+  // Group stage casualties (the 16 that did not reach the Round of 32)
+  "South Korea","Czechia","Qatar","Haiti","Scotland","Türkiye",
+  "Curaçao","Tunisia","Iran","New Zealand","Saudi Arabia","Uruguay",
+  "Iraq","Jordan","Uzbekistan","Panama","South Africa"
+  // ── add knockout casualties below as they happen ──
+];
 
 // ---- FIFA world rankings (snapshot above) — used for giant-killing ----
 const RANKINGS = {
@@ -373,50 +433,65 @@ const FIXTURES = [
   fx("2026-06-27T17:00:00-04:00","L","Croatia","Ghana")
 ];
 
-// ---- KNOCKOUT schedule (teams fill in as the bracket resolves) ----
-// To activate a tie, change home/away to the real team names once known.
-function ko(iso,stage,home,away){return{iso,stage,home,away,ko:true,timeTBD:true};}
-const KNOCKOUTS = [
-  ko("2026-06-28T18:00:00-04:00","R32","South Africa","Canada"),
-  ko("2026-06-29T18:00:00-04:00","R32","Germany","TBD"),
-  ko("2026-06-29T19:00:00-04:00","R32","Netherlands","Morocco"),
-  ko("2026-06-29T20:00:00-04:00","R32","Brazil","Japan"),
-  ko("2026-06-30T12:00:00-04:00","R32","Côte d'Ivoire","Norway"),
-  ko("2026-06-30T18:00:00-04:00","R32","France","TBD"),
-  ko("2026-06-30T19:00:00-04:00","R32","TBD","TBD"),
-  ko("2026-06-30T20:00:00-04:00","R32","Mexico","TBD"),
-  ko("2026-07-01T18:00:00-04:00","R32","L1 v 3rd","—"),
-  ko("2026-07-01T19:00:00-04:00","R32","USA","TBD"),
-  ko("2026-07-01T20:00:00-04:00","R32","G1 v 3rd","—"),
-  ko("2026-07-02T18:00:00-04:00","R32","K2 v L2","—"),
-  ko("2026-07-02T19:00:00-04:00","R32","H1 v J2","—"),
-  ko("2026-07-02T20:00:00-04:00","R32","Switzerland","TBD"),
-  ko("2026-07-03T18:00:00-04:00","R32","J1 v H2","—"),
-  ko("2026-07-03T19:00:00-04:00","R32","K1 v 3rd","—"),
-  ko("2026-07-03T20:00:00-04:00","R32","Australia","TBD"),
-  ko("2026-07-04T18:00:00-04:00","R16","R32 winners","—"),
-  ko("2026-07-04T19:00:00-04:00","R16","R32 winners","—"),
-  ko("2026-07-05T18:00:00-04:00","R16","R32 winners","—"),
-  ko("2026-07-05T19:00:00-04:00","R16","R32 winners","—"),
-  ko("2026-07-06T18:00:00-04:00","R16","R32 winners","—"),
-  ko("2026-07-06T19:00:00-04:00","R16","R32 winners","—"),
-  ko("2026-07-07T18:00:00-04:00","R16","R32 winners","—"),
-  ko("2026-07-07T19:00:00-04:00","R16","R32 winners","—"),
-  ko("2026-07-09T18:00:00-04:00","QF","R16 winners","—"),
-  ko("2026-07-10T18:00:00-04:00","QF","R16 winners","—"),
-  ko("2026-07-11T18:00:00-04:00","QF","R16 winners","—"),
-  ko("2026-07-11T19:00:00-04:00","QF","R16 winners","—"),
-  ko("2026-07-14T18:00:00-04:00","Semi-final","QF winners","—"),
-  ko("2026-07-15T18:00:00-04:00","Semi-final","QF winners","—"),
-  ko("2026-07-18T18:00:00-04:00","3rd place","SF losers","—"),
-  ko("2026-07-19T18:00:00-04:00","Final","SF winners","—")
+/* =================================================================
+   KNOCKOUT BRACKET  (FIFA fixed match tree, M73–M104)
+   Round of 32 carries the real teams & kickoff times (US Eastern).
+   Later rounds reference a winner/loser of an earlier match number
+   and fill themselves in automatically once results are logged.
+       {win:74}  → winner of Match 74
+       {lose:101}→ loser of Match 101 (third-place play-off only)
+   tbd:true means kickoff time not yet shown (update at R16).
+   ================================================================= */
+function R32(m,iso,home,away){return{m,stage:"R32",iso,home,away};}
+function KO(m,stage,iso,home,away,tbd){return{m,stage,iso,home,away,tbd:!!tbd};}
+const BRACKET = [
+  // ---- Round of 32 (real teams + confirmed kickoff times, ET) ----
+  R32(73,"2026-06-28T15:00:00-04:00","South Africa","Canada"),
+  R32(74,"2026-06-29T16:30:00-04:00","Germany","Paraguay"),
+  R32(75,"2026-06-29T21:00:00-04:00","Netherlands","Morocco"),
+  R32(76,"2026-06-29T13:00:00-04:00","Brazil","Japan"),
+  R32(77,"2026-06-30T17:00:00-04:00","France","Sweden"),
+  R32(78,"2026-06-30T13:00:00-04:00","Côte d'Ivoire","Norway"),
+  R32(79,"2026-06-30T21:00:00-04:00","Mexico","Ecuador"),
+  R32(80,"2026-07-01T12:00:00-04:00","England","DR Congo"),
+  R32(81,"2026-07-01T20:00:00-04:00","USA","Bosnia and Herzegovina"),
+  R32(82,"2026-07-01T16:00:00-04:00","Belgium","Senegal"),
+  R32(83,"2026-07-02T19:00:00-04:00","Portugal","Croatia"),
+  R32(84,"2026-07-02T15:00:00-04:00","Spain","Austria"),
+  R32(85,"2026-07-02T23:00:00-04:00","Switzerland","Algeria"),
+  R32(86,"2026-07-03T18:00:00-04:00","Argentina","Cape Verde"),
+  R32(87,"2026-07-03T21:30:00-04:00","Colombia","Ghana"),
+  R32(88,"2026-07-03T14:00:00-04:00","Australia","Egypt"),
+  // ---- Round of 16 (times tbd until teams known) ----
+  KO(89,"R16","2026-07-04T16:00:00-04:00",{win:74},{win:77},true),
+  KO(90,"R16","2026-07-04T20:00:00-04:00",{win:73},{win:75},true),
+  KO(91,"R16","2026-07-05T16:00:00-04:00",{win:76},{win:78},true),
+  KO(92,"R16","2026-07-05T20:00:00-04:00",{win:79},{win:80},true),
+  KO(93,"R16","2026-07-06T16:00:00-04:00",{win:83},{win:84},true),
+  KO(94,"R16","2026-07-06T20:00:00-04:00",{win:81},{win:82},true),
+  KO(95,"R16","2026-07-07T16:00:00-04:00",{win:86},{win:88},true),
+  KO(96,"R16","2026-07-07T20:00:00-04:00",{win:85},{win:87},true),
+  // ---- Quarter-finals ----
+  KO(97,"QF","2026-07-09T18:00:00-04:00",{win:89},{win:90},true),
+  KO(98,"QF","2026-07-10T18:00:00-04:00",{win:93},{win:94},true),
+  KO(99,"QF","2026-07-11T18:00:00-04:00",{win:91},{win:92},true),
+  KO(100,"QF","2026-07-11T19:00:00-04:00",{win:95},{win:96},true),
+  // ---- Semi-finals ----
+  KO(101,"SF","2026-07-14T18:00:00-04:00",{win:97},{win:98},true),
+  KO(102,"SF","2026-07-15T18:00:00-04:00",{win:99},{win:100},true),
+  // ---- Third-place play-off (shown in Matchday only, not in the bracket) ----
+  KO(103,"3P","2026-07-18T18:00:00-04:00",{lose:101},{lose:102},true),
+  // ---- Final ----
+  KO(104,"F","2026-07-19T18:00:00-04:00",{win:101},{win:102},true)
 ];
 
 /* =================================================================
    RESULTS — add a line per finished match. Format:
      { home:"Mexico", away:"South Africa", hs:2, as:1 },
    (hs = home score, as = away score). Group stage uses home/away
-   exactly as in FIXTURES. For knockout games add  stage:"R32"  etc.
+   exactly as in FIXTURES. For knockout games add a stage, e.g.
+     { home:"Spain", away:"Austria", hs:2, as:0, stage:"R32" },
+   and, if decided on penalties, a win:"Team" field (see top note).
    ================================================================= */
 const RESULTS = [
   // e.g. { home:"Mexico", away:"South Africa", hs:2, as:1 },
@@ -493,6 +568,10 @@ const RESULTS = [
    { home:"Jordan", away:"Argentina", hs:1, as:3 },
    { home:"Algeria", away:"Austria", hs:3, as:3 },
 
+   // ── KNOCKOUT RESULTS go below (remember the stage tag) ──
+   { home:"South Africa", away:"Canada", hs:0, as:1, stage:"R32" }
+   
+   
 ];
 
 /* =================================================================
@@ -515,6 +594,7 @@ const SCORERS = [
    { player:"Cyle Larin", team:"Canada", goals:2 },
    { player:"Jonathan David", team:"Canada", goals:3 },
    { player:"Nathan Saliba", team:"Canada", goals:1 },
+   { player:"Stephen Eustaquio", team:"Canada", goals:1 },
    { player:"Jovo Lukic", team:"Bosnia and Herzegovina", goals:1 },
    { player:"Ermin Mahmic", team:"Bosnia and Herzegovina", goals:2 },
    { player:"Kerim Alajbegovic", team:"Bosnia and Herzegovina", goals:1 },
@@ -683,14 +763,16 @@ const SCORERS = [
 
   <!-- STANDINGS -->
   <section id="standings">
-    <div class="sec-head"><h2>Standings</h2><span class="note">updates as results go in</span></div>
+    <div class="sec-head"><h2>Standings</h2><span class="note">group tables locked · knockouts live</span></div>
     <div class="tabs">
       <button class="active" data-pane="groups">Group tables</button>
+      <button data-pane="bracket">Knockout bracket</button>
       <button data-pane="players">Player league</button>
       <button data-pane="scorers">Top scorers</button>
       <button data-pane="giant">Giant-killing</button>
     </div>
     <div class="pane active" id="pane-groups"><div class="groups-grid" id="groupsGrid"></div></div>
+    <div class="pane" id="pane-bracket"><div id="bracketBoard"></div></div>
     <div class="pane" id="pane-players"><div id="playerHero"></div><div class="players" id="playersTable"></div></div>
     <div class="pane" id="pane-scorers"><div id="scorersBoard"></div></div>
     <div class="pane" id="pane-giant"><div id="giantBoard"></div></div>
@@ -701,14 +783,64 @@ const SCORERS = [
 
 <!-- ===================== LOGIC ===================== -->
 <script>
-const ALL_FX = FIXTURES.concat(KNOCKOUTS);
 const fmtDay = d => d.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'});
 const dayKey = d => d.toLocaleDateString('en-CA'); // YYYY-MM-DD in local tz
 const owner = t => OWNERS[t] || null;
 const col = t => COLORS[t] || "#555";
 const chip = t => `<span class="chip" style="background:${col(t)}"></span>`;
 
-// ---------- result lookup ----------
+// ---- elimination set (drives every strikethrough) ----
+const ELIM = new Set(ELIMINATED);
+const isOut = t => ELIM.has(t);
+
+// ---- knockout helpers ----
+const KO_STAGES = ["R32","R16","QF","SF","3P","F"];
+const STAGE_LABEL = {R32:"Round of 32",R16:"Round of 16",QF:"Quarter-final",SF:"Semi-final","3P":"Third place",F:"Final"};
+function friendlyStage(s){ return STAGE_LABEL[s] || s; }
+function labelFor(slot){
+  if(typeof slot==="string") return slot;
+  if(slot && slot.win!=null) return "Winner M"+slot.win;
+  if(slot && slot.lose!=null) return "Loser M"+slot.lose;
+  return "TBD";
+}
+// find a logged knockout result between two teams (order-independent)
+function koResult(a,b){
+  if(!a||!b) return null;
+  return RESULTS.find(r=> r.stage && KO_STAGES.includes(r.stage) &&
+    ((r.home===a&&r.away===b)||(r.home===b&&r.away===a))) || null;
+}
+// resolve a bracket slot to a concrete team name, or null if not yet known
+function resolveTeam(slot){
+  if(typeof slot==="string") return slot;
+  if(slot && slot.win!=null){ const o=matchOutcome(slot.win); return o?o.winner:null; }
+  if(slot && slot.lose!=null){ const o=matchOutcome(slot.lose); return o?o.loser:null; }
+  return null;
+}
+// winner/loser of a match number (memoised; the tree is a DAG so no cycles)
+const _outcome={};
+function matchOutcome(m){
+  if(m in _outcome) return _outcome[m];
+  let res=null;
+  const t=BRACKET.find(x=>x.m===m);
+  if(t){
+    const a=resolveTeam(t.home), b=resolveTeam(t.away);
+    if(a&&b){
+      const r=koResult(a,b);
+      if(r){
+        if(r.hs===r.as){ if(r.win) res={winner:r.win, loser:(r.win===r.home?r.away:r.home)}; }
+        else { res={winner:(r.hs>r.as?r.home:r.away), loser:(r.hs>r.as?r.away:r.home)}; }
+      }
+    }
+  }
+  return _outcome[m]=res;
+}
+const championNow = () => (matchOutcome(104)&&matchOutcome(104).winner) || CHAMPION;
+
+// matchday fixtures = group fixtures + bracket ties (resolved at render time)
+const KO_FIXTURES = BRACKET.map(t=>({iso:t.iso,stage:t.stage,m:t.m,ko:true,tbd:t.tbd,homeSlot:t.home,awaySlot:t.away}));
+const ALL_FX = FIXTURES.concat(KO_FIXTURES);
+
+// ---------- result lookup (group stage) ----------
 const resultMap = {};
 RESULTS.forEach(r=>{ resultMap[(r.stage||"")+"|"+r.home+"|"+r.away] = r; });
 function resultFor(fxObj){
@@ -716,7 +848,8 @@ function resultFor(fxObj){
       || resultMap["|"+fxObj.home+"|"+fxObj.away] || null;
 }
 
-// ---------- group standings ----------
+// ---------- group standings (built ONLY from group-stage results,
+//            so knockout results never disturb them — tables are frozen) ----------
 function buildTables(){
   const T={};
   for(const g in GROUPS){ T[g]={}; GROUPS[g].forEach(t=>T[g][t]={t,P:0,W:0,D:0,L:0,GF:0,GA:0,GD:0,Pts:0,grp:g}); }
@@ -775,13 +908,14 @@ function woodenSpoon(tables){
 function renderPrizes(){
   const tables=buildTables();
   const sc=topScorers(), gk=giantKillings(), sp=woodenSpoon(tables);
+  const champ=championNow();
   const cards=[];
 
   // Winner
   let winHolder;
-  if(CHAMPION){ winHolder=`<span class="team">${chip(CHAMPION)} ${CHAMPION}</span><span class="who">${owner(CHAMPION)||'—'}</span>`; }
+  if(champ){ winHolder=`<span class="team">${chip(champ)} ${champ}</span><span class="who">${owner(champ)||'—'}</span>`; }
   else { winHolder=`<span class="tbd">Lifted on 19 July</span>`; }
-  cards.push(prizeCard("£100","World Cup winner",winHolder, CHAMPION?`Champion of the world`:""));
+  cards.push(prizeCard("£100","World Cup winner",winHolder, champ?`Champion of the world`:""));
 
   // Top scorer
   let scHolder, scExtra="";
@@ -838,14 +972,15 @@ function renderDay(){
     return;
   }
   note.textContent=`${list.length} match${list.length>1?'es':''}`;
-  wrap.innerHTML=list.map(renderFx).join('');
+  wrap.innerHTML=list.map(f=> f.ko ? renderKoFx(f) : renderFx(f)).join('');
 }
+// group-stage fixture
 function renderFx(f){
   const r=resultFor(f);
   const ko=new Date(f.iso);
-  const time=f.timeTBD?'KO TBD':ko.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
+  const time=ko.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
   const oH=owner(f.home), oA=owner(f.away);
-  const derby = oH && oA && oH===oA && !f.ko ? `<div class="derby">Whatever happens — ${oH} wins</div>`:'';
+  const derby = oH && oA && oH===oA ? `<div class="derby">Whatever happens — ${oH} wins</div>`:'';
   const rkH = RANKINGS[f.home]?`#${RANKINGS[f.home]}`:'';
   const rkA = RANKINGS[f.away]?`#${RANKINGS[f.away]}`:'';
 
@@ -853,12 +988,8 @@ function renderFx(f){
   if(r){ mid=`<div class="score">${r.hs}–${r.as}</div><div class="stage">${stLabel(f)} · FT</div>`; }
   else { mid=`<div class="kickoff">${time}</div><div class="stage">${stLabel(f)}</div>`; }
 
-  const sideH = f.ko
-    ? `<div class="tn"><div class="t">${f.home}</div><div class="o unowned">—</div></div>`
-    : `${chip(f.home)}<div class="tn"><div class="t">${f.home} <span class="rk">${rkH}</span></div><div class="o ${oH?'':'unowned'}">${oH||'unowned'}</div></div>`;
-  const sideA = f.ko
-    ? `<div class="tn"><div class="t">${f.away}</div><div class="o unowned">&nbsp;</div></div>`
-    : `<div class="tn"><div class="t"><span class="rk">${rkA}</span> ${f.away}</div><div class="o ${oA?'':'unowned'}">${oA||'unowned'}</div></div>${chip(f.away)}`;
+  const sideH = `${chip(f.home)}<div class="tn"><div class="t">${f.home} <span class="rk">${rkH}</span></div><div class="o ${oH?'':'unowned'}">${oH||'unowned'}</div></div>`;
+  const sideA = `<div class="tn"><div class="t"><span class="rk">${rkA}</span> ${f.away}</div><div class="o ${oA?'':'unowned'}">${oA||'unowned'}</div></div>${chip(f.away)}`;
 
   return `<div class="fx ${r?'played':''}">${derby}
     <div class="side home">${sideH}</div>
@@ -866,19 +997,55 @@ function renderFx(f){
     <div class="side away">${sideA}</div>
   </div>`;
 }
-function stLabel(f){ return GROUPS[f.stage]?('Group '+f.stage):f.stage; }
+// knockout fixture (resolves teams from the bracket)
+function renderKoFx(f){
+  const hName=resolveTeam(f.homeSlot), aName=resolveTeam(f.awaySlot);
+  const r=(hName&&aName)?koResult(hName,aName):null;
+  const time=f.tbd?'KO TBD':new Date(f.iso).toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
+  const oH=hName?owner(hName):null, oA=aName?owner(aName):null;
+  const derby = hName&&aName&&oH&&oH===oA ? `<div class="derby">Whatever happens — ${oH} advances</div>`:'';
 
-// ---------- render: group tables ----------
+  let mid;
+  if(r){
+    const hs = r.home===hName? r.hs : r.as;
+    const as = r.home===hName? r.as : r.hs;
+    mid=`<div class="score">${hs}–${as}</div><div class="stage">${friendlyStage(f.stage)} · FT${r.hs===r.as?' · pens':''}</div>`;
+  } else {
+    mid=`<div class="kickoff">${time}</div><div class="stage">${friendlyStage(f.stage)}</div>`;
+  }
+
+  const side=(name,slot,away)=>{
+    if(!name){
+      return `<div class="tn"><div class="t">${labelFor(slot)}</div><div class="o unowned">${away?'&nbsp;':'—'}</div></div>`;
+    }
+    const rk=RANKINGS[name]?`#${RANKINGS[name]}`:'';
+    const o=owner(name);
+    if(away){
+      return `<div class="tn"><div class="t"><span class="rk">${rk}</span> ${name}</div><div class="o ${o?'':'unowned'}">${o||'unowned'}</div></div>${chip(name)}`;
+    }
+    return `${chip(name)}<div class="tn"><div class="t">${name} <span class="rk">${rk}</span></div><div class="o ${o?'':'unowned'}">${o||'unowned'}</div></div>`;
+  };
+
+  return `<div class="fx ${r?'played':''}">${derby}
+    <div class="side home">${side(hName,f.homeSlot,false)}</div>
+    <div class="mid">${mid}</div>
+    <div class="side away">${side(aName,f.awaySlot,true)}</div>
+  </div>`;
+}
+function stLabel(f){ return GROUPS[f.stage]?('Group '+f.stage):friendlyStage(f.stage); }
+
+// ---------- render: group tables (locked) ----------
 function renderGroups(){
   const T=buildTables();
   const html=Object.keys(GROUPS).map(g=>{
     const rows=sortRows(Object.values(T[g]));
-    const played=rows.some(r=>r.P>0);
     const body=rows.map((r,i)=>{
-      const q = played && i<2 ? 'qual':'';
+      const out=isOut(r.t);
+      const cls = out ? 'out' : (i<2 ? 'qual' : '');
+      const tag = (!out && i>=2) ? `<span class="q3tag">R32</span>` : '';   // qualified as a best third
       const gd = r.GD>0?`<span class="gd-pos">+${r.GD}</span>`:(r.GD<0?`<span class="gd-neg">${r.GD}</span>`:'0');
-      return `<tr class="${q}">
-        <td class="tl"><div class="team-cell">${chip(r.t)}<div><div class="nm">${r.t}</div><div class="ow">${owner(r.t)||'—'}</div></div></div></td>
+      return `<tr class="${cls}">
+        <td class="tl"><div class="team-cell">${chip(r.t)}<div><div class="nm">${r.t}${tag}</div><div class="ow">${owner(r.t)||'—'}</div></div></div></td>
         <td>${r.P}</td><td>${r.W}</td><td>${r.D}</td><td>${r.L}</td><td>${gd}</td><td class="pts">${r.Pts}</td>
       </tr>`;
     }).join('');
@@ -887,6 +1054,32 @@ function renderGroups(){
       <tbody>${body}</tbody></table></div>`;
   }).join('');
   document.getElementById('groupsGrid').innerHTML=html;
+}
+
+// ---------- render: knockout bracket ----------
+function renderBracket(){
+  const cols=[["R32","Round of 32"],["R16","Round of 16"],["QF","Quarter-finals"],["SF","Semi-finals"],["F","Final"]];
+  const html=cols.map(([st,label])=>{
+    const ties=BRACKET.filter(t=>t.stage===st).map(bkTie).join('');
+    return `<div class="bk-col"><div class="bk-head">${label}</div><div class="bk-ties">${ties}</div></div>`;
+  }).join('');
+  document.getElementById('bracketBoard').innerHTML=`<div class="bracket">${html}</div>`;
+}
+function bkTie(t){
+  const out=matchOutcome(t.m);
+  const hName=resolveTeam(t.home), aName=resolveTeam(t.away);
+  const r=(hName&&aName)?koResult(hName,aName):null;
+  const row=(name,slot)=>{
+    if(!name) return `<div class="bk-row tbd"><span class="bk-tm">${labelFor(slot)}</span></div>`;
+    const cls = out ? (name===out.winner?'win':'lose') : '';
+    const sc = r ? (r.home===name? r.hs : r.as) : '';
+    return `<div class="bk-row ${cls}">${chip(name)}<span class="bk-tm">${name}</span><span class="bk-ow">${owner(name)||''}</span><span class="bk-sc">${r!==null&&r!==undefined?sc:''}</span></div>`;
+  };
+  const d=new Date(t.iso);
+  const ds=d.toLocaleDateString(undefined,{day:'numeric',month:'short'});
+  const meta = r ? `M${t.m} · ${ds} · FT${r.hs===r.as?' (pens)':''}` : (t.tbd?`M${t.m} · ${ds} · TBD`:`M${t.m} · ${ds}`);
+  const derby = (hName&&aName&&owner(hName)&&owner(hName)===owner(aName)) ? ' derby' : '';
+  return `<div class="bk-tie${derby}">${row(hName,t.home)}${row(aName,t.away)}<div class="bk-meta">${meta}</div></div>`;
 }
 
 // ---------- render: player league ----------
@@ -907,8 +1100,9 @@ function renderPlayers(){
   const rows=Object.values(stat).sort((a,b)=> b.Pts-a.Pts || b.GD-a.GD || b.W-a.W || a.p.localeCompare(b.p));
   const anyPlayed=rows.some(r=>r.P>0);
   const body=rows.map((r,i)=>{
-    const tm=r.teams.map(t=>`<span class="mini">${chip(t)} ${t}</span>`).join('');
-    return `<tr class="${anyPlayed&&i===0?'top':''}">
+    const tm=r.teams.map(t=>`<span class="mini ${isOut(t)?'out':''}">${chip(t)} ${t}</span>`).join('');
+    const allOut = r.teams.length>0 && r.teams.every(t=>isOut(t));   // all three knocked out
+    return `<tr class="${anyPlayed&&i===0?'top':''} ${allOut?'pout':''}">
       <td class="mono" style="color:var(--faint)">${i+1}</td>
       <td class="tl"><span class="pname">${r.p}</span></td>
       <td class="tl"><div class="teams">${tm}</div></td>
@@ -935,7 +1129,7 @@ function renderPlayers(){
   }
   document.getElementById('playersTable').innerHTML=
     `<table><thead><tr><th>#</th><th class="tl">Player</th><th class="tl">Teams</th><th>Pld</th><th>W</th><th>GD</th><th>Pts</th></tr></thead><tbody>${body}</tbody></table>
-     <div style="padding:10px 16px;color:var(--faint);font-size:11px;font-family:'JetBrains Mono',monospace">Combined group-stage points of each player's three teams.</div>`;
+     <div style="padding:10px 16px;color:var(--faint);font-size:11px;font-family:'JetBrains Mono',monospace">Combined group-stage points of each player's three teams. Struck-through teams are out of the tournament.</div>`;
 }
 
 // ---------- render: scorers ----------
@@ -963,7 +1157,7 @@ function renderGiant(){
       <div class="rank">${i+1}</div>
       <div class="main">
         <div class="a">${u.w} ${u.score} ${u.l}</div>
-        <div class="b">${chip(u.w)} winner: ${owner(u.w)||'—'} · ${GROUPS[u.stage]?'Group '+u.stage:(u.stage||'')}</div>
+        <div class="b">${chip(u.w)} winner: ${owner(u.w)||'—'} · ${GROUPS[u.stage]?'Group '+u.stage:friendlyStage(u.stage||'')}</div>
       </div>
       <div class="val">+${u.gap}<small>places</small></div>
     </div>`).join('')+`</div>`;
@@ -974,8 +1168,9 @@ function renderMeta(){
   document.getElementById('metaline').innerHTML=
     `<span class="label">Updated</span> ${META.lastUpdated}`;
   document.getElementById('foot').innerHTML=
-    `Rankings: FIFA / Coca-Cola Men's World Ranking updated immediatley before start of tournament.<br>
-     Fixtures: 2026 FIFA World Cup official schedule, times shown in your local timezone.<br>
+    `Rankings: FIFA / Coca-Cola Men's World Ranking, snapshot frozen ${META.rankingDate} for giant-killing.<br>
+     Group tables are final (locked); knockout bracket advances automatically as results are logged.<br>
+     Fixtures &amp; kickoff times: 2026 FIFA World Cup official schedule, shown in your local timezone.<br>
      Wooden spoon mode: ${META.woodenSpoonMode==='team'?'worst team (owner wins)':'worst player aggregate'} · 48 teams · 104 matches · prize pot £160.`;
 }
 
@@ -997,10 +1192,10 @@ function wireDays(){
 
 // ---------- init ----------
 (function init(){
-  // open on today, or jump to first matchday if the tournament hasn't started / no games today
+  // open on today, or jump to first matchday if there are no games today
   if(!fixturesOn(viewDate).length){ const nx=nextMatchDateFrom(viewDate); if(nx) viewDate=nx; }
   renderMeta(); renderPrizes(); renderDay();
-  renderGroups(); renderPlayers(); renderScorers(); renderGiant();
+  renderGroups(); renderBracket(); renderPlayers(); renderScorers(); renderGiant();
   wireTabs(); wireDays();
 })();
 </script>
