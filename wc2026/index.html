@@ -256,7 +256,7 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding-top:18px;color:v
 <script>
 const META = {
   rankingDate : "09 June 2026",        // FIFA ranking snapshot used for giant-killing (frozen)
-  lastUpdated : "29 June 2026",         // bump this when you update results
+  lastUpdated : "30 June 2026",         // bump this when you update results
   woodenSpoonMode : "player"             // "team" = worst team's owner wins ; "player" = worst player aggregate
 };
 
@@ -312,8 +312,9 @@ const ELIMINATED = [
   // Group stage casualties (the 16 that did not reach the Round of 32)
   "South Korea","Czechia","Qatar","Haiti","Scotland","Türkiye",
   "Curaçao","Tunisia","Iran","New Zealand","Saudi Arabia","Uruguay",
-  "Iraq","Jordan","Uzbekistan","Panama","South Africa"
+  "Iraq","Jordan","Uzbekistan","Panama"
   // ── add knockout casualties below as they happen ──
+   "South Africa","Japan","Germany", "Morocco",
 ];
 
 // ---- FIFA world rankings (snapshot above) — used for giant-killing ----
@@ -570,6 +571,9 @@ const RESULTS = [
 
    // ── KNOCKOUT RESULTS go below (remember the stage tag) ──
    { home:"South Africa", away:"Canada", hs:0, as:1, stage:"R32" }
+   { home:"Brazil", away:"Japan", hs:2, as:1, stage:"R32" }
+   { home:"Germany", away:"Paraguay", hs:1, as:1, stage:"R32", win:"Paraguay" }
+   { home:"Netherlands", away:"Morocco", hs:1, as:1, stage:"R32", win:"Morocco" }
    
    
 ];
@@ -605,6 +609,7 @@ const SCORERS = [
    { player:"Sebastian Berhalter", team:"USA", goals:1 },
    { player:"Mauricio", team:"Paraguay", goals:1 },
    { player:"Matias Galarza", team:"Paraguay", goals:1 },
+   { player:"Julio Enciso", team:"Paraguay", goals:1 },
    { player:"Breel Embolo", team:"Switzerland", goals:1 },
    { player:"Johan Manzambi", team:"Switzerland", goals:2 },
    { player:"Ruben Vargas", team:"Switzerland", goals:1 },
@@ -613,6 +618,8 @@ const SCORERS = [
    { player:"Hassan Al Haydos", team:"Qatar", goals:1 },
    { player:"Vinícius Júnior", team:"Brazil", goals:4 },
    { player:"Matheus Cunha", team:"Brazil", goals:3 },
+   { player:"Casemiro", team:"Brazil", goals:1 },
+   { player:"Gabriel Martinelli", team:"Brazil", goals:1 },
    { player:"Ismael Saibari", team:"Morocco", goals:3 },
    { player:"Achraf Hakimi", team:"Morocco", goals:1 },
    { player:"Soufiane Rahimi", team:"Morocco", goals:1 },
@@ -623,7 +630,7 @@ const SCORERS = [
    { player:"Connor Metcalfe", team:"Australia", goals:1 },
    { player:"Felix Nmecha", team:"Germany", goals:1 },
    { player:"Nico Schlotterbeck", team:"Germany", goals:1 },
-   { player:"Kai Havertz", team:"Germany", goals:2 },
+   { player:"Kai Havertz", team:"Germany", goals:3 },
    { player:"Jamal Musiala", team:"Germany", goals:1 },
    { player:"Nathaniel Brown", team:"Germany", goals:1 },
    { player:"Deniz Undav", team:"Germany", goals:3 },
@@ -634,12 +641,13 @@ const SCORERS = [
    { player:"Virgil van Dijk", team:"Netherlands", goals:1 },
    { player:"Crysencio Summerville", team:"Netherlands", goals:2 },
    { player:"Brian Brobbey", team:"Netherlands", goals:3 },
-   { player:"Cody Gakpo", team:"Netherlands", goals:2 },
+   { player:"Cody Gakpo", team:"Netherlands", goals:3 },
    { player:"Jan Paul van Hecke", team:"Netherlands", goals:1 },
    { player:"Keito Nakamura", team:"Japan", goals:1 },
    { player:"Daichi Kamada", team:"Japan", goals:2 },
    { player:"Ayase Ueda", team:"Japan", goals:2 },
    { player:"Junya Ito", team:"Japan", goals:1 },
+   { player:"Kaishu Sano", team:"Japan", goals:1 },
    { player:"Daizen Maeda", team:"Japan", goals:1 },
    { player:"Amad Diallo", team:"Côte d'Ivoire", goals:1 },
    { player:"Franck Kessie", team:"Côte d'Ivoire", goals:1 },
