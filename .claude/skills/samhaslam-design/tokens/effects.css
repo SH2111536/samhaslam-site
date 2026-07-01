@@ -1,0 +1,20 @@
+/* Sam Haslam — Personal Site Design System
+   Effects — radius, borders, shadow, motion. Kept minimal & quiet (dark theme, editorial). */
+
+:root {
+  --radius-sm: 4px;   /* buttons, tags, inputs */
+  --radius-md: 6px;   /* cards */
+  --radius-lg: 10px;  /* larger panels, images */
+  --radius-pill: 999px;
+
+  --border-width: 1px;
+
+  /* shadows are almost never used — dark backgrounds rely on borders + subtle
+     lightness steps for elevation, not drop shadow. Reserve this for rare
+     floating UI (e.g. a dropdown) over page content. */
+  --shadow-float: 0 8px 24px rgba(0, 0, 0, 0.45);
+
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+}

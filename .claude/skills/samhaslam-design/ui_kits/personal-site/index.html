@@ -1,0 +1,48 @@
+<!-- @dsCard group="Personal Site" viewport="1200x800" name="samhaslam.co.uk" -->
+<!-- @startingPoint section="Personal Site" subtitle="Home / About / Writing / Contact, click-through" viewport="1200x800" -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>samhaslam.co.uk — UI kit</title>
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  html,body{margin:0;background:var(--bg-page);font-family:var(--font-body)}
+  .page{max-width:var(--measure-page);margin:0 auto;padding:0 32px 96px}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="./Home.jsx"></script>
+<script type="text/babel" src="./About.jsx"></script>
+<script type="text/babel" src="./Writing.jsx"></script>
+<script type="text/babel" src="./Contact.jsx"></script>
+
+<script type="text/babel">
+const { NavBar, Footer } = window.SamHaslam;
+
+function App() {
+  const [screen, setScreen] = React.useState('home');
+  const navigate = (s) => { setScreen(s); window.scrollTo(0, 0); };
+
+  const screens = { home: Home, about: About, writing: Writing, contact: Contact };
+  const Screen = screens[screen];
+
+  return (
+    <div className="page">
+      <NavBar current={screen} onNavigate={navigate} />
+      <Screen navigate={navigate} />
+      <Footer />
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!-- @dsCard group="Components" viewport="700x360" name="Forms" -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;background:var(--bg-page);padding:24px;font-family:var(--font-body)}</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { Button, Input, TextArea } = window.SamHaslam;
+function Demo() {
+  return (
+    <div style={{display:'flex',flexDirection:'column',gap:24}}>
+      <div style={{display:'flex',gap:12,alignItems:'center'}}>
+        <Button variant="primary">Read the writing</Button>
+        <Button variant="secondary">Get in touch</Button>
+        <Button variant="ghost" size="sm">Cancel</Button>
+        <Button variant="primary" disabled>Sending…</Button>
+      </div>
+      <div style={{display:'flex',gap:16,maxWidth:520}}>
+        <Input label="Name" placeholder="Your name" />
+        <Input label="Email" placeholder="you@example.com" />
+      </div>
+      <div style={{maxWidth:520}}>
+        <TextArea label="Message" placeholder="What's on your mind?" />
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+</script>
+</body>
+</html>
