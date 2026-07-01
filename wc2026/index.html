@@ -256,7 +256,7 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding-top:18px;color:v
 <script>
 const META = {
   rankingDate : "09 June 2026",        // FIFA ranking snapshot used for giant-killing (frozen)
-  lastUpdated : "30 June 2026",         // bump this when you update results
+  lastUpdated : "01 July 2026",         // bump this when you update results
   woodenSpoonMode : "player"             // "team" = worst team's owner wins ; "player" = worst player aggregate
 };
 
@@ -314,7 +314,8 @@ const ELIMINATED = [
   "Curaçao","Tunisia","Iran","New Zealand","Saudi Arabia","Uruguay",
   "Iraq","Jordan","Uzbekistan","Panama",
   // ── add knockout casualties below as they happen ──
-   "South Africa","Japan","Germany", "Netherlands",
+   "South Africa","Japan","Germany","Netherlands","Côte d'Ivoire",
+   "Sweden","Ecuador"
 ];
 
 // ---- FIFA world rankings (snapshot above) — used for giant-killing ----
@@ -574,7 +575,9 @@ const RESULTS = [
    { home:"Brazil", away:"Japan", hs:2, as:1, stage:"R32" },
    { home:"Germany", away:"Paraguay", hs:1, as:1, stage:"R32", win:"Paraguay" },
    { home:"Netherlands", away:"Morocco", hs:1, as:1, stage:"R32", win:"Morocco" },
-   
+   { home:"Côte d'Ivoire", away:"Norway", hs:1, as:2, stage:"R32" },
+   { home:"France", away:"Sweden", hs:3, as:0, stage:"R32" },
+   { home:"Mexico", away:"Ecuador", hs:2, as:0, stage:"R32" },
    
 ];
 
@@ -584,8 +587,8 @@ const RESULTS = [
    ================================================================= */
 const SCORERS = [
   // e.g. { player:"Erling Haaland", team:"Norway", goals:4 },
-   { player:"Julian Quinones", team:"Mexico", goals:2 },
-   { player:"Raul Jimenez", team:"Mexico", goals:1 },
+   { player:"Julian Quinones", team:"Mexico", goals:3 },
+   { player:"Raul Jimenez", team:"Mexico", goals:2 },
    { player:"Luis Romo", team:"Mexico", goals:1 },
    { player:"Mateo Chavez", team:"Mexico", goals:1 },
    { player:"Alvaro Fidalgo", team:"Mexico", goals:1 },
@@ -649,7 +652,7 @@ const SCORERS = [
    { player:"Junya Ito", team:"Japan", goals:1 },
    { player:"Kaishu Sano", team:"Japan", goals:1 },
    { player:"Daizen Maeda", team:"Japan", goals:1 },
-   { player:"Amad Diallo", team:"Côte d'Ivoire", goals:1 },
+   { player:"Amad Diallo", team:"Côte d'Ivoire", goals:2 },
    { player:"Franck Kessie", team:"Côte d'Ivoire", goals:1 },
    { player:"Nicolas Pepe", team:"Côte d'Ivoire", goals:2 },
    { player:"Yasin Ayari", team:"Sweden", goals:2 },
@@ -679,21 +682,22 @@ const SCORERS = [
    { player:"Kevin de Bruyne", team:"Belgium", goals:1 },
    { player:"Romelu Lukaku", team:"Belgium", goals:1 },
    { player:"Alexis Saelemaekers", team:"Belgium", goals:1 },
-   { player:"Kylian Mbappe", team:"France", goals:4 },
+   { player:"Kylian Mbappe", team:"France", goals:6 },
    { player:"Ousmane Dembele", team:"France", goals:4 },
-   { player:"Bradley Barcola", team:"France", goals:1 },
+   { player:"Bradley Barcola", team:"France", goals:2 },
    { player:"Desire Doue", team:"France", goals:1 },
    { player:"Ibrahim Mbaye", team:"Senegal", goals:1 },
    { player:"Ismaila Sarr", team:"Senegal", goals:3 },
    { player:"Habib Diarra", team:"Senegal", goals:1 },
    { player:"Pape Gueye", team:"Senegal", goals:2 },
    { player:"Iliman Ndiaye", team:"Senegal", goals:1 },
-   { player:"Erling Haaland", team:"Norway", goals:4 },
+   { player:"Erling Haaland", team:"Norway", goals:5 },
    { player:"Marcus Pederson", team:"Norway", goals:1 },
    { player:"Leo Ostigard", team:"Norway", goals:1 },
    { player:"Thelo Aasgaard", team:"Norway", goals:1 },
+   { player:"Antonio Nusa", team:"Norway", goals:1 },
    { player:"Aymen Hussein", team:"Iraq", goals:1 },
-   { player:"Lionel Messi", team:"Argentina", goals:5 },
+   { player:"Lionel Messi", team:"Argentina", goals:6 },
    { player:"Romano Schmid", team:"Austria", goals:1 },
    { player:"Marko Arnautovic", team:"Austria", goals:2 },
    { player:"Marcel Sabitzer", team:"Austria", goals:1 },
