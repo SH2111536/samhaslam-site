@@ -1,0 +1,22 @@
+<!-- @dsCard group="Colors" viewport="700x150" name="Text" -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body{margin:0;background:var(--bg-page);font-family:var(--font-body);padding:24px;display:flex;flex-direction:column;gap:12px}
+  .row{display:flex;align-items:baseline;gap:16px}
+  .swatch{width:16px;height:16px;border-radius:3px;flex-shrink:0}
+  .name{font-size:11px;font-family:ui-monospace,monospace;color:var(--text-faint);width:150px;flex-shrink:0}
+  .sample{font-size:16px}
+</style>
+</head>
+<body>
+  <div class="row"><div class="swatch" style="background:var(--text-primary)"></div><span class="name">--text-primary</span><span class="sample" style="color:var(--text-primary)">The quick brown fox</span></div>
+  <div class="row"><div class="swatch" style="background:var(--text-secondary)"></div><span class="name">--text-secondary</span><span class="sample" style="color:var(--text-secondary)">The quick brown fox</span></div>
+  <div class="row"><div class="swatch" style="background:var(--text-muted)"></div><span class="name">--text-muted</span><span class="sample" style="color:var(--text-muted)">The quick brown fox</span></div>
+  <div class="row"><div class="swatch" style="background:var(--text-faint)"></div><span class="name">--text-faint</span><span class="sample" style="color:var(--text-faint)">The quick brown fox</span></div>
+  <div class="row"><div class="swatch" style="background:var(--link)"></div><span class="name">--link</span><span class="sample" style="color:var(--link);text-decoration:underline">The quick brown fox</span></div>
+</body>
+</html>

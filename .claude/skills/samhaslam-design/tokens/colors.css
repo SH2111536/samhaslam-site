@@ -1,0 +1,50 @@
+/* Sam Haslam — Personal Site Design System
+   Colors — "Dispatch": cool, dark, editorial. One accent (blue), used sparingly. */
+
+:root {
+  /* ---- base neutrals (cool, near-black to near-white) ---- */
+  --neutral-950: oklch(0.15 0.01 250);
+  --neutral-900: oklch(0.18 0.011 250);
+  --neutral-800: oklch(0.21 0.012 250);
+  --neutral-700: oklch(0.26 0.012 250);
+  --neutral-600: oklch(0.32 0.012 250);
+  --neutral-500: oklch(0.45 0.012 250);
+  --neutral-400: oklch(0.55 0.01 250);
+  --neutral-300: oklch(0.65 0.01 250);
+  --neutral-200: oklch(0.78 0.008 250);
+  --neutral-100: oklch(0.88 0.006 250);
+  --neutral-50:  oklch(0.96 0.004 250);
+
+  /* ---- accent (blue) — single hue, used for links, CTAs, tags ---- */
+  --accent-700: oklch(0.42 0.13 250);
+  --accent-600: oklch(0.52 0.14 250);
+  --accent-500: oklch(0.62 0.14 250);
+  --accent-400: oklch(0.68 0.13 250);
+  --accent-300: oklch(0.76 0.10 250);
+  --accent-on:  oklch(0.15 0.02 250); /* text/icon color when sitting on accent-500 */
+
+  /* ---- semantic aliases — use these in components, not the raw scale ---- */
+  --bg-page: var(--neutral-950);
+  --bg-surface: var(--neutral-900);
+  --bg-surface-raised: var(--neutral-800);
+  --bg-hover: var(--neutral-700);
+
+  --border-subtle: var(--neutral-700);
+  --border-default: var(--neutral-600);
+
+  --text-primary: var(--neutral-50);
+  --text-secondary: var(--neutral-300);
+  --text-muted: var(--neutral-400);
+  --text-faint: var(--neutral-500);
+
+  --accent: var(--accent-500);
+  --accent-hover: var(--accent-400);
+  --accent-active: var(--accent-600);
+  --accent-text-on: var(--accent-on);
+
+  --link: var(--accent-400);
+  --link-hover: var(--accent-300);
+  --focus-ring: var(--accent-400);
+
+  --danger: oklch(0.62 0.17 25);
+}

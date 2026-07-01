@@ -1,0 +1,26 @@
+<!-- @dsCard group="Colors" viewport="700x170" name="Accent + states" -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body{margin:0;background:var(--bg-page);font-family:var(--font-body);padding:24px;display:flex;flex-direction:column;gap:16px}
+  .row{display:flex;gap:10px;align-items:center}
+  .chip{padding:10px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;color:var(--accent-text-on)}
+  .label{font-size:11px;font-family:ui-monospace,monospace;color:var(--text-faint)}
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="chip" style="background:var(--accent-700)">700</div>
+    <div class="chip" style="background:var(--accent-600)">600</div>
+    <div class="chip" style="background:var(--accent-500)">500 · default</div>
+    <div class="chip" style="background:var(--accent-400)">400 · hover</div>
+    <div class="chip" style="background:var(--accent-300)">300</div>
+  </div>
+  <div class="row">
+    <span class="label">Single accent hue only — used for links, the one primary CTA per view, active nav state, and topic tags. Never as a background wash.</span>
+  </div>
+</body>
+</html>
