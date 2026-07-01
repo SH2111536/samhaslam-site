@@ -4,38 +4,223 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sam Haslam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
     color-scheme: dark;
+
+    --neutral-950: oklch(0.15 0.01 250);
+    --neutral-900: oklch(0.18 0.011 250);
+    --neutral-800: oklch(0.21 0.012 250);
+    --neutral-700: oklch(0.26 0.012 250);
+    --neutral-600: oklch(0.32 0.012 250);
+    --neutral-500: oklch(0.45 0.012 250);
+    --neutral-400: oklch(0.55 0.01 250);
+    --neutral-300: oklch(0.65 0.01 250);
+    --neutral-200: oklch(0.78 0.008 250);
+    --neutral-50:  oklch(0.96 0.004 250);
+
+    --accent-600: oklch(0.52 0.14 250);
+    --accent-500: oklch(0.62 0.14 250);
+    --accent-400: oklch(0.68 0.13 250);
+    --accent-300: oklch(0.76 0.10 250);
+
+    --bg-page: var(--neutral-950);
+    --bg-surface: var(--neutral-900);
+    --bg-surface-raised: var(--neutral-800);
+
+    --border-subtle: var(--neutral-700);
+    --border-default: var(--neutral-600);
+
+    --text-primary: var(--neutral-50);
+    --text-secondary: var(--neutral-300);
+    --text-muted: var(--neutral-400);
+    --text-faint: var(--neutral-500);
+
+    --font-display: 'Newsreader', Georgia, 'Times New Roman', serif;
+    --font-body: 'Public Sans', system-ui, -apple-system, sans-serif;
+
+    --duration-base: 200ms;
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
   }
+
   * { box-sizing: border-box; }
-  body {
+
+  html, body {
     margin: 0;
     min-height: 100vh;
+    background: var(--bg-page);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+  }
+
+  body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: #0f1115;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 2rem;
+    padding: 5rem 1.5rem;
   }
+
+  main {
+    width: 100%;
+    max-width: 760px;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .eyebrow {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent-400);
+    margin-bottom: 1rem;
+  }
+
   h1 {
-    font-size: 2rem;
-    font-weight: 600;
-    margin: 0 0 0.5rem;
+    margin: 0 0 0.75rem;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(2rem, 1.6rem + 1.8vw, 2.75rem);
+    line-height: 1.15;
   }
-  p {
-    color: #9a9fa8;
+
+  .lede {
+    margin: 0;
+    max-width: 46ch;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 620px) {
+    .options { grid-template-columns: 1fr; }
+  }
+
+  .option {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.75rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-surface);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color var(--duration-base) var(--ease-standard),
+                background var(--duration-base) var(--ease-standard);
+  }
+
+  .option:hover,
+  .option:focus-visible {
+    border-color: var(--border-default);
+    background: var(--bg-surface-raised);
+    outline: none;
+  }
+
+  .option:hover .option-cta,
+  .option:focus-visible .option-cta {
+    color: var(--accent-300);
+  }
+
+  .option-tag {
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent-400);
+  }
+
+  .option-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.375rem;
+    line-height: 1.3;
+    color: var(--text-primary);
+  }
+
+  .option-desc {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--text-muted);
+    flex-grow: 1;
+  }
+
+  .option-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--accent-400);
+    transition: color var(--duration-base) var(--ease-standard),
+                transform var(--duration-base) var(--ease-standard);
+  }
+
+  .option:hover .option-cta svg,
+  .option:focus-visible .option-cta svg {
+    transform: translateX(2px);
+  }
+
+  .option-cta svg {
+    transition: transform var(--duration-base) var(--ease-standard);
+  }
+
+  footer {
+    font-size: 0.8125rem;
+    color: var(--text-faint);
   }
 </style>
 </head>
 <body>
-  <div>
-    <h1>Sam Haslam</h1>
-    <p>Main site coming soon.</p>
-  </div>
+  <main>
+    <div>
+      <span class="eyebrow">Sam Haslam</span>
+      <h1>Two sides of the same person.</h1>
+      <p class="lede">
+        Risk &amp; AI governance writing on one side, side projects for friends and family on the
+        other. Pick where you'd like to go.
+      </p>
+    </div>
+
+    <div class="options">
+      <a class="option" href="professional/index.html">
+        <span class="option-tag">Risk · Governance · AI</span>
+        <h2 class="option-title">Professional</h2>
+        <p class="option-desc">Writing, talks and background on AI, technology and enterprise risk.</p>
+        <span class="option-cta">
+          Enter
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+        </span>
+      </a>
+
+      <a class="option" href="../wc2026/index.html">
+        <span class="option-tag">Side project</span>
+        <h2 class="option-title">Personal</h2>
+        <p class="option-desc">Family &amp; friends stuff — right now, the 2026 World Cup sweepstake.</p>
+        <span class="option-cta">
+          Enter
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+        </span>
+      </a>
+    </div>
+
+    <footer>&copy; 2026 Sam Haslam</footer>
+  </main>
 
   <script>
     if (sessionStorage.getItem("sh-authed") !== "1") {
