@@ -256,7 +256,7 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding-top:18px;color:v
 <script>
 const META = {
   rankingDate : "09 June 2026",        // FIFA ranking snapshot used for giant-killing (frozen)
-  lastUpdated : "02 July 2026",         // bump this when you update results
+  lastUpdated : "03 July 2026",         // bump this when you update results
   woodenSpoonMode : "player"             // "team" = worst team's owner wins ; "player" = worst player aggregate
 };
 
@@ -316,7 +316,8 @@ const ELIMINATED = [
   // ── add knockout casualties below as they happen ──
    "South Africa","Japan","Germany","Netherlands","Côte d'Ivoire",
    "Sweden","Ecuador",
-   "DR Congo","Bosnia and Herzegovina","Senegal"
+   "DR Congo","Bosnia and Herzegovina","Senegal",
+   "Croatia","Austria","Algeria"
 ];
 
 // ---- FIFA world rankings (snapshot above) — used for giant-killing ----
@@ -582,6 +583,9 @@ const RESULTS = [
    { home:"England", away:"DR Congo", hs:2, as:1, stage:"R32" },
    { home:"USA", away:"Bosnia and Herzegovina", hs:2, as:0, stage:"R32" },
    { home:"Belgium", away:"Senegal", hs:3, as:2, stage:"R32" },
+   { home:"Portugal", away:"Croatia", hs:2, as:1, stage:"R32" },
+   { home:"Spain", away:"Austria", hs:3, as:0, stage:"R32" },
+   { home:"Switzerland", away:"Algeria", hs:2, as:0, stage:"R32" },
 
 ];
 
@@ -617,10 +621,11 @@ const SCORERS = [
    { player:"Mauricio", team:"Paraguay", goals:1 },
    { player:"Matias Galarza", team:"Paraguay", goals:1 },
    { player:"Julio Enciso", team:"Paraguay", goals:1 },
-   { player:"Breel Embolo", team:"Switzerland", goals:1 },
+   { player:"Breel Embolo", team:"Switzerland", goals:2 },
    { player:"Johan Manzambi", team:"Switzerland", goals:2 },
    { player:"Ruben Vargas", team:"Switzerland", goals:1 },
    { player:"Granit Xhaka", team:"Switzerland", goals:1 },
+   { player:"Dan Ndoye", team:"Switzerland", goals:1 },
    { player:"Boualem Khoukhi", team:"Qatar", goals:1 },
    { player:"Hassan Al Haydos", team:"Qatar", goals:1 },
    { player:"Vinícius Júnior", team:"Brazil", goals:4 },
@@ -669,8 +674,9 @@ const SCORERS = [
    { player:"Maxi Araujo", team:"Uruguay", goals:2 },
    { player:"Agustin Canobbio", team:"Uruguay", goals:1 },
    { player:"Lamine Yamal", team:"Spain", goals:1 },
-   { player:"Mikel Oyarzabal", team:"Spain", goals:2 },
+   { player:"Mikel Oyarzabal", team:"Spain", goals:4 },
    { player:"Álex Baena", team:"Spain", goals:1 },
+   { player:"Pedro Porro", team:"Spain", goals:1 },
    { player:"Kevin Pina", team:"Cape Verde", goals:1 },
    { player:"Helio Varela", team:"Cape Verde", goals:1 },
    { player:"Emam Ashour", team:"Egypt", goals:1 },
@@ -709,9 +715,10 @@ const SCORERS = [
    { player:"Ali Olwan", team:"Jordan", goals:1 },
    { player:"Nizar Al Rashdan", team:"Jordan", goals:1 },
    { player:"João Neves", team:"Portugal", goals:1 },
-   { player:"Cristiano Ronaldo", team:"Portugal", goals:2 },
+   { player:"Cristiano Ronaldo", team:"Portugal", goals:3 },
    { player:"Nuno Mendes", team:"Portugal", goals:1 },
    { player:"Rafael Leão", team:"Portugal", goals:1 },
+   { player:"Gonçalo Ramos", team:"Portugal", goals:1 },
    { player:"Yoane Wissa", team:"DR Congo", goals:3 },
    { player:"Fiston Mayele", team:"DR Congo", goals:1 },
    { player:"Harry Kane", team:"England", goals:5 },
@@ -722,6 +729,7 @@ const SCORERS = [
    { player:"Ante Budimir", team:"Croatia", goals:1 },
    { player:"Petar Sucic", team:"Croatia", goals:1 },
    { player:"Nikola Vlasic", team:"Croatia", goals:1 },
+   { player:"Ivan Perisic", team:"Croatia", goals:1 },
    { player:"Caleb Yirenkyi", team:"Ghana", goals:1 },
    { player:"Derrick Luckassen", team:"Ghana", goals:1 },
    { player:"Abbosbek Fayzullaev", team:"Uzbekistan", goals:1 },
