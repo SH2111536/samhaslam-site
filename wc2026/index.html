@@ -256,7 +256,7 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding-top:18px;color:v
 <script>
 const META = {
   rankingDate : "09 June 2026",        // FIFA ranking snapshot used for giant-killing (frozen)
-  lastUpdated : "03 July 2026",         // bump this when you update results
+  lastUpdated : "04 July 2026",         // bump this when you update results
   woodenSpoonMode : "player"             // "team" = worst team's owner wins ; "player" = worst player aggregate
 };
 
@@ -317,7 +317,8 @@ const ELIMINATED = [
    "South Africa","Japan","Germany","Netherlands","Côte d'Ivoire",
    "Sweden","Ecuador",
    "DR Congo","Bosnia and Herzegovina","Senegal",
-   "Croatia","Austria","Algeria"
+   "Croatia","Austria","Algeria",
+   "Cape Verde","Ghana","Australia"
 ];
 
 // ---- FIFA world rankings (snapshot above) — used for giant-killing ----
@@ -586,6 +587,9 @@ const RESULTS = [
    { home:"Portugal", away:"Croatia", hs:2, as:1, stage:"R32" },
    { home:"Spain", away:"Austria", hs:3, as:0, stage:"R32" },
    { home:"Switzerland", away:"Algeria", hs:2, as:0, stage:"R32" },
+   { home:"Argentina", away:"Cape Verde", hs:3, as:2, stage:"R32" },
+   { home:"Colombia", away:"Ghana", hs:1, as:0, stage:"R32" },
+   { home:"Australia", away:"Egypt", hs:1, as:1, stage:"R32", win:"Egypt" },
 
 ];
 
@@ -679,7 +683,7 @@ const SCORERS = [
    { player:"Pedro Porro", team:"Spain", goals:1 },
    { player:"Kevin Pina", team:"Cape Verde", goals:1 },
    { player:"Helio Varela", team:"Cape Verde", goals:1 },
-   { player:"Emam Ashour", team:"Egypt", goals:1 },
+   { player:"Emam Ashour", team:"Egypt", goals:2 },
    { player:"Mostafa Zico", team:"Egypt", goals:1 },
    { player:"Mohamed Salah", team:"Egypt", goals:1 },
    { player:"Mahmoud Saber", team:"Egypt", goals:1 },
@@ -707,7 +711,10 @@ const SCORERS = [
    { player:"Thelo Aasgaard", team:"Norway", goals:1 },
    { player:"Antonio Nusa", team:"Norway", goals:1 },
    { player:"Aymen Hussein", team:"Iraq", goals:1 },
-   { player:"Lionel Messi", team:"Argentina", goals:6 },
+   { player:"Lionel Messi", team:"Argentina", goals:7 },
+   { player:"Lisandro Martinez", team:"Argentina", goals:1 },
+   { player:"Deroy Duarte", team:"Cape Verde", goals:1 },
+   { player:"Sidny Lopes Cabral", team:"Cape Verde", goals:1 },
    { player:"Romano Schmid", team:"Austria", goals:1 },
    { player:"Marko Arnautovic", team:"Austria", goals:2 },
    { player:"Marcel Sabitzer", team:"Austria", goals:1 },
@@ -734,6 +741,7 @@ const SCORERS = [
    { player:"Derrick Luckassen", team:"Ghana", goals:1 },
    { player:"Abbosbek Fayzullaev", team:"Uzbekistan", goals:1 },
    { player:"Eldor Shomurodov", team:"Uzbekistan", goals:1 },
+   { player:"Jhon Arias", team:"Colombia", goals:1 },
    { player:"Daniel Munoz", team:"Colombia", goals:2 },
    { player:"Luis Diaz", team:"Colombia", goals:1 },
    { player:"Jaminton Campaz", team:"Colombia", goals:1 },
