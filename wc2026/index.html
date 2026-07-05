@@ -256,7 +256,7 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding-top:18px;color:v
 <script>
 const META = {
   rankingDate : "09 June 2026",        // FIFA ranking snapshot used for giant-killing (frozen)
-  lastUpdated : "04 July 2026",         // bump this when you update results
+  lastUpdated : "05 July 2026",         // bump this when you update results
   woodenSpoonMode : "player"             // "team" = worst team's owner wins ; "player" = worst player aggregate
 };
 
@@ -318,7 +318,8 @@ const ELIMINATED = [
    "Sweden","Ecuador",
    "DR Congo","Bosnia and Herzegovina","Senegal",
    "Croatia","Austria","Algeria",
-   "Cape Verde","Ghana","Australia"
+   "Cape Verde","Ghana","Australia",
+   "Canada","Paraguay"
 ];
 
 // ---- FIFA world rankings (snapshot above) — used for giant-killing ----
@@ -591,6 +592,9 @@ const RESULTS = [
    { home:"Colombia", away:"Ghana", hs:1, as:0, stage:"R32" },
    { home:"Australia", away:"Egypt", hs:1, as:1, stage:"R32", win:"Egypt" },
 
+   { home:"Paraguay", away:"France", hs:0, as:1, stage:"R16" },
+   { home:"Canada", away:"Morocco", hs:0, as:3, stage:"R16" },
+
 ];
 
 /* =================================================================
@@ -638,7 +642,8 @@ const SCORERS = [
    { player:"Gabriel Martinelli", team:"Brazil", goals:1 },
    { player:"Ismael Saibari", team:"Morocco", goals:3 },
    { player:"Achraf Hakimi", team:"Morocco", goals:1 },
-   { player:"Soufiane Rahimi", team:"Morocco", goals:1 },
+   { player:"Soufiane Rahimi", team:"Morocco", goals:2 },
+   { player:"Azzedine Ounahi", team:"Morocco", goals:2 },
    { player:"Gessime Yassine", team:"Morocco", goals:1 },
    { player:"William Isidor", team:"Haiti", goals:1 },
    { player:"John McGinn", team:"Scotland", goals:1 },
@@ -696,7 +701,7 @@ const SCORERS = [
    { player:"Kevin de Bruyne", team:"Belgium", goals:1 },
    { player:"Romelu Lukaku", team:"Belgium", goals:2 },
    { player:"Alexis Saelemaekers", team:"Belgium", goals:1 },
-   { player:"Kylian Mbappe", team:"France", goals:6 },
+   { player:"Kylian Mbappe", team:"France", goals:7 },
    { player:"Ousmane Dembele", team:"France", goals:4 },
    { player:"Bradley Barcola", team:"France", goals:2 },
    { player:"Desire Doue", team:"France", goals:1 },
