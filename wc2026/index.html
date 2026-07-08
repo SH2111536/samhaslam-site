@@ -256,7 +256,7 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding-top:18px;color:v
 <script>
 const META = {
   rankingDate : "09 June 2026",        // FIFA ranking snapshot used for giant-killing (frozen)
-  lastUpdated : "07 July 2026",         // bump this when you update results
+  lastUpdated : "08 July 2026",         // bump this when you update results
   woodenSpoonMode : "player"             // "team" = worst team's owner wins ; "player" = worst player aggregate
 };
 
@@ -321,7 +321,8 @@ const ELIMINATED = [
    "Cape Verde","Ghana","Australia",
    "Canada","Paraguay",
    "Brazil","Mexico",
-   "Portugal","USA"
+   "Portugal","USA",
+   "Egypt","Colombia"
 ];
 
 // ---- FIFA world rankings (snapshot above) — used for giant-killing ----
@@ -600,6 +601,8 @@ const RESULTS = [
    { home:"Mexico", away:"England", hs:2, as:3, stage:"R16" },
    { home:"Portugal", away:"Spain", hs:0, as:1, stage:"R16" },
    { home:"USA", away:"Belgium", hs:1, as:4, stage:"R16" },
+   { home:"Argentina", away:"Egypt", hs:3, as:2, stage:"R16" },
+   { home:"Switzerland", away:"Colombia", hs:0, as:0, stage:"R16", win:"Switzerland" },
 
 ];
 
@@ -696,7 +699,8 @@ const SCORERS = [
    { player:"Kevin Pina", team:"Cape Verde", goals:1 },
    { player:"Helio Varela", team:"Cape Verde", goals:1 },
    { player:"Emam Ashour", team:"Egypt", goals:2 },
-   { player:"Mostafa Zico", team:"Egypt", goals:1 },
+   { player:"Mostafa Zico", team:"Egypt", goals:2 },
+   { player:"Yasser Ibrahim", team:"Egypt", goals:1 },
    { player:"Mohamed Salah", team:"Egypt", goals:1 },
    { player:"Mahmoud Saber", team:"Egypt", goals:1 },
    { player:"Trezeguet", team:"Egypt", goals:1 },
@@ -723,8 +727,10 @@ const SCORERS = [
    { player:"Thelo Aasgaard", team:"Norway", goals:1 },
    { player:"Antonio Nusa", team:"Norway", goals:1 },
    { player:"Aymen Hussein", team:"Iraq", goals:1 },
-   { player:"Lionel Messi", team:"Argentina", goals:7 },
+   { player:"Lionel Messi", team:"Argentina", goals:8 },
    { player:"Lisandro Martinez", team:"Argentina", goals:1 },
+   { player:"Cristian Romero", team:"Argentina", goals:1 },
+   { player:"Enzo Fernández", team:"Argentina", goals:1 },
    { player:"Deroy Duarte", team:"Cape Verde", goals:1 },
    { player:"Sidny Lopes Cabral", team:"Cape Verde", goals:1 },
    { player:"Romano Schmid", team:"Austria", goals:1 },
