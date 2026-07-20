@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recommendations — 20 Jul 2026 — Sam Haslam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+
+    --neutral-950: oklch(0.15 0.01 250);
+    --neutral-900: oklch(0.18 0.011 250);
+    --neutral-800: oklch(0.21 0.012 250);
+    --neutral-700: oklch(0.26 0.012 250);
+    --neutral-600: oklch(0.32 0.012 250);
+    --neutral-500: oklch(0.45 0.012 250);
+    --neutral-400: oklch(0.55 0.01 250);
+    --neutral-300: oklch(0.65 0.01 250);
+    --neutral-200: oklch(0.78 0.008 250);
+    --neutral-50:  oklch(0.96 0.004 250);
+
+    --accent-600: oklch(0.52 0.14 250);
+    --accent-500: oklch(0.62 0.14 250);
+    --accent-400: oklch(0.68 0.13 250);
+    --accent-300: oklch(0.76 0.10 250);
+
+    --bg-page: var(--neutral-950);
+    --bg-surface: var(--neutral-900);
+    --bg-surface-raised: var(--neutral-800);
+
+    --border-subtle: var(--neutral-700);
+    --border-default: var(--neutral-600);
+
+    --text-primary: var(--neutral-50);
+    --text-secondary: var(--neutral-300);
+    --text-muted: var(--neutral-400);
+    --text-faint: var(--neutral-500);
+
+    --font-display: 'Newsreader', Georgia, 'Times New Roman', serif;
+    --font-body: 'Public Sans', system-ui, -apple-system, sans-serif;
+
+    --duration-base: 200ms;
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg-page);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    padding: 5rem 1.5rem 6rem;
+  }
+
+  main {
+    width: 100%;
+    max-width: 760px;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  a { color: var(--accent-400); }
+  a:hover { color: var(--accent-300); }
+
+  .back-link {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .back-link:hover { color: var(--accent-300); }
+
+  .eyebrow {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent-400);
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(2rem, 1.6rem + 1.8vw, 2.75rem);
+    line-height: 1.15;
+  }
+
+  .lede {
+    margin: 0;
+    max-width: 60ch;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .recs {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rec {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.75rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .rec:first-child { padding-top: 0; }
+  .rec:last-child { border-bottom: none; }
+
+  .rec-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    background: var(--bg-surface-raised);
+    border: 1px solid var(--border-subtle);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent-300);
+  }
+
+  .rec-location {
+    font-size: 0.8125rem;
+    color: var(--text-faint);
+  }
+
+  .rec-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.375rem;
+    line-height: 1.3;
+    color: var(--text-primary);
+  }
+
+  .rec-body {
+    margin: 0;
+    max-width: var(--measure-prose, 640px);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  footer {
+    font-size: 0.8125rem;
+    color: var(--text-faint);
+  }
+</style>
+</head>
+<body>
+  <main>
+    <div>
+      <a class="back-link" href="../recommendations/index.html">&larr; All recommendations</a>
+    </div>
+
+    <div>
+      <span class="eyebrow">Weekly recommendations · 20 Jul 2026</span>
+      <h1>A full week, then Texas.</h1>
+      <p class="lede">
+        More going on than last week — football Monday, tea at your mum and dad's Tuesday, a day
+        in Manchester and a catch-up with John Chrimes Thursday — before Saturday morning hands
+        you a flight to Dallas. So this week's list splits in two: a few things for the evenings
+        you're already busy, and a couple for when you land somewhere hot, new, and entirely
+        lacking in a Brindle Distillery.
+      </p>
+    </div>
+
+    <div class="recs">
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Music</span>
+        </div>
+        <h2 class="rec-title">Wunderhorse</h2>
+        <p class="rec-body">
+          Jacob Slater's Cornwall-formed four-piece, somewhere between raw and anthemic — the
+          kind of guitar record that rewards being played loud in the car rather than politely
+          through headphones. If Sam Fender's directness and The 1975's ear for a chorus are
+          both doing something for you, this sits right in that gap. Good driving-to-Manchester
+          music, frankly.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Reading · Audiobook</span>
+        </div>
+        <h2 class="rec-title">The Magic of Recluce — L. E. Modesitt Jr.</h2>
+        <p class="rec-body">
+          Book one of a genre stalwart built almost entirely around its magic system — order and
+          chaos as opposing forces, with the consequences of every choice worked through properly
+          rather than hand-waved. It's the sort of measured, rules-first fantasy that Sanderson
+          fans tend to fall for once they find it, and at a shade over 19 hours it's practically
+          engineered for a Manchester–Dallas flight. Reread-on-a-plane, reread-to-sleep — this one
+          does both jobs.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Screen</span>
+        </div>
+        <h2 class="rec-title">Two Weeks in August</h2>
+        <p class="rec-body">
+          BBC ensemble drama from the Sally4Ever creator — old friends, a Mediterranean holiday,
+          and the sort of secrets that were always going to surface once everyone's had a couple
+          of drinks. Witty and sharp on friendship and betrayal, with a proper dark comedic edge
+          running underneath — the same trick Slow Horses and Ted Lasso pull in their own ways,
+          just relocated to a sun lounger.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Comedy</span>
+        </div>
+        <h2 class="rec-title">Ed Gamble — Roundhouse Comedy Festival</h2>
+        <p class="rec-body">
+          Already a name on the list, and he's on at the Roundhouse Comedy Festival in Camden
+          this August — worth flagging now while the dates are still fresh, especially if a trip
+          down is on the cards around the same time as Sam Campbell's slot there. Two birds,
+          etc.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Food &amp; drink</span>
+          <span class="rec-location">Chorley area</span>
+        </div>
+        <h2 class="rec-title">Amigos Mexican &amp; Steak House, Chorley</h2>
+        <p class="rec-body">
+          A proper Mexican fix without leaving Lancashire — timely, given a Tex-Mex trip is
+          coming at the weekend anyway, so this is either good preparation or a fair comparison
+          point once you're back. Fresh over Tex-Mex-heavy, which suits the stated cuisine
+          preference rather better than most of the alternatives nearby.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Days out</span>
+          <span class="rec-location">Dallas, Texas</span>
+        </div>
+        <h2 class="rec-title">Dallas World Aquarium</h2>
+        <p class="rec-body">
+          A three-level indoor rainforest exhibit, penguins, giant river otters, and a shark
+          tunnel — all thoroughly air-conditioned, which matters more than usual given a heat
+          ceiling of roughly 23°C and a Texan July that will not be respecting it. Animal content
+          plus a guaranteed escape from the heat is about as close to a sure thing as this list
+          gets.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Food &amp; drink</span>
+          <span class="rec-location">Dallas, Texas</span>
+        </div>
+        <h2 class="rec-title">El Fenix, Dallas</h2>
+        <p class="rec-body">
+          The place that more or less invented Tex-Mex as Dallas knows it — cheese enchiladas
+          under chili gravy, done the way they've been doing it for decades. Pescatarian rules
+          suspended for the trip, as agreed, so this is the one to go in on properly rather than
+          picking around the edges.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Podcast</span>
+        </div>
+        <h2 class="rec-title">TWIML AI Podcast</h2>
+        <p class="rec-body">
+          Sam Charrington's long-running interview show, pulling in researchers and practitioners
+          from across ML and AI for conversations with a bit more room to breathe than the news-cycle
+          shows. A different register to Latent Space — less infrastructure, more "here's what
+          this person actually thinks" — and decent company for the airport wait on Saturday
+          morning.
+        </p>
+      </div>
+    </div>
+
+    <footer>&copy; 2026 Sam Haslam</footer>
+  </main>
+</body>
+</html>

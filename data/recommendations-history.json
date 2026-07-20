@@ -46,5 +46,53 @@
     "item": "Latent Space podcast",
     "date": "2026-07-13",
     "location": null
+  },
+  {
+    "category": "music",
+    "item": "Wunderhorse",
+    "date": "2026-07-20",
+    "location": null
+  },
+  {
+    "category": "reading",
+    "item": "The Magic of Recluce (audiobook) by L. E. Modesitt Jr.",
+    "date": "2026-07-20",
+    "location": null
+  },
+  {
+    "category": "screen",
+    "item": "Two Weeks in August",
+    "date": "2026-07-20",
+    "location": null
+  },
+  {
+    "category": "comedy",
+    "item": "Ed Gamble at Roundhouse Comedy Festival",
+    "date": "2026-07-20",
+    "location": null
+  },
+  {
+    "category": "food_drink",
+    "item": "Amigos Mexican & Steak House, Chorley",
+    "date": "2026-07-20",
+    "location": "Chorley area, Lancashire"
+  },
+  {
+    "category": "days_out",
+    "item": "Dallas World Aquarium",
+    "date": "2026-07-20",
+    "location": "Dallas, Texas, USA"
+  },
+  {
+    "category": "food_drink",
+    "item": "El Fenix, Dallas",
+    "date": "2026-07-20",
+    "location": "Dallas, Texas, USA"
+  },
+  {
+    "category": "podcast",
+    "item": "TWIML AI Podcast",
+    "date": "2026-07-20",
+    "location": null
   }
 ]
