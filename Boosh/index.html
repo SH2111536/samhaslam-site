@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Boosh — Wedding Planning Simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400;1,500;1,600&family=Bebas+Neue&family=JetBrains+Mono:wght@400;500;700&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:   #1A0F22;
+    --plum:   #2E1838;
+    --plum-2: #3D2149;
+    --gold:   #D9A441;
+    --gold-d: #A87B2C;
+    --cream:  #F3E7D6;
+    --rose:   #E0518A;
+    --faint:  #8B7A96;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--void);
+    color:var(--cream);
+    font-family:'Archivo',sans-serif;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+  }
+  #app{
+    width:100%;
+    max-width:480px;
+    min-height:100vh;
+    padding:28px 20px 36px;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+  }
+
+  .screen{display:none;flex-direction:column;flex:1;}
+  .screen.active{display:flex;}
+
+  /* ---------- Start screen ---------- */
+  .start-inner{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:18px;
+    text-align:center;
+  }
+  .wordmark{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(52px,15vw,68px);
+    letter-spacing:0.06em;
+    color:var(--gold);
+    line-height:1;
+  }
+  .subtitle{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:20px;
+    color:var(--cream);
+    margin-top:6px;
+  }
+  .tagline{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    letter-spacing:0.04em;
+    color:var(--faint);
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:19px;
+    letter-spacing:0.05em;
+    padding:13px 22px;
+    border-radius:4px;
+    border:2px solid var(--gold);
+    background:transparent;
+    color:var(--gold);
+    min-height:44px;
+    min-width:44px;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .btn-primary{background:var(--gold);color:var(--void);}
+  .btn-primary:disabled{opacity:0.45;cursor:default;}
+  .btn-ghost{border-color:var(--rose);color:var(--rose);background:transparent;}
+  .btn-quiet{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    letter-spacing:0.03em;
+    border:1px solid var(--faint);
+    color:var(--faint);
+    padding:8px 14px;
+    min-height:36px;
+  }
+  .btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+
+  /* ---------- Reel screen chrome ---------- */
+  .progress{display:flex;justify-content:center;gap:10px;margin-bottom:18px;}
+  .diamond{width:10px;height:10px;background:var(--faint);transform:rotate(45deg);border-radius:2px;}
+  .diamond.done{background:var(--gold);}
+  .diamond.current{background:transparent;border:2px solid var(--gold);}
+
+  .cat-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.09em;
+    color:var(--faint);
+    text-align:center;
+    text-transform:uppercase;
+    margin-bottom:6px;
+  }
+
+  .frame{
+    border:3px solid var(--gold);
+    border-radius:4px;
+    position:relative;
+    padding:6px;
+    margin:16px 0 22px;
+    min-height:240px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    background:var(--plum);
+    transition:box-shadow 180ms ease;
+  }
+  .frame::before{
+    content:"";
+    position:absolute;
+    inset:5px;
+    border:1px solid var(--gold-d);
+    border-radius:2px;
+    pointer-events:none;
+  }
+  .frame.shaking{animation:frameShake 60ms linear infinite;}
+  .frame.flash{box-shadow:0 0 0 4px var(--cream) inset, 0 0 18px 2px var(--gold);}
+  @keyframes frameShake{
+    0%{transform:translateX(-1px);}
+    50%{transform:translateX(1px);}
+    100%{transform:translateX(-1px);}
+  }
+
+  .actions{display:flex;flex-direction:column;gap:10px;margin-top:auto;}
+
+  /* ---------- Location: split-flap ---------- */
+  .flap-cell{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(20px,6vw,27px);
+    letter-spacing:0.06em;
+    text-align:center;
+    color:var(--cream);
+    padding:14px 10px;
+    perspective:400px;
+    width:100%;
+  }
+  .flap-inner{display:inline-block;transform-origin:center top;}
+  .flap-cell.flipping .flap-inner{animation:flapFlip 120ms linear;}
+  @keyframes flapFlip{
+    0%{transform:rotateX(-90deg);opacity:0.4;}
+    100%{transform:rotateX(0);opacity:1;}
+  }
+
+  /* ---------- Venue / date: slot strips ---------- */
+  .slot-window{width:100%;height:64px;overflow:hidden;position:relative;}
+  .slot-strip{position:absolute;top:0;left:0;width:100%;}
+  .slot-item{
+    height:64px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:19px;
+    color:var(--cream);
+    text-align:center;
+    padding:0 10px;
+  }
+  .rollers{display:flex;gap:12px;width:100%;justify-content:center;}
+  .roller-window{width:46%;height:64px;overflow:hidden;position:relative;border-right:1px solid var(--gold-d);}
+  .roller-window:last-child{border-right:none;}
+
+  /* ---------- Guests ---------- */
+  .guest-cards{display:flex;gap:10px;justify-content:center;width:100%;padding:0 6px;}
+  .guest-card{
+    width:31%;
+    height:150px;
+    position:relative;
+    perspective:600px;
+    opacity:0;
+    transform:translateX(120%);
+    transition:transform 350ms cubic-bezier(.2,.8,.3,1), opacity 350ms ease;
+  }
+  .guest-card.dealt{opacity:1;transform:translateX(0);}
+  .guest-card-inner{
+    width:100%;height:100%;position:relative;
+    transform-style:preserve-3d;
+    transition:transform 400ms ease;
+  }
+  .guest-card.flipped .guest-card-inner{transform:rotateY(180deg);}
+  .guest-face{
+    position:absolute;inset:0;
+    backface-visibility:hidden;
+    background:var(--plum-2);
+    border:1px solid var(--gold);
+    border-radius:4px;
+    display:flex;align-items:center;justify-content:center;
+    padding:8px;text-align:center;
+  }
+  .guest-face.front{font-family:'Bebas Neue',sans-serif;color:var(--gold-d);font-size:20px;}
+  .guest-face.back{
+    transform:rotateY(180deg);
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:14px;
+    color:var(--cream);
+  }
+
+  /* ---------- Food: roulette ---------- */
+  .wheel-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;}
+  .wheel-holder{position:relative;width:160px;height:160px;}
+  .wheel{
+    width:160px;height:160px;border-radius:50%;
+    border:4px solid var(--gold);
+    position:relative;
+  }
+  .wheel-pointer{
+    position:absolute;top:-11px;left:50%;
+    transform:translateX(-50%);
+    width:0;height:0;
+    border-left:8px solid transparent;
+    border-right:8px solid transparent;
+    border-bottom:14px solid var(--gold);
+    z-index:2;
+  }
+  .wheel-result{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:16px;
+    color:var(--cream);
+    text-align:center;
+    min-height:20px;
+  }
+  .wheel-label{
+    position:absolute;top:50%;left:50%;
+    font-family:'JetBrains Mono',monospace;
+    font-size:7px;
+    color:var(--faint);
+    transform-origin:0 0;
+    white-space:nowrap;
+  }
+
+  /* ---------- Theme: strobe ---------- */
+  .theme-panel{
+    width:100%;
+    padding:20px 14px;
+    text-align:center;
+    font-family:'Archivo',sans-serif;
+    font-size:17px;
+    line-height:1.35;
+    color:var(--cream);
+    border-radius:2px;
+    transition:background 80ms ease, color 80ms ease, transform 200ms ease;
+  }
+  .theme-panel.final-flash{background:var(--cream);color:var(--void);}
+
+  /* ---------- Card ---------- */
+  #screen-card{justify-content:center;}
+  .card-frame{
+    border:3px solid var(--gold);
+    border-radius:4px;
+    background:var(--plum);
+    padding:22px 18px;
+    position:relative;
+    transform:scale(0.94);
+    opacity:0;
+    transition:transform 400ms ease, opacity 400ms ease;
+  }
+  .card-frame::before{
+    content:"";
+    position:absolute;inset:5px;
+    border:1px solid var(--gold-d);
+    border-radius:2px;
+    pointer-events:none;
+  }
+  .card-frame.show{transform:scale(1);opacity:1;}
+  .card-eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    letter-spacing:0.16em;
+    color:var(--faint);
+    text-align:center;
+  }
+  .card-title{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:clamp(24px,7vw,30px);
+    color:var(--cream);
+    text-align:center;
+    margin:8px 0 12px;
+  }
+  .card-rule{display:flex;align-items:center;gap:8px;margin:0 0 14px;}
+  .card-rule::before,.card-rule::after{content:"";flex:1;height:1px;background:var(--gold);}
+  .card-rule span{color:var(--gold);font-size:12px;}
+  .card-row{
+    display:flex;justify-content:space-between;align-items:flex-start;gap:12px;
+    font-size:13px;margin:7px 0;
+    opacity:0;transform:translateY(6px);
+    transition:opacity 300ms ease, transform 300ms ease;
+  }
+  .card-row.show{opacity:1;transform:translateY(0);}
+  .card-row .label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;letter-spacing:0.06em;
+    color:var(--faint);text-transform:uppercase;
+    flex-shrink:0;padding-top:2px;
+  }
+  .card-row .value{
+    font-family:'Fraunces',serif;font-style:italic;
+    color:var(--cream);text-align:right;
+    line-height:1.3;
+  }
+  .card-url{
+    font-family:'JetBrains Mono',monospace;
+    font-size:9px;letter-spacing:0.04em;
+    color:var(--gold-d);text-align:center;
+    margin-top:16px;
+  }
+  .reset-btn-wrap{display:flex;justify-content:center;margin-top:18px;}
+
+  .sr-only{
+    position:absolute;width:1px;height:1px;
+    padding:0;margin:-1px;overflow:hidden;
+    clip:rect(0,0,0,0);white-space:nowrap;border:0;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .frame.shaking{animation:none;}
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- START SCREEN -->
+  <section class="screen active" id="screen-start">
+    <div class="start-inner">
+      <div>
+        <div class="wordmark">BOOSH</div>
+        <div class="subtitle">Wedding Planning Simulator</div>
+      </div>
+      <div class="tagline">Six spins. One wedding. No refunds.</div>
+      <button class="btn btn-quiet" id="soundToggle" type="button">Sound: off</button>
+      <button class="btn btn-primary" id="startBtn" type="button">Start planning</button>
+    </div>
+  </section>
+
+  <!-- SHARED REEL SCREEN (reused for all six categories) -->
+  <section class="screen" id="screen-reels">
+    <div class="progress" id="progress"></div>
+    <div class="cat-label" id="categoryLabel"></div>
+    <div class="frame" id="frame"></div>
+    <div class="actions" id="actions"></div>
+  </section>
+
+  <!-- CARD SCREEN -->
+  <section class="screen" id="screen-card">
+    <div class="card-frame" id="cardFrame">
+      <div class="card-eyebrow">✦ YOU ARE INVITED TO ✦</div>
+      <div class="card-title" id="cardTitle"></div>
+      <div class="card-rule"><span>✦</span></div>
+      <div id="cardRows"></div>
+      <div class="card-url">samhaslam.co.uk/boosh</div>
+    </div>
+    <div class="reset-btn-wrap">
+      <button class="btn" id="resetBtn" type="button">Plan another wedding</button>
+    </div>
+  </section>
+
+</div>
+
+<div id="ariaLive" class="sr-only" aria-live="polite"></div>
+
+<script>
+/* =====================================================
+   === DATA BLOCK — EDIT HERE ===
+   Every array below is a placeholder. Sam replaces these
+   by hand in the GitHub web editor once the real option
+   lists are ready. Nothing else in this file should need
+   to change when that happens — all sizing, angles and
+   strip lengths are derived from .length at runtime.
+   ===================================================== */
+
+// [name, iso2] pairs — real list ~200 countries, equal probability
+const LOCATIONS = [
+  ["Placeholder One","AA"], ["Placeholder Two","BB"], ["Placeholder Three","CC"],
+  ["Placeholder Four","DD"], ["Placeholder Five","EE"]
+];
+
+// real list ~20 entries, equal probability
+const VENUES = ["Venue A","Venue B","Venue C","Venue D","Venue E"];
+
+// real list ~26 entries — exactly three distinct are drawn each round
+const GUESTS = ["Guest A","Guest B","Guest C","Guest D","Guest E","Guest F"];
+
+// real list ~20 entries, equal probability
+const FOOD = ["Food A","Food B","Food C","Food D","Food E"];
+
+// real list ~20 entries, equal probability. Longest strings live here (~60 chars)
+const THEMES = [
+  "Theme A","Theme B","Theme C",
+  "A deliberately long placeholder theme used to test three-line wrapping"
+];
+
+// Card headline — edit to taste
+const WEDDING_TITLE = "The Wedding";
+
+/* =====================================================
+   === END DATA BLOCK ===
+   ===================================================== */
+
+
+/* ---------------- Constants & helpers ---------------- */
+
+const MONTH_NAMES = ["January","February","March","April","May","June","July",
+                      "August","September","October","November","December"];
+
+// Aug 2026 through Dec 2050 inclusive = 293 months
+const DATE_LIST = (() => {
+  const list = [];
+  let y = 2026, m = 7; // month index 7 = August
+  const total = 293;
+  for (let i = 0; i < total; i++){
+    list.push({ month: m, year: y });
+    m++;
+    if (m > 11){ m = 0; y++; }
+  }
+  return list;
+})();
+
+const HALF_LIFE_MONTHS = 36;
+const dateWeight = i => Math.pow(0.5, i / HALF_LIFE_MONTHS);
+
+function weightedIndex(weights){
+  const total = weights.reduce((a,b) => a+b, 0);
+  let r = Math.random() * total;
+  for (let i = 0; i < weights.length; i++){
+    r -= weights[i];
+    if (r < 0) return i;
+  }
+  return weights.length - 1;
+}
+
+// Produces a schedule of delays that grows via cubic ease-out and sums to ~totalDuration.
+function easedTicks(minDelay, maxDelay, totalDuration){
+  const delays = [];
+  let elapsed = 0;
+  while (elapsed < totalDuration){
+    const t = Math.min(elapsed / totalDuration, 1);
+    const eased = 1 - Math.pow(1 - t, 3);
+    const delay = minDelay + (maxDelay - minDelay) * eased;
+    delays.push(delay);
+    elapsed += delay;
+  }
+  return delays;
+}
+
+const flagOf = iso =>
+  String.fromCodePoint(...[...iso.toUpperCase()].map(c => 0x1F1E6 + c.charCodeAt(0) - 65));
+
+function shuffle(arr){
+  for (let i = arr.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i+1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, c => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  }[c]));
+}
+
+const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function announce(text){
+  document.getElementById('ariaLive').textContent = text;
+}
+
+function finishReel(frame, cb){
+  frame.classList.add('flash');
+  setTimeout(() => {
+    frame.classList.remove('flash');
+    cb();
+  }, 200);
+}
+
+
+/* ---------------- Sound (Web Audio, lazy, off by default) ---------------- */
+
+let audioCtx = null;
+let soundOn = false;
+let lastTick = 0;
+
+function initAudio(){
+  if (!audioCtx){
+    try{ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+    catch(e){ audioCtx = null; }
+  }
+}
+
+function playTone(freq, duration, type, gainVal, delay){
+  if (!soundOn || !audioCtx) return;
+  const t0 = audioCtx.currentTime + (delay || 0);
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = type;
+  osc.frequency.value = freq;
+  gain.gain.setValueAtTime(gainVal, t0);
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.start(t0);
+  osc.stop(t0 + duration);
+}
+
+function playTick(){
+  const now = performance.now();
+  if (now - lastTick < 40) return;
+  lastTick = now;
+  playTone(900, 0.025, 'square', 0.06);
+}
+
+function playLockIn(){
+  playTone(523, 0.09, 'sine', 0.09, 0);
+  playTone(659, 0.09, 'sine', 0.09, 0.09);
+  playTone(784, 0.09, 'sine', 0.09, 0.18);
+}
+
+function playCardReveal(){
+  if (!soundOn || !audioCtx) return;
+  [392, 494, 587, 784].forEach(f => {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = f;
+    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.2);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 1.2);
+  });
+}
+
+
+/* ---------------- Reel 1: Location — split-flap board ---------------- */
+
+function runLocationReel(onLanded){
+  const idx = Math.floor(Math.random() * LOCATIONS.length);
+  const chosen = LOCATIONS[idx];
+  const frame = document.getElementById('frame');
+  frame.innerHTML = '<div class="flap-cell" id="flapCell"><span class="flap-inner" id="flapInner">—</span></div>';
+  const cell = document.getElementById('flapCell');
+  const inner = document.getElementById('flapInner');
+
+  const renderFinal = () => { inner.textContent = flagOf(chosen[1]) + '  ' + chosen[0].toUpperCase(); };
+  const renderRandom = () => {
+    const r = LOCATIONS[Math.floor(Math.random() * LOCATIONS.length)];
+    inner.textContent = flagOf(r[1]) + '  ' + r[0].toUpperCase();
+  };
+
+  if (REDUCED_MOTION){
+    renderFinal();
+    finishReel(frame, () => onLanded(chosen));
+    return;
+  }
+
+  const delays = easedTicks(40, 420, 2600);
+  let i = 0;
+
+  function tick(){
+    cell.classList.remove('flipping');
+    void cell.offsetWidth;
+    cell.classList.add('flipping');
+    const isLast = i === delays.length - 1;
+    if (isLast){ renderFinal(); }
+    else { renderRandom(); playTick(); }
+
+    if (!isLast){
+      i++;
+      setTimeout(tick, delays[i]);
+    } else {
+      setTimeout(() => finishReel(frame, () => onLanded(chosen)), 160);
+    }
+  }
+  tick();
+}
+
+
+/* ---------------- Reel 2: Venue — vertical slot reel ---------------- */
+
+function runVenueReel(onLanded){
+  const idx = Math.floor(Math.random() * VENUES.length);
+  const chosen = VENUES[idx];
+  const frame = document.getElementById('frame');
+  const itemH = 64;
+  const fillerCount = 31;
+
+  const items = [];
+  for (let k = 0; k < fillerCount; k++){
+    items.push(VENUES[Math.floor(Math.random() * VENUES.length)]);
+  }
+  items.push(chosen);
+
+  frame.innerHTML = '<div class="slot-window"><div class="slot-strip" id="venueStrip">' +
+    items.map(v => '<div class="slot-item">' + escapeHtml(v) + '</div>').join('') +
+    '</div></div>';
+  const strip = document.getElementById('venueStrip');
+  const finalY = itemH * (items.length - 1);
+
+  if (REDUCED_MOTION){
+    strip.style.transform = 'translateY(-' + finalY + 'px)';
+    finishReel(frame, () => onLanded(chosen));
+    return;
+  }
+
+  strip.style.transition = 'none';
+  strip.style.transform = 'translateY(0px)';
+  void strip.offsetWidth;
+  strip.style.transition = 'transform 2.8s cubic-bezier(.15,.85,.25,1)';
+  requestAnimationFrame(() => {
+    strip.style.transform = 'translateY(-' + (finalY + 6) + 'px)';
+  });
+
+  const tickInt = setInterval(playTick, 80);
+  setTimeout(() => {
+    clearInterval(tickInt);
+    strip.style.transition = 'transform 180ms ease-out';
+    strip.style.transform = 'translateY(-' + finalY + 'px)';
+    setTimeout(() => finishReel(frame, () => onLanded(chosen)), 200);
+  }, 2800);
+}
+
+
+/* ---------------- Reel 3: Month & Year — two coupled rollers ---------------- */
+
+function runDateReel(onLanded){
+  const weights = DATE_LIST.map((d,i) => dateWeight(i));
+  const idx = weightedIndex(weights);
+  const chosen = DATE_LIST[idx];
+  const display = MONTH_NAMES[chosen.month] + ' ' + chosen.year;
+  const frame = document.getElementById('frame');
+  const itemH = 64;
+
+  const monthItems = [];
+  for (let k = 0; k < 14; k++){ monthItems.push(MONTH_NAMES[Math.floor(Math.random()*12)]); }
+  monthItems.push(MONTH_NAMES[chosen.month]);
+
+  const yearItems = [];
+  for (let k = 0; k < 20; k++){ yearItems.push(DATE_LIST[Math.floor(Math.random()*DATE_LIST.length)].year); }
+  yearItems.push(chosen.year);
+
+  frame.innerHTML = '<div class="rollers">' +
+    '<div class="roller-window"><div class="slot-strip" id="monthStrip">' +
+      monthItems.map(m => '<div class="slot-item">' + m + '</div>').join('') +
+    '</div></div>' +
+    '<div class="roller-window"><div class="slot-strip" id="yearStrip">' +
+      yearItems.map(y => '<div class="slot-item">' + y + '</div>').join('') +
+    '</div></div>' +
+  '</div>';
+
+  const monthStrip = document.getElementById('monthStrip');
+  const yearStrip = document.getElementById('yearStrip');
+  const monthFinalY = itemH * (monthItems.length - 1);
+  const yearFinalY = itemH * (yearItems.length - 1);
+
+  const result = { month: chosen.month, year: chosen.year, display };
+
+  if (REDUCED_MOTION){
+    monthStrip.style.transform = 'translateY(-' + monthFinalY + 'px)';
+    yearStrip.style.transform = 'translateY(-' + yearFinalY + 'px)';
+    finishReel(frame, () => onLanded(result));
+    return;
+  }
+
+  monthStrip.style.transition = 'transform 2.0s cubic-bezier(.15,.85,.25,1)';
+  yearStrip.style.transition = 'transform 3.0s cubic-bezier(.15,.85,.25,1)';
+  requestAnimationFrame(() => {
+    monthStrip.style.transform = 'translateY(-' + monthFinalY + 'px)';
+    yearStrip.style.transform = 'translateY(-' + yearFinalY + 'px)';
+  });
+
+  const tickInt = setInterval(playTick, 80);
+  setTimeout(() => clearInterval(tickInt), 3000);
+  setTimeout(() => finishReel(frame, () => onLanded(result)), 3100);
+}
+
+
+/* ---------------- Reel 4: Guests — three dealt cards ---------------- */
+
+function runGuestsReel(onLanded){
+  const chosen = shuffle([...GUESTS]).slice(0, 3);
+  const frame = document.getElementById('frame');
+
+  frame.innerHTML = '<div class="guest-cards">' +
+    [0,1,2].map(i =>
+      '<div class="guest-card" id="guestCard' + i + '">' +
+        '<div class="guest-card-inner">' +
+          '<div class="guest-face front">?</div>' +
+          '<div class="guest-face back" id="guestBack' + i + '"></div>' +
+        '</div>' +
+      '</div>'
+    ).join('') +
+  '</div>';
+
+  if (REDUCED_MOTION){
+    chosen.forEach((g,i) => {
+      document.getElementById('guestCard'+i).classList.add('dealt','flipped');
+      document.getElementById('guestBack'+i).textContent = g;
+    });
+    finishReel(frame, () => onLanded(chosen));
+    return;
+  }
+
+  [0,1,2].forEach(i => {
+    setTimeout(() => document.getElementById('guestCard'+i).classList.add('dealt'), i*120);
+  });
+
+  [0,1,2].forEach(i => {
+    const flipDelay = 700 + i*600;
+    setTimeout(() => {
+      const back = document.getElementById('guestBack'+i);
+      let flickers = 0;
+      const flickerInt = setInterval(() => {
+        back.textContent = GUESTS[Math.floor(Math.random()*GUESTS.length)];
+        flickers++;
+        if (flickers >= 4){
+          clearInterval(flickerInt);
+          back.textContent = chosen[i];
+          document.getElementById('guestCard'+i).classList.add('flipped');
+          playTick();
+        }
+      }, 75);
+    }, flipDelay);
+  });
+
+  const totalTime = 700 + 2*600 + 400 + 250;
+  setTimeout(() => finishReel(frame, () => onLanded(chosen)), totalTime);
+}
+
+
+/* ---------------- Reel 5: Food — roulette wheel ---------------- */
+
+function runFoodReel(onLanded){
+  const idx = Math.floor(Math.random() * FOOD.length);
+  const chosen = FOOD[idx];
+  const seg = 360 / FOOD.length;
+  const frame = document.getElementById('frame');
+
+  const gradientStops = FOOD.map((f,i) => {
+    const c = (i % 2 === 0) ? 'var(--plum)' : 'var(--plum-2)';
+    return c + ' ' + (i*seg) + 'deg ' + ((i+1)*seg) + 'deg';
+  }).join(', ');
+
+  const labels = FOOD.map((f,i) => {
+    const angle = i*seg + seg/2;
+    return '<span class="wheel-label" style="transform:rotate(' + angle + 'deg) translate(66px,0);">' +
+      escapeHtml(f.slice(0,12)) + '</span>';
+  }).join('');
+
+  frame.innerHTML = '<div class="wheel-wrap"><div class="wheel-holder">' +
+    '<div class="wheel-pointer"></div>' +
+    '<div class="wheel" id="foodWheel" style="background:conic-gradient(' + gradientStops + ');">' + labels + '</div>' +
+    '</div><div class="wheel-result" id="foodResult"></div></div>';
+
+  const wheel = document.getElementById('foodWheel');
+  const resultEl = document.getElementById('foodResult');
+  const jitter = (Math.random() - 0.5) * seg * 0.6;
+  const finalRotation = (5*360) + (360 - idx*seg) - (seg/2) + jitter;
+
+  if (REDUCED_MOTION){
+    wheel.style.transform = 'rotate(' + finalRotation + 'deg)';
+    resultEl.textContent = chosen;
+    finishReel(frame, () => onLanded(chosen));
+    return;
+  }
+
+  wheel.style.transition = 'transform 3.2s cubic-bezier(.15,.85,.25,1)';
+  requestAnimationFrame(() => { wheel.style.transform = 'rotate(' + finalRotation + 'deg)'; });
+
+  const tickInt = setInterval(playTick, 90);
+  setTimeout(() => {
+    clearInterval(tickInt);
+    resultEl.textContent = chosen;
+    finishReel(frame, () => onLanded(chosen));
+  }, 3200);
+}
+
+
+/* ---------------- Reel 6: Theme — raffle strobe ---------------- */
+
+function runThemeReel(onLanded){
+  const idx = Math.floor(Math.random() * THEMES.length);
+  const chosen = THEMES[idx];
+  const frame = document.getElementById('frame');
+  frame.innerHTML = '<div class="theme-panel" id="themePanel"></div>';
+  const panel = document.getElementById('themePanel');
+
+  if (REDUCED_MOTION){
+    panel.textContent = chosen;
+    finishReel(frame, () => onLanded(chosen));
+    return;
+  }
+
+  const delays = easedTicks(45, 500, 2400);
+  let i = 0;
+
+  function step(){
+    const isLast = i === delays.length - 1;
+    if (isLast){
+      panel.textContent = chosen;
+      panel.classList.add('final-flash');
+      panel.style.transform = 'scale(1.04)';
+      playLockIn();
+      setTimeout(() => {
+        panel.classList.remove('final-flash');
+        panel.style.transform = 'scale(1)';
+        finishReel(frame, () => onLanded(chosen));
+      }, 200);
+    } else {
+      panel.textContent = THEMES[Math.floor(Math.random()*THEMES.length)];
+      playTick();
+      i++;
+      setTimeout(step, delays[i]);
+    }
+  }
+  step();
+}
+
+
+/* ---------------- Controller ---------------- */
+
+const CATEGORIES = [
+  { key:'location', label:'LOCATION',    run: runLocationReel, announce: r => 'Location: ' + r[0] + '.' },
+  { key:'venue',    label:'VENUE',       run: runVenueReel,    announce: r => 'Venue: ' + r + '.' },
+  { key:'date',     label:'MONTH & YEAR',run: runDateReel,     announce: r => 'When: ' + r.display + '.' },
+  { key:'guests',   label:'GUESTS',      run: runGuestsReel,   announce: r => 'Guests: ' + r.join(', ') + '.' },
+  { key:'food',     label:'FOOD',        run: runFoodReel,     announce: r => 'Food: ' + r + '.' },
+  { key:'theme',    label:'THEME',       run: runThemeReel,    announce: r => 'Theme: ' + r + '.' },
+];
+
+let step = 0;
+let results = {};
+let respinUsed = false;
+let spinning = false;
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function updateProgress(){
+  const wrap = document.getElementById('progress');
+  wrap.innerHTML = CATEGORIES.map((c,i) => {
+    let cls = 'diamond';
+    if (i < step) cls += ' done';
+    else if (i === step) cls += ' current';
+    return '<div class="' + cls + '"></div>';
+  }).join('');
+}
+
+function renderSpinButton(){
+  const actions = document.getElementById('actions');
+  actions.innerHTML = '<button class="btn btn-primary" id="spinBtn" type="button">Spin</button>';
+  document.getElementById('spinBtn').addEventListener('click', onSpin);
+}
+
+function renderLandedButtons(){
+  const actions = document.getElementById('actions');
+  let html = '<button class="btn btn-primary" id="lockBtn" type="button">Lock it in</button>';
+  if (!respinUsed){
+    html += '<button class="btn btn-ghost" id="respinBtn" type="button">Not that one — spin again (1 left)</button>';
+  }
+  actions.innerHTML = html;
+  document.getElementById('lockBtn').addEventListener('click', onLock);
+  const respinBtn = document.getElementById('respinBtn');
+  if (respinBtn) respinBtn.addEventListener('click', onRespin);
+}
+
+function enterCategory(i){
+  step = i;
+  updateProgress();
+  document.getElementById('categoryLabel').textContent =
+    'CATEGORY ' + (i+1) + ' OF 6 — ' + CATEGORIES[i].label;
+  const frame = document.getElementById('frame');
+  frame.innerHTML = '';
+  frame.classList.remove('flash');
+  renderSpinButton();
+}
+
+function onSpin(){
+  if (spinning) return;
+  spinning = true;
+  const spinBtn = document.getElementById('spinBtn');
+  if (spinBtn) spinBtn.disabled = true;
+  const cat = CATEGORIES[step];
+  cat.run((result) => {
+    spinning = false;
+    results[cat.key] = result;
+    announce(cat.announce(result));
+    renderLandedButtons();
+  });
+}
+
+function onRespin(){
+  if (spinning) return;
+  respinUsed = true;
+  spinning = true;
+  document.getElementById('actions').innerHTML = '';
+  const cat = CATEGORIES[step];
+  cat.run((result) => {
+    spinning = false;
+    results[cat.key] = result;
+    announce(cat.announce(result));
+    renderLandedButtons();
+  });
+}
+
+function onLock(){
+  if (step < CATEGORIES.length - 1){
+    enterCategory(step + 1);
+  } else {
+    showCard();
+  }
+}
+
+function cardRow(label, valueHtml){
+  return '<div class="card-row"><div class="label">' + label + '</div><div class="value">' + valueHtml + '</div></div>';
+}
+
+function showCard(){
+  showScreen('screen-card');
+  document.getElementById('cardTitle').textContent = WEDDING_TITLE;
+
+  const rowsWrap = document.getElementById('cardRows');
+  rowsWrap.innerHTML =
+    cardRow('LOCATION', flagOf(results.location[1]) + ' ' + escapeHtml(results.location[0])) +
+    cardRow('VENUE', escapeHtml(results.venue)) +
+    cardRow('WHEN', escapeHtml(results.date.display)) +
+    cardRow('GUESTS', results.guests.map(g => escapeHtml(g)).join('<br>')) +
+    cardRow('FOOD', escapeHtml(results.food)) +
+    cardRow('THEME', escapeHtml(results.theme));
+
+  const card = document.getElementById('cardFrame');
+  card.classList.remove('show');
+  void card.offsetWidth;
+  card.classList.add('show');
+
+  setTimeout(() => {
+    const rows = [...rowsWrap.querySelectorAll('.card-row')];
+    rows.forEach((r,i) => setTimeout(() => r.classList.add('show'), i*70));
+    setTimeout(playCardReveal, rows.length*70 + 150);
+  }, 400);
+}
+
+function resetGame(){
+  step = 0;
+  results = {};
+  respinUsed = false;
+  spinning = false;
+  showScreen('screen-start');
+}
+
+
+/* ---------------- Wiring ---------------- */
+
+document.getElementById('soundToggle').addEventListener('click', () => {
+  soundOn = !soundOn;
+  document.getElementById('soundToggle').textContent = soundOn ? 'Sound: on' : 'Sound: off';
+});
+
+document.getElementById('startBtn').addEventListener('click', () => {
+  initAudio();
+  step = 0; results = {}; respinUsed = false;
+  showScreen('screen-reels');
+  enterCategory(0);
+});
+
+document.getElementById('resetBtn').addEventListener('click', resetGame);
+</script>
+</body>
+</html>
