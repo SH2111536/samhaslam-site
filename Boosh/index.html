@@ -399,28 +399,55 @@
    ===================================================== */
 
 // [name, iso2] pairs — real list ~200 countries, equal probability
-const LOCATIONS = [
-  ["Placeholder One","AA"], ["Placeholder Two","BB"], ["Placeholder Three","CC"],
-  ["Placeholder Four","DD"], ["Placeholder Five","EE"]
+const CODES = "AD AE AF AG AL AM AO AR AT AU AZ BA BB BD BE BF BG BH BI BJ BN BO BR BS BT BW BY BZ CA CD CF CG CH CI CL CM CN CO CR CU CV CY CZ DE DJ DK DM DO DZ EC EE EG ER ES ET FI FJ FM FR GA GB GD GE GH GM GN GQ GR GT GW GY HN HR HT HU ID IE IL IN IQ IR IS IT JM JO JP KE KG KH KI KM KN KP KR KW KZ LA LB LC LI LK LR LS LT LU LV LY MA MC MD ME MG MH MK ML MM MN MR MT MU MV MW MX MY MZ NA NE NG NI NL NO NP NR NZ OM PA PE PG PH PK PL PT PW PY QA RO RS RU RW SA SB SC SD SE SG SI SK SL SM SN SO SR SS ST SV SY SZ TD TG TH TJ TL TM TN TO TR TT TV TZ UA UG US UY UZ VC VE VN VU WS YE ZA ZM ZW".split(" ");
+
+const names = new Intl.DisplayNames(["en"], { type: "region" });
+console.log(
+  "const LOCATIONS = [\n" +
+  CODES.map(c => `  ["${names.of(c)}","${c}"]`).join(",\n") +
+  "\n];"
+);
+
+// real list ~20 entries, equal probability
+
+const VENUES = [
+  "Registry office","Church","Beach","Country manor","Town hall","Mountaintop","Pub",
+  "5-star hotel","2-star hotel","Car park","Car ferry","Goat farm",
+  "Kitchen and bathroom showroom","Street corner","Opticians","Pizza Express","Conny Club",
+  "Dog biscuit manufacturing plant","Vineyard"
+];
+  
+// real list ~26 entries — exactly three distinct are drawn each round
+const GUESTS = [
+  "The family of the groom","The family of the bride","All of the Berks","Sam","Seal","Ryan",
+  "Dee","Li","Mike","Mr Lapodus","Gordon Ramsay","Original Ronaldo","Lindsay Hoyle",
+  "Theresa May","Morris","Billie Joe Armstrong","An assortment of confused locals","A shaman",
+  "Quentin Blake","The ghost of Terry Wogan","Fabrice Muamba","Mr T","Homer Simpson","Yvonne",
+  "Cole from Gears of War","Kemi Badenoch"
 ];
 
 // real list ~20 entries, equal probability
-const VENUES = ["Venue A","Venue B","Venue C","Venue D","Venue E"];
-
-// real list ~26 entries — exactly three distinct are drawn each round
-const GUESTS = ["Guest A","Guest B","Guest C","Guest D","Guest E","Guest F"];
-
-// real list ~20 entries, equal probability
-const FOOD = ["Food A","Food B","Food C","Food D","Food E"];
+const FOOD = [
+  "South African braai","Roast dinner","Pride of Bolton","Ku's","Burger and chips",
+  "A single potato per guest","Only trifle","Extremely spicy curry","Pasty barms","Vodka",
+  "Goulash","Paella","Mystery meat sandwiches","Crispy fried hoisin owl",
+  "Leaning tower of pizzas","World's greatest cheeseboard","Lemons and limes",
+  "Vast amounts of cous cous","Pork pies","Monkfish on toast"
+];
 
 // real list ~20 entries, equal probability. Longest strings live here (~60 chars)
 const THEMES = [
-  "Theme A","Theme B","Theme C",
-  "A deliberately long placeholder theme used to test three-line wrapping"
+  "Traditional wedding","High fashion","Everyone wears yellow","1920s New York","World War 2",
+  "Hawaiian","Cyberpunk","The Martian","World War Z","Ancient Greece",
+  "Everyone must constantly yodel","Separated by gender","Dance-off","Freestyle rap battle",
+  "Two random guests will be legally married as well","Everyone rides a camel to the wedding",
+  "No alcohol","Everything is alcoholic, including the food and the speeches",
+  "Ladies wear suits, men wear dresses","Sponsored by Stella"
+];
 ];
 
 // Card headline — edit to taste
-const WEDDING_TITLE = "The Wedding";
+const WEDDING_TITLE = "The Bolton Wedding";
 
 /* =====================================================
    === END DATA BLOCK ===
