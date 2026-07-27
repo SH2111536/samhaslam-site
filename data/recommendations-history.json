@@ -94,5 +94,53 @@
     "item": "TWIML AI Podcast",
     "date": "2026-07-20",
     "location": null
+  },
+  {
+    "category": "music",
+    "item": "Whitelands — \"Sunlight Echoes\"",
+    "date": "2026-07-27",
+    "location": null
+  },
+  {
+    "category": "reading",
+    "item": "Isles of the Emberdark by Brandon Sanderson",
+    "date": "2026-07-27",
+    "location": null
+  },
+  {
+    "category": "screen",
+    "item": "Margo's Got Money Troubles",
+    "date": "2026-07-27",
+    "location": null
+  },
+  {
+    "category": "podcast",
+    "item": "No Priors podcast",
+    "date": "2026-07-27",
+    "location": null
+  },
+  {
+    "category": "food_drink",
+    "item": "Malai Kitchen, Uptown Dallas",
+    "date": "2026-07-27",
+    "location": "Dallas, Texas, USA"
+  },
+  {
+    "category": "food_drink",
+    "item": "The Exchange Food Hall, AT&T Discovery District",
+    "date": "2026-07-27",
+    "location": "Dallas, Texas, USA"
+  },
+  {
+    "category": "days_out",
+    "item": "Deep Ellum district",
+    "date": "2026-07-27",
+    "location": "Dallas, Texas, USA"
+  },
+  {
+    "category": "days_out",
+    "item": "Dallas Comedy Club stand-up night",
+    "date": "2026-07-27",
+    "location": "Dallas, Texas, USA"
   }
 ]
