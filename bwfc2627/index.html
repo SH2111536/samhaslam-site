@@ -122,25 +122,6 @@
     color: var(--text-secondary);
   }
 
-  .notice {
-    margin-top: 1.75rem;
-    max-width: 68ch;
-    padding: 0.875rem 1.125rem;
-    border: 1px solid var(--border-subtle);
-    border-left: 2px solid var(--accent-600);
-    border-radius: var(--radius-md, 6px);
-    background: var(--bg-surface);
-    font-size: 0.875rem;
-    line-height: 1.55;
-    color: var(--text-muted);
-  }
-  .notice strong { color: var(--text-secondary); font-weight: 500; }
-  .notice code {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 0.8125rem;
-    color: var(--text-secondary);
-  }
-
   /* ---------- split layout ---------- */
 
   .split {
@@ -335,16 +316,6 @@
     font-variant-numeric: tabular-nums;
     color: var(--text-faint);
     white-space: nowrap;
-  }
-
-  .confirmed-dot {
-    display: inline-block;
-    width: 5px;
-    height: 5px;
-    margin-left: 0.4rem;
-    border-radius: 50%;
-    background: var(--accent-400);
-    vertical-align: 2px;
   }
 
   .table-foot {
@@ -603,13 +574,6 @@
 
   </div>
 
-  <p class="notice" id="notice">
-    <strong>Provisional fixture list.</strong> Only the opening three fixtures are confirmed —
-    they carry a dot in the table. The rest is a placeholder double round-robin laid over the real
-    matchday calendar; the official list wasn't reachable from where this page was built. To swap
-    in the real one, replace the <code>FIXTURES</code> array at the top of this page's script.
-    Nothing else needs touching.
-  </p>
 
   <footer>&copy; 2026 Sam Haslam</footer>
 </div>
@@ -655,60 +619,59 @@
   };
 
   // ---------------------------------------------------------------------------
-  // FIXTURES — replace this array with the official 2026/27 list.
+  // FIXTURES — the official 2026/27 Championship league list.
   // Shape: { md, date: 'YYYY-MM-DD', ko: 'HH:MM', opp: <key of CLUBS>,
-  //          venue: 'H' | 'A', confirmed?: true }
-  // `confirmed: true` renders the small accent dot; drop the flag once the whole
-  // list comes from the official source, and delete the notice in the header.
+  //          venue: 'H' | 'A' }
+  // Kick-off times outside August are subject to change for television.
   // ---------------------------------------------------------------------------
 
   var FIXTURES = [
-    { md:  1, date: '2026-08-15', ko: '12:30', opp: 'preston',         venue: 'H', confirmed: true },
-    { md:  2, date: '2026-08-22', ko: '15:00', opp: 'qpr',             venue: 'A', confirmed: true },
-    { md:  3, date: '2026-08-29', ko: '15:00', opp: 'lincoln',         venue: 'H', confirmed: true },
-    { md:  4, date: '2026-09-05', ko: '15:00', opp: 'west-brom',       venue: 'A' },
-    { md:  5, date: '2026-09-08', ko: '19:45', opp: 'wrexham',         venue: 'A' },
-    { md:  6, date: '2026-09-12', ko: '15:00', opp: 'portsmouth',      venue: 'H' },
-    { md:  7, date: '2026-09-19', ko: '15:00', opp: 'cardiff',         venue: 'H' },
-    { md:  8, date: '2026-09-22', ko: '19:45', opp: 'derby',           venue: 'A' },
-    { md:  9, date: '2026-09-26', ko: '15:00', opp: 'stoke',           venue: 'A' },
-    { md: 10, date: '2026-10-03', ko: '15:00', opp: 'swansea',         venue: 'H' },
-    { md: 11, date: '2026-10-17', ko: '15:00', opp: 'watford',         venue: 'H' },
-    { md: 12, date: '2026-10-20', ko: '19:45', opp: 'burnley',         venue: 'A' },
-    { md: 13, date: '2026-10-24', ko: '15:00', opp: 'middlesbrough',   venue: 'A' },
-    { md: 14, date: '2026-10-31', ko: '15:00', opp: 'bristol-city',    venue: 'H' },
-    { md: 15, date: '2026-11-07', ko: '15:00', opp: 'birmingham',      venue: 'H' },
-    { md: 16, date: '2026-11-21', ko: '15:00', opp: 'millwall',        venue: 'A' },
-    { md: 17, date: '2026-11-24', ko: '19:45', opp: 'blackburn',       venue: 'A' },
-    { md: 18, date: '2026-11-28', ko: '15:00', opp: 'norwich',         venue: 'H' },
-    { md: 19, date: '2026-12-05', ko: '15:00', opp: 'west-ham',        venue: 'H' },
-    { md: 20, date: '2026-12-12', ko: '15:00', opp: 'sheffield-utd',   venue: 'A' },
-    { md: 21, date: '2026-12-19', ko: '15:00', opp: 'charlton',        venue: 'A' },
-    { md: 22, date: '2026-12-26', ko: '15:00', opp: 'southampton',     venue: 'H' },
-    { md: 23, date: '2026-12-29', ko: '19:45', opp: 'wolves',          venue: 'H' },
-    { md: 24, date: '2027-01-01', ko: '15:00', opp: 'preston',         venue: 'A' },
-    { md: 25, date: '2027-01-09', ko: '15:00', opp: 'qpr',             venue: 'H' },
-    { md: 26, date: '2027-01-16', ko: '15:00', opp: 'lincoln',         venue: 'A' },
-    { md: 27, date: '2027-01-19', ko: '19:45', opp: 'west-brom',       venue: 'H' },
-    { md: 28, date: '2027-01-23', ko: '15:00', opp: 'wrexham',         venue: 'H' },
-    { md: 29, date: '2027-01-30', ko: '15:00', opp: 'portsmouth',      venue: 'A' },
-    { md: 30, date: '2027-02-06', ko: '15:00', opp: 'cardiff',         venue: 'A' },
-    { md: 31, date: '2027-02-09', ko: '19:45', opp: 'derby',           venue: 'H' },
-    { md: 32, date: '2027-02-13', ko: '15:00', opp: 'stoke',           venue: 'H' },
-    { md: 33, date: '2027-02-20', ko: '15:00', opp: 'swansea',         venue: 'A' },
-    { md: 34, date: '2027-02-23', ko: '19:45', opp: 'watford',         venue: 'A' },
-    { md: 35, date: '2027-02-27', ko: '15:00', opp: 'burnley',         venue: 'H' },
-    { md: 36, date: '2027-03-06', ko: '15:00', opp: 'middlesbrough',   venue: 'H' },
-    { md: 37, date: '2027-03-13', ko: '15:00', opp: 'bristol-city',    venue: 'A' },
-    { md: 38, date: '2027-03-20', ko: '15:00', opp: 'birmingham',      venue: 'A' },
-    { md: 39, date: '2027-03-26', ko: '15:00', opp: 'millwall',        venue: 'H' },
-    { md: 40, date: '2027-03-29', ko: '15:00', opp: 'blackburn',       venue: 'H' },
-    { md: 41, date: '2027-04-03', ko: '15:00', opp: 'norwich',         venue: 'A' },
-    { md: 42, date: '2027-04-10', ko: '15:00', opp: 'west-ham',        venue: 'A' },
-    { md: 43, date: '2027-04-17', ko: '15:00', opp: 'sheffield-utd',   venue: 'H' },
-    { md: 44, date: '2027-04-24', ko: '15:00', opp: 'charlton',        venue: 'H' },
-    { md: 45, date: '2027-05-01', ko: '15:00', opp: 'southampton',     venue: 'A' },
-    { md: 46, date: '2027-05-08', ko: '15:00', opp: 'wolves',          venue: 'A' }
+    { md:  1, date: '2026-08-15', ko: '12:30', opp: 'preston',         venue: 'H' },
+    { md:  2, date: '2026-08-22', ko: '15:00', opp: 'qpr',             venue: 'A' },
+    { md:  3, date: '2026-08-29', ko: '15:00', opp: 'lincoln',         venue: 'H' },
+    { md:  4, date: '2026-09-01', ko: '19:45', opp: 'sheffield-utd',   venue: 'A' },
+    { md:  5, date: '2026-09-05', ko: '15:00', opp: 'millwall',        venue: 'A' },
+    { md:  6, date: '2026-09-08', ko: '20:00', opp: 'west-ham',        venue: 'H' },
+    { md:  7, date: '2026-09-12', ko: '12:30', opp: 'cardiff',         venue: 'H' },
+    { md:  8, date: '2026-09-19', ko: '15:00', opp: 'norwich',         venue: 'A' },
+    { md:  9, date: '2026-10-10', ko: '15:00', opp: 'stoke',           venue: 'H' },
+    { md: 10, date: '2026-10-13', ko: '19:45', opp: 'wolves',          venue: 'A' },
+    { md: 11, date: '2026-10-17', ko: '15:00', opp: 'southampton',     venue: 'A' },
+    { md: 12, date: '2026-10-24', ko: '15:00', opp: 'middlesbrough',   venue: 'H' },
+    { md: 13, date: '2026-10-31', ko: '15:00', opp: 'bristol-city',    venue: 'H' },
+    { md: 14, date: '2026-11-04', ko: '19:45', opp: 'charlton',        venue: 'A' },
+    { md: 15, date: '2026-11-07', ko: '15:00', opp: 'derby',           venue: 'A' },
+    { md: 16, date: '2026-11-21', ko: '15:00', opp: 'portsmouth',      venue: 'H' },
+    { md: 17, date: '2026-11-25', ko: '19:45', opp: 'west-brom',       venue: 'H' },
+    { md: 18, date: '2026-11-28', ko: '15:00', opp: 'birmingham',      venue: 'A' },
+    { md: 19, date: '2026-12-05', ko: '15:00', opp: 'blackburn',       venue: 'H' },
+    { md: 20, date: '2026-12-08', ko: '19:45', opp: 'swansea',         venue: 'A' },
+    { md: 21, date: '2026-12-12', ko: '15:00', opp: 'wrexham',         venue: 'H' },
+    { md: 22, date: '2026-12-19', ko: '15:00', opp: 'watford',         venue: 'A' },
+    { md: 23, date: '2026-12-26', ko: '15:00', opp: 'burnley',         venue: 'H' },
+    { md: 24, date: '2026-12-29', ko: '19:45', opp: 'middlesbrough',   venue: 'A' },
+    { md: 25, date: '2027-01-01', ko: '15:00', opp: 'wrexham',         venue: 'A' },
+    { md: 26, date: '2027-01-16', ko: '15:00', opp: 'southampton',     venue: 'H' },
+    { md: 27, date: '2027-01-23', ko: '15:00', opp: 'bristol-city',    venue: 'A' },
+    { md: 28, date: '2027-01-26', ko: '19:45', opp: 'charlton',        venue: 'H' },
+    { md: 29, date: '2027-01-30', ko: '15:00', opp: 'derby',           venue: 'H' },
+    { md: 30, date: '2027-02-06', ko: '15:00', opp: 'portsmouth',      venue: 'A' },
+    { md: 31, date: '2027-02-13', ko: '15:00', opp: 'cardiff',         venue: 'A' },
+    { md: 32, date: '2027-02-17', ko: '19:45', opp: 'wolves',          venue: 'H' },
+    { md: 33, date: '2027-02-20', ko: '15:00', opp: 'norwich',         venue: 'H' },
+    { md: 34, date: '2027-02-27', ko: '15:00', opp: 'stoke',           venue: 'A' },
+    { md: 35, date: '2027-03-02', ko: '19:45', opp: 'qpr',             venue: 'H' },
+    { md: 36, date: '2027-03-06', ko: '15:00', opp: 'preston',         venue: 'A' },
+    { md: 37, date: '2027-03-13', ko: '15:00', opp: 'birmingham',      venue: 'H' },
+    { md: 38, date: '2027-03-17', ko: '19:45', opp: 'blackburn',       venue: 'A' },
+    { md: 39, date: '2027-03-20', ko: '15:00', opp: 'burnley',         venue: 'A' },
+    { md: 40, date: '2027-04-03', ko: '15:00', opp: 'watford',         venue: 'H' },
+    { md: 41, date: '2027-04-06', ko: '19:45', opp: 'west-ham',        venue: 'A' },
+    { md: 42, date: '2027-04-10', ko: '15:00', opp: 'millwall',        venue: 'H' },
+    { md: 43, date: '2027-04-17', ko: '15:00', opp: 'lincoln',         venue: 'A' },
+    { md: 44, date: '2027-04-20', ko: '19:45', opp: 'sheffield-utd',   venue: 'H' },
+    { md: 45, date: '2027-04-24', ko: '15:00', opp: 'swansea',         venue: 'H' },
+    { md: 46, date: '2027-05-01', ko: '12:30', opp: 'west-brom',       venue: 'A' }
   ];
 
   // ===========================================================================
@@ -778,7 +741,6 @@
         '<td class="venue"><span class="badge ' + (home ? 'home' : 'away') + '">' +
           f.venue + '</span></td>' +
         '<td class="opp"><span class="name">' + club.name +
-          (f.confirmed ? '<i class="confirmed-dot" title="Confirmed fixture"></i>' : '') +
           '</span><span class="ground">' +
           (home ? 'Toughsheet' : club.stadium) + '</span></td>' +
         '<td class="ko">' + f.ko + '</td>' +
