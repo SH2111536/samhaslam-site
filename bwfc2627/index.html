@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bolton Wanderers 2026/27 — Sam Haslam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+
+    --neutral-950: oklch(0.15 0.01 250);
+    --neutral-900: oklch(0.18 0.011 250);
+    --neutral-800: oklch(0.21 0.012 250);
+    --neutral-700: oklch(0.26 0.012 250);
+    --neutral-600: oklch(0.32 0.012 250);
+    --neutral-500: oklch(0.45 0.012 250);
+    --neutral-400: oklch(0.55 0.01 250);
+    --neutral-300: oklch(0.65 0.01 250);
+    --neutral-200: oklch(0.78 0.008 250);
+    --neutral-50:  oklch(0.96 0.004 250);
+
+    --accent-600: oklch(0.52 0.14 250);
+    --accent-500: oklch(0.62 0.14 250);
+    --accent-400: oklch(0.68 0.13 250);
+    --accent-300: oklch(0.76 0.10 250);
+
+    --bg-page: var(--neutral-950);
+    --bg-surface: var(--neutral-900);
+    --bg-surface-raised: var(--neutral-800);
+
+    --border-subtle: var(--neutral-700);
+    --border-default: var(--neutral-600);
+
+    --text-primary: var(--neutral-50);
+    --text-secondary: var(--neutral-300);
+    --text-muted: var(--neutral-400);
+    --text-faint: var(--neutral-500);
+
+    --font-display: 'Newsreader', Georgia, 'Times New Roman', serif;
+    --font-body: 'Public Sans', system-ui, -apple-system, sans-serif;
+
+    --duration-fast: 120ms;
+    --duration-base: 200ms;
+    --duration-map: 620ms;
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-map: cubic-bezier(0.32, 0.72, 0.24, 1);
+
+    /* map-only surfaces — lightness steps of the same cool neutral scale */
+    --map-sea: oklch(0.165 0.011 250);
+    --map-land: oklch(0.25 0.015 250);
+    --map-land-edge: oklch(0.44 0.022 250);
+    --map-land-far: oklch(0.20 0.011 250);
+    --map-land-far-edge: oklch(0.28 0.012 250);
+
+    /* both columns of the split are exactly this tall so they line up */
+    --panel-h: clamp(440px, 64vh, 720px);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    background: var(--bg-page);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body { padding: 3rem 1.5rem 4.5rem; }
+
+  .page {
+    width: 100%;
+    max-width: 1320px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  a { color: var(--accent-400); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:hover { color: var(--accent-300); }
+
+  /* ---------- header ---------- */
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color var(--duration-base) var(--ease-standard);
+  }
+  .back:hover { color: var(--text-secondary); }
+
+  .eyebrow {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent-400);
+    margin: 1.75rem 0 1rem;
+  }
+
+  h1 {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(2rem, 1.6rem + 1.8vw, 2.75rem);
+    line-height: 1.15;
+  }
+
+  .lede {
+    margin: 0;
+    max-width: 62ch;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  /* ---------- split layout ---------- */
+
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(320px, 27vw, 470px);
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  /* ---------- controls + summary ---------- */
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .segmented {
+    display: inline-flex;
+    padding: 3px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    background: var(--bg-surface);
+  }
+
+  .segmented button {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    padding: 0.4rem 0.85rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: color var(--duration-base) var(--ease-standard),
+                background var(--duration-base) var(--ease-standard);
+  }
+  .segmented button:hover { color: var(--text-secondary); }
+  .segmented button[aria-pressed="true"] {
+    background: var(--bg-surface-raised);
+    color: var(--text-primary);
+  }
+  .segmented button:focus-visible {
+    outline: 2px solid var(--accent-400);
+    outline-offset: 1px;
+  }
+
+  .summary {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+  .summary b {
+    display: block;
+    margin-top: 0.15rem;
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--text-secondary);
+  }
+
+  /* ---------- fixture table ---------- */
+
+  .table-wrap {
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    background: var(--bg-surface);
+    overflow: hidden auto;
+    height: var(--panel-h);
+    scrollbar-width: thin;
+    scrollbar-color: var(--neutral-700) transparent;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+
+  thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    padding: 0.7rem 0.75rem;
+    background: var(--bg-surface-raised);
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    text-align: left;
+    white-space: nowrap;
+  }
+  thead th.num { text-align: right; }
+
+  .month-row th {
+    position: sticky;
+    top: 30px;
+    z-index: 1;
+    padding: 0.5rem 0.75rem;
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 0.9375rem;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--text-secondary);
+    text-align: left;
+  }
+  .month-row:first-child th { border-top: 0; }
+
+  tbody tr.fixture {
+    cursor: default;
+    transition: background var(--duration-fast) var(--ease-standard);
+  }
+  tbody tr.fixture + tr.fixture td { border-top: 1px solid oklch(0.22 0.012 250); }
+
+  tbody tr.fixture td {
+    padding: 0.6rem 0.75rem;
+    vertical-align: middle;
+    color: var(--text-secondary);
+  }
+
+  tbody tr.fixture:hover,
+  tbody tr.fixture:focus-visible,
+  tbody tr.fixture.is-active {
+    background: var(--bg-surface-raised);
+    outline: none;
+  }
+  tbody tr.fixture.is-pinned { background: oklch(0.24 0.02 250); }
+  tbody tr.fixture:focus-visible td:first-child { box-shadow: inset 2px 0 0 var(--accent-400); }
+  tbody tr.fixture.is-active td:first-child,
+  tbody tr.fixture.is-pinned td:first-child { box-shadow: inset 2px 0 0 var(--accent-400); }
+
+  td.md {
+    width: 2.75rem;
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-faint);
+    text-align: right;
+  }
+
+  td.date { white-space: nowrap; font-variant-numeric: tabular-nums; }
+  td.date .dow { color: var(--text-faint); margin-right: 0.4rem; }
+
+  td.venue { width: 3.25rem; }
+  .badge {
+    display: inline-block;
+    min-width: 1.5rem;
+    padding: 0.1rem 0.3rem;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-align: center;
+  }
+  .badge.home { background: var(--accent-600); color: var(--neutral-50); }
+  .badge.away { border-color: var(--border-default); color: var(--text-muted); }
+
+  td.opp .name {
+    display: block;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  td.opp .ground {
+    display: block;
+    margin-top: 0.1rem;
+    font-size: 0.75rem;
+    color: var(--text-faint);
+  }
+
+  td.ko { width: 3.5rem; font-variant-numeric: tabular-nums; color: var(--text-muted); }
+  td.dist {
+    width: 4.25rem;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-faint);
+    white-space: nowrap;
+  }
+
+  .table-foot {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--border-subtle);
+    font-size: 0.75rem;
+    color: var(--text-faint);
+  }
+
+  /* ---------- map panel ---------- */
+
+  .map-panel {
+    position: sticky;
+    top: 2rem;
+    display: flex;
+    flex-direction: column;
+    height: var(--panel-h);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    background: var(--map-sea);
+    overflow: hidden;
+  }
+
+  .map-stage { position: relative; flex: 1 1 auto; min-height: 0; }
+
+  svg.map { display: block; width: 100%; height: 100%; }
+
+  #cam,
+  .marker,
+  #arc {
+    transform-box: view-box;
+    transform-origin: 0 0;
+    transition: transform var(--duration-map) var(--ease-map);
+  }
+  /* first paint: place everything without animating in from the origin */
+  svg.map.no-anim #cam,
+  svg.map.no-anim .marker,
+  svg.map.no-anim #arc { transition: none; }
+
+  .land { fill: var(--map-land); stroke: var(--map-land-edge); stroke-width: 0.75; vector-effect: non-scaling-stroke; }
+  .land-far { fill: var(--map-land-far); stroke: var(--map-land-far-edge); stroke-width: 0.75; vector-effect: non-scaling-stroke; }
+
+  /* No non-scaling-stroke here: the draw-on animation uses stroke-dasharray in
+     user units, which only lines up with getTotalLength() if the stroke scales
+     with the camera. Width is divided by the camera scale in JS instead. */
+  #arc {
+    fill: none;
+    stroke: var(--accent-400);
+    stroke-width: 1.9;
+    stroke-linecap: round;
+    opacity: 0;
+    transition: opacity var(--duration-base) var(--ease-standard),
+                stroke-width var(--duration-map) var(--ease-map);
+  }
+  #arc.is-shown { opacity: 1; }
+
+  .marker { opacity: 0; transition: transform var(--duration-map) var(--ease-map), opacity var(--duration-base) var(--ease-standard); }
+  .marker.is-shown { opacity: 1; }
+
+  .dot-far { fill: var(--neutral-500); }
+  .dot-far.is-dim { fill: oklch(0.34 0.012 250); }
+
+  .pin-ring { fill: none; stroke: var(--accent-400); stroke-width: 1.25; opacity: 0.55; }
+  .pin-core { fill: var(--accent-400); }
+  .pin-core.home { fill: var(--accent-300); }
+  .pin-halo { fill: var(--accent-500); opacity: 0.14; }
+
+  .pin-label {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    fill: var(--text-primary);
+    paint-order: stroke;
+    stroke: var(--map-sea);
+    stroke-width: 3.5;
+    stroke-linejoin: round;
+  }
+  .pin-sub {
+    font-family: var(--font-body);
+    font-size: 9.5px;
+    font-weight: 400;
+    fill: var(--neutral-300);
+    paint-order: stroke;
+    stroke: var(--map-sea);
+    stroke-width: 3;
+    stroke-linejoin: round;
+  }
+
+  /* readout sits under the map so it never covers the coastline */
+  .readout {
+    flex: 0 0 auto;
+    min-height: 6.25rem;
+    padding: 0.875rem 1rem 1rem;
+    border-top: 1px solid var(--border-subtle);
+    background: var(--bg-surface);
+  }
+
+  .readout .r-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+  .readout .r-title {
+    margin: 0.45rem 0 0.15rem;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.25rem;
+    line-height: 1.25;
+    color: var(--text-primary);
+  }
+  .readout .r-sub {
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--border-subtle);
+    background: var(--bg-surface);
+    font-size: 0.75rem;
+    color: var(--text-faint);
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .legend i {
+    width: 8px; height: 8px; border-radius: 50%; display: inline-block;
+  }
+  .legend i.home { background: var(--accent-300); }
+  .legend i.away { background: var(--accent-400); }
+  .legend i.other { background: var(--neutral-600); }
+
+  footer {
+    font-size: 0.8125rem;
+    color: var(--text-faint);
+  }
+
+  /* ---------- responsive ---------- */
+
+  @media (max-width: 1100px) {
+    .split { grid-template-columns: 1fr; gap: 2rem; }
+    .map-panel { position: sticky; top: 1rem; height: auto; }
+    .map-order { order: -1; }
+    .map-stage { height: 46vh; }
+    .table-wrap { height: auto; overflow: hidden; }
+    thead th, .month-row th { position: static; }
+  }
+
+  @media (max-width: 640px) {
+    body { padding: 2.5rem 1rem 3.5rem; }
+    td.ko, th.ko, td.dist, th.dist { display: none; }
+    td.opp .ground { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #cam, .marker, #arc, .readout, * { transition-duration: 1ms !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <a class="back" href="../main/index.html">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>
+      Back
+    </a>
+    <span class="eyebrow">Side project · Championship</span>
+    <h1>Bolton Wanderers, 2026/27.</h1>
+    <p class="lede">
+      Forty-six league games, back in the Championship. Hover or tap a fixture and the map follows
+      it — home games settle on the Toughsheet, away games draw the line I'd have to travel.
+    </p>
+  </header>
+
+  <div class="split">
+
+    <!-- ---------------- fixtures ---------------- -->
+    <section aria-labelledby="fixtures-heading">
+      <h2 id="fixtures-heading" class="eyebrow" style="margin-top:0">Fixtures</h2>
+
+      <div class="controls">
+        <div class="segmented" role="group" aria-label="Filter fixtures">
+          <button type="button" data-filter="all" aria-pressed="true">All</button>
+          <button type="button" data-filter="H" aria-pressed="false">Home</button>
+          <button type="button" data-filter="A" aria-pressed="false">Away</button>
+        </div>
+        <div class="summary">
+          <div>Home<b id="stat-home">—</b></div>
+          <div>Away<b id="stat-away">—</b></div>
+          <div>Away miles<b id="stat-miles">—</b></div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <caption class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">
+            Bolton Wanderers 2026/27 league fixtures. Focus, hover or tap a row to locate it on the map.
+          </caption>
+          <thead>
+            <tr>
+              <th class="num" scope="col">#</th>
+              <th scope="col">Date</th>
+              <th scope="col"><span aria-label="Home or away">H/A</span></th>
+              <th scope="col">Opponent</th>
+              <th class="ko" scope="col">KO</th>
+              <th class="dist num" scope="col">Miles</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+        <p class="table-foot" id="tablefoot"></p>
+      </div>
+    </section>
+
+    <!-- ---------------- map ---------------- -->
+    <section class="map-order" aria-labelledby="map-heading">
+      <h2 id="map-heading" class="eyebrow" style="margin-top:0">Where it is</h2>
+
+      <div class="map-panel">
+        <div class="map-stage">
+          <svg class="map" id="map" viewBox="0 0 620 820" role="img" aria-labelledby="map-title">
+            <title id="map-title">Map of the United Kingdom showing the ground for the highlighted fixture</title>
+            <g id="cam">
+              <path id="ie" class="land-far" d=""></path>
+              <path id="gb" class="land" d=""></path>
+              <g id="dots"></g>
+              <path id="arc" d=""></path>
+              <g id="markers"></g>
+            </g>
+          </svg>
+
+        </div>
+
+        <div class="readout" id="readout" aria-live="polite">
+          <div class="r-meta" id="r-meta">The season</div>
+          <p class="r-title" id="r-title">46 league games</p>
+          <p class="r-sub" id="r-sub">Pick a fixture to see it on the map.</p>
+        </div>
+
+        <div class="legend">
+          <span><i class="home"></i> Toughsheet</span>
+          <span><i class="away"></i> Away ground</span>
+          <span><i class="other"></i> Other grounds</span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+
+  <footer>&copy; 2026 Sam Haslam</footer>
+</div>
+
+<script src="map-data.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ===========================================================================
+  // DATA
+  // ---------------------------------------------------------------------------
+  // Clubs: `x`/`y` are the stadium's position in the map's 620x820 viewBox,
+  // pre-projected with the same Mercator projection used to draw the coastline
+  // (see map-data.js). `miles` is the great-circle distance from the Toughsheet.
+  // ===========================================================================
+
+  var CLUBS = {
+    'bolton': { name: "Bolton Wanderers", stadium: "Toughsheet Community Stadium", city: "Bolton", lat: 53.5805, lon: -2.5357, x: 345.4, y: 560.1, miles: 0 },
+    'birmingham': { name: "Birmingham City", stadium: "St Andrew's @ Knighthead Park", city: "Birmingham", lat: 52.4758, lon: -1.8683, x: 372, y: 633.2, miles: 81 },
+    'blackburn': { name: "Blackburn Rovers", stadium: "Ewood Park", city: "Blackburn", lat: 53.7286, lon: -2.4892, x: 347.3, y: 550.2, miles: 10 },
+    'bristol-city': { name: "Bristol City", stadium: "Ashton Gate", city: "Bristol", lat: 51.44, lon: -2.6203, x: 342, y: 700.1, miles: 148 },
+    'burnley': { name: "Burnley", stadium: "Turf Moor", city: "Burnley", lat: 53.789, lon: -2.2303, x: 357.6, y: 546.1, miles: 19 },
+    'cardiff': { name: "Cardiff City", stadium: "Cardiff City Stadium", city: "Cardiff", lat: 51.4728, lon: -3.2031, x: 318.8, y: 698, miles: 148 },
+    'charlton': { name: "Charlton Athletic", stadium: "The Valley", city: "London", lat: 51.4865, lon: 0.0364, x: 447.7, y: 697.2, miles: 181 },
+    'derby': { name: "Derby County", stadium: "Pride Park Stadium", city: "Derby", lat: 52.915, lon: -1.4474, x: 388.7, y: 604.4, miles: 64 },
+    'lincoln': { name: "Lincoln City", stadium: "LNER Stadium", city: "Lincoln", lat: 53.2183, lon: -0.5407, x: 424.8, y: 584.3, miles: 86 },
+    'middlesbrough': { name: "Middlesbrough", stadium: "Riverside Stadium", city: "Middlesbrough", lat: 54.5783, lon: -1.217, x: 397.9, y: 492.5, miles: 87 },
+    'millwall': { name: "Millwall", stadium: "The Den", city: "London", lat: 51.4859, lon: -0.0507, x: 444.3, y: 697.2, miles: 178 },
+    'norwich': { name: "Norwich City", stadium: "Carrow Road", city: "Norwich", lat: 52.622, lon: 1.3092, x: 498.4, y: 623.7, miles: 173 },
+    'portsmouth': { name: "Portsmouth", stadium: "Fratton Park", city: "Portsmouth", lat: 50.7964, lon: -1.0637, x: 404, y: 740.9, miles: 202 },
+    'preston': { name: "Preston North End", stadium: "Deepdale", city: "Preston", lat: 53.7722, lon: -2.6883, x: 339.3, y: 547.3, miles: 15 },
+    'qpr': { name: "Queens Park Rangers", stadium: "Loftus Road", city: "London", lat: 51.5093, lon: -0.2321, x: 437.1, y: 695.7, miles: 173 },
+    'sheffield-utd': { name: "Sheffield United", stadium: "Bramall Lane", city: "Sheffield", lat: 53.3703, lon: -1.4711, x: 387.8, y: 574.2, miles: 46 },
+    'southampton': { name: "Southampton", stadium: "St Mary's Stadium", city: "Southampton", lat: 50.9058, lon: -1.391, x: 390.9, y: 734, miles: 191 },
+    'stoke': { name: "Stoke City", stadium: "bet365 Stadium", city: "Stoke-on-Trent", lat: 52.9884, lon: -2.1756, x: 359.7, y: 599.6, miles: 44 },
+    'swansea': { name: "Swansea City", stadium: "Swansea.com Stadium", city: "Swansea", lat: 51.6428, lon: -3.9351, x: 289.7, y: 687.1, miles: 146 },
+    'watford': { name: "Watford", stadium: "Vicarage Road", city: "Watford", lat: 51.6498, lon: -0.4015, x: 430.3, y: 686.7, miles: 161 },
+    'west-brom': { name: "West Bromwich Albion", stadium: "The Hawthorns", city: "West Bromwich", lat: 52.509, lon: -1.9639, x: 368.2, y: 631.1, miles: 78 },
+    'west-ham': { name: "West Ham United", stadium: "London Stadium", city: "London", lat: 51.5387, lon: -0.0166, x: 445.6, y: 693.8, miles: 176 },
+    'wolves': { name: "Wolverhampton Wanderers", stadium: "Molineux", city: "Wolverhampton", lat: 52.5903, lon: -2.1303, x: 361.5, y: 625.8, miles: 70 },
+    'wrexham': { name: "Wrexham", stadium: "SToK Cae Ras", city: "Wrexham", lat: 53.051, lon: -2.9979, x: 327, y: 595.4, miles: 41 }
+  };
+
+  // ---------------------------------------------------------------------------
+  // FIXTURES — the official 2026/27 Championship league list.
+  // Shape: { md, date: 'YYYY-MM-DD', ko: 'HH:MM', opp: <key of CLUBS>,
+  //          venue: 'H' | 'A' }
+  // Kick-off times outside August are subject to change for television.
+  // ---------------------------------------------------------------------------
+
+  var FIXTURES = [
+    { md:  1, date: '2026-08-15', ko: '12:30', opp: 'preston',         venue: 'H' },
+    { md:  2, date: '2026-08-22', ko: '15:00', opp: 'qpr',             venue: 'A' },
+    { md:  3, date: '2026-08-29', ko: '15:00', opp: 'lincoln',         venue: 'H' },
+    { md:  4, date: '2026-09-01', ko: '19:45', opp: 'sheffield-utd',   venue: 'A' },
+    { md:  5, date: '2026-09-05', ko: '15:00', opp: 'millwall',        venue: 'A' },
+    { md:  6, date: '2026-09-08', ko: '20:00', opp: 'west-ham',        venue: 'H' },
+    { md:  7, date: '2026-09-12', ko: '12:30', opp: 'cardiff',         venue: 'H' },
+    { md:  8, date: '2026-09-19', ko: '15:00', opp: 'norwich',         venue: 'A' },
+    { md:  9, date: '2026-10-10', ko: '15:00', opp: 'stoke',           venue: 'H' },
+    { md: 10, date: '2026-10-13', ko: '19:45', opp: 'wolves',          venue: 'A' },
+    { md: 11, date: '2026-10-17', ko: '15:00', opp: 'southampton',     venue: 'A' },
+    { md: 12, date: '2026-10-24', ko: '15:00', opp: 'middlesbrough',   venue: 'H' },
+    { md: 13, date: '2026-10-31', ko: '15:00', opp: 'bristol-city',    venue: 'H' },
+    { md: 14, date: '2026-11-04', ko: '19:45', opp: 'charlton',        venue: 'A' },
+    { md: 15, date: '2026-11-07', ko: '15:00', opp: 'derby',           venue: 'A' },
+    { md: 16, date: '2026-11-21', ko: '15:00', opp: 'portsmouth',      venue: 'H' },
+    { md: 17, date: '2026-11-25', ko: '19:45', opp: 'west-brom',       venue: 'H' },
+    { md: 18, date: '2026-11-28', ko: '15:00', opp: 'birmingham',      venue: 'A' },
+    { md: 19, date: '2026-12-05', ko: '15:00', opp: 'blackburn',       venue: 'H' },
+    { md: 20, date: '2026-12-08', ko: '19:45', opp: 'swansea',         venue: 'A' },
+    { md: 21, date: '2026-12-12', ko: '15:00', opp: 'wrexham',         venue: 'H' },
+    { md: 22, date: '2026-12-19', ko: '15:00', opp: 'watford',         venue: 'A' },
+    { md: 23, date: '2026-12-26', ko: '15:00', opp: 'burnley',         venue: 'H' },
+    { md: 24, date: '2026-12-29', ko: '19:45', opp: 'middlesbrough',   venue: 'A' },
+    { md: 25, date: '2027-01-01', ko: '15:00', opp: 'wrexham',         venue: 'A' },
+    { md: 26, date: '2027-01-16', ko: '15:00', opp: 'southampton',     venue: 'H' },
+    { md: 27, date: '2027-01-23', ko: '15:00', opp: 'bristol-city',    venue: 'A' },
+    { md: 28, date: '2027-01-26', ko: '19:45', opp: 'charlton',        venue: 'H' },
+    { md: 29, date: '2027-01-30', ko: '15:00', opp: 'derby',           venue: 'H' },
+    { md: 30, date: '2027-02-06', ko: '15:00', opp: 'portsmouth',      venue: 'A' },
+    { md: 31, date: '2027-02-13', ko: '15:00', opp: 'cardiff',         venue: 'A' },
+    { md: 32, date: '2027-02-17', ko: '19:45', opp: 'wolves',          venue: 'H' },
+    { md: 33, date: '2027-02-20', ko: '15:00', opp: 'norwich',         venue: 'H' },
+    { md: 34, date: '2027-02-27', ko: '15:00', opp: 'stoke',           venue: 'A' },
+    { md: 35, date: '2027-03-02', ko: '19:45', opp: 'qpr',             venue: 'H' },
+    { md: 36, date: '2027-03-06', ko: '15:00', opp: 'preston',         venue: 'A' },
+    { md: 37, date: '2027-03-13', ko: '15:00', opp: 'birmingham',      venue: 'H' },
+    { md: 38, date: '2027-03-17', ko: '19:45', opp: 'blackburn',       venue: 'A' },
+    { md: 39, date: '2027-03-20', ko: '15:00', opp: 'burnley',         venue: 'A' },
+    { md: 40, date: '2027-04-03', ko: '15:00', opp: 'watford',         venue: 'H' },
+    { md: 41, date: '2027-04-06', ko: '19:45', opp: 'west-ham',        venue: 'A' },
+    { md: 42, date: '2027-04-10', ko: '15:00', opp: 'millwall',        venue: 'H' },
+    { md: 43, date: '2027-04-17', ko: '15:00', opp: 'lincoln',         venue: 'A' },
+    { md: 44, date: '2027-04-20', ko: '19:45', opp: 'sheffield-utd',   venue: 'H' },
+    { md: 45, date: '2027-04-24', ko: '15:00', opp: 'swansea',         venue: 'H' },
+    { md: 46, date: '2027-05-01', ko: '12:30', opp: 'west-brom',       venue: 'A' }
+  ];
+
+  // ===========================================================================
+  // SETUP
+  // ===========================================================================
+
+  var HOME = CLUBS.bolton;
+  var W = window.MAP.width, H = window.MAP.height;
+  var SVGNS = 'http://www.w3.org/2000/svg';
+
+  var DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var MONTH_LONG = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+                    'August', 'September', 'October', 'November', 'December'];
+
+  function parseDate(iso) {
+    var p = iso.split('-');
+    return new Date(Date.UTC(+p[0], +p[1] - 1, +p[2]));
+  }
+  function el(tag, attrs) {
+    var n = document.createElementNS(SVGNS, tag);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    return n;
+  }
+
+  document.getElementById('gb').setAttribute('d', window.MAP.gb);
+  document.getElementById('ie').setAttribute('d', window.MAP.ie);
+
+  // ===========================================================================
+  // TABLE
+  // ===========================================================================
+
+  var tbody = document.getElementById('tbody');
+  var rows = [];
+
+  (function buildTable() {
+    var lastMonth = null;
+
+    FIXTURES.forEach(function (f, i) {
+      var d = parseDate(f.date);
+      var club = CLUBS[f.opp];
+      var monthKey = d.getUTCFullYear() + '-' + d.getUTCMonth();
+
+      if (monthKey !== lastMonth) {
+        lastMonth = monthKey;
+        var mr = document.createElement('tr');
+        mr.className = 'month-row';
+        var mth = document.createElement('th');
+        mth.setAttribute('colspan', '6');
+        mth.setAttribute('scope', 'colgroup');
+        mth.textContent = MONTH_LONG[d.getUTCMonth()] + ' ' + d.getUTCFullYear();
+        mr.appendChild(mth);
+        tbody.appendChild(mr);
+      }
+
+      var tr = document.createElement('tr');
+      tr.className = 'fixture';
+      tr.tabIndex = 0;
+      tr.dataset.i = String(i);
+      tr.dataset.venue = f.venue;
+
+      var home = f.venue === 'H';
+      tr.innerHTML =
+        '<td class="md">' + f.md + '</td>' +
+        '<td class="date"><span class="dow">' + DOW[d.getUTCDay()] + '</span>' +
+          d.getUTCDate() + ' ' + MON[d.getUTCMonth()] + '</td>' +
+        '<td class="venue"><span class="badge ' + (home ? 'home' : 'away') + '">' +
+          f.venue + '</span></td>' +
+        '<td class="opp"><span class="name">' + club.name +
+          '</span><span class="ground">' +
+          (home ? 'Toughsheet' : club.stadium) + '</span></td>' +
+        '<td class="ko">' + f.ko + '</td>' +
+        '<td class="dist">' + (home ? '—' : club.miles + ' mi') + '</td>';
+
+      tr.setAttribute('aria-label',
+        DOW[d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + MON[d.getUTCMonth()] + ' ' +
+        d.getUTCFullYear() + ', ' + f.ko + ', ' + (home ? 'home to ' : 'away at ') +
+        club.name + ', ' + (home ? HOME.stadium : club.stadium));
+
+      tbody.appendChild(tr);
+      rows.push(tr);
+    });
+  }());
+
+  // ---- summary --------------------------------------------------------------
+
+  (function stats() {
+    var homeN = 0, awayN = 0, miles = 0;
+    FIXTURES.forEach(function (f) {
+      if (f.venue === 'H') { homeN++; } else { awayN++; miles += CLUBS[f.opp].miles * 2; }
+    });
+    document.getElementById('stat-home').textContent = homeN;
+    document.getElementById('stat-away').textContent = awayN;
+    document.getElementById('stat-miles').textContent = miles.toLocaleString('en-GB');
+    document.getElementById('tablefoot').textContent =
+      FIXTURES.length + ' league fixtures · ' + miles.toLocaleString('en-GB') +
+      ' miles of away-day round trips · click a row to pin it to the map';
+  }());
+
+  // ===========================================================================
+  // MAP
+  // ===========================================================================
+
+  var cam = document.getElementById('cam');
+  var arc = document.getElementById('arc');
+  var dots = document.getElementById('dots');
+  var markers = document.getElementById('markers');
+
+  // faint dot for every away ground on the calendar
+  var dotFor = {};
+  Object.keys(CLUBS).forEach(function (key) {
+    if (key === 'bolton') return;
+    var c = CLUBS[key];
+    var g = el('g', { class: 'marker is-shown' });
+    g.appendChild(el('circle', { class: 'dot-far', cx: 0, cy: 0, r: 2.8 }));
+    g.dataset.x = c.x;
+    g.dataset.y = c.y;
+    dots.appendChild(g);
+    dotFor[key] = g;
+  });
+
+  function makePin(cls) {
+    var g = el('g', { class: 'marker' });
+    g.appendChild(el('circle', { class: 'pin-halo', cx: 0, cy: 0, r: 15 }));
+    g.appendChild(el('circle', { class: 'pin-ring', cx: 0, cy: 0, r: 8 }));
+    g.appendChild(el('circle', { class: 'pin-core' + (cls ? ' ' + cls : ''), cx: 0, cy: 0, r: 4 }));
+    var t1 = el('text', { class: 'pin-label', x: 14, y: -1 });
+    var t2 = el('text', { class: 'pin-sub', x: 14, y: 11 });
+    g.appendChild(t1);
+    g.appendChild(t2);
+    g.label = t1;
+    g.sub = t2;
+    g.dataset.x = HOME.x;
+    g.dataset.y = HOME.y;
+    markers.appendChild(g);
+    return g;
+  }
+
+  var homePin = makePin('home');
+  var awayPin = makePin(null);
+
+  // A label is drawn to the left of its pin when the pin sits in the right half
+  // of the stage, and to the right otherwise — so it never runs off the edge.
+  function flipFor(club, k, cx) {
+    return ((club.x - cx) * k + W / 2) > W / 2;
+  }
+
+  function setPin(pin, club, label, sub, flip) {
+    pin.label.textContent = label;
+    pin.sub.textContent = sub;
+    var side = flip ? -14 : 14;
+    pin.label.setAttribute('x', side);
+    pin.sub.setAttribute('x', side);
+    pin.label.setAttribute('text-anchor', flip ? 'end' : 'start');
+    pin.sub.setAttribute('text-anchor', flip ? 'end' : 'start');
+    pin.dataset.x = club.x;
+    pin.dataset.y = club.y;
+  }
+
+  // ---- camera ---------------------------------------------------------------
+
+  var camState = { k: 1, cx: W / 2, cy: H / 2 };
+
+  function applyCamera(k, cx, cy) {
+    camState = { k: k, cx: cx, cy: cy };
+    cam.style.transform =
+      'translate(' + (W / 2) + 'px,' + (H / 2) + 'px) scale(' + k + ') ' +
+      'translate(' + (-cx) + 'px,' + (-cy) + 'px)';
+
+    // counter-scale every marker so pins and labels keep a constant screen size
+    var all = markers.children;
+    var i, g;
+    for (i = 0; i < all.length; i++) {
+      g = all[i];
+      g.style.transform = 'translate(' + g.dataset.x + 'px,' + g.dataset.y + 'px) scale(' + (1 / k) + ')';
+    }
+    for (i = 0; i < dots.children.length; i++) {
+      g = dots.children[i];
+      g.style.transform = 'translate(' + g.dataset.x + 'px,' + g.dataset.y + 'px) scale(' + (1 / k) + ')';
+    }
+  }
+
+  // ---- the arc --------------------------------------------------------------
+
+  function arcPath(a, b) {
+    var mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+    var dx = b.x - a.x, dy = b.y - a.y;
+    var len = Math.sqrt(dx * dx + dy * dy) || 1;
+    // bow the curve to the left of the direction of travel
+    var bow = Math.min(0.24 * len, 120);
+    var cx = mx + (dy / len) * bow;
+    var cy = my - (dx / len) * bow;
+    return 'M' + a.x + ',' + a.y + ' Q' + cx.toFixed(1) + ',' + cy.toFixed(1) + ' ' + b.x + ',' + b.y;
+  }
+
+  function drawArc(to, k) {
+    arc.setAttribute('d', arcPath(HOME, to));
+    arc.style.strokeWidth = (1.9 / k).toFixed(3);
+    var L = arc.getTotalLength();
+    arc.style.transition = 'none';
+    arc.style.strokeDasharray = L;
+    arc.style.strokeDashoffset = L;
+    arc.classList.add('is-shown');
+    // force reflow, then run the draw
+    void arc.getBoundingClientRect();
+    arc.style.transition =
+      'stroke-dashoffset var(--duration-map) var(--ease-map), ' +
+      'opacity var(--duration-base) var(--ease-standard)';
+    arc.style.strokeDashoffset = 0;
+  }
+
+  function hideArc() {
+    arc.classList.remove('is-shown');
+  }
+
+  // ---- readout --------------------------------------------------------------
+
+  var rMeta = document.getElementById('r-meta');
+  var rTitle = document.getElementById('r-title');
+  var rSub = document.getElementById('r-sub');
+
+  function setReadout(meta, title, sub) {
+    rMeta.textContent = meta;
+    rTitle.textContent = title;
+    rSub.textContent = sub;
+  }
+
+  // ===========================================================================
+  // STATES
+  // ===========================================================================
+
+  function restState() {
+    hideArc();
+    setPin(homePin, HOME, 'Bolton', HOME.stadium, flipFor(HOME, 1, W / 2));
+    applyCamera(1, W / 2, H / 2);
+    homePin.classList.add('is-shown');
+    awayPin.classList.remove('is-shown');
+    for (var k in dotFor) dotFor[k].firstChild.classList.remove('is-dim');
+    setReadout('The season', FIXTURES.length + ' league games',
+      'Pick a fixture to see it on the map.');
+  }
+
+  // Zoom so both grounds sit inside the stage with room for their labels. The
+  // padding is in screen pixels (labels don't scale), so it comes off the
+  // viewBox before the ratio, not off the span.
+  function fitTwo(a, b) {
+    var PAD_X = 260, PAD_Y = 170;
+    var dx = Math.max(Math.abs(a.x - b.x), 1);
+    var dy = Math.max(Math.abs(a.y - b.y), 1);
+    var k = Math.min((W - PAD_X) / dx, (H - PAD_Y) / dy);
+    return Math.max(1.05, Math.min(k, 5.5));
+  }
+
+  function showFixture(i) {
+    var f = FIXTURES[i];
+    var club = CLUBS[f.opp];
+    var d = parseDate(f.date);
+    var dateStr = DOW[d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + MON[d.getUTCMonth()] + ' ' +
+                  d.getUTCFullYear();
+
+    // dim the other grounds so the active one reads first — but keep them
+    // legible on a home game, where they are the only sense of scale
+    for (var key in dotFor) {
+      dotFor[key].firstChild.classList.toggle('is-dim', f.venue !== 'H');
+    }
+
+    if (f.venue === 'H') {
+      hideArc();
+      setPin(homePin, HOME, HOME.city, HOME.stadium, false);
+      homePin.classList.add('is-shown');
+      awayPin.classList.remove('is-shown');
+      applyCamera(3.6, HOME.x, HOME.y);
+      setReadout('Home · ' + dateStr + ' · ' + f.ko, HOME.stadium,
+        'Bolton Wanderers v ' + club.name + ' · matchday ' + f.md + '.');
+    } else {
+      var k = fitTwo(HOME, club);
+      var cx = (HOME.x + club.x) / 2;
+      setPin(homePin, HOME, 'Bolton', HOME.stadium, flipFor(HOME, k, cx));
+      setPin(awayPin, club, club.city, club.stadium, flipFor(club, k, cx));
+      homePin.classList.add('is-shown');
+      awayPin.classList.add('is-shown');
+      applyCamera(k, cx, (HOME.y + club.y) / 2);
+      drawArc(club, k);
+      setReadout('Away · ' + dateStr + ' · ' + f.ko, club.stadium,
+        club.name + ' v Bolton Wanderers · ' + club.city + ' · ' +
+        club.miles + ' miles from the Toughsheet.');
+    }
+  }
+
+  // ===========================================================================
+  // INTERACTION
+  // ===========================================================================
+
+  var pinned = null;   // index of a clicked fixture, or null
+  var hovered = null;
+  var restTimer = null;
+
+  function setActive(i, isPin) {
+    rows.forEach(function (r, idx) {
+      r.classList.toggle('is-active', idx === i && !isPin);
+      r.classList.toggle('is-pinned', idx === i && isPin);
+    });
+    if (i === null) restState(); else showFixture(i);
+  }
+
+  function preview(i) {
+    hovered = i;
+    clearTimeout(restTimer);
+    rows.forEach(function (r, idx) { r.classList.toggle('is-active', idx === i); });
+    showFixture(i);
+  }
+
+  function endPreview() {
+    hovered = null;
+    clearTimeout(restTimer);
+    restTimer = setTimeout(function () {
+      if (hovered !== null) return;
+      rows.forEach(function (r) { r.classList.remove('is-active'); });
+      if (pinned !== null) showFixture(pinned); else restState();
+    }, 140);
+  }
+
+  rows.forEach(function (tr) {
+    var i = +tr.dataset.i;
+    tr.addEventListener('mouseenter', function () { preview(i); });
+    tr.addEventListener('mouseleave', endPreview);
+    tr.addEventListener('focus', function () { preview(i); });
+    tr.addEventListener('blur', endPreview);
+    tr.addEventListener('click', function () {
+      pinned = (pinned === i) ? null : i;
+      setActive(pinned, true);
+      if (pinned === null) preview(i);
+    });
+    tr.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tr.click(); }
+      if (e.key === 'Escape') { pinned = null; setActive(null, true); tr.blur(); }
+    });
+  });
+
+  // ---- filter ---------------------------------------------------------------
+
+  var filterButtons = Array.prototype.slice.call(document.querySelectorAll('.segmented button'));
+
+  function applyFilter(mode) {
+    filterButtons.forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.filter === mode));
+    });
+
+    rows.forEach(function (r) {
+      r.hidden = !(mode === 'all' || r.dataset.venue === mode);
+    });
+
+    // hide a month heading whose fixtures are all filtered out
+    var monthRows = Array.prototype.slice.call(tbody.querySelectorAll('.month-row'));
+    monthRows.forEach(function (mr) {
+      var any = false;
+      var n = mr.nextElementSibling;
+      while (n && !n.classList.contains('month-row')) {
+        if (!n.hidden) { any = true; break; }
+        n = n.nextElementSibling;
+      }
+      mr.hidden = !any;
+    });
+  }
+
+  var tableWrap = document.querySelector('.table-wrap');
+
+  filterButtons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyFilter(b.dataset.filter);
+      tableWrap.scrollTop = 0;
+    });
+  });
+
+  // ---- go -------------------------------------------------------------------
+
+  var svg = document.getElementById('map');
+  svg.classList.add('no-anim');
+  applyFilter('all');
+  restState();
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () { svg.classList.remove('no-anim'); });
+  });
+}());
+</script>
+</body>
+</html>
