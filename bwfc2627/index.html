@@ -309,6 +309,18 @@
     color: var(--text-faint);
   }
 
+  td.opp .tv {
+    display: inline-block;
+    margin-left: 0.5rem;
+    padding: 0 0.35rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+    font-size: 0.6875rem;
+    letter-spacing: 0.02em;
+    color: var(--accent-300);
+    white-space: nowrap;
+  }
+
   td.ko { width: 3.5rem; font-variant-numeric: tabular-nums; color: var(--text-muted); }
   td.dist {
     width: 4.25rem;
@@ -621,33 +633,34 @@
   // ---------------------------------------------------------------------------
   // FIXTURES — the official 2026/27 Championship league list.
   // Shape: { md, date: 'YYYY-MM-DD', ko: 'HH:MM', opp: <key of CLUBS>,
-  //          venue: 'H' | 'A' }
-  // Kick-off times outside August are subject to change for television.
+  //          venue: 'H' | 'A', tv?: <broadcaster> }
+  // Kick-off times outside August are subject to change for television; a
+  // fixture picked for broadcast carries `tv` and shows it in the table.
   // ---------------------------------------------------------------------------
 
   var FIXTURES = [
-    { md:  1, date: '2026-08-15', ko: '12:30', opp: 'preston',         venue: 'H' },
+    { md:  1, date: '2026-08-15', ko: '12:30', opp: 'preston',         venue: 'H', tv: 'Sky Sports+' },
     { md:  2, date: '2026-08-22', ko: '15:00', opp: 'qpr',             venue: 'A' },
     { md:  3, date: '2026-08-29', ko: '15:00', opp: 'lincoln',         venue: 'H' },
     { md:  4, date: '2026-09-01', ko: '19:45', opp: 'sheffield-utd',   venue: 'A' },
     { md:  5, date: '2026-09-05', ko: '15:00', opp: 'millwall',        venue: 'A' },
-    { md:  6, date: '2026-09-08', ko: '20:00', opp: 'west-ham',        venue: 'H' },
-    { md:  7, date: '2026-09-12', ko: '12:30', opp: 'cardiff',         venue: 'H' },
+    { md:  6, date: '2026-09-08', ko: '20:00', opp: 'west-ham',        venue: 'H', tv: 'Sky Sports Football' },
+    { md:  7, date: '2026-09-12', ko: '12:30', opp: 'cardiff',         venue: 'H', tv: 'Sky Sports+' },
     { md:  8, date: '2026-09-19', ko: '15:00', opp: 'norwich',         venue: 'A' },
     { md:  9, date: '2026-10-10', ko: '15:00', opp: 'stoke',           venue: 'H' },
     { md: 10, date: '2026-10-13', ko: '19:45', opp: 'wolves',          venue: 'A' },
     { md: 11, date: '2026-10-17', ko: '15:00', opp: 'southampton',     venue: 'A' },
-    { md: 12, date: '2026-10-24', ko: '15:00', opp: 'middlesbrough',   venue: 'H' },
+    { md: 12, date: '2026-10-23', ko: '20:00', opp: 'middlesbrough',   venue: 'H', tv: 'Sky Sports Football' },
     { md: 13, date: '2026-10-31', ko: '15:00', opp: 'bristol-city',    venue: 'H' },
     { md: 14, date: '2026-11-04', ko: '19:45', opp: 'charlton',        venue: 'A' },
-    { md: 15, date: '2026-11-07', ko: '15:00', opp: 'derby',           venue: 'A' },
+    { md: 15, date: '2026-11-06', ko: '20:00', opp: 'derby',           venue: 'A', tv: 'Sky Sports Football' },
     { md: 16, date: '2026-11-21', ko: '15:00', opp: 'portsmouth',      venue: 'H' },
     { md: 17, date: '2026-11-25', ko: '19:45', opp: 'west-brom',       venue: 'H' },
     { md: 18, date: '2026-11-28', ko: '15:00', opp: 'birmingham',      venue: 'A' },
-    { md: 19, date: '2026-12-05', ko: '15:00', opp: 'blackburn',       venue: 'H' },
+    { md: 19, date: '2026-12-05', ko: '12:30', opp: 'blackburn',       venue: 'H', tv: 'Sky Sports Football' },
     { md: 20, date: '2026-12-08', ko: '19:45', opp: 'swansea',         venue: 'A' },
-    { md: 21, date: '2026-12-12', ko: '15:00', opp: 'wrexham',         venue: 'H' },
-    { md: 22, date: '2026-12-19', ko: '15:00', opp: 'watford',         venue: 'A' },
+    { md: 21, date: '2026-12-11', ko: '20:00', opp: 'wrexham',         venue: 'H', tv: 'Sky Sports Football' },
+    { md: 22, date: '2026-12-19', ko: '12:30', opp: 'watford',         venue: 'A', tv: 'Sky Sports+' },
     { md: 23, date: '2026-12-26', ko: '15:00', opp: 'burnley',         venue: 'H' },
     { md: 24, date: '2026-12-29', ko: '19:45', opp: 'middlesbrough',   venue: 'A' },
     { md: 25, date: '2027-01-01', ko: '15:00', opp: 'wrexham',         venue: 'A' },
@@ -742,14 +755,16 @@
           f.venue + '</span></td>' +
         '<td class="opp"><span class="name">' + club.name +
           '</span><span class="ground">' +
-          (home ? 'Toughsheet' : club.stadium) + '</span></td>' +
+          (home ? 'Toughsheet' : club.stadium) +
+          (f.tv ? '<span class="tv">' + f.tv + '</span>' : '') + '</span></td>' +
         '<td class="ko">' + f.ko + '</td>' +
         '<td class="dist">' + (home ? '—' : club.miles + ' mi') + '</td>';
 
       tr.setAttribute('aria-label',
         DOW[d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + MON[d.getUTCMonth()] + ' ' +
         d.getUTCFullYear() + ', ' + f.ko + ', ' + (home ? 'home to ' : 'away at ') +
-        club.name + ', ' + (home ? HOME.stadium : club.stadium));
+        club.name + ', ' + (home ? HOME.stadium : club.stadium) +
+        (f.tv ? ', live on ' + f.tv : ''));
 
       tbody.appendChild(tr);
       rows.push(tr);
@@ -931,6 +946,7 @@
     var d = parseDate(f.date);
     var dateStr = DOW[d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + MON[d.getUTCMonth()] + ' ' +
                   d.getUTCFullYear();
+    var tvSuffix = f.tv ? ' · ' + f.tv : '';
 
     // dim the other grounds so the active one reads first — but keep them
     // legible on a home game, where they are the only sense of scale
@@ -944,7 +960,7 @@
       homePin.classList.add('is-shown');
       awayPin.classList.remove('is-shown');
       applyCamera(3.6, HOME.x, HOME.y);
-      setReadout('Home · ' + dateStr + ' · ' + f.ko, HOME.stadium,
+      setReadout('Home · ' + dateStr + ' · ' + f.ko + tvSuffix, HOME.stadium,
         'Bolton Wanderers v ' + club.name + ' · matchday ' + f.md + '.');
     } else {
       var k = fitTwo(HOME, club);
@@ -955,7 +971,7 @@
       awayPin.classList.add('is-shown');
       applyCamera(k, cx, (HOME.y + club.y) / 2);
       drawArc(club, k);
-      setReadout('Away · ' + dateStr + ' · ' + f.ko, club.stadium,
+      setReadout('Away · ' + dateStr + ' · ' + f.ko + tvSuffix, club.stadium,
         club.name + ' v Bolton Wanderers · ' + club.city + ' · ' +
         club.miles + ' miles from the Toughsheet.');
     }
