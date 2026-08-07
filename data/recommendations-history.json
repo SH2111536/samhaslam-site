@@ -142,5 +142,53 @@
     "item": "Dallas Comedy Club stand-up night",
     "date": "2026-07-27",
     "location": "Dallas, Texas, USA"
+  },
+  {
+    "category": "music",
+    "item": "Geese",
+    "date": "2026-08-03",
+    "location": null
+  },
+  {
+    "category": "reading",
+    "item": "The Two of Us at the End of the World by C. A. Fletcher",
+    "date": "2026-08-03",
+    "location": null
+  },
+  {
+    "category": "screen",
+    "item": "Ted Lasso Season 4",
+    "date": "2026-08-03",
+    "location": null
+  },
+  {
+    "category": "comedy",
+    "item": "Garth Marenghi (Matthew Holness) live show",
+    "date": "2026-08-03",
+    "location": null
+  },
+  {
+    "category": "podcast",
+    "item": "Football Ramble",
+    "date": "2026-08-03",
+    "location": null
+  },
+  {
+    "category": "hobby",
+    "item": "Crimson Desert (console RPG)",
+    "date": "2026-08-03",
+    "location": null
+  },
+  {
+    "category": "food_drink",
+    "item": "The Cherry Tree at Blackrod",
+    "date": "2026-08-03",
+    "location": "Chorley area, Lancashire"
+  },
+  {
+    "category": "days_out",
+    "item": "Rivington Pike walk + Rivington Brewery Co tap",
+    "date": "2026-08-03",
+    "location": "Chorley area, Lancashire"
   }
 ]

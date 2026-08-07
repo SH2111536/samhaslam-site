@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recommendations — 03 Aug 2026 — Sam Haslam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+
+    --neutral-950: oklch(0.15 0.01 250);
+    --neutral-900: oklch(0.18 0.011 250);
+    --neutral-800: oklch(0.21 0.012 250);
+    --neutral-700: oklch(0.26 0.012 250);
+    --neutral-600: oklch(0.32 0.012 250);
+    --neutral-500: oklch(0.45 0.012 250);
+    --neutral-400: oklch(0.55 0.01 250);
+    --neutral-300: oklch(0.65 0.01 250);
+    --neutral-200: oklch(0.78 0.008 250);
+    --neutral-50:  oklch(0.96 0.004 250);
+
+    --accent-600: oklch(0.52 0.14 250);
+    --accent-500: oklch(0.62 0.14 250);
+    --accent-400: oklch(0.68 0.13 250);
+    --accent-300: oklch(0.76 0.10 250);
+
+    --bg-page: var(--neutral-950);
+    --bg-surface: var(--neutral-900);
+    --bg-surface-raised: var(--neutral-800);
+
+    --border-subtle: var(--neutral-700);
+    --border-default: var(--neutral-600);
+
+    --text-primary: var(--neutral-50);
+    --text-secondary: var(--neutral-300);
+    --text-muted: var(--neutral-400);
+    --text-faint: var(--neutral-500);
+
+    --font-display: 'Newsreader', Georgia, 'Times New Roman', serif;
+    --font-body: 'Public Sans', system-ui, -apple-system, sans-serif;
+
+    --duration-base: 200ms;
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg-page);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    padding: 5rem 1.5rem 6rem;
+  }
+
+  main {
+    width: 100%;
+    max-width: 760px;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  a { color: var(--accent-400); }
+  a:hover { color: var(--accent-300); }
+
+  .back-link {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .back-link:hover { color: var(--accent-300); }
+
+  .eyebrow {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent-400);
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(2rem, 1.6rem + 1.8vw, 2.75rem);
+    line-height: 1.15;
+  }
+
+  .lede {
+    margin: 0;
+    max-width: 60ch;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .recs {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rec {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.75rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .rec:first-child { padding-top: 0; }
+  .rec:last-child { border-bottom: none; }
+
+  .rec-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    background: var(--bg-surface-raised);
+    border: 1px solid var(--border-subtle);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent-300);
+  }
+
+  .rec-location {
+    font-size: 0.8125rem;
+    color: var(--text-faint);
+  }
+
+  .rec-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.375rem;
+    line-height: 1.3;
+    color: var(--text-primary);
+  }
+
+  .rec-body {
+    margin: 0;
+    max-width: var(--measure-prose, 640px);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  footer {
+    font-size: 0.8125rem;
+    color: var(--text-faint);
+  }
+</style>
+</head>
+<body>
+  <main>
+    <div>
+      <a class="back-link" href="../recommendations/index.html">&larr; All recommendations</a>
+    </div>
+
+    <div>
+      <span class="eyebrow">Weekly recommendations · 03 Aug 2026</span>
+      <h1>Home, then home alone.</h1>
+      <p class="lede">
+        A week of two halves. Wednesday's a write-off in the best way — the Dallas flight lands
+        in Manchester at 7pm, then straight onto a train to Chorley, so Wednesday evening wants
+        nothing more strenuous than a sofa. Thursday's a vet trip for the animals, ordinary as
+        Tuesdays go. Then Friday evening Holly's off to Hannah's hen do, which leaves you the
+        weekend to yourself — so half this list is built for the jet lag, the other half for
+        having the house, the dog and the decisions all to yourself.
+      </p>
+    </div>
+
+    <div class="recs">
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Music</span>
+        </div>
+        <h2 class="rec-title">Geese</h2>
+        <p class="rec-body">
+          Brooklyn's loudest current export — avant-garde post-punk with actual hooks buried in
+          the noise, which is rarer than it sounds. Not background music exactly, but decent
+          company for unpacking a suitcase you'd rather not be dealing with.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Reading</span>
+        </div>
+        <h2 class="rec-title">The Two of Us at the End of the World — C. A. Fletcher</h2>
+        <p class="rec-body">
+          A standalone about how the world quietly emptied of people, told through two characters
+          working out how to survive what's left — mystery and otherness over spectacle, and
+          crucially finished in one book. A good change of genre after a run of magic systems,
+          without asking for a six-volume commitment.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Screen</span>
+        </div>
+        <h2 class="rec-title">Ted Lasso, Season 4</h2>
+        <p class="rec-body">
+          Premieres 5 August — the exact evening you land, as it happens, which feels like
+          scheduling rather than coincidence. The newly formed women's team gives it a genuinely
+          fresh shape rather than just more of the same, but it's still the same breezy mix of
+          optimism and hard-won charm underneath. Correct viewing for a jet-lagged sofa.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Comedy</span>
+        </div>
+        <h2 class="rec-title">Garth Marenghi (Matthew Holness), live</h2>
+        <p class="rec-body">
+          Matthew Holness back in character as horror novelist and self-declared "dream-weaver"
+          Garth Marenghi, reading from his latest masterpiece with total, unearned confidence.
+          Deeply silly in the specific, layered way that rewards already knowing the bit — which,
+          given the Darkplace devotion, you do.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Podcast</span>
+        </div>
+        <h2 class="rec-title">Football Ramble</h2>
+        <p class="rec-body">
+          Already on the regular rotation, but worth flagging now the season's properly back —
+          good company for the solo weekend, and better company than the actual football news
+          most weeks.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Hobby · Gaming</span>
+        </div>
+        <h2 class="rec-title">Crimson Desert</h2>
+        <p class="rec-body">
+          A properly big single-player fantasy RPG — dynamic combat, a sprawling continent, and
+          the kind of deep storytelling that rewards actually having a free weekend rather than
+          stealing an hour here and there. With the house to yourself and no consultation
+          required on what's on the telly, this is the moment.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Food &amp; drink</span>
+          <span class="rec-location">Chorley area</span>
+        </div>
+        <h2 class="rec-title">The Cherry Tree at Blackrod</h2>
+        <p class="rec-body">
+          Independently owned, unpretentious by design, seasonal produce sourced as locally as
+          the menu can manage. Nothing showy, which is precisely the point — a solid Saturday
+          night out, solo or otherwise.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Days out</span>
+          <span class="rec-location">Chorley area</span>
+        </div>
+        <h2 class="rec-title">Rivington Pike walk + Rivington Brewery Co tap</h2>
+        <p class="rec-body">
+          A proper loop around reservoirs, forest and moorland, finishing at the brewery's own
+          taproom for a beer brewed about fifty feet from where you're drinking it, plus food
+          from the stalls parked outside. Bring Morris — he's earned it, and so, frankly, have
+          you after Wednesday.
+        </p>
+      </div>
+    </div>
+
+    <footer>&copy; 2026 Sam Haslam</footer>
+  </main>
+</body>
+</html>
