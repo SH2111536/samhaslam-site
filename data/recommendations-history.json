@@ -190,5 +190,53 @@
     "item": "Rivington Pike walk + Rivington Brewery Co tap",
     "date": "2026-08-03",
     "location": "Chorley area, Lancashire"
+  },
+  {
+    "category": "music",
+    "item": "Ratboys — \"Singin' to an Empty Chair\"",
+    "date": "2026-08-10",
+    "location": null
+  },
+  {
+    "category": "reading",
+    "item": "Daggerbound by T. Kingfisher",
+    "date": "2026-08-10",
+    "location": null
+  },
+  {
+    "category": "screen",
+    "item": "Sterling Point",
+    "date": "2026-08-10",
+    "location": null
+  },
+  {
+    "category": "comedy",
+    "item": "Fern Brady, Manchester Castlefield Bowl",
+    "date": "2026-08-10",
+    "location": null
+  },
+  {
+    "category": "podcast",
+    "item": "The Fanzone Pod (Bolton Wanderers season preview)",
+    "date": "2026-08-10",
+    "location": null
+  },
+  {
+    "category": "food_drink",
+    "item": "The Beehive, Lostock (pre-match)",
+    "date": "2026-08-10",
+    "location": "Bolton (matchday)"
+  },
+  {
+    "category": "food_drink",
+    "item": "The Shed, Chorley",
+    "date": "2026-08-10",
+    "location": "Chorley area, Lancashire"
+  },
+  {
+    "category": "days_out",
+    "item": "Yarrow Valley Country Park walk",
+    "date": "2026-08-10",
+    "location": "Chorley area, Lancashire"
   }
 ]
