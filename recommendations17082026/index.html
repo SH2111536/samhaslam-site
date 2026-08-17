@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recommendations — 17 Aug 2026 — Sam Haslam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+
+    --neutral-950: oklch(0.15 0.01 250);
+    --neutral-900: oklch(0.18 0.011 250);
+    --neutral-800: oklch(0.21 0.012 250);
+    --neutral-700: oklch(0.26 0.012 250);
+    --neutral-600: oklch(0.32 0.012 250);
+    --neutral-500: oklch(0.45 0.012 250);
+    --neutral-400: oklch(0.55 0.01 250);
+    --neutral-300: oklch(0.65 0.01 250);
+    --neutral-200: oklch(0.78 0.008 250);
+    --neutral-50:  oklch(0.96 0.004 250);
+
+    --accent-600: oklch(0.52 0.14 250);
+    --accent-500: oklch(0.62 0.14 250);
+    --accent-400: oklch(0.68 0.13 250);
+    --accent-300: oklch(0.76 0.10 250);
+
+    --bg-page: var(--neutral-950);
+    --bg-surface: var(--neutral-900);
+    --bg-surface-raised: var(--neutral-800);
+
+    --border-subtle: var(--neutral-700);
+    --border-default: var(--neutral-600);
+
+    --text-primary: var(--neutral-50);
+    --text-secondary: var(--neutral-300);
+    --text-muted: var(--neutral-400);
+    --text-faint: var(--neutral-500);
+
+    --font-display: 'Newsreader', Georgia, 'Times New Roman', serif;
+    --font-body: 'Public Sans', system-ui, -apple-system, sans-serif;
+
+    --duration-base: 200ms;
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg-page);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    padding: 5rem 1.5rem 6rem;
+  }
+
+  main {
+    width: 100%;
+    max-width: 760px;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  a { color: var(--accent-400); }
+  a:hover { color: var(--accent-300); }
+
+  .back-link {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .back-link:hover { color: var(--accent-300); }
+
+  .eyebrow {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent-400);
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(2rem, 1.6rem + 1.8vw, 2.75rem);
+    line-height: 1.15;
+  }
+
+  .lede {
+    margin: 0;
+    max-width: 60ch;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .recs {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rec {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.75rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .rec:first-child { padding-top: 0; }
+  .rec:last-child { border-bottom: none; }
+
+  .rec-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    background: var(--bg-surface-raised);
+    border: 1px solid var(--border-subtle);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent-300);
+  }
+
+  .rec-location {
+    font-size: 0.8125rem;
+    color: var(--text-faint);
+  }
+
+  .rec-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.375rem;
+    line-height: 1.3;
+    color: var(--text-primary);
+  }
+
+  .rec-body {
+    margin: 0;
+    max-width: var(--measure-prose, 640px);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  footer {
+    font-size: 0.8125rem;
+    color: var(--text-faint);
+  }
+</style>
+</head>
+<body>
+  <main>
+    <div>
+      <a class="back-link" href="../recommendations/index.html">&larr; All recommendations</a>
+    </div>
+
+    <div>
+      <span class="eyebrow">Weekly recommendations · 17 Aug 2026</span>
+      <h1>London, then a barn in Cumbria.</h1>
+      <p class="lede">
+        The busiest week in a while. Six-a-side Monday night, a London day trip Wednesday for
+        Arti's leaving lunch (train there and back, work squeezed either side), sushi at Leah and
+        Dec's Thursday once the holiday cash is sorted, and then Friday afternoon it's pets to the
+        kennels and cattery and off to Cumbria for Hannah and Sean's wedding — a whole weekend at
+        Hidden River Barn, right on the Scottish border. Mostly background listening and reading
+        for the gaps this week, plus a couple of things for the two places you'll actually be
+        standing still.
+      </p>
+    </div>
+
+    <div class="recs">
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Music</span>
+        </div>
+        <h2 class="rec-title">Citizen — "Halcyon Blues"</h2>
+        <p class="rec-body">
+          Raw emo and post-hardcore pulled together into something more cohesive than either
+          label suggests — the kind of record that sits comfortably next to Fall Out Boy and
+          Sleep Token without copying either. Good six-a-side warm-up listening, frankly.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Reading</span>
+        </div>
+        <h2 class="rec-title">Time Travel for Beginners — Jaclyn Moriarty</h2>
+        <p class="rec-body">
+          Three people on a collision course through time, using the mechanics of time travel to
+          poke at regret, identity and the small decisions that turn out to matter most —
+          standalone, a bit of "otherness" without needing a magic system to deliver it. Decent
+          company for two long train rides to London and back.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Screen</span>
+        </div>
+        <h2 class="rec-title">Lanterns</h2>
+        <p class="rec-body">
+          HBO's new Green Lantern series, playing more cosmic detective noir than superhero
+          spectacle, with Aaron Pierre and Kyle Chandler carrying most of the weight. A different
+          register to the usual list, but the sort of thing that rewards a proper sit-down rather
+          than half-attention — save it for after the wedding, not during wedding-prep week.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Comedy</span>
+        </div>
+        <h2 class="rec-title">Nish Kumar — "Angry Humour From A Really Nice Guy"</h2>
+        <p class="rec-body">
+          New UK tour, starting this September, built around turning forty and being annoyed
+          about it — sharp, topical, more clever-punning than absurdist, which makes a change of
+          pace from the last few weeks without straying far from what actually lands for you.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Podcast</span>
+        </div>
+        <h2 class="rec-title">Hard Fork</h2>
+        <p class="rec-body">
+          The New York Times' tech podcast, hosted by Kevin Roose and Casey Newton — broader and
+          more accessible than the usual AI-specific rotation, genuinely entertaining rather than
+          just informative. Good company on the Wednesday train down, no spreadsheet required.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Food &amp; drink</span>
+          <span class="rec-location">City of London</span>
+        </div>
+        <h2 class="rec-title">One Under Lime Coffee House</h2>
+        <p class="rec-body">
+          Tucked beneath the Lloyd's building on Lime Street, next to Leadenhall Market — proper
+          coffee and an inventive breakfast-through-after-work menu, a five-minute walk from the
+          Willis Building. Worth getting there early Wednesday before the day gets away from you.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Food &amp; drink</span>
+          <span class="rec-location">Chorley area</span>
+        </div>
+        <h2 class="rec-title">Elliot's Bistro, Chorley</h2>
+        <p class="rec-body">
+          Traditional cooking, warm hospitality, local produce prepared on-site daily — the sort
+          of unfussy place that suits an evening squeezed between two much bigger commitments,
+          if Monday or Tuesday leave any room for one.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Days out</span>
+          <span class="rec-location">Longtown area, Cumbria</span>
+        </div>
+        <h2 class="rec-title">Lanercost Priory</h2>
+        <p class="rec-body">
+          A short drive from Hidden River Barn — medieval priory ruins on the banks of the River
+          Irthing, right in Hadrian's Wall country. Not a full day out, just somewhere quiet and
+          properly atmospheric for a Sunday morning before the drive home, if the wedding's left
+          you wanting fresh air and fewer people rather than more.
+        </p>
+      </div>
+    </div>
+
+    <footer>&copy; 2026 Sam Haslam</footer>
+  </main>
+</body>
+</html>

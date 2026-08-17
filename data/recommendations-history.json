@@ -238,5 +238,53 @@
     "item": "Yarrow Valley Country Park walk",
     "date": "2026-08-10",
     "location": "Chorley area, Lancashire"
+  },
+  {
+    "category": "music",
+    "item": "Citizen — \"Halcyon Blues\"",
+    "date": "2026-08-17",
+    "location": null
+  },
+  {
+    "category": "reading",
+    "item": "Time Travel for Beginners by Jaclyn Moriarty",
+    "date": "2026-08-17",
+    "location": null
+  },
+  {
+    "category": "screen",
+    "item": "Lanterns",
+    "date": "2026-08-17",
+    "location": null
+  },
+  {
+    "category": "comedy",
+    "item": "Nish Kumar, \"Angry Humour From A Really Nice Guy\" tour",
+    "date": "2026-08-17",
+    "location": null
+  },
+  {
+    "category": "podcast",
+    "item": "Hard Fork (NYT)",
+    "date": "2026-08-17",
+    "location": null
+  },
+  {
+    "category": "food_drink",
+    "item": "One Under Lime Coffee House, City of London",
+    "date": "2026-08-17",
+    "location": "City of London"
+  },
+  {
+    "category": "food_drink",
+    "item": "Elliot's Bistro, Chorley",
+    "date": "2026-08-17",
+    "location": "Chorley area, Lancashire"
+  },
+  {
+    "category": "days_out",
+    "item": "Lanercost Priory",
+    "date": "2026-08-17",
+    "location": "Longtown area, Cumbria"
   }
 ]
