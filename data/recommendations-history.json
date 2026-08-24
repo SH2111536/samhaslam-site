@@ -286,5 +286,53 @@
     "item": "Lanercost Priory",
     "date": "2026-08-17",
     "location": "Longtown area, Cumbria"
+  },
+  {
+    "category": "music",
+    "item": "Buffalo Traffic Jam — \"Pictures Of You\"",
+    "date": "2026-08-24",
+    "location": null
+  },
+  {
+    "category": "reading",
+    "item": "The Whitechapel Full Moon Society by Elizabeth DeLozier",
+    "date": "2026-08-24",
+    "location": null
+  },
+  {
+    "category": "screen",
+    "item": "Average Joe, Season 2",
+    "date": "2026-08-24",
+    "location": null
+  },
+  {
+    "category": "podcast",
+    "item": "Dwarkesh Podcast",
+    "date": "2026-08-24",
+    "location": null
+  },
+  {
+    "category": "food_drink",
+    "item": "Spiseriet, Skjåk",
+    "date": "2026-08-24",
+    "location": "Skjåk area, Norway"
+  },
+  {
+    "category": "food_drink",
+    "item": "China House, Stord",
+    "date": "2026-08-24",
+    "location": "Bømlo/Stord area, Norway"
+  },
+  {
+    "category": "days_out",
+    "item": "Siggjo hiking trail",
+    "date": "2026-08-24",
+    "location": "Bømlo/Stord area, Norway"
+  },
+  {
+    "category": "days_out",
+    "item": "Espevær car-free island",
+    "date": "2026-08-24",
+    "location": "Bømlo/Stord area, Norway"
   }
 ]
