@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recommendations — 24 Aug 2026 — Sam Haslam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+
+    --neutral-950: oklch(0.15 0.01 250);
+    --neutral-900: oklch(0.18 0.011 250);
+    --neutral-800: oklch(0.21 0.012 250);
+    --neutral-700: oklch(0.26 0.012 250);
+    --neutral-600: oklch(0.32 0.012 250);
+    --neutral-500: oklch(0.45 0.012 250);
+    --neutral-400: oklch(0.55 0.01 250);
+    --neutral-300: oklch(0.65 0.01 250);
+    --neutral-200: oklch(0.78 0.008 250);
+    --neutral-50:  oklch(0.96 0.004 250);
+
+    --accent-600: oklch(0.52 0.14 250);
+    --accent-500: oklch(0.62 0.14 250);
+    --accent-400: oklch(0.68 0.13 250);
+    --accent-300: oklch(0.76 0.10 250);
+
+    --bg-page: var(--neutral-950);
+    --bg-surface: var(--neutral-900);
+    --bg-surface-raised: var(--neutral-800);
+
+    --border-subtle: var(--neutral-700);
+    --border-default: var(--neutral-600);
+
+    --text-primary: var(--neutral-50);
+    --text-secondary: var(--neutral-300);
+    --text-muted: var(--neutral-400);
+    --text-faint: var(--neutral-500);
+
+    --font-display: 'Newsreader', Georgia, 'Times New Roman', serif;
+    --font-body: 'Public Sans', system-ui, -apple-system, sans-serif;
+
+    --duration-base: 200ms;
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg-page);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    padding: 5rem 1.5rem 6rem;
+  }
+
+  main {
+    width: 100%;
+    max-width: 760px;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  a { color: var(--accent-400); }
+  a:hover { color: var(--accent-300); }
+
+  .back-link {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .back-link:hover { color: var(--accent-300); }
+
+  .eyebrow {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent-400);
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(2rem, 1.6rem + 1.8vw, 2.75rem);
+    line-height: 1.15;
+  }
+
+  .lede {
+    margin: 0;
+    max-width: 60ch;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .recs {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rec {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.75rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .rec:first-child { padding-top: 0; }
+  .rec:last-child { border-bottom: none; }
+
+  .rec-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    background: var(--bg-surface-raised);
+    border: 1px solid var(--border-subtle);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent-300);
+  }
+
+  .rec-location {
+    font-size: 0.8125rem;
+    color: var(--text-faint);
+  }
+
+  .rec-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.375rem;
+    line-height: 1.3;
+    color: var(--text-primary);
+  }
+
+  .rec-body {
+    margin: 0;
+    max-width: var(--measure-prose, 640px);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  footer {
+    font-size: 0.8125rem;
+    color: var(--text-faint);
+  }
+</style>
+</head>
+<body>
+  <main>
+    <div>
+      <a class="back-link" href="../recommendations/index.html">&larr; All recommendations</a>
+    </div>
+
+    <div>
+      <span class="eyebrow">Weekly recommendations · 24 Aug 2026</span>
+      <h1>Norway, at last.</h1>
+      <p class="lede">
+        The big one. Flight to Oslo Tuesday, then the seven-bases-in-eighteen-days road trip
+        properly begins — first a few nights at Bjonnepodden near Skjåk, then west to a container
+        house with an ocean view near Skiftun, then on to Stormhyttene på Lykling on Bømlo.
+        Morris is at the kennels, the cats are at the cattery, and the only real job this week is
+        driving unhurried between beautiful places. This list splits accordingly: a few things
+        for the car, and a few for the actual ground you'll be standing on.
+      </p>
+    </div>
+
+    <div class="recs">
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Music</span>
+        </div>
+        <h2 class="rec-title">Buffalo Traffic Jam — "Pictures Of You"</h2>
+        <p class="rec-body">
+          A folk debut built on family memories and unhurried storytelling — sounds like a much
+          older band than they are. Mellow rather than driving, which suits long fjord-side roads
+          better than anything with a mosh pit in mind.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Reading</span>
+        </div>
+        <h2 class="rec-title">The Whitechapel Full Moon Society — Elizabeth DeLozier</h2>
+        <p class="rec-body">
+          A maid at a Whitechapel gentlemen's club, three strange house rules, and a body count
+          that turns out to be connected to Jack the Ripper — monsters, curses and family secrets
+          layered under real Victorian history. Standalone, and exactly the right amount of
+          "otherness" for a cabin evening with the fire on.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Screen</span>
+        </div>
+        <h2 class="rec-title">Average Joe, Season 2</h2>
+        <p class="rec-body">
+          Darkly comic series about a blue-collar plumber whose late father stole millions from
+          the Russian mafia — now on the run again as a fresh threat closes in. Funnier than the
+          premise sounds, tense enough to actually hold attention on a jet-lagged evening.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Podcast</span>
+        </div>
+        <h2 class="rec-title">Dwarkesh Podcast</h2>
+        <p class="rec-body">
+          Long-form, properly technical interviews with the people actually building frontier AI
+          — denser than the usual rotation, which makes it good company for the longer driving
+          legs where you actually want something to chew on.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Food &amp; drink</span>
+          <span class="rec-location">Skjåk, Norway</span>
+        </div>
+        <h2 class="rec-title">Spiseriet, Skjåk</h2>
+        <p class="rec-body">
+          A farm restaurant close to Bjonnepodden, cooking with organic produce from
+          Gudbrandsdalen and curing their own wild reindeer, wild sheep and deer. About as far
+          from a tasting menu as it gets, and exactly the kind of local, unshowy food you two
+          seek out on holiday.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Food &amp; drink</span>
+          <span class="rec-location">Stord, Norway</span>
+        </div>
+        <h2 class="rec-title">China House, Stord</h2>
+        <p class="rec-body">
+          A reliable stop on the Bergen-to-Bømlo drive, by local account — worth timing the
+          Stord leg around, if only to break up the miles with something other than a service
+          station sandwich.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Days out</span>
+          <span class="rec-location">Bømlo, Norway</span>
+        </div>
+        <h2 class="rec-title">Siggjo hiking trail</h2>
+        <p class="rec-body">
+          Bømlo's highest point at 474 metres, visible from most of the island, with a moderate
+          climb that rewards the effort with proper Sunnhordland views. The kind of scenery
+          North Sweden spoiled you for — this should hold its own.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Days out</span>
+          <span class="rec-location">Bømlo, Norway</span>
+        </div>
+        <h2 class="rec-title">Espevær</h2>
+        <p class="rec-body">
+          A tiny, car-free island community out beyond Bømlo itself, houses clustered together
+          against the weather — precisely the sort of quirky, characterful, out-of-the-way place
+          you and Holly gravitate to over anywhere polished. Worth the boat trip.
+        </p>
+      </div>
+    </div>
+
+    <footer>&copy; 2026 Sam Haslam</footer>
+  </main>
+</body>
+</html>
