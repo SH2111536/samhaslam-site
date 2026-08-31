@@ -334,5 +334,53 @@
     "item": "Espevær car-free island",
     "date": "2026-08-24",
     "location": "Bømlo/Stord area, Norway"
+  },
+  {
+    "category": "music",
+    "item": "Essie and The Hum",
+    "date": "2026-08-31",
+    "location": null
+  },
+  {
+    "category": "reading",
+    "item": "Bodies of Magic by Freya Marske",
+    "date": "2026-08-31",
+    "location": null
+  },
+  {
+    "category": "screen",
+    "item": "Youth (HBO)",
+    "date": "2026-08-31",
+    "location": null
+  },
+  {
+    "category": "podcast",
+    "item": "The Rest Is History",
+    "date": "2026-08-31",
+    "location": null
+  },
+  {
+    "category": "days_out",
+    "item": "Storehesten hike",
+    "date": "2026-08-31",
+    "location": "Bygstad/Sunnfjord area, Norway"
+  },
+  {
+    "category": "food_drink",
+    "item": "Westerås Gard",
+    "date": "2026-08-31",
+    "location": "Bygstad/Sunnfjord area, Norway"
+  },
+  {
+    "category": "days_out",
+    "item": "Storseter Falls",
+    "date": "2026-08-31",
+    "location": "Skjåk area, Norway"
+  },
+  {
+    "category": "food_drink",
+    "item": "Skeid Kro",
+    "date": "2026-08-31",
+    "location": "Skjåk area, Norway"
   }
 ]
