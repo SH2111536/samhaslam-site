@@ -382,5 +382,53 @@
     "item": "Skeid Kro",
     "date": "2026-08-31",
     "location": "Skjåk area, Norway"
+  },
+  {
+    "category": "music",
+    "item": "Cardinals — \"Masquerade\"",
+    "date": "2026-09-07",
+    "location": null
+  },
+  {
+    "category": "reading",
+    "item": "Massif by Garth Nix",
+    "date": "2026-09-07",
+    "location": null
+  },
+  {
+    "category": "screen",
+    "item": "Collision (HBO Max)",
+    "date": "2026-09-07",
+    "location": null
+  },
+  {
+    "category": "comedy",
+    "item": "Larry Dean: Hellbent tour",
+    "date": "2026-09-07",
+    "location": null
+  },
+  {
+    "category": "podcast",
+    "item": "Latent Space podcast",
+    "date": "2026-09-07",
+    "location": null
+  },
+  {
+    "category": "days_out",
+    "item": "Bitihorn hike",
+    "date": "2026-09-07",
+    "location": "Valdres/Nord-Aurdal area, Norway"
+  },
+  {
+    "category": "food_drink",
+    "item": "Valdres Gjestegard",
+    "date": "2026-09-07",
+    "location": "Valdres/Nord-Aurdal area, Norway"
+  },
+  {
+    "category": "food_drink",
+    "item": "Bolton Market Food Hall (matchday)",
+    "date": "2026-09-07",
+    "location": "Bolton (matchday)"
   }
 ]
