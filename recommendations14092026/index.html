@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recommendations — 14 Sep 2026 — Sam Haslam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+
+    --neutral-950: oklch(0.15 0.01 250);
+    --neutral-900: oklch(0.18 0.011 250);
+    --neutral-800: oklch(0.21 0.012 250);
+    --neutral-700: oklch(0.26 0.012 250);
+    --neutral-600: oklch(0.32 0.012 250);
+    --neutral-500: oklch(0.45 0.012 250);
+    --neutral-400: oklch(0.55 0.01 250);
+    --neutral-300: oklch(0.65 0.01 250);
+    --neutral-200: oklch(0.78 0.008 250);
+    --neutral-50:  oklch(0.96 0.004 250);
+
+    --accent-600: oklch(0.52 0.14 250);
+    --accent-500: oklch(0.62 0.14 250);
+    --accent-400: oklch(0.68 0.13 250);
+    --accent-300: oklch(0.76 0.10 250);
+
+    --bg-page: var(--neutral-950);
+    --bg-surface: var(--neutral-900);
+    --bg-surface-raised: var(--neutral-800);
+
+    --border-subtle: var(--neutral-700);
+    --border-default: var(--neutral-600);
+
+    --text-primary: var(--neutral-50);
+    --text-secondary: var(--neutral-300);
+    --text-muted: var(--neutral-400);
+    --text-faint: var(--neutral-500);
+
+    --font-display: 'Newsreader', Georgia, 'Times New Roman', serif;
+    --font-body: 'Public Sans', system-ui, -apple-system, sans-serif;
+
+    --duration-base: 200ms;
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg-page);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    padding: 5rem 1.5rem 6rem;
+  }
+
+  main {
+    width: 100%;
+    max-width: 760px;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  a { color: var(--accent-400); }
+  a:hover { color: var(--accent-300); }
+
+  .back-link {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .back-link:hover { color: var(--accent-300); }
+
+  .eyebrow {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent-400);
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(2rem, 1.6rem + 1.8vw, 2.75rem);
+    line-height: 1.15;
+  }
+
+  .lede {
+    margin: 0;
+    max-width: 60ch;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .recs {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rec {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.75rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .rec:first-child { padding-top: 0; }
+  .rec:last-child { border-bottom: none; }
+
+  .rec-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    background: var(--bg-surface-raised);
+    border: 1px solid var(--border-subtle);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent-300);
+  }
+
+  .rec-location {
+    font-size: 0.8125rem;
+    color: var(--text-faint);
+  }
+
+  .rec-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.375rem;
+    line-height: 1.3;
+    color: var(--text-primary);
+  }
+
+  .rec-body {
+    margin: 0;
+    max-width: var(--measure-prose, 640px);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  footer {
+    font-size: 0.8125rem;
+    color: var(--text-faint);
+  }
+</style>
+</head>
+<body>
+  <main>
+    <div>
+      <a class="back-link" href="../recommendations/index.html">&larr; All recommendations</a>
+    </div>
+
+    <div>
+      <span class="eyebrow">Weekly recommendations · 14 Sep 2026</span>
+      <h1>Back, and straight into it.</h1>
+      <p class="lede">
+        No overnight trips this week, which sounds restful until you look closer: Tuesday's a
+        there-and-back day to Birmingham, up before six, and Thursday's the same trick to London
+        and back via Wigan, home gone half eight. That's two genuinely brutal single-day trips
+        either side of an ordinary Wednesday. So this list is built for trains and exhaustion
+        first, and a proper quiet weekend back on home turf second.
+      </p>
+    </div>
+
+    <div class="recs">
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Music</span>
+        </div>
+        <h2 class="rec-title">Sports Team</h2>
+        <p class="rec-body">
+          Britrock with a wink, new material out this month — big choruses, minimal pretension,
+          built for exactly the kind of six-a.m. platform standing you've got coming on Thursday.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Reading</span>
+        </div>
+        <h2 class="rec-title">Crimson in Quietus — Eugen Bacon</h2>
+        <p class="rec-body">
+          Cyberpunk with teeth: an assassin sent after "lifers," the ultra-wealthy who've bought
+          their way out of dying. Dark, inventive, and short enough to actually finish across two
+          long train days rather than abandoning at chapter three.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Screen</span>
+        </div>
+        <h2 class="rec-title">Below (Netflix)</h2>
+        <p class="rec-body">
+          Josh Hartnett as a Newfoundland fisherman whose father died decades ago under
+          mysterious circumstances, now facing something unexplained out at sea. Moody, cold,
+          atmospheric — six episodes, which is about the right size for a genuinely tired week.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Comedy</span>
+        </div>
+        <h2 class="rec-title">Stavros Halkias: Uncle Stav</h2>
+        <p class="rec-body">
+          New Netflix special, out this week — no ticket, no venue, no getting dressed. Given
+          the week you've got, "funny thing that comes to you" beats "funny thing you travel to"
+          on every count.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Podcast</span>
+        </div>
+        <h2 class="rec-title">Money Trauma</h2>
+        <p class="rec-body">
+          A newer podcast digging into modern anxieties about wealth — thoughtful rather than
+          preachy, and oddly well-suited to someone who's a saver at heart but keeps having to
+          talk himself into spending on the good stuff. Good long-train-journey thinking
+          material.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Food &amp; drink</span>
+          <span class="rec-location">Chorley area</span>
+        </div>
+        <h2 class="rec-title">Barolo Bar &amp; Restaurant, Chorley</h2>
+        <p class="rec-body">
+          Cosy, unhurried, properly Italian — the sort of place that suits collapsing into a
+          chair after two exhausting commutes rather than one requiring conversation-worthy
+          effort. Good candidate for Friday night.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Days out</span>
+          <span class="rec-location">Chorley area</span>
+        </div>
+        <h2 class="rec-title">Anglezarke Reservoir loop</h2>
+        <p class="rec-body">
+          Waterside and woodland, farmland in between, nothing steep or demanding — precisely
+          the register you'll want after a week of platforms and delay notifications. Morris
+          will approve.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Days out</span>
+          <span class="rec-location">Chorley area</span>
+        </div>
+        <h2 class="rec-title">Cuerden Valley Park</h2>
+        <p class="rec-body">
+          More nature reserve than park, dog-friendly, with a decent café at the end of it — a
+          gentler alternative to Anglezarke if the weekend calls for something even more
+          low-key. Either works; take whichever one the weather allows.
+        </p>
+      </div>
+    </div>
+
+    <footer>&copy; 2026 Sam Haslam</footer>
+  </main>
+</body>
+</html>
