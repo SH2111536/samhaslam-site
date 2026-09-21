@@ -478,5 +478,53 @@
     "item": "Cuerden Valley Park",
     "date": "2026-09-14",
     "location": "Chorley area, Lancashire"
+  },
+  {
+    "category": "music",
+    "item": "Benjamin Francis Leftwich",
+    "date": "2026-09-21",
+    "location": null
+  },
+  {
+    "category": "reading",
+    "item": "I Have No Mouth, and I Must Scream (novella reissue) by Harlan Ellison",
+    "date": "2026-09-21",
+    "location": null
+  },
+  {
+    "category": "screen",
+    "item": "Outlander: Blood of My Blood",
+    "date": "2026-09-21",
+    "location": null
+  },
+  {
+    "category": "podcast",
+    "item": "The Vergecast",
+    "date": "2026-09-21",
+    "location": null
+  },
+  {
+    "category": "food_drink",
+    "item": "Dishoom, Euston",
+    "date": "2026-09-21",
+    "location": "London (Euston)"
+  },
+  {
+    "category": "food_drink",
+    "item": "Volta, Burton Road",
+    "date": "2026-09-21",
+    "location": "West Didsbury, Manchester"
+  },
+  {
+    "category": "days_out",
+    "item": "Burton Road shops + Marie Louise Gardens",
+    "date": "2026-09-21",
+    "location": "West Didsbury/Didsbury, Manchester"
+  },
+  {
+    "category": "food_drink",
+    "item": "The Red Lion, Wheelton",
+    "date": "2026-09-21",
+    "location": "Wheelton, Chorley"
   }
 ]
