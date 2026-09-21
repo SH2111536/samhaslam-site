@@ -430,5 +430,53 @@
     "item": "Bolton Market Food Hall (matchday)",
     "date": "2026-09-07",
     "location": "Bolton (matchday)"
+  },
+  {
+    "category": "music",
+    "item": "Sports Team",
+    "date": "2026-09-14",
+    "location": null
+  },
+  {
+    "category": "reading",
+    "item": "Crimson in Quietus by Eugen Bacon",
+    "date": "2026-09-14",
+    "location": null
+  },
+  {
+    "category": "screen",
+    "item": "Below (Netflix)",
+    "date": "2026-09-14",
+    "location": null
+  },
+  {
+    "category": "comedy",
+    "item": "Stavros Halkias: Uncle Stav (Netflix)",
+    "date": "2026-09-14",
+    "location": null
+  },
+  {
+    "category": "podcast",
+    "item": "Money Trauma",
+    "date": "2026-09-14",
+    "location": null
+  },
+  {
+    "category": "food_drink",
+    "item": "Barolo Bar & Restaurant, Chorley",
+    "date": "2026-09-14",
+    "location": "Chorley area, Lancashire"
+  },
+  {
+    "category": "days_out",
+    "item": "Anglezarke Reservoir loop",
+    "date": "2026-09-14",
+    "location": "Chorley area, Lancashire"
+  },
+  {
+    "category": "days_out",
+    "item": "Cuerden Valley Park",
+    "date": "2026-09-14",
+    "location": "Chorley area, Lancashire"
   }
 ]
