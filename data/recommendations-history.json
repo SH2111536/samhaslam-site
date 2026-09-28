@@ -526,5 +526,53 @@
     "item": "The Red Lion, Wheelton",
     "date": "2026-09-21",
     "location": "Wheelton, Chorley"
+  },
+  {
+    "category": "music",
+    "item": "Anyhow",
+    "date": "2026-09-28",
+    "location": null
+  },
+  {
+    "category": "reading",
+    "item": "The Fires of December by Brandon Sanderson",
+    "date": "2026-09-28",
+    "location": null
+  },
+  {
+    "category": "screen",
+    "item": "Brothers (Apple TV)",
+    "date": "2026-09-28",
+    "location": null
+  },
+  {
+    "category": "comedy",
+    "item": "Lucy Beaumont, surreal stand-up tour",
+    "date": "2026-09-28",
+    "location": null
+  },
+  {
+    "category": "podcast",
+    "item": "Football Ramble",
+    "date": "2026-09-28",
+    "location": null
+  },
+  {
+    "category": "food_drink",
+    "item": "Sister Moon, Treehouse Hotel",
+    "date": "2026-09-28",
+    "location": "Manchester city centre"
+  },
+  {
+    "category": "days_out",
+    "item": "Birkacre Garden Centre",
+    "date": "2026-09-28",
+    "location": "Chorley area, Lancashire"
+  },
+  {
+    "category": "food_drink",
+    "item": "HOME, Buckshaw Village",
+    "date": "2026-09-28",
+    "location": "Chorley area, Lancashire"
   }
 ]
