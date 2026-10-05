@@ -478,5 +478,149 @@
     "item": "Cuerden Valley Park",
     "date": "2026-09-14",
     "location": "Chorley area, Lancashire"
+  },
+  {
+    "category": "music",
+    "item": "Benjamin Francis Leftwich",
+    "date": "2026-09-21",
+    "location": null
+  },
+  {
+    "category": "reading",
+    "item": "I Have No Mouth, and I Must Scream (novella reissue) by Harlan Ellison",
+    "date": "2026-09-21",
+    "location": null
+  },
+  {
+    "category": "screen",
+    "item": "Outlander: Blood of My Blood",
+    "date": "2026-09-21",
+    "location": null
+  },
+  {
+    "category": "podcast",
+    "item": "The Vergecast",
+    "date": "2026-09-21",
+    "location": null
+  },
+  {
+    "category": "food_drink",
+    "item": "Dishoom, Euston",
+    "date": "2026-09-21",
+    "location": "London (Euston)"
+  },
+  {
+    "category": "food_drink",
+    "item": "Volta, Burton Road",
+    "date": "2026-09-21",
+    "location": "West Didsbury, Manchester"
+  },
+  {
+    "category": "days_out",
+    "item": "Burton Road shops + Marie Louise Gardens",
+    "date": "2026-09-21",
+    "location": "West Didsbury/Didsbury, Manchester"
+  },
+  {
+    "category": "food_drink",
+    "item": "The Red Lion, Wheelton",
+    "date": "2026-09-21",
+    "location": "Wheelton, Chorley"
+  },
+  {
+    "category": "music",
+    "item": "Anyhow",
+    "date": "2026-09-28",
+    "location": null
+  },
+  {
+    "category": "reading",
+    "item": "The Fires of December by Brandon Sanderson",
+    "date": "2026-09-28",
+    "location": null
+  },
+  {
+    "category": "screen",
+    "item": "Brothers (Apple TV)",
+    "date": "2026-09-28",
+    "location": null
+  },
+  {
+    "category": "comedy",
+    "item": "Lucy Beaumont, surreal stand-up tour",
+    "date": "2026-09-28",
+    "location": null
+  },
+  {
+    "category": "podcast",
+    "item": "Football Ramble",
+    "date": "2026-09-28",
+    "location": null
+  },
+  {
+    "category": "food_drink",
+    "item": "Sister Moon, Treehouse Hotel",
+    "date": "2026-09-28",
+    "location": "Manchester city centre"
+  },
+  {
+    "category": "days_out",
+    "item": "Birkacre Garden Centre",
+    "date": "2026-09-28",
+    "location": "Chorley area, Lancashire"
+  },
+  {
+    "category": "food_drink",
+    "item": "HOME, Buckshaw Village",
+    "date": "2026-09-28",
+    "location": "Chorley area, Lancashire"
+  },
+  {
+    "category": "music",
+    "item": "Slow Fiction — \"dollhouse\"",
+    "date": "2026-10-05",
+    "location": null
+  },
+  {
+    "category": "reading",
+    "item": "The Scarlet Ball by Nghi Vo",
+    "date": "2026-10-05",
+    "location": null
+  },
+  {
+    "category": "screen",
+    "item": "Slow Horses, Season 6",
+    "date": "2026-10-05",
+    "location": null
+  },
+  {
+    "category": "podcast",
+    "item": "The Secret World of Roald Dahl",
+    "date": "2026-10-05",
+    "location": null
+  },
+  {
+    "category": "food_drink",
+    "item": "Aux Bon Enfants, Cannes",
+    "date": "2026-10-05",
+    "location": "Cannes, France"
+  },
+  {
+    "category": "food_drink",
+    "item": "Astoux et Brun, Cannes",
+    "date": "2026-10-05",
+    "location": "Cannes, France"
+  },
+  {
+    "category": "days_out",
+    "item": "Île Saint-Honorat",
+    "date": "2026-10-05",
+    "location": "Cannes, France"
+  },
+  {
+    "category": "food_drink",
+    "item": "The Man & Scythe, Bolton (matchday)",
+    "date": "2026-10-05",
+    "location": "Bolton (matchday)"
   }
 ]
