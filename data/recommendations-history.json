@@ -574,5 +574,53 @@
     "item": "HOME, Buckshaw Village",
     "date": "2026-09-28",
     "location": "Chorley area, Lancashire"
+  },
+  {
+    "category": "music",
+    "item": "Slow Fiction — \"dollhouse\"",
+    "date": "2026-10-05",
+    "location": null
+  },
+  {
+    "category": "reading",
+    "item": "The Scarlet Ball by Nghi Vo",
+    "date": "2026-10-05",
+    "location": null
+  },
+  {
+    "category": "screen",
+    "item": "Slow Horses, Season 6",
+    "date": "2026-10-05",
+    "location": null
+  },
+  {
+    "category": "podcast",
+    "item": "The Secret World of Roald Dahl",
+    "date": "2026-10-05",
+    "location": null
+  },
+  {
+    "category": "food_drink",
+    "item": "Aux Bon Enfants, Cannes",
+    "date": "2026-10-05",
+    "location": "Cannes, France"
+  },
+  {
+    "category": "food_drink",
+    "item": "Astoux et Brun, Cannes",
+    "date": "2026-10-05",
+    "location": "Cannes, France"
+  },
+  {
+    "category": "days_out",
+    "item": "Île Saint-Honorat",
+    "date": "2026-10-05",
+    "location": "Cannes, France"
+  },
+  {
+    "category": "food_drink",
+    "item": "The Man & Scythe, Bolton (matchday)",
+    "date": "2026-10-05",
+    "location": "Bolton (matchday)"
   }
 ]
