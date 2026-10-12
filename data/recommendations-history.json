@@ -622,5 +622,53 @@
     "item": "The Man & Scythe, Bolton (matchday)",
     "date": "2026-10-05",
     "location": "Bolton (matchday)"
+  },
+  {
+    "category": "music",
+    "item": "Teenage Fanclub — \"Do Not Dare To Dream\"",
+    "date": "2026-10-12",
+    "location": null
+  },
+  {
+    "category": "reading",
+    "item": "A Wall Is Also a Road by Annalee Newitz",
+    "date": "2026-10-12",
+    "location": null
+  },
+  {
+    "category": "screen",
+    "item": "The Lowdown, Season 2",
+    "date": "2026-10-12",
+    "location": null
+  },
+  {
+    "category": "podcast",
+    "item": "Hidden Brain",
+    "date": "2026-10-12",
+    "location": null
+  },
+  {
+    "category": "food_drink",
+    "item": "Yatri, Euston",
+    "date": "2026-10-12",
+    "location": "London (Euston)"
+  },
+  {
+    "category": "food_drink",
+    "item": "Lucky Cat, Manchester",
+    "date": "2026-10-12",
+    "location": "Manchester city centre"
+  },
+  {
+    "category": "food_drink",
+    "item": "The Spinners at Cowling",
+    "date": "2026-10-12",
+    "location": "Chorley area, Lancashire"
+  },
+  {
+    "category": "days_out",
+    "item": "Duxbury Woods",
+    "date": "2026-10-12",
+    "location": "Chorley area, Lancashire"
   }
 ]

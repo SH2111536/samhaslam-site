@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recommendations — 12 Oct 2026 — Sam Haslam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+
+    --neutral-950: oklch(0.15 0.01 250);
+    --neutral-900: oklch(0.18 0.011 250);
+    --neutral-800: oklch(0.21 0.012 250);
+    --neutral-700: oklch(0.26 0.012 250);
+    --neutral-600: oklch(0.32 0.012 250);
+    --neutral-500: oklch(0.45 0.012 250);
+    --neutral-400: oklch(0.55 0.01 250);
+    --neutral-300: oklch(0.65 0.01 250);
+    --neutral-200: oklch(0.78 0.008 250);
+    --neutral-50:  oklch(0.96 0.004 250);
+
+    --accent-600: oklch(0.52 0.14 250);
+    --accent-500: oklch(0.62 0.14 250);
+    --accent-400: oklch(0.68 0.13 250);
+    --accent-300: oklch(0.76 0.10 250);
+
+    --bg-page: var(--neutral-950);
+    --bg-surface: var(--neutral-900);
+    --bg-surface-raised: var(--neutral-800);
+
+    --border-subtle: var(--neutral-700);
+    --border-default: var(--neutral-600);
+
+    --text-primary: var(--neutral-50);
+    --text-secondary: var(--neutral-300);
+    --text-muted: var(--neutral-400);
+    --text-faint: var(--neutral-500);
+
+    --font-display: 'Newsreader', Georgia, 'Times New Roman', serif;
+    --font-body: 'Public Sans', system-ui, -apple-system, sans-serif;
+
+    --duration-base: 200ms;
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg-page);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    padding: 5rem 1.5rem 6rem;
+  }
+
+  main {
+    width: 100%;
+    max-width: 760px;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  a { color: var(--accent-400); }
+  a:hover { color: var(--accent-300); }
+
+  .back-link {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .back-link:hover { color: var(--accent-300); }
+
+  .eyebrow {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent-400);
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(2rem, 1.6rem + 1.8vw, 2.75rem);
+    line-height: 1.15;
+  }
+
+  .lede {
+    margin: 0;
+    max-width: 60ch;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .recs {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rec {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.75rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .rec:first-child { padding-top: 0; }
+  .rec:last-child { border-bottom: none; }
+
+  .rec-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    background: var(--bg-surface-raised);
+    border: 1px solid var(--border-subtle);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent-300);
+  }
+
+  .rec-location {
+    font-size: 0.8125rem;
+    color: var(--text-faint);
+  }
+
+  .rec-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.375rem;
+    line-height: 1.3;
+    color: var(--text-primary);
+  }
+
+  .rec-body {
+    margin: 0;
+    max-width: var(--measure-prose, 640px);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  footer {
+    font-size: 0.8125rem;
+    color: var(--text-faint);
+  }
+</style>
+</head>
+<body>
+  <main>
+    <div>
+      <a class="back-link" href="../recommendations/index.html">&larr; All recommendations</a>
+    </div>
+
+    <div>
+      <span class="eyebrow">Weekly recommendations · 12 Oct 2026</span>
+      <h1>Two Londons, one Phil Wang.</h1>
+      <p class="lede">
+        A rough one on paper: London and back Tuesday, London and back again Thursday, both the
+        kind of day that starts before six and doesn't end until gone seven. Saturday's a bit of
+        local tech support for someone who needs it, and Sunday you're off to the Opera House
+        for Phil Wang — already sorted, so this list builds around it rather than competing with
+        it.
+      </p>
+    </div>
+
+    <div class="recs">
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Music</span>
+        </div>
+        <h2 class="rec-title">Teenage Fanclub — "Do Not Dare To Dream"</h2>
+        <p class="rec-body">
+          Decades into it and still writing a proper melody — gentle, unhurried guitar pop that
+          won't ask much of you at six in the morning on a cold platform. Reliable in the way
+          only a band this experienced can be.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Reading</span>
+        </div>
+        <h2 class="rec-title">A Wall Is Also a Road — Annalee Newitz</h2>
+        <p class="rec-body">
+          Standalone science fiction from a writer who spends as much time thinking about real
+          technology as imagined futures — close enough to the day job to be interesting, far
+          enough from it to actually switch off. Built for two long train days.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Screen</span>
+        </div>
+        <h2 class="rec-title">The Lowdown, Season 2</h2>
+        <p class="rec-body">
+          Billing itself as comedic drama rather than picking one or the other — based loosely
+          on a real Tulsa investigator, sharp enough to hold attention after a thirteen-hour day
+          that started with a train to Crewe.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Podcast</span>
+        </div>
+        <h2 class="rec-title">Hidden Brain</h2>
+        <p class="rec-body">
+          Routinely rated the best science podcast going, for good reason — the kind of thing
+          that makes a dull commute feel like it's doing something for you. A proper change of
+          register from the usual AI/football rotation.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Food &amp; drink</span>
+          <span class="rec-location">London, Euston</span>
+        </div>
+        <h2 class="rec-title">Yatri, Euston</h2>
+        <p class="rec-body">
+          A different Euston stop from last time — reliably excellent Indian cooking on Chalton
+          Street, a few minutes' walk from the station. Good for either of this week's two trips,
+          should the timing allow.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Food &amp; drink</span>
+          <span class="rec-location">Manchester</span>
+        </div>
+        <h2 class="rec-title">Lucky Cat</h2>
+        <p class="rec-body">
+          Gordon Ramsay's pan-Asian spot on King Street, with a proper pre-theatre menu running
+          5–7pm — a two-minute reason to arrive in Manchester a little early on Sunday, direct
+          hit on your favourite cuisine before Phil Wang does his best to ruin your evening in
+          the good way.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Food &amp; drink</span>
+          <span class="rec-location">Chorley area</span>
+        </div>
+        <h2 class="rec-title">The Spinners at Cowling</h2>
+        <p class="rec-body">
+          Consistently well-reviewed, properly local — the sort of place that doesn't need two
+          brutal commute days as an excuse, but will happily serve as the reward for surviving
+          them.
+        </p>
+      </div>
+
+      <div class="rec">
+        <div class="rec-meta">
+          <span class="tag">Days out</span>
+          <span class="rec-location">Chorley area</span>
+        </div>
+        <h2 class="rec-title">Duxbury Woods</h2>
+        <p class="rec-body">
+          A gentle riverside walk along the Yarrow, woodland the whole way — exactly the sort of
+          low-effort Saturday morning that fits around an afternoon of tech support and doesn't
+          ask anything of legs that did two London round trips already this week.
+        </p>
+      </div>
+    </div>
+
+    <footer>&copy; 2026 Sam Haslam</footer>
+  </main>
+</body>
+</html>
