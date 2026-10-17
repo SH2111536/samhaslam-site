@@ -99,12 +99,8 @@
 
   .options {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 1.25rem;
-  }
-
-  @media (max-width: 620px) {
-    .options { grid-template-columns: 1fr; }
   }
 
   .option {
@@ -190,34 +186,43 @@
   <main>
     <div>
       <span class="eyebrow">Sam Haslam</span>
-      <h1>Two sides of the same person.</h1>
+      <h1>Contents.</h1>
       <p class="lede">
-        Risk &amp; AI governance writing on one side, side projects for friends and family on the
-        other. Pick where you'd like to go.
+        Everything on the site, in one place. Pick where you'd like to go.
       </p>
     </div>
 
-    <div class="options">
-      <a class="option" href="professional/index.html">
-        <span class="option-tag">Risk · Governance · AI</span>
-        <h2 class="option-title">Professional</h2>
-        <p class="option-desc">Writing, talks and background on AI, technology and enterprise risk.</p>
+    <nav class="options" aria-label="Site contents">
+      <a class="option" href="../wc2026/index.html">
+        <span class="option-tag">Football</span>
+        <h2 class="option-title">2026 World Cup</h2>
+        <p class="option-desc">The family sweepstake — draws, standings and who's still in it.</p>
         <span class="option-cta">
-          Enter
+          Open
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
         </span>
       </a>
 
-      <a class="option" href="../wc2026/index.html">
-        <span class="option-tag">Side project</span>
-        <h2 class="option-title">Personal</h2>
-        <p class="option-desc">Family &amp; friends stuff — right now, the 2026 World Cup sweepstake.</p>
+      <a class="option" href="../bwfc2627/index.html">
+        <span class="option-tag">Football</span>
+        <h2 class="option-title">Bolton Wanderers 2026/27</h2>
+        <p class="option-desc">Every Championship fixture, mapped from the Toughsheet.</p>
         <span class="option-cta">
-          Enter
+          Open
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
         </span>
       </a>
-    </div>
+
+      <a class="option" href="../villagehall/index.html">
+        <span class="option-tag">Community</span>
+        <h2 class="option-title">Heapey &amp; Wheelton Village Hall</h2>
+        <p class="option-desc">A mock-up site for the village hall.</p>
+        <span class="option-cta">
+          Open
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+        </span>
+      </a>
+    </nav>
 
     <footer>&copy; 2026 Sam Haslam</footer>
   </main>
