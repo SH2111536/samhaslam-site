@@ -1,0 +1,350 @@
+{
+  "slug": "us-states",
+  "title": "The fifty states.",
+  "eyebrow": "Compendium · Geography",
+  "lede": "Every American state and its capital, which is often not the city you'd guess. Learn them a region at a time, hide one side to test myself, and watch the map fill in.",
+  "noun": {
+    "one": "state",
+    "many": "states"
+  },
+  "numerals": "none",
+  "card": {
+    "tag": "Geography",
+    "title": "American states",
+    "desc": "All fifty states and their capitals, region by region, with a map that fills in as I learn.",
+    "icon": "map",
+    "order": 3
+  },
+  "map": {
+    "source": "us-states",
+    "key": "state"
+  },
+  "fields": [
+    {
+      "key": "state",
+      "label": "State",
+      "plural": "states",
+      "role": "title",
+      "typeable": true
+    },
+    {
+      "key": "capital",
+      "label": "Capital",
+      "plural": "capitals",
+      "role": "subtitle",
+      "typeable": true
+    }
+  ],
+  "hideable": [
+    "state",
+    "capital"
+  ],
+  "questions": [
+    {
+      "from": "state",
+      "to": "capital",
+      "ask": "What's the capital?"
+    },
+    {
+      "from": "capital",
+      "to": "state",
+      "ask": "Which state is it the capital of?"
+    }
+  ],
+  "match": [
+    {
+      "left": "state",
+      "right": "capital"
+    }
+  ],
+  "groups": [
+    {
+      "key": "northeast",
+      "label": "Northeast",
+      "short": "Northeast",
+      "note": "From Maine down to Maryland: small states, packed in tight."
+    },
+    {
+      "key": "southeast",
+      "label": "Southeast",
+      "short": "Southeast",
+      "note": "Virginia round to Louisiana, and inland to Kentucky and Arkansas."
+    },
+    {
+      "key": "midwest",
+      "label": "Midwest",
+      "short": "Midwest",
+      "note": "The Great Lakes and the Great Plains: Ohio out to the Dakotas."
+    },
+    {
+      "key": "southwest",
+      "label": "Southwest",
+      "short": "Southwest",
+      "note": "Only four, but they cover a great deal of ground."
+    },
+    {
+      "key": "west",
+      "label": "West",
+      "short": "West",
+      "note": "The Rockies to the Pacific, plus Alaska and Hawaii."
+    }
+  ],
+  "items": [
+    {
+      "state": "Connecticut",
+      "capital": "Hartford",
+      "group": "northeast"
+    },
+    {
+      "state": "Delaware",
+      "capital": "Dover",
+      "group": "northeast"
+    },
+    {
+      "state": "Maine",
+      "capital": "Augusta",
+      "group": "northeast"
+    },
+    {
+      "state": "Maryland",
+      "capital": "Annapolis",
+      "group": "northeast"
+    },
+    {
+      "state": "Massachusetts",
+      "capital": "Boston",
+      "group": "northeast"
+    },
+    {
+      "state": "New Hampshire",
+      "capital": "Concord",
+      "group": "northeast"
+    },
+    {
+      "state": "New Jersey",
+      "capital": "Trenton",
+      "group": "northeast"
+    },
+    {
+      "state": "New York",
+      "capital": "Albany",
+      "group": "northeast"
+    },
+    {
+      "state": "Pennsylvania",
+      "capital": "Harrisburg",
+      "group": "northeast"
+    },
+    {
+      "state": "Rhode Island",
+      "capital": "Providence",
+      "group": "northeast"
+    },
+    {
+      "state": "Vermont",
+      "capital": "Montpelier",
+      "group": "northeast"
+    },
+    {
+      "state": "Alabama",
+      "capital": "Montgomery",
+      "group": "southeast"
+    },
+    {
+      "state": "Arkansas",
+      "capital": "Little Rock",
+      "group": "southeast"
+    },
+    {
+      "state": "Florida",
+      "capital": "Tallahassee",
+      "group": "southeast"
+    },
+    {
+      "state": "Georgia",
+      "capital": "Atlanta",
+      "group": "southeast"
+    },
+    {
+      "state": "Kentucky",
+      "capital": "Frankfort",
+      "group": "southeast"
+    },
+    {
+      "state": "Louisiana",
+      "capital": "Baton Rouge",
+      "group": "southeast"
+    },
+    {
+      "state": "Mississippi",
+      "capital": "Jackson",
+      "group": "southeast"
+    },
+    {
+      "state": "North Carolina",
+      "capital": "Raleigh",
+      "group": "southeast"
+    },
+    {
+      "state": "South Carolina",
+      "capital": "Columbia",
+      "group": "southeast"
+    },
+    {
+      "state": "Tennessee",
+      "capital": "Nashville",
+      "group": "southeast"
+    },
+    {
+      "state": "Virginia",
+      "capital": "Richmond",
+      "group": "southeast"
+    },
+    {
+      "state": "West Virginia",
+      "capital": "Charleston",
+      "group": "southeast"
+    },
+    {
+      "state": "Illinois",
+      "capital": "Springfield",
+      "group": "midwest"
+    },
+    {
+      "state": "Indiana",
+      "capital": "Indianapolis",
+      "group": "midwest"
+    },
+    {
+      "state": "Iowa",
+      "capital": "Des Moines",
+      "group": "midwest"
+    },
+    {
+      "state": "Kansas",
+      "capital": "Topeka",
+      "group": "midwest"
+    },
+    {
+      "state": "Michigan",
+      "capital": "Lansing",
+      "group": "midwest"
+    },
+    {
+      "state": "Minnesota",
+      "capital": "Saint Paul",
+      "group": "midwest",
+      "accept": {
+        "capital": [
+          "St Paul",
+          "St. Paul"
+        ]
+      }
+    },
+    {
+      "state": "Missouri",
+      "capital": "Jefferson City",
+      "group": "midwest"
+    },
+    {
+      "state": "Nebraska",
+      "capital": "Lincoln",
+      "group": "midwest"
+    },
+    {
+      "state": "North Dakota",
+      "capital": "Bismarck",
+      "group": "midwest"
+    },
+    {
+      "state": "Ohio",
+      "capital": "Columbus",
+      "group": "midwest"
+    },
+    {
+      "state": "South Dakota",
+      "capital": "Pierre",
+      "group": "midwest"
+    },
+    {
+      "state": "Wisconsin",
+      "capital": "Madison",
+      "group": "midwest"
+    },
+    {
+      "state": "Arizona",
+      "capital": "Phoenix",
+      "group": "southwest"
+    },
+    {
+      "state": "New Mexico",
+      "capital": "Santa Fe",
+      "group": "southwest"
+    },
+    {
+      "state": "Oklahoma",
+      "capital": "Oklahoma City",
+      "group": "southwest"
+    },
+    {
+      "state": "Texas",
+      "capital": "Austin",
+      "group": "southwest"
+    },
+    {
+      "state": "Alaska",
+      "capital": "Juneau",
+      "group": "west"
+    },
+    {
+      "state": "California",
+      "capital": "Sacramento",
+      "group": "west"
+    },
+    {
+      "state": "Colorado",
+      "capital": "Denver",
+      "group": "west"
+    },
+    {
+      "state": "Hawaii",
+      "capital": "Honolulu",
+      "group": "west"
+    },
+    {
+      "state": "Idaho",
+      "capital": "Boise",
+      "group": "west"
+    },
+    {
+      "state": "Montana",
+      "capital": "Helena",
+      "group": "west"
+    },
+    {
+      "state": "Nevada",
+      "capital": "Carson City",
+      "group": "west"
+    },
+    {
+      "state": "Oregon",
+      "capital": "Salem",
+      "group": "west"
+    },
+    {
+      "state": "Utah",
+      "capital": "Salt Lake City",
+      "group": "west"
+    },
+    {
+      "state": "Washington",
+      "capital": "Olympia",
+      "group": "west"
+    },
+    {
+      "state": "Wyoming",
+      "capital": "Cheyenne",
+      "group": "west"
+    }
+  ]
+}

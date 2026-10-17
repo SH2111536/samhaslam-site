@@ -1,0 +1,75 @@
+{
+  "slug": "artists",
+  "title": "Artists and their works.",
+  "eyebrow": "Compendium · Art",
+  "lede": "Six artists and eleven of the most famous images ever made: who made what, the style each is known for, and roughly when they lived.",
+  "noun": { "one": "work", "many": "works" },
+  "numerals": "none",
+  "card": {
+    "tag": "Art",
+    "title": "Artists and their works",
+    "desc": "Leonardo to Dalí: eleven famous works, their artists, styles and centuries.",
+    "icon": "palette",
+    "order": 4
+  },
+  "stats": [
+    { "value": "6", "label": "artists" }
+  ],
+  "fields": [
+    { "key": "work", "label": "Work", "plural": "works", "role": "title", "typeable": true },
+    { "key": "artist", "label": "Artist", "plural": "artists", "role": "subtitle", "typeable": true },
+    { "key": "style", "label": "Style", "role": "meta" },
+    { "key": "lived", "label": "Lived", "role": "meta" },
+    { "key": "era", "label": "Century", "role": "meta" }
+  ],
+  "hideable": ["work", "artist"],
+  "questions": [
+    { "from": "image", "to": "work", "ask": "Which work is this?" },
+    { "from": "work", "to": "artist", "ask": "Who made it?" },
+    { "from": "artist", "to": "work", "ask": "Which of these is theirs?" },
+    { "from": "style", "to": "artist", "ask": "Whose style is this?" },
+    { "from": "artist", "to": "style", "ask": "What style are they known for?" },
+    { "from": "artist", "to": "era", "ask": "When did they live?" }
+  ],
+  "match": [
+    { "left": "work", "right": "artist" },
+    { "left": "artist", "right": "style" }
+  ],
+  "items": [
+    { "work": "Mona Lisa", "artist": "Leonardo da Vinci", "style": "High Renaissance", "lived": "1452–1519", "era": "15th–16th century",
+      "accept": { "artist": ["Leonardo", "Da Vinci"], "work": ["La Gioconda"] },
+      "hook": "Stolen from the Louvre in 1911 by a handyman who walked out with it under his smock. Two years missing made it the most famous painting on earth." },
+    { "work": "The Last Supper", "artist": "Leonardo da Vinci", "style": "High Renaissance", "lived": "1452–1519", "era": "15th–16th century",
+      "accept": { "artist": ["Leonardo", "Da Vinci"] },
+      "hook": "Painted on a monastery wall in Milan with an experimental technique that began flaking within his own lifetime." },
+    { "work": "Vitruvian Man", "artist": "Leonardo da Vinci", "style": "High Renaissance", "lived": "1452–1519", "era": "15th–16th century",
+      "accept": { "artist": ["Leonardo", "Da Vinci"], "work": ["Vetruvian Man"] },
+      "hook": "A drawing, not a painting: one man fitted into a circle and a square, after the Roman architect Vitruvius, who reckoned the ideal body fits both." },
+    { "work": "Water Lilies", "artist": "Claude Monet", "style": "Impressionism", "lived": "1840–1926", "era": "19th–20th century",
+      "accept": { "artist": ["Monet"], "work": ["Water Lillies", "Nympheas"] },
+      "hook": "Not one painting but about 250, all of the pond he dug in his own garden at Giverny." },
+    { "work": "Impression, Sunrise", "artist": "Claude Monet", "style": "Impressionism", "lived": "1840–1926", "era": "19th–20th century",
+      "accept": { "artist": ["Monet"] },
+      "hook": "A critic sneered at the title and called the whole group “Impressionists”. The name stuck, which must have rankled." },
+    { "work": "Self-Portrait with Bandaged Ear", "artist": "Vincent van Gogh", "style": "Post-Impressionism", "lived": "1853–1890", "era": "19th century",
+      "accept": { "artist": ["Van Gogh", "Vincent"], "work": ["Self Portrait", "Self-Portrait", "Self Portrait with Bandaged Ear"] },
+      "hook": "Painted weeks after he cut off part of his left ear. The bandage is on the right because he painted himself in a mirror." },
+    { "work": "Sunflowers", "artist": "Vincent van Gogh", "style": "Post-Impressionism", "lived": "1853–1890", "era": "19th century",
+      "accept": { "artist": ["Van Gogh", "Vincent"] },
+      "hook": "Painted to brighten the spare room in Arles for his friend Gauguin's visit. The visit ended with the ear." },
+    { "work": "The Starry Night", "artist": "Vincent van Gogh", "style": "Post-Impressionism", "lived": "1853–1890", "era": "19th century",
+      "accept": { "artist": ["Van Gogh", "Vincent"] },
+      "hook": "The view from his window at the asylum in Saint-Rémy, painted from memory in daylight. The swirls were his idea." },
+    { "work": "Guernica", "artist": "Pablo Picasso", "style": "Cubism", "lived": "1881–1973", "era": "19th–20th century",
+      "imageNote": "Still in copyright",
+      "accept": { "artist": ["Picasso"] },
+      "hook": "His answer to the 1937 bombing of the Basque town, painted in black, white and grey like a newspaper photograph." },
+    { "work": "American Gothic", "artist": "Grant Wood", "style": "Regionalism", "lived": "1891–1942", "era": "19th–20th century",
+      "accept": { "artist": ["Wood"] },
+      "hook": "Not a farmer and his wife but the artist's sister and his dentist, posed before a house with a Gothic window." },
+    { "work": "The Persistence of Memory", "artist": "Salvador Dalí", "style": "Surrealism", "lived": "1904–1989", "era": "20th century",
+      "imageNote": "Still in copyright",
+      "accept": { "artist": ["Dali", "Dalí", "Salvador Dali"] },
+      "hook": "Dalí said the melting clocks came to him while looking at a Camembert going runny in the heat. The canvas is barely bigger than a sheet of A4." }
+  ]
+}
