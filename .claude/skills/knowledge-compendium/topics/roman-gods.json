@@ -1,0 +1,64 @@
+{
+  "slug": "roman-gods",
+  "title": "The Roman gods.",
+  "eyebrow": "Compendium · Mythology",
+  "lede": "Fifteen gods and what each of them looked after. Browse them, hide half of each card to test myself, then let the quiz find out what actually stuck.",
+  "noun": { "one": "god", "many": "gods" },
+  "numerals": "roman",
+  "card": {
+    "tag": "Mythology",
+    "title": "Roman gods",
+    "desc": "Fifteen gods, the areas they ruled over, and the symbols that give them away.",
+    "icon": "zap",
+    "order": 1
+  },
+  "fields": [
+    { "key": "name", "label": "God", "plural": "gods", "role": "title", "typeable": true },
+    { "key": "domain", "label": "Area", "plural": "areas", "role": "subtitle" },
+    { "key": "symbol", "label": "Symbol", "role": "meta" }
+  ],
+  "hideable": ["name", "domain"],
+  "questions": [
+    { "from": "domain", "to": "name", "ask": "Which god is this?" },
+    { "from": "name", "to": "domain", "ask": "What did they rule over?" },
+    { "from": "symbol", "to": "name", "ask": "Whose symbol is this?" }
+  ],
+  "match": [
+    { "left": "name", "right": "domain" },
+    { "left": "name", "right": "symbol" }
+  ],
+  "items": [
+    { "name": "Jupiter", "domain": "King of the gods; sky and thunder", "symbol": "Eagle and thunderbolt", "icon": "zap",
+      "hook": "The biggest planet, for the biggest ego. When someone says “By Jove!”, that's him too." },
+    { "name": "Neptune", "domain": "The sea, earthquakes and horses", "symbol": "Trident", "icon": "waves",
+      "hook": "The deep-blue planet out at the edge, where the sea goes on for ever." },
+    { "name": "Pluto", "domain": "The underworld and its riches", "symbol": "Cerberus, the three-headed dog", "icon": "gem",
+      "accept": { "name": ["Dis Pater", "Dis"] },
+      "hook": "The far-off, cold, dark one, much like his planet. And the gold and silver all lie underground with him." },
+    { "name": "Juno", "domain": "Queen of the gods; marriage and childbirth", "symbol": "Peacock", "icon": "crown",
+      "hook": "June is still the favourite month for weddings. Her department." },
+    { "name": "Ceres", "domain": "Grain, harvest and farming", "symbol": "Sheaf of wheat", "icon": "wheat",
+      "hook": "Every bowl of cereal is, strictly speaking, an offering." },
+    { "name": "Vesta", "domain": "The hearth, home and family", "symbol": "Eternal flame", "icon": "flame",
+      "hook": "The Vestal Virgins' entire job was making sure her fire never went out. No pressure." },
+    { "name": "Mars", "domain": "War", "symbol": "Spear and wolf", "icon": "sword",
+      "hook": "March was when the legions went back on campaign. The red planet is dressed for the job." },
+    { "name": "Venus", "domain": "Love and beauty", "symbol": "Dove and myrtle", "icon": "heart",
+      "hook": "The brightest thing in the night sky after the moon. Naturally." },
+    { "name": "Vulcan", "domain": "Fire, forges and smithing", "symbol": "Hammer and anvil", "icon": "hammer",
+      "hook": "A volcano is his forge letting off steam." },
+    { "name": "Bacchus", "domain": "Wine and revelry", "symbol": "Grapes and ivy-wound staff", "icon": "grape",
+      "accept": { "name": ["Liber"] },
+      "hook": "A bacchanal is a party that has got wildly out of hand. He'd call that a Tuesday." },
+    { "name": "Janus", "domain": "Beginnings, doorways and endings", "symbol": "Two faces and a key", "icon": "door-open",
+      "hook": "January: one face looking back at the old year, one looking forward to the new." },
+    { "name": "Mercury", "domain": "Messengers, trade, travel and thieves", "symbol": "Winged sandals and caduceus", "icon": "footprints",
+      "hook": "Fastest planet round the Sun, and still delivering flowers on the Interflora logo." },
+    { "name": "Minerva", "domain": "Wisdom, crafts and strategy", "symbol": "Owl", "icon": "book-open",
+      "hook": "An owl in a helmet. Wisdom, but make it tactical." },
+    { "name": "Apollo", "domain": "Music, poetry, prophecy and healing", "symbol": "Lyre and laurel", "icon": "music",
+      "hook": "Got the moon missions named after him, though the moon is technically his twin sister's." },
+    { "name": "Diana", "domain": "The hunt, the moon and wild things", "symbol": "Crescent moon and deer", "icon": "moon",
+      "hook": "Apollo's twin. He had the sun; she had the moon and a great many nervous deer." }
+  ]
+}

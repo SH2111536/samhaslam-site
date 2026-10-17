@@ -1,0 +1,62 @@
+{
+  "slug": "greek-gods",
+  "title": "The Greek gods.",
+  "eyebrow": "Compendium · Mythology",
+  "lede": "The fourteen who matter most, what each of them looked after, and the symbols that give them away. Browse, hide half, then let the quiz find out what stuck.",
+  "noun": { "one": "god", "many": "gods" },
+  "card": {
+    "tag": "Mythology",
+    "title": "Greek gods",
+    "desc": "Fourteen gods of Olympus and below: their areas and their symbols.",
+    "icon": "landmark",
+    "order": 2
+  },
+  "fields": [
+    { "key": "name", "label": "God", "plural": "gods", "role": "title", "typeable": true },
+    { "key": "domain", "label": "Area", "plural": "areas", "role": "subtitle" },
+    { "key": "symbol", "label": "Symbol", "role": "meta" }
+  ],
+  "hideable": ["name", "domain"],
+  "questions": [
+    { "from": "domain", "to": "name", "ask": "Which god is this?" },
+    { "from": "name", "to": "domain", "ask": "What did they rule over?" },
+    { "from": "symbol", "to": "name", "ask": "Whose symbol is this?" }
+  ],
+  "match": [
+    { "left": "name", "right": "domain" },
+    { "left": "name", "right": "symbol" }
+  ],
+  "items": [
+    { "name": "Zeus", "domain": "King of the gods; sky and thunder", "symbol": "Eagle and thunderbolt", "icon": "zap",
+      "hook": "Ruled from the top of Mount Olympus and settled arguments by throwing lightning at them." },
+    { "name": "Poseidon", "domain": "The sea, earthquakes and horses", "symbol": "Trident", "icon": "waves",
+      "hook": "Called the Earth-shaker: when the ground trembles, he's stamping about somewhere." },
+    { "name": "Hades", "domain": "The underworld and the dead", "symbol": "Cerberus, the three-headed dog", "icon": "skull",
+      "hook": "The three brothers drew lots for the world. Zeus got the sky, Poseidon the sea, and Hades the basement." },
+    { "name": "Hera", "domain": "Queen of the gods; marriage and family", "symbol": "Peacock", "icon": "crown",
+      "hook": "Goddess of marriage, married to Zeus. You can imagine how that went." },
+    { "name": "Demeter", "domain": "The harvest, grain and fertile earth", "symbol": "Sheaf of wheat", "icon": "wheat",
+      "hook": "While her daughter Persephone is down in the underworld, she grieves and nothing grows. Hence winter." },
+    { "name": "Hephaestus", "domain": "Fire, forges and craftsmen", "symbol": "Hammer and anvil", "icon": "hammer",
+      "accept": { "name": ["Hefaestus", "Hephaistos"] },
+      "hook": "Thrown off Olympus and left lame, then built the gods' palaces and Achilles' armour regardless." },
+    { "name": "Ares", "domain": "War, violence and bloodlust", "symbol": "Spear and helmet", "icon": "sword",
+      "hook": "The brawling side of war. Athena got the strategy; he got the shouting." },
+    { "name": "Apollo", "domain": "Music, prophecy, light and healing", "symbol": "Lyre and laurel", "icon": "music",
+      "hook": "Spoke through the Oracle at Delphi, and never once gave a straight answer." },
+    { "name": "Artemis", "domain": "The hunt, the moon and wild things", "symbol": "Bow and stag", "icon": "moon",
+      "hook": "Apollo's twin, and patron of anyone who'd rather be in a forest than at a party." },
+    { "name": "Aphrodite", "domain": "Love and beauty", "symbol": "Dove and scallop shell", "icon": "heart",
+      "hook": "Rose from the sea foam and came ashore on a scallop shell. Botticelli painted the moment." },
+    { "name": "Hermes", "domain": "Messengers, travel, trade and thieves", "symbol": "Winged sandals and caduceus", "icon": "footprints",
+      "hook": "Stole Apollo's cattle on the day he was born, then talked his way out of it with a lyre he'd just invented." },
+    { "name": "Dionysus", "domain": "Wine, festivity and theatre", "symbol": "Grapes and pine-cone staff", "icon": "grape",
+      "accept": { "name": ["Dionysius", "Dionysos"] },
+      "hook": "Greek theatre grew out of his festivals, so every play is technically a party in his honour." },
+    { "name": "Athena", "domain": "Wisdom, crafts and strategy", "symbol": "Owl and olive tree", "icon": "book-open",
+      "hook": "Sprang fully armoured from Zeus's head, gave Athens the olive tree, and got the city named after her." },
+    { "name": "Hestia", "domain": "The hearth, home and family", "symbol": "Hearth fire", "icon": "flame",
+      "accept": { "name": ["Hesta"] },
+      "hook": "The quiet one: no wars, no affairs, just keeping the fire in. Every feast began with an offering to her." }
+  ]
+}
