@@ -112,8 +112,14 @@ Cards show the item's own outline instead of an icon, and quiz questions show a 
 the item highlighted. When the question *asks* for the mapped field, the highlight waits until
 after the answer, so it never gives the answer away.
 
+Options: `"label": "<field>"` prints that field inside each shape (hidden along with the field);
+`"cardShapes": false` keeps shapes off the cards when they say nothing (a square table cell);
+`"withhold": false` shows the quiz highlight straight away, for maps where position doesn't give
+the answer away. A source with `"context": true` (the periodic table) also draws the shapes
+not in the topic, faintly, for shape.
+
 Map sources live in `maps/<source>.json` as `{ viewBox, shapes: { name: { d, bbox } } }`, with
-a generator script alongside (`make_us_states.js`, from `us-atlas`). For a new kind of map
+a generator script alongside (`make_us_states.js` from `us-atlas`, `make_periodic_table.py`). For a new kind of map
 (world countries, UK counties), write a generator in the same shape, and check with Sam first.
 
 ### Pictures

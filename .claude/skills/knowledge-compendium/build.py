@@ -114,6 +114,8 @@ def validate(t, path):
         shapes = json.loads(src.read_text())["shapes"]
         missing = [it[m["key"]] for it in t["items"] if it.get(m["key"]) not in shapes]
         need(not missing, f"no map shape for: {', '.join(map(str, missing))}")
+        if m.get("label"):
+            need(m["label"] in keys, "map.label must be a field")
 
 
 def load_topics(only=None):
@@ -141,7 +143,8 @@ def map_json(t):
         return "null"
     m = json.loads((MAPS / f"{t['map']['source']}.json").read_text())
     wanted = {it[t["map"]["key"]] for it in t["items"]}
-    m["shapes"] = {k: v for k, v in m["shapes"].items() if k in wanted}
+    if not m.get("context"):  # context maps draw every shape, so keep them all
+        m["shapes"] = {k: v for k, v in m["shapes"].items() if k in wanted}
     return json.dumps(m, separators=(",", ":")).replace("</", "<\\/")
 
 

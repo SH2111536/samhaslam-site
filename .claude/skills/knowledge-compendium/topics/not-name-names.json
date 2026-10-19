@@ -1,0 +1,484 @@
+{
+  "slug": "not-name-names",
+  "title": "Not-name names.",
+  "eyebrow": "Compendium · People",
+  "lede": "Sixty famous people who aren't called what you think: musicians, film stars, writers, revolutionaries and a couple of popes. Learn who's really who, a section at a time.",
+  "noun": {
+    "one": "person",
+    "many": "people"
+  },
+  "numerals": "none",
+  "card": {
+    "tag": "People",
+    "title": "Not-name names",
+    "desc": "Sixty stage names, pen names and assumed names, and the real names behind them.",
+    "icon": "user-round",
+    "order": 6
+  },
+  "fields": [
+    {
+      "key": "stage",
+      "label": "Known as",
+      "plural": "stage names",
+      "role": "title",
+      "typeable": true
+    },
+    {
+      "key": "real",
+      "label": "Real name",
+      "plural": "real names",
+      "role": "subtitle"
+    }
+  ],
+  "hideable": [
+    "stage",
+    "real"
+  ],
+  "questions": [
+    {
+      "from": "real",
+      "to": "stage",
+      "ask": "Who did they become?"
+    },
+    {
+      "from": "stage",
+      "to": "real",
+      "ask": "What's their real name?"
+    }
+  ],
+  "match": [
+    {
+      "left": "stage",
+      "right": "real"
+    }
+  ],
+  "groups": [
+    {
+      "key": "music",
+      "label": "Music",
+      "short": "Music",
+      "note": "Reggie, Farrokh and a Gordon who looked like a bee."
+    },
+    {
+      "key": "film",
+      "label": "Film & comedy",
+      "short": "Film & comedy",
+      "note": "Hollywood loved a rename, and so did the end-of-the-pier circuit."
+    },
+    {
+      "key": "literature",
+      "label": "Literature",
+      "short": "Literature",
+      "note": "Pen names, for privacy, for a fresh start, or to be taken seriously."
+    },
+    {
+      "key": "other",
+      "label": "Other",
+      "short": "Other",
+      "note": "Revolutionaries, popes, a boxer, a footballer and an escapologist."
+    }
+  ],
+  "items": [
+    {
+      "stage": "Elton John",
+      "real": "Reginald Dwight",
+      "group": "music",
+      "hook": "Borrowed from two bandmates in Bluesology: saxophonist Elton Dean and singer Long John Baldry."
+    },
+    {
+      "stage": "Freddie Mercury",
+      "real": "Farrokh Bulsara",
+      "group": "music",
+      "hook": "Took “Mercury” from a line in his own song, My Fairy King: “Mother Mercury, look what they've done to me.”"
+    },
+    {
+      "stage": "David Bowie",
+      "real": "David Jones",
+      "group": "music",
+      "hook": "Changed it so as not to be mistaken for Davy Jones of the Monkees. Bowie is after the knife."
+    },
+    {
+      "stage": "Sting",
+      "real": "Gordon Sumner",
+      "group": "music",
+      "hook": "Wore a black-and-yellow striped jumper to a gig and looked like a bee. It stuck."
+    },
+    {
+      "stage": "Bono",
+      "real": "Paul Hewson",
+      "group": "music",
+      "hook": "From Bonavox, a hearing-aid shop in Dublin. A friend thought it suited him."
+    },
+    {
+      "stage": "Ringo Starr",
+      "real": "Richard Starkey",
+      "group": "music",
+      "hook": "For all the rings he wore, and Starkey shortened to Starr."
+    },
+    {
+      "stage": "Bob Dylan",
+      "real": "Robert Zimmerman",
+      "group": "music"
+    },
+    {
+      "stage": "Cliff Richard",
+      "real": "Harry Webb",
+      "group": "music",
+      "hook": "The Richard was partly a nod to Little Richard."
+    },
+    {
+      "stage": "Lady Gaga",
+      "real": "Stefani Germanotta",
+      "group": "music",
+      "hook": "From Queen's Radio Ga Ga."
+    },
+    {
+      "stage": "Bruno Mars",
+      "real": "Peter Hernandez",
+      "group": "music",
+      "hook": "Bruno was a toddler nickname after the wrestler Bruno Sammartino; Mars because, he says, girls told him he was out of this world."
+    },
+    {
+      "stage": "Katy Perry",
+      "real": "Katheryn Hudson",
+      "group": "music",
+      "hook": "Perry is her mother's maiden name; Katy Hudson was a bit too close to the actress Kate Hudson."
+    },
+    {
+      "stage": "Tina Turner",
+      "real": "Anna Mae Bullock",
+      "group": "music",
+      "hook": "Ike Turner named her Tina, and she kept the surname long after she'd left him."
+    },
+    {
+      "stage": "Cher",
+      "real": "Cherilyn Sarkisian",
+      "group": "music",
+      "hook": "The first syllable did the job on its own."
+    },
+    {
+      "stage": "George Michael",
+      "real": "Georgios Panayiotou",
+      "group": "music"
+    },
+    {
+      "stage": "Cat Stevens",
+      "real": "Steven Georgiou",
+      "group": "music",
+      "hook": "A girlfriend said he had eyes like a cat. Later he became Yusuf Islam."
+    },
+    {
+      "stage": "Elvis Costello",
+      "real": "Declan MacManus",
+      "group": "music",
+      "hook": "Elvis after Presley; Costello from his family tree."
+    },
+    {
+      "stage": "Iggy Pop",
+      "real": "James Osterberg",
+      "group": "music",
+      "hook": "Iggy from his early band, the Iguanas; Pop from a local character called Jim Popp."
+    },
+    {
+      "stage": "Boy George",
+      "real": "George O'Dowd",
+      "group": "music"
+    },
+    {
+      "stage": "Billy Idol",
+      "real": "William Broad",
+      "group": "music",
+      "hook": "A teacher wrote that William was idle. He took it as a career plan."
+    },
+    {
+      "stage": "Cilla Black",
+      "real": "Priscilla White",
+      "group": "music",
+      "hook": "A local paper misprinted her surname as Black, and she liked it better."
+    },
+    {
+      "stage": "Dido",
+      "real": "Florian Cloud de Bounevialle O'Malley Armstrong",
+      "group": "music",
+      "hook": "Her parents called her Dido from the start. With a name that long, who could blame them?"
+    },
+    {
+      "stage": "John Wayne",
+      "real": "Marion Morrison",
+      "group": "film",
+      "hook": "Known as “Duke” since boyhood, after his dog. The studio chose John Wayne."
+    },
+    {
+      "stage": "Cary Grant",
+      "real": "Archibald Leach",
+      "group": "film",
+      "hook": "A lad from Bristol, who supposedly said: “Everybody wants to be Cary Grant. Even I want to be Cary Grant.”"
+    },
+    {
+      "stage": "Marilyn Monroe",
+      "real": "Norma Jeane Mortenson",
+      "group": "film",
+      "hook": "Monroe was her mother's maiden name."
+    },
+    {
+      "stage": "Michael Caine",
+      "real": "Maurice Micklewhite",
+      "group": "film",
+      "hook": "Picked his name from a poster for The Caine Mutiny while on the phone to his agent in Leicester Square."
+    },
+    {
+      "stage": "Judy Garland",
+      "real": "Frances Gumm",
+      "group": "film"
+    },
+    {
+      "stage": "Tom Cruise",
+      "real": "Thomas Mapother IV",
+      "group": "film",
+      "hook": "His full name is Thomas Cruise Mapother IV. He simply dropped the ends."
+    },
+    {
+      "stage": "Natalie Portman",
+      "real": "Neta-Lee Hershlag",
+      "group": "film",
+      "hook": "Portman was her grandmother's maiden name."
+    },
+    {
+      "stage": "Whoopi Goldberg",
+      "real": "Caryn Johnson",
+      "group": "film",
+      "hook": "Whoopi as in whoopee cushion, by her own account for reasons of wind."
+    },
+    {
+      "stage": "Jamie Foxx",
+      "real": "Eric Bishop",
+      "group": "film",
+      "hook": "Women got called up first at open-mic nights, so he chose a name that could be either. Foxx is after Redd Foxx."
+    },
+    {
+      "stage": "Vin Diesel",
+      "real": "Mark Sinclair",
+      "group": "film"
+    },
+    {
+      "stage": "Nicolas Cage",
+      "real": "Nicolas Coppola",
+      "group": "film",
+      "hook": "Francis Ford Coppola's nephew, who wanted no favours from the name. Cage is after the comic-book hero Luke Cage."
+    },
+    {
+      "stage": "Charlie Sheen",
+      "real": "Carlos Estévez",
+      "group": "film",
+      "hook": "Followed his father: Martin Sheen was born Ramón Estévez. Brother Emilio kept Estevez."
+    },
+    {
+      "stage": "Michael Keaton",
+      "real": "Michael Douglas",
+      "group": "film",
+      "hook": "Had to change it: the actors' union already had a Michael Douglas."
+    },
+    {
+      "stage": "Ben Kingsley",
+      "real": "Krishna Bhanji",
+      "group": "film",
+      "hook": "Kingsley comes from his grandfather's nickname, “King Clove”, from his days trading spices."
+    },
+    {
+      "stage": "Helen Mirren",
+      "real": "Ilyena Mironoff",
+      "group": "film",
+      "hook": "Her father anglicised the family name when she was a child."
+    },
+    {
+      "stage": "Woody Allen",
+      "real": "Allan Konigsberg",
+      "group": "film"
+    },
+    {
+      "stage": "Kirk Douglas",
+      "real": "Issur Danielovitch",
+      "group": "film"
+    },
+    {
+      "stage": "Stan Laurel",
+      "real": "Arthur Stanley Jefferson",
+      "group": "film",
+      "hook": "Dropped Jefferson partly because “Stan Jefferson” had thirteen letters, which he thought unlucky."
+    },
+    {
+      "stage": "Eric Morecambe",
+      "real": "John Eric Bartholomew",
+      "group": "film",
+      "hook": "Named himself after his home town."
+    },
+    {
+      "stage": "Ernie Wise",
+      "real": "Ernest Wiseman",
+      "group": "film"
+    },
+    {
+      "stage": "George Orwell",
+      "real": "Eric Blair",
+      "group": "literature",
+      "hook": "Orwell is a river in Suffolk."
+    },
+    {
+      "stage": "Mark Twain",
+      "real": "Samuel Clemens",
+      "group": "literature",
+      "hook": "“Mark twain” is a riverboat call: two fathoms of water, safe to pass."
+    },
+    {
+      "stage": "Lewis Carroll",
+      "real": "Charles Dodgson",
+      "group": "literature",
+      "hook": "Charles Lutwidge, put into Latin as Carolus Ludovicus, reversed and turned back into English."
+    },
+    {
+      "stage": "George Eliot",
+      "real": "Mary Ann Evans",
+      "group": "literature",
+      "hook": "Wrote as a man to be taken seriously, and to keep her private life private."
+    },
+    {
+      "stage": "Dr Seuss",
+      "real": "Theodor Geisel",
+      "group": "literature",
+      "accept": {
+        "stage": [
+          "Doctor Seuss"
+        ]
+      },
+      "hook": "Seuss was his middle name and his mother's maiden name. The doctorate was entirely self-awarded."
+    },
+    {
+      "stage": "John le Carré",
+      "real": "David Cornwell",
+      "group": "literature",
+      "accept": {
+        "stage": [
+          "Le Carre"
+        ]
+      },
+      "hook": "A serving MI6 officer, who couldn't publish under his own name."
+    },
+    {
+      "stage": "Voltaire",
+      "real": "François-Marie Arouet",
+      "group": "literature"
+    },
+    {
+      "stage": "Lenin",
+      "real": "Vladimir Ulyanov",
+      "group": "other",
+      "accept": {
+        "stage": [
+          "Vladimir Lenin"
+        ]
+      }
+    },
+    {
+      "stage": "Stalin",
+      "real": "Ioseb Jughashvili",
+      "group": "other",
+      "accept": {
+        "stage": [
+          "Joseph Stalin"
+        ]
+      },
+      "hook": "Stalin means man of steel. He chose it himself, naturally."
+    },
+    {
+      "stage": "Trotsky",
+      "real": "Lev Bronstein",
+      "group": "other",
+      "accept": {
+        "stage": [
+          "Leon Trotsky"
+        ]
+      },
+      "hook": "Borrowed the name from one of his jailers in Odessa."
+    },
+    {
+      "stage": "Mother Teresa",
+      "real": "Anjezë Gonxhe Bojaxhiu",
+      "group": "other",
+      "accept": {
+        "stage": [
+          "Saint Teresa"
+        ]
+      },
+      "hook": "Took her name from Saint Thérèse of Lisieux."
+    },
+    {
+      "stage": "Pope Francis",
+      "real": "Jorge Mario Bergoglio",
+      "group": "other",
+      "accept": {
+        "stage": [
+          "Francis"
+        ]
+      },
+      "hook": "Chose Francis after Saint Francis of Assisi, the first pope ever to use it."
+    },
+    {
+      "stage": "Pope Leo XIV",
+      "real": "Robert Prevost",
+      "group": "other",
+      "accept": {
+        "stage": [
+          "Leo XIV",
+          "Pope Leo",
+          "Leo 14"
+        ]
+      },
+      "hook": "The first American pope, elected in 2025."
+    },
+    {
+      "stage": "Muhammad Ali",
+      "real": "Cassius Clay",
+      "group": "other",
+      "hook": "Changed it in 1964 on joining the Nation of Islam, calling Cassius Clay his slave name."
+    },
+    {
+      "stage": "Pelé",
+      "real": "Edson Arantes do Nascimento",
+      "group": "other",
+      "hook": "Where “Pelé” came from is a mystery, even to Pelé, who said he didn't like it at first."
+    },
+    {
+      "stage": "Tiger Woods",
+      "real": "Eldrick Woods",
+      "group": "other",
+      "accept": {
+        "stage": [
+          "Tiger"
+        ]
+      },
+      "hook": "Nicknamed after a Vietnamese soldier and friend of his father's, also known as Tiger."
+    },
+    {
+      "stage": "Harry Houdini",
+      "real": "Erik Weisz",
+      "group": "other",
+      "accept": {
+        "stage": [
+          "Houdini"
+        ]
+      },
+      "hook": "Houdini after the French magician Robert-Houdin; Harry from his childhood nickname, Ehrie."
+    },
+    {
+      "stage": "Twiggy",
+      "real": "Lesley Hornby",
+      "group": "other",
+      "hook": "Named for her very thin legs."
+    },
+    {
+      "stage": "Hulk Hogan",
+      "real": "Terry Bollea",
+      "group": "other"
+    }
+  ]
+}
