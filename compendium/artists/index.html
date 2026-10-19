@@ -248,7 +248,23 @@
   .map path.lvl-2 { fill: oklch(0.35 0.095 250); }
   .map path.lvl-3 { fill: var(--accent-700); }
   .map path.is-dim { opacity: 0.3; }
-  .map path:hover, .map path.is-on { fill: var(--accent-500); opacity: 1; }
+  .map path[data-id]:hover, .map path.is-on { fill: var(--accent-500); opacity: 1; }
+  /* "context" shapes: the rest of the set (other elements), drawn for shape only */
+  .map path.ctx { fill: var(--neutral-900); cursor: default; }
+  .map text {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 500;
+    text-anchor: middle;
+    dominant-baseline: central;
+    fill: var(--text-secondary);
+    pointer-events: none;
+    transition: fill var(--duration-base) var(--ease-standard), opacity var(--duration-base) var(--ease-standard);
+  }
+  .map text.ctx { fill: var(--neutral-600); font-weight: 400; }
+  .map path.lvl-3 + text { fill: var(--text-primary); }
+  .map path.is-dim + text { opacity: 0.3; }
+  .map path[data-id]:hover + text, .map path.is-on + text { fill: var(--accent-on); opacity: 1; }
 
   .map-foot {
     display: flex;
@@ -277,6 +293,7 @@
   .sheet-map { margin: -0.5rem 0 -0.25rem; }
   .sheet-map path { fill: var(--neutral-700); stroke: var(--bg-surface); stroke-width: 1; stroke-linejoin: round; transition: fill var(--duration-base) var(--ease-standard); }
   .sheet-map path.is-on { fill: var(--accent-500); }
+  .sheet-map path.ctx { fill: var(--neutral-800); }
 
   svg.shape { width: 30px; height: 30px; fill: var(--accent-400); stroke: none; }
 
@@ -361,6 +378,12 @@
   .seg button:hover { background: var(--bg-hover); color: var(--text-primary); }
   .seg button[aria-pressed="true"] { background: var(--accent-500); color: var(--accent-on); }
   .seg svg.i { width: 15px; height: 15px; }
+
+  @media (max-width: 620px) {
+    /* four-way toggles don't fit a phone: let them wrap into a tidy block */
+    .seg { flex-wrap: wrap; }
+    .seg button { flex: 1 1 auto; justify-content: center; border-bottom: 1px solid var(--border-default); margin-bottom: -1px; }
+  }
 
   .chip {
     padding: 4px 10px;
@@ -1167,9 +1190,10 @@
   };
   const MAP = JSON.parse(document.getElementById("compendium-map").textContent);
   const shapeOf = (item) => MAP && MAP.shapes[item[DATA.map.key]];
+  const cardShapes = MAP && DATA.map.cardShapes !== false;
   // a topic with a map shows each item's own outline instead of an icon
   const itemIcon = (item) => {
-    const sh = shapeOf(item);
+    const sh = cardShapes && shapeOf(item);
     if (!sh) return item.icon || DATA.defaultIcon ? icon(item.icon || DATA.defaultIcon) : "";
     const [x, y, w, h] = sh.bbox;
     const pad = Math.max(w, h) * 0.06;
@@ -1286,17 +1310,27 @@
       : "";
   }
 
-  function mapSVG(onId) {
-    return `<svg viewBox="${MAP.viewBox}" aria-hidden="true">${items.map((it) => {
+  // labels: the main map can print a field inside each shape (an element's symbol); the quiz map never does
+  function mapSVG(onId, labels) {
+    const used = new Set(items.map((it) => it[DATA.map.key]));
+    const ctx = MAP.context ? Object.entries(MAP.shapes).filter(([k]) => !used.has(k)).map(([, sh]) =>
+      `<path class="ctx" d="${sh.d}"/>${labels && sh.label ? `<text class="ctx" x="${sh.lx}" y="${sh.ly}">${esc(sh.label)}</text>` : ""}`).join("") : "";
+    return `<svg viewBox="${MAP.viewBox}" aria-hidden="true">${ctx}${items.map((it) => {
       const sh = shapeOf(it);
-      return sh ? `<path data-id="${esc(it.id)}" d="${sh.d}"${it.id === onId ? ' class="is-on"' : ""}/>` : "";
+      if (!sh) return "";
+      const label = labels && DATA.map.label && sh.lx != null ? `<text data-for="${esc(it.id)}" x="${sh.lx}" y="${sh.ly}"></text>` : "";
+      return `<path data-id="${esc(it.id)}" d="${sh.d}"${it.id === onId ? ' class="is-on"' : ""}/>${label}`;
     }).join("")}</svg>`;
   }
 
   let mapOn = null;
   function updateMap() {
     if (!MAP) return;
-    $("map").querySelectorAll("path").forEach((p) => {
+    $("map").querySelectorAll("text[data-for]").forEach((t) => {
+      const it = itemById[t.dataset.for];
+      t.textContent = isHidden(it, fieldByKey[DATA.map.label]) ? "" : it[DATA.map.label];
+    });
+    $("map").querySelectorAll("path[data-id]").forEach((p) => {
       const it = itemById[p.dataset.id];
       const dim = state.group !== "all" && it.group !== state.group;
       p.setAttribute("class", `lvl-${level(it.id)}${dim ? " is-dim" : ""}${mapOn === it.id ? " is-on" : ""}`);
@@ -1510,7 +1544,8 @@
          </form>
          <div><button type="button" class="text-btn" id="give-up">I don't know</button></div>`
       : `<div class="options">${qn.options.map((o, i) => `<button type="button" class="option" data-opt="${i}"><kbd>${i + 1}</kbd><span>${esc(o.value)}</span></button>`).join("")}</div>`;
-    const asksForPlace = MAP && qn.q.to === DATA.map.key;
+    // hold back the highlight when it would give the answer away (the state you're asked to name)
+    const asksForPlace = MAP && DATA.map.withhold !== false && qn.q.to === DATA.map.key;
     const qMap = MAP ? `<div class="sheet-map">${mapSVG(asksForPlace ? null : qn.item.id)}</div>` : "";
     body.innerHTML = `
       ${modeRow}
@@ -1741,7 +1776,7 @@
   $("lede").textContent = DATA.lede || "";
   $("footer").textContent = DATA.footer || "";
   if (MAP) {
-    $("map").innerHTML = mapSVG(null);
+    $("map").innerHTML = mapSVG(null, true);
     $("map-wrap").hidden = false;
     $("frieze").hidden = true;
   }

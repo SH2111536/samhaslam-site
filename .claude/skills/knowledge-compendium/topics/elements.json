@@ -1,0 +1,400 @@
+{
+  "slug": "elements",
+  "title": "The elements.",
+  "eyebrow": "Compendium · Science",
+  "lede": "The first twenty elements and the pub-quiz regulars from further along: their symbols and atomic numbers, sorted by family, with the table filling in as I learn them.",
+  "noun": {
+    "one": "element",
+    "many": "elements"
+  },
+  "numerals": "none",
+  "card": {
+    "tag": "Science",
+    "title": "The elements",
+    "desc": "Thirty-nine elements, their symbols and atomic numbers, on a periodic table that fills in as I learn.",
+    "icon": "atom",
+    "order": 5
+  },
+  "map": {
+    "source": "periodic-table",
+    "key": "symbol",
+    "label": "symbol",
+    "cardShapes": false,
+    "hint": "Point at an element to see it. They fill in as I master them.",
+    "withhold": false
+  },
+  "fields": [
+    {
+      "key": "name",
+      "label": "Element",
+      "plural": "names",
+      "role": "title",
+      "typeable": true
+    },
+    {
+      "key": "symbol",
+      "label": "Symbol",
+      "plural": "symbols",
+      "role": "subtitle",
+      "typeable": true
+    },
+    {
+      "key": "number",
+      "label": "Atomic number",
+      "short": "Number",
+      "plural": "numbers",
+      "role": "meta",
+      "typeable": true
+    }
+  ],
+  "hideable": [
+    "name",
+    "symbol",
+    "number"
+  ],
+  "questions": [
+    {
+      "from": "name",
+      "to": "symbol",
+      "ask": "What's its symbol?"
+    },
+    {
+      "from": "symbol",
+      "to": "name",
+      "ask": "Which element is this?"
+    },
+    {
+      "from": "name",
+      "to": "number",
+      "ask": "What's its atomic number?"
+    },
+    {
+      "from": "number",
+      "to": "name",
+      "ask": "Which element has this atomic number?"
+    }
+  ],
+  "match": [
+    {
+      "left": "name",
+      "right": "symbol"
+    },
+    {
+      "left": "name",
+      "right": "number"
+    }
+  ],
+  "groups": [
+    {
+      "key": "nonmetals",
+      "label": "Non-metals",
+      "short": "Non-metals",
+      "note": "The stuff of air, water and life itself: everything you're made of is mostly these six."
+    },
+    {
+      "key": "noble",
+      "label": "Noble gases",
+      "short": "Noble gases",
+      "note": "The far right-hand column: so content with themselves they barely react with anything."
+    },
+    {
+      "key": "halogens",
+      "label": "Halogens",
+      "short": "Halogens",
+      "note": "Next door to the noble gases, and the opposite temperament: fiercely reactive."
+    },
+    {
+      "key": "alkali",
+      "label": "Alkali metals",
+      "short": "Alkali metals",
+      "note": "The far left-hand column: soft, shiny, and inclined to explode in water."
+    },
+    {
+      "key": "alkaline",
+      "label": "Alkaline earth metals",
+      "short": "Alkaline earth metals",
+      "note": "Column two: the alkali metals' calmer neighbours."
+    },
+    {
+      "key": "transition",
+      "label": "Transition metals",
+      "short": "Transition metals",
+      "note": "The wide middle of the table, home of most of the metals you could name."
+    },
+    {
+      "key": "other",
+      "label": "Other metals",
+      "short": "Other metals",
+      "note": "Softer, humbler metals tucked in to the right of the transition block."
+    },
+    {
+      "key": "metalloids",
+      "label": "Metalloids",
+      "short": "Metalloids",
+      "note": "Half metal, half not, along the staircase that divides the table."
+    },
+    {
+      "key": "actinides",
+      "label": "Actinides",
+      "short": "Actinides",
+      "note": "The bottom row: heavy, radioactive, and best admired from a distance."
+    }
+  ],
+  "items": [
+    {
+      "name": "Hydrogen",
+      "symbol": "H",
+      "number": "1",
+      "group": "nonmetals"
+    },
+    {
+      "name": "Carbon",
+      "symbol": "C",
+      "number": "6",
+      "group": "nonmetals"
+    },
+    {
+      "name": "Nitrogen",
+      "symbol": "N",
+      "number": "7",
+      "group": "nonmetals"
+    },
+    {
+      "name": "Oxygen",
+      "symbol": "O",
+      "number": "8",
+      "group": "nonmetals"
+    },
+    {
+      "name": "Phosphorus",
+      "symbol": "P",
+      "number": "15",
+      "group": "nonmetals"
+    },
+    {
+      "name": "Sulphur",
+      "symbol": "S",
+      "number": "16",
+      "group": "nonmetals",
+      "accept": {
+        "name": [
+          "Sulfur"
+        ]
+      }
+    },
+    {
+      "name": "Helium",
+      "symbol": "He",
+      "number": "2",
+      "group": "noble"
+    },
+    {
+      "name": "Neon",
+      "symbol": "Ne",
+      "number": "10",
+      "group": "noble"
+    },
+    {
+      "name": "Argon",
+      "symbol": "Ar",
+      "number": "18",
+      "group": "noble"
+    },
+    {
+      "name": "Krypton",
+      "symbol": "Kr",
+      "number": "36",
+      "group": "noble"
+    },
+    {
+      "name": "Fluorine",
+      "symbol": "F",
+      "number": "9",
+      "group": "halogens"
+    },
+    {
+      "name": "Chlorine",
+      "symbol": "Cl",
+      "number": "17",
+      "group": "halogens"
+    },
+    {
+      "name": "Iodine",
+      "symbol": "I",
+      "number": "53",
+      "group": "halogens"
+    },
+    {
+      "name": "Lithium",
+      "symbol": "Li",
+      "number": "3",
+      "group": "alkali"
+    },
+    {
+      "name": "Sodium",
+      "symbol": "Na",
+      "number": "11",
+      "group": "alkali",
+      "hook": "Na is for natrium, from natron: the salty soda the Egyptians used to dry out their mummies."
+    },
+    {
+      "name": "Potassium",
+      "symbol": "K",
+      "number": "19",
+      "group": "alkali",
+      "hook": "K is for kalium, from the Arabic for plant ash, where it was first found. Potash gives us “potassium”."
+    },
+    {
+      "name": "Beryllium",
+      "symbol": "Be",
+      "number": "4",
+      "group": "alkaline"
+    },
+    {
+      "name": "Magnesium",
+      "symbol": "Mg",
+      "number": "12",
+      "group": "alkaline"
+    },
+    {
+      "name": "Calcium",
+      "symbol": "Ca",
+      "number": "20",
+      "group": "alkaline"
+    },
+    {
+      "name": "Radium",
+      "symbol": "Ra",
+      "number": "88",
+      "group": "alkaline"
+    },
+    {
+      "name": "Titanium",
+      "symbol": "Ti",
+      "number": "22",
+      "group": "transition"
+    },
+    {
+      "name": "Iron",
+      "symbol": "Fe",
+      "number": "26",
+      "group": "transition",
+      "hook": "Fe is ferrum, the Latin for iron, hence “ferrous”. The Ferris wheel is a coincidence, named after a Mr Ferris."
+    },
+    {
+      "name": "Nickel",
+      "symbol": "Ni",
+      "number": "28",
+      "group": "transition"
+    },
+    {
+      "name": "Copper",
+      "symbol": "Cu",
+      "number": "29",
+      "group": "transition",
+      "hook": "Cu is cuprum, after Cyprus, which supplied the Roman world with its copper."
+    },
+    {
+      "name": "Zinc",
+      "symbol": "Zn",
+      "number": "30",
+      "group": "transition"
+    },
+    {
+      "name": "Silver",
+      "symbol": "Ag",
+      "number": "47",
+      "group": "transition",
+      "hook": "Ag is argentum, the Latin for silver. Argentina was named for it, in hope rather than in fact."
+    },
+    {
+      "name": "Tungsten",
+      "symbol": "W",
+      "number": "74",
+      "group": "transition",
+      "hook": "W is wolfram, from the German: the ore ate up tin in the smelter like a wolf. “Tungsten” is Swedish for heavy stone."
+    },
+    {
+      "name": "Platinum",
+      "symbol": "Pt",
+      "number": "78",
+      "group": "transition"
+    },
+    {
+      "name": "Gold",
+      "symbol": "Au",
+      "number": "79",
+      "group": "transition",
+      "hook": "Au is aurum, the Latin for gold. Say “Ay, you!” at anyone wearing too much of it."
+    },
+    {
+      "name": "Mercury",
+      "symbol": "Hg",
+      "number": "80",
+      "group": "transition",
+      "hook": "Hg is hydrargyrum, Greek for “water-silver”: a metal that's liquid at room temperature."
+    },
+    {
+      "name": "Aluminium",
+      "symbol": "Al",
+      "number": "13",
+      "group": "other",
+      "accept": {
+        "name": [
+          "Aluminum"
+        ]
+      }
+    },
+    {
+      "name": "Tin",
+      "symbol": "Sn",
+      "number": "50",
+      "group": "other",
+      "hook": "Sn is stannum, the Latin for tin. Cornwall's tin miners had their own courts, the Stannaries."
+    },
+    {
+      "name": "Lead",
+      "symbol": "Pb",
+      "number": "82",
+      "group": "other",
+      "hook": "Pb is plumbum, the Latin for lead. Roman water pipes were lead, so the person who fixes them is a plumber."
+    },
+    {
+      "name": "Boron",
+      "symbol": "B",
+      "number": "5",
+      "group": "metalloids"
+    },
+    {
+      "name": "Silicon",
+      "symbol": "Si",
+      "number": "14",
+      "group": "metalloids"
+    },
+    {
+      "name": "Arsenic",
+      "symbol": "As",
+      "number": "33",
+      "group": "metalloids"
+    },
+    {
+      "name": "Antimony",
+      "symbol": "Sb",
+      "number": "51",
+      "group": "metalloids",
+      "hook": "Sb is stibium, the black eye make-up the ancient Egyptians ground from its ore."
+    },
+    {
+      "name": "Uranium",
+      "symbol": "U",
+      "number": "92",
+      "group": "actinides"
+    },
+    {
+      "name": "Plutonium",
+      "symbol": "Pu",
+      "number": "94",
+      "group": "actinides"
+    }
+  ]
+}
