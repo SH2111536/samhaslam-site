@@ -62,6 +62,7 @@
   }
 
   * { box-sizing: border-box; }
+  [hidden] { display: none !important; }   /* component display rules must never override hidden */
 
   html, body {
     margin: 0;
@@ -251,6 +252,7 @@
   .map path[data-id]:hover, .map path.is-on { fill: var(--accent-500); opacity: 1; }
   /* "context" shapes: the rest of the set (other elements), drawn for shape only */
   .map path.ctx { fill: var(--neutral-900); cursor: default; }
+  .map path.dot { stroke-width: 0.6; }
   .map text {
     font-family: var(--font-body);
     font-size: 15px;
@@ -294,6 +296,44 @@
   .sheet-map path { fill: var(--neutral-700); stroke: var(--bg-surface); stroke-width: 1; stroke-linejoin: round; transition: fill var(--duration-base) var(--ease-standard); }
   .sheet-map path.is-on { fill: var(--accent-500); }
   .sheet-map path.ctx { fill: var(--neutral-800); }
+  .sheet-map svg { max-height: 42vh; }
+  .sheet-map path.dot { stroke-width: 0.3; }
+  .sheet-map path.is-past { fill: var(--accent-700); }
+  .route { fill: none; stroke: var(--accent-300); stroke-width: 1.5; stroke-dasharray: 4 3; vector-effect: non-scaling-stroke; }
+  .stop { fill: var(--neutral-500); }
+  .stop.past { fill: var(--accent-400); }
+  .stop.now { fill: var(--accent-300); stroke: var(--bg-surface); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+  /* name them all */
+  .recall-row { display: flex; gap: 0.5rem; align-items: center; }
+  .recall-row input {
+    flex: 1; min-width: 0; padding: 12px 14px; border-radius: var(--radius-sm);
+    border: 1px solid var(--border-default); background: var(--bg-page); color: var(--text-primary);
+    font: inherit; font-size: 1.0625rem;
+  }
+  .recall-row input:focus { outline: none; border-color: var(--accent-400); }
+  .recall-msg { min-height: 1.25rem; margin: -0.5rem 0 0; font-size: 0.8125rem; color: var(--text-muted); }
+  .slots { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.5rem; }
+  .slot {
+    display: flex; align-items: baseline; gap: 0.5rem; min-height: 2.6rem; padding: 0.55rem 0.75rem;
+    border: 1px dashed var(--border-default); border-radius: var(--radius-sm); font-size: 0.8125rem; color: var(--text-faint);
+    transition: border-color var(--duration-base) var(--ease-standard), background var(--duration-base) var(--ease-standard);
+  }
+  .slot .n { font-size: 0.6875rem; min-width: 1.25rem; }
+  .slot .hint { font-size: 0.6875rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  .slot .name { font-family: var(--font-display); font-style: italic; font-size: 1.0625rem; color: var(--text-primary); }
+  .slot.got { border-style: solid; border-color: var(--accent-700); background: oklch(0.62 0.14 250 / 0.1); }
+  .slot.lost { border-style: solid; border-color: var(--danger); }
+  .slot.lost .name { color: var(--danger); }
+  .sheet-map path.got { fill: var(--accent-500); }
+  .sheet-map path.lost { fill: var(--danger); opacity: 0.8; }
+  .journey-nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .reveal-box {
+    display: flex; flex-direction: column; gap: 0.5rem;
+    padding: 1rem 1.25rem; border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle); background: var(--bg-page);
+  }
+  .reveal-box .answer { margin: 0; font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 1.75rem; line-height: 1.2; color: var(--accent-300); }
+  .reveal-box .note { margin: 0; font-size: 0.8125rem; color: var(--text-muted); }
 
   svg.shape { width: 30px; height: 30px; fill: var(--accent-400); stroke: none; }
 
@@ -349,9 +389,13 @@
   .tool-actions { margin-left: auto; }
 
   @media (max-width: 760px) {
+    .toolbar { position: static; }   /* a sticky toolbar with letter chips would eat a phone screen */
     .tool-actions { margin-left: 0; width: 100%; }
     .tool-actions .btn { flex: 1; }
   }
+  .tool-group.filters { flex-basis: 100%; }
+  .chip.letter { min-width: 2rem; padding: 4px 6px; text-align: center; letter-spacing: 0; }
+  .empty-note { margin: 0; padding: 2rem 0; font-size: 0.9375rem; color: var(--text-muted); }
 
   .seg {
     display: inline-flex;
@@ -822,7 +866,9 @@
   <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" /> <circle cx="12" cy="12" r="3" /></symbol>
   <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49" /> <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242" /> <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143" /> <path d="m2 2 20 20" /></symbol>
   <symbol id="i-link-2" viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 0 1 7 7h2" /> <path d="M15 7h2a5 5 0 1 1 0 10h-2" /> <line x1="8" x2="16" y1="12" y2="12" /></symbol>
+  <symbol id="i-list-checks" viewBox="0 0 24 24"><path d="m3 17 2 2 4-4" /> <path d="m3 7 2 2 4-4" /> <path d="M13 6h8" /> <path d="M13 12h8" /> <path d="M13 18h8" /></symbol>
   <symbol id="i-rotate-ccw" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /> <path d="M3 3v5h5" /></symbol>
+  <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="19" r="3" /> <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" /> <circle cx="18" cy="5" r="3" /></symbol>
   <symbol id="i-shuffle" viewBox="0 0 24 24"><path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22" /> <path d="m18 2 4 4-4 4" /> <path d="M2 6h1.9c1.5 0 2.9.9 3.6 2.2" /> <path d="M22 18h-5.9c-1.3 0-2.6-.7-3.3-1.8l-.5-.8" /> <path d="m18 14 4 4-4 4" /></symbol>
   <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" /> <path d="M20 3v4" /> <path d="M22 5h-4" /> <path d="M4 17v2" /> <path d="M5 18H3" /></symbol>
   <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18" /> <path d="m6 6 12 12" /></symbol>
@@ -858,9 +904,16 @@
       <span class="tool-label">Show</span>
       <div class="seg" id="hide-seg" role="group" aria-label="Hide a field to test yourself"></div>
     </div>
+    <div class="tool-group" id="order-group" hidden>
+      <span class="tool-label">Order</span>
+      <div class="seg" id="order-seg" role="group" aria-label="Card order"></div>
+    </div>
     <div class="tool-group" id="group-chips"></div>
+    <div class="tool-group filters" id="filter-chips" hidden></div>
     <div class="tool-group tool-actions">
       <button class="btn ghost" id="shuffle-btn" type="button"><svg class="i"><use href="#i-shuffle"/></svg>Shuffle</button>
+      <button class="btn secondary" id="journey-btn" type="button" hidden><svg class="i"><use href="#i-route"/></svg>Journey</button>
+      <button class="btn secondary" id="recall-btn" type="button" hidden><svg class="i"><use href="#i-list-checks"/></svg>Name them all</button>
       <button class="btn secondary" id="match-btn" type="button"><svg class="i"><use href="#i-link-2"/></svg>Match</button>
       <button class="btn" id="test-btn" type="button"><svg class="i"><use href="#i-brain"/></svg>Test me</button>
     </div>
@@ -1323,7 +1376,7 @@
   // a topic with a map shows each item's own outline instead of an icon
   const itemIcon = (item) => {
     const sh = cardShapes && shapeOf(item);
-    if (!sh) return item.icon || DATA.defaultIcon ? icon(item.icon || DATA.defaultIcon) : "";
+    if (!sh || sh.dot) return item.icon || DATA.defaultIcon ? icon(item.icon || DATA.defaultIcon) : "";
     const [x, y, w, h] = sh.bbox;
     const pad = Math.max(w, h) * 0.06;
     return `<svg class="shape" viewBox="${x - pad} ${y - pad} ${w + 2 * pad} ${h + 2 * pad}" aria-hidden="true"><path d="${sh.d}"/></svg>`;
@@ -1347,12 +1400,28 @@
 
   // ---------- view state ----------
 
-  const state = { hide: null, group: "all", order: items.map((it) => it.id), revealed: new Set() };
+  const FILTERS = DATA.filters || [];
+  const JOURNEY = DATA.journey || null;
+  const firstLetter = (v) => String(v ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").charAt(0).toUpperCase();
+  // a filter's value for an item: e.g. the first letter of the country's name
+  const filterValue = (f, it) => f.firstLetterOf ? firstLetter(it[f.firstLetterOf]) : it[f.key];
+
+  const state = { hide: null, group: "all", filters: {}, sort: "default", order: items.map((it) => it.id), revealed: new Set() };
 
   const isHidden = (item, field) => state.hide === field.key && !state.revealed.has(`${item.id}:${field.key}`);
   const shown = (item, field) => isHidden(item, field) ? "?" : esc(item[field.key]);
 
-  const visibleItems = () => state.order.map((id) => itemById[id]).filter((it) => state.group === "all" || it.group === state.group);
+  const passes = (it) => (state.group === "all" || it.group === state.group) &&
+    FILTERS.every((f) => !state.filters[f.key] || filterValue(f, it) === state.filters[f.key]);
+  const journeyOrder = (list) => list.filter((it) => it[JOURNEY.by] != null)
+    .sort((a, b) => (JOURNEY.order === "asc" ? 1 : -1) * (a[JOURNEY.by] - b[JOURNEY.by]));
+  const visibleItems = () => state.order.map((id) => itemById[id]).filter(passes);
+  const isFiltered = () => state.group !== "all" || FILTERS.some((f) => state.filters[f.key]);
+  function scopeLabel() {
+    const bits = FILTERS.filter((f) => state.filters[f.key]).map((f) => `${f.label} ${state.filters[f.key]}`);
+    if (state.group !== "all") bits.push((DATA.groups.find((g) => g.key === state.group) || {}).label);
+    return bits.join(" · ");
+  }
 
   function fieldHTML(item, field, cls) {
     const value = item[field.key];
@@ -1364,19 +1433,22 @@
     return esc(value);
   }
 
-  function cardHTML(item) {
+  function cardHTML(item, pos) {
     const lvl = level(item.id);
-    const meta = metaFields.map((f) => `<dt>${esc(f.short || f.label)}</dt><dd>${fieldHTML(item, f, "meta")}</dd>`).join("");
+    const num = pos != null ? String(pos).padStart(2, "0") : numeral(item.n);
+    // detail rows only where the item has something to say (most countries have no note)
+    const meta = metaFields.filter((f) => item[f.key] != null && item[f.key] !== "")
+      .map((f) => `<dt>${esc(f.short || f.label)}</dt><dd>${fieldHTML(item, f, "meta")}</dd>`).join("");
     return `
-      <article class="card" id="item-${esc(item.id)}" data-id="${esc(item.id)}">
+      <article class="card" id="item-${esc(item.id)}" data-id="${esc(item.id)}"${pos != null ? ` data-pos="${pos}"` : ""}>
         ${usesImages
           ? (item.image
               ? `<figure class="card-img">${imageFor(item, isHidden(item, titleField) ? "Hidden for testing" : item[titleField.key])}</figure>`
               : `<figure class="card-img empty">${itemIcon(item)}<small>${esc(item.imageNote || "No picture")}</small></figure>`)
-          : (itemIcon(item) || numeral(item.n)
+          : (itemIcon(item) || num
               ? `<div class="card-top">
           ${itemIcon(item) ? `<span class="card-icon">${itemIcon(item)}</span>` : "<span></span>"}
-          <span class="numeral">${numeral(item.n)}</span>
+          <span class="numeral">${num}</span>
         </div>`
               : "")}
         <h3 class="f-title">${fieldHTML(item, titleField, "title")}</h3>
@@ -1392,6 +1464,16 @@
 
   function renderGroups() {
     const vis = visibleItems();
+    if (!vis.length) {
+      $("groups").innerHTML = `<p class="empty-note">Nothing matches that combination. Try another letter or region.</p>`;
+      return;
+    }
+    if (JOURNEY && state.sort === "journey") {
+      // one numbered run in journey order, across all groups
+      const run = journeyOrder(vis);
+      $("groups").innerHTML = `<section><h2 class="group-heading">${esc(JOURNEY.label)}<small>${run.length} ${esc(run.length === 1 ? DATA.noun.one : DATA.noun.many)}</small></h2><div class="grid">${run.map((it, i) => cardHTML(it, i + 1)).join("")}</div></section>`;
+      return;
+    }
     const groups = (DATA.groups && DATA.groups.length ? DATA.groups : [{ key: undefined, label: "" }])
       .filter((g) => state.group === "all" || g.key === state.group);
     $("groups").innerHTML = groups.map((g) => {
@@ -1434,21 +1516,52 @@
       hideable.map((f) => `<button type="button" data-hide="${esc(f.key)}" aria-pressed="${state.hide === f.key}">${icon("eye-off")}Hide ${esc(f.plural || f.label.toLowerCase())}</button>`).join("");
     const groups = DATA.groups || [];
     $("group-chips").innerHTML = groups.length > 1
-      ? `<button type="button" class="chip" data-group="all" aria-pressed="${state.group === "all"}">All</button>` +
+      ? (DATA.groupLabel ? `<span class="tool-label">${esc(DATA.groupLabel)}</span>` : "") +
+        `<button type="button" class="chip" data-group="all" aria-pressed="${state.group === "all"}">All</button>` +
         groups.map((g) => `<button type="button" class="chip" data-group="${esc(g.key)}" aria-pressed="${state.group === g.key}">${esc(g.short || g.label)}</button>`).join("")
       : "";
+    const testable = visibleItems().filter((it) => usableQuestions(it, false).length).length;
+    $("test-btn").innerHTML = `${icon("brain")}${isFiltered() ? `Test all ${testable}` : "Test me"}`;
+    $("test-btn").title = isFiltered() ? `A question on every ${DATA.noun.one} in ${scopeLabel()}` : `${ROUND_LENGTH} questions, weighted towards the ones I don't know yet`;
+    $("test-btn").disabled = !testable;
+    if (titleField.typeable) {
+      const n = visibleItems().length;
+      $("recall-btn").hidden = false;
+      $("recall-btn").innerHTML = `${icon("list-checks")}${isFiltered() ? `Name all ${n}` : "Name them all"}`;
+      $("recall-btn").title = `Name every ${DATA.noun.one}${isFiltered() ? ` in ${scopeLabel()}` : ""} from memory`;
+      $("recall-btn").disabled = !n;
+    }
+    $("filter-chips").hidden = !FILTERS.length;
+    $("filter-chips").innerHTML = FILTERS.map((f) => {
+      const values = [...new Set(items.map((it) => filterValue(f, it)))].filter(Boolean).sort();
+      const cur = state.filters[f.key] || null;
+      return `<span class="tool-label">${esc(f.label)}</span>` +
+        `<button type="button" class="chip" data-filter="${esc(f.key)}" data-value="" aria-pressed="${!cur}">All</button>` +
+        values.map((v) => `<button type="button" class="chip letter" data-filter="${esc(f.key)}" data-value="${esc(v)}" aria-pressed="${cur === v}">${esc(v)}</button>`).join("");
+    }).join("");
+    if (JOURNEY) {
+      $("order-group").hidden = false;
+      $("order-seg").innerHTML =
+        `<button type="button" data-sort="default" aria-pressed="${state.sort === "default"}">A–Z</button>` +
+        `<button type="button" data-sort="journey" aria-pressed="${state.sort === "journey"}">${esc(JOURNEY.label)}</button>`;
+      const n = journeyOrder(visibleItems()).length;
+      $("journey-btn").hidden = false;
+      $("journey-btn").disabled = n < 2;
+      $("journey-btn").title = `${JOURNEY.label}: ${n} ${n === 1 ? DATA.noun.one : DATA.noun.many}`;
+    }
   }
 
   // labels: the main map can print a field inside each shape (an element's symbol); the quiz map never does
   function mapSVG(onId, labels) {
     const used = new Set(items.map((it) => it[DATA.map.key]));
-    const ctx = MAP.context ? Object.entries(MAP.shapes).filter(([k]) => !used.has(k)).map(([, sh]) =>
+    const ctx = MAP.context ? Object.entries(MAP.shapes).filter(([k, sh]) => !used.has(k) && !(sh.dot && MAP.contextSkipDots)).map(([, sh]) =>
       `<path class="ctx" d="${sh.d}"/>${labels && sh.label ? `<text class="ctx" x="${sh.lx}" y="${sh.ly}">${esc(sh.label)}</text>` : ""}`).join("") : "";
     return `<svg viewBox="${MAP.viewBox}" aria-hidden="true">${ctx}${items.map((it) => {
       const sh = shapeOf(it);
       if (!sh) return "";
       const label = labels && DATA.map.label && sh.lx != null ? `<text data-for="${esc(it.id)}" x="${sh.lx}" y="${sh.ly}"></text>` : "";
-      return `<path data-id="${esc(it.id)}" d="${sh.d}"${it.id === onId ? ' class="is-on"' : ""}/>${label}`;
+      const cls = [sh.dot ? "dot" : "", it.id === onId ? "is-on" : ""].filter(Boolean).join(" ");
+      return `<path data-id="${esc(it.id)}" d="${sh.d}"${cls ? ` class="${cls}"` : ""}/>${label}`;
     }).join("")}</svg>`;
   }
 
@@ -1461,8 +1574,8 @@
     });
     $("map").querySelectorAll("path[data-id]").forEach((p) => {
       const it = itemById[p.dataset.id];
-      const dim = state.group !== "all" && it.group !== state.group;
-      p.setAttribute("class", `lvl-${level(it.id)}${dim ? " is-dim" : ""}${mapOn === it.id ? " is-on" : ""}`);
+      const dim = !passes(it);
+      p.setAttribute("class", `lvl-${level(it.id)}${shapeOf(it).dot ? " dot" : ""}${dim ? " is-dim" : ""}${mapOn === it.id ? " is-on" : ""}`);
     });
     const it = mapOn && itemById[mapOn];
     $("map-caption").innerHTML = it
@@ -1489,7 +1602,23 @@
     renderToolbar(); renderGroups(); updateMap();
   });
 
+  $("order-seg").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-sort]");
+    if (!b) return;
+    state.sort = b.dataset.sort;
+    state.order = items.map((it) => it.id);
+    renderToolbar(); renderGroups();
+  });
+
+  $("filter-chips").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-filter]");
+    if (!b) return;
+    state.filters[b.dataset.filter] = b.dataset.value || null;
+    renderToolbar(); renderGroups(); updateMap();
+  });
+
   $("shuffle-btn").addEventListener("click", () => {
+    state.sort = "default";
     state.order = shuffle(state.order);
     renderGroups();
   });
@@ -1499,7 +1628,7 @@
     if (r) {
       state.revealed.add(r.dataset.reveal);
       const card = r.closest(".card");
-      card.outerHTML = cardHTML(itemById[card.dataset.id]);
+      card.outerHTML = cardHTML(itemById[card.dataset.id], card.dataset.pos ? Number(card.dataset.pos) : undefined);
       return;
     }
     const h = e.target.closest("[data-hook]");
@@ -1512,8 +1641,9 @@
   });
 
   function jumpTo(id) {
-    if (state.group !== "all" && itemById[id].group !== state.group) {
+    if (!passes(itemById[id])) {
       state.group = "all";
+      state.filters = {};
       renderToolbar(); renderGroups(); updateMap();
     }
     const card = $("item-" + id);
@@ -1596,7 +1726,7 @@
     return out;
   }
 
-  function makeQuestion(item, typed) {
+  function makeQuestion(item, typed, inSet) {
     let qs = usableQuestions(item, typed);
     let isTyped = typed && qs.length > 0;
     if (!qs.length) qs = usableQuestions(item, false);
@@ -1605,8 +1735,9 @@
     let options = [];
     if (!isTyped) {
       const seen = new Set(sameFrom(item, q).map((it) => norm(it[q.to])));
+      const near = (it) => (inSet && inSet.has(it.id) ? 2 : 0) + (it.group === item.group ? 1 : 0);
       const candidates = shuffle(items.filter((it) => it.id !== item.id && it[q.to]))
-        .sort((a, b) => (b.group === item.group) - (a.group === item.group));
+        .sort((a, b) => near(b) - near(a));
       for (const c of candidates) {
         if (options.length >= 3) break;
         const k = norm(c[q.to]);
@@ -1651,8 +1782,11 @@
     const base = onlyIds ? onlyIds.map((id) => itemById[id]) : visibleItems();
     const pool = base.filter((it) => usableQuestions(it, false).length);
     if (!pool.length) return;
-    const picked = onlyIds ? shuffle(pool) : weightedPick(pool, Math.min(ROUND_LENGTH, pool.length));
-    session = { kind: "test", questions: picked.map((it) => makeQuestion(it, answerMode.typed)), i: 0, right: 0, missed: [], answered: false };
+    const whole = onlyIds || isFiltered();
+    const picked = whole ? shuffle(pool) : weightedPick(pool, Math.min(ROUND_LENGTH, pool.length));
+    const inSet = whole ? new Set(pool.map((it) => it.id)) : null;
+    const scope = onlyIds ? "Practice" : isFiltered() ? scopeLabel() : "";
+    session = { kind: "test", inSet, scope, questions: picked.map((it) => makeQuestion(it, answerMode.typed, inSet)), i: 0, right: 0, missed: [], answered: false };
     openSheet();
     renderQuestion();
   }
@@ -1660,7 +1794,7 @@
   function renderQuestion() {
     const s = session;
     const qn = s.questions[s.i];
-    setHead(`Question ${s.i + 1} of ${s.questions.length}`, `${s.right} right`, s.i / s.questions.length);
+    setHead(`${s.scope ? s.scope + " · " : ""}Question ${s.i + 1} of ${s.questions.length}`, `${s.right} right`, s.i / s.questions.length);
     const modeRow = anyTypeable && s.i === 0
       ? `<div class="mode-row"><span class="tool-label">Answer by</span><div class="seg" role="group" aria-label="Answer mode">
            <button type="button" data-mode="choose" aria-pressed="${!answerMode.typed}">Choosing</button>
@@ -1732,7 +1866,7 @@
       <p class="verdict ${correct ? "right" : "wrong"}"><strong>${correct ? "Right." : "Not quite."}</strong> ${reveal}${!correct && qn.typed ? ` (you said “${esc($("typed-input").value || "nothing")}”)` : ""}</p>
       ${qn.item.hook ? `<p class="hook">${esc(qn.item.hook)}</p>` : ""}
       <div class="sheet-actions"><button type="button" class="btn" id="next-btn">${last ? "See how I did" : "Next"}</button></div>`;
-    setHead(`Question ${s.i + 1} of ${s.questions.length}`, `${s.right} right`, (s.i + 1) / s.questions.length);
+    setHead(`${s.scope ? s.scope + " · " : ""}Question ${s.i + 1} of ${s.questions.length}`, `${s.right} right`, (s.i + 1) / s.questions.length);
     $("next-btn").focus();
   }
 
@@ -1747,7 +1881,7 @@
   function renderSummary() {
     const s = session;
     const total = s.questions.length;
-    setHead("Round complete", "", 1);
+    setHead(s.scope ? `${s.scope} · complete` : "Round complete", "", 1);
     const missedIds = [...new Set(s.missed.map((m) => m.item.id))];
     body.innerHTML = `
       <p class="score-big">${s.right}<span> / ${total}</span></p>
@@ -1845,6 +1979,266 @@
     $("match-again-btn").focus();
   }
 
+  // ---------- journey: the filtered set in order (e.g. west to east), one stop at a time ----------
+
+  const journeyMode = { typed: false };
+
+  function startJourney() {
+    const list = journeyOrder(visibleItems());
+    if (list.length < 2) return;
+    session = { kind: "journey", list, i: 0, revealed: false, graded: new Map(), typedVerdict: "" };
+    openSheet();
+    renderJourney();
+  }
+
+  function journeyTitle() {
+    return [JOURNEY.label, scopeLabel()].filter(Boolean).join(" · ");
+  }
+
+  // the map framed on this journey's stops, with the route so far
+  // a viewBox framed on these items' shapes, padded, in the map's own proportions
+  function frameBox(list) {
+    const [vx, vy, vw, vh] = MAP.viewBox.split(/\s+/).map(Number);
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    for (const it of list) {
+      const [x, y, w, h] = shapeOf(it).bbox;
+      x0 = Math.min(x0, x); y0 = Math.min(y0, y); x1 = Math.max(x1, x + w); y1 = Math.max(y1, y + h);
+    }
+    let w = x1 - x0, h = y1 - y0;
+    const pad = Math.max(w, h) * 0.12 + 12;
+    x0 -= pad; y0 -= pad; w += 2 * pad; h += 2 * pad;
+    const ratio = vw / vh;   // keep the map's proportions so the frame never looks squashed
+    if (w / h < ratio) { const nw = h * ratio; x0 -= (nw - w) / 2; w = nw; } else { const nh = w / ratio; y0 -= (nh - h) / 2; h = nh; }
+    w = Math.min(w, vw); h = Math.min(h, vh);
+    x0 = Math.max(vx, Math.min(x0, vx + vw - w)); y0 = Math.max(vy, Math.min(y0, vy + vh - h));
+    return [x0, y0, w, h];
+  }
+
+  function framedMap(list, onId) {
+    const [x0, y0, w, h] = frameBox(list);
+    return mapSVG(onId, false).replace(`viewBox="${MAP.viewBox}"`, `viewBox="${x0.toFixed(1)} ${y0.toFixed(1)} ${w.toFixed(1)} ${h.toFixed(1)}"`);
+  }
+
+  function journeySVG(list, i) {
+    const [, , w] = frameBox(list);
+    const r = w / 170;
+    const pt = (it) => shapeOf(it);
+    const route = list.slice(0, i + 1).map((it) => `${pt(it).cx},${pt(it).cy}`).join(" ");
+    const stops = list.map((it, k) => `<circle class="stop${k < i ? " past" : ""}${k === i ? " now" : ""}" cx="${pt(it).cx}" cy="${pt(it).cy}" r="${k === i ? r * 1.7 : r}"/>`).join("");
+    return framedMap(list, list[i].id).replace("</svg>", `<polyline class="route" points="${route}"/>${stops}</svg>`);
+  }
+
+  function renderJourney() {
+    const s = session;
+    const it = s.list[s.i];
+    const askF = fieldByKey[JOURNEY.ask];
+    const graded = s.graded.has(it.id);
+    setHead(journeyTitle(), `Stop ${s.i + 1} of ${s.list.length}`, s.i / s.list.length);
+    const modeRow = s.i === 0 && !s.revealed && askF.typeable
+      ? `<div class="mode-row"><span class="tool-label">Answer by</span><div class="seg" role="group" aria-label="Answer mode">
+           <button type="button" data-jmode="reveal" aria-pressed="${!journeyMode.typed}">Revealing</button>
+           <button type="button" data-jmode="type" aria-pressed="${journeyMode.typed}">Typing</button></div></div>`
+      : "";
+    let step;
+    if (s.revealed || graded) {
+      const verdict = s.graded.get(it.id);
+      const note = metaFields.map((f) => it[f.key] && f.key !== askF.key ? `<p class="note">${esc(it[f.key])}</p>` : "").join("");
+      step = `
+        <div class="reveal-box">
+          <span class="q-from" style="margin:0">${esc(askF.label)}</span>
+          <p class="answer">${esc(it[askF.key])}</p>
+          ${note}
+        </div>
+        ${s.typedVerdict ? s.typedVerdict : ""}
+        ${it.hook ? `<p class="hook">${esc(it.hook)}</p>` : ""}
+        <div class="journey-nav">
+          ${s.i > 0 ? `<button type="button" class="text-btn" id="jback">Back a stop</button>` : "<span></span>"}
+          <div class="sheet-actions">
+            ${graded
+              ? `<button type="button" class="btn" id="jnext">${s.i === s.list.length - 1 ? "Finish" : "Next stop"}</button>`
+              : `<button type="button" class="btn secondary" id="jmissed">I didn't know it</button>
+                 <button type="button" class="btn" id="jknew">I knew it</button>`}
+          </div>
+        </div>`;
+    } else if (journeyMode.typed && askF.typeable) {
+      step = `
+        <form class="typed" id="jtyped-form" autocomplete="off">
+          <input id="jtyped-input" type="text" placeholder="Type the ${esc(askF.label.toLowerCase())}" aria-label="Your answer" spellcheck="false">
+          <button class="btn" type="submit">Check</button>
+        </form>
+        <div class="journey-nav">
+          ${s.i > 0 ? `<button type="button" class="text-btn" id="jback">Back a stop</button>` : "<span></span>"}
+          <button type="button" class="text-btn" id="jgive-up">I don't know</button>
+        </div>`;
+    } else {
+      step = `
+        <div class="journey-nav">
+          ${s.i > 0 ? `<button type="button" class="text-btn" id="jback">Back a stop</button>` : "<span></span>"}
+          <button type="button" class="btn" id="jreveal">${icon("eye")}Reveal the ${esc(askF.label.toLowerCase())}</button>
+        </div>`;
+    }
+    body.innerHTML = `
+      ${modeRow}
+      <div class="sheet-map">${journeySVG(s.list, s.i)}</div>
+      <div>
+        <p class="q-from">${esc(titleField.label)} · stop ${s.i + 1} of ${s.list.length}</p>
+        <p class="q-prompt">${esc(it[titleField.key])}</p>
+      </div>
+      ${step}`;
+    // shade the stops already visited
+    s.list.slice(0, s.i).forEach((v) => body.querySelector(`.sheet-map path[data-id="${CSS.escape(v.id)}"]`)?.classList.add("is-past"));
+    (body.querySelector("#jtyped-input") || body.querySelector("#jknew") || body.querySelector("#jnext") || body.querySelector("#jreveal"))?.focus();
+  }
+
+  function gradeJourney(knew) {
+    const s = session;
+    const it = s.list[s.i];
+    if (!s.graded.has(it.id)) { s.graded.set(it.id, knew); record(it.id, knew); }
+    nextStop();
+  }
+
+  function nextStop() {
+    const s = session;
+    s.typedVerdict = "";
+    if (s.i === s.list.length - 1) return renderJourneyDone();
+    s.i++;
+    s.revealed = s.graded.has(s.list[s.i].id);
+    renderJourney();
+  }
+
+  function renderJourneyDone() {
+    const s = session;
+    const knew = [...s.graded.values()].filter(Boolean).length;
+    const missed = s.list.filter((it) => s.graded.get(it.id) === false);
+    setHead(journeyTitle(), "", 1);
+    body.innerHTML = `
+      <div class="sheet-map">${journeySVG(s.list, s.list.length - 1)}</div>
+      <p class="score-big">${knew}<span> / ${s.list.length}</span></p>
+      <p class="q-ask">${esc(verdictLine(knew, s.list.length))}</p>
+      ${missed.length ? `<ul class="missed">${missed.map((m) => `<li><b>${esc(m[titleField.key])}</b><span>${esc(m[JOURNEY.ask])}</span></li>`).join("")}</ul>` : ""}
+      <div class="sheet-actions start">
+        <button type="button" class="btn" id="jagain">${icon("rotate-ccw")}Travel again</button>
+        ${missed.length ? `<button type="button" class="btn secondary" id="practise-btn" data-ids="${esc(missed.map((m) => m.id).join(","))}">Practise the ${missed.length === 1 ? "one" : missed.length} I missed</button>` : ""}
+        <button type="button" class="btn ghost" id="done-btn">Done</button>
+      </div>`;
+    s.list.forEach((v) => body.querySelector(`.sheet-map path[data-id="${CSS.escape(v.id)}"]`)?.classList.add("is-past"));
+    $("jagain").focus();
+  }
+
+  // ---------- name them all: recall every title in the chosen set from memory ----------
+
+  const RECALL_KEY = STORE_KEY + ":recall";
+  const recallBest = () => { try { return JSON.parse(localStorage.getItem(RECALL_KEY)) || {}; } catch { return {}; } };
+  const fmtTime = (ms) => { const t = Math.round(ms / 1000); return `${Math.floor(t / 60)}:${String(t % 60).padStart(2, "0")}`; };
+
+  function startRecall() {
+    const vis = visibleItems().filter((it) => it[titleField.key]);
+    if (!vis.length) return;
+    // slots run west to east where the topic has a journey, otherwise alphabetically
+    const pool = JOURNEY && vis.every((it) => it[JOURNEY.by] != null) ? journeyOrder(vis)
+      : vis.slice().sort((a, b) => String(a[titleField.key]).localeCompare(String(b[titleField.key])));
+    session = { kind: "recall", pool, found: new Set(), over: false, started: Date.now(), scope: scopeLabel() || "Everything" };
+    openSheet();
+    renderRecall();
+  }
+
+  const recallKeys = (it) => [it[titleField.key], ...((it.accept && it.accept[titleField.key]) || [])].map(norm);
+  function recallMatch(text, loose) {
+    const g = norm(text);
+    if (!g) return null;
+    const open = session.pool.filter((it) => !session.found.has(it.id));
+    return open.find((it) => recallKeys(it).includes(g)) ||
+      (loose ? open.find((it) => recallKeys(it).some((k) => k.length >= 5 && editDistance(g, k) <= 1)) : null) || null;
+  }
+
+  function renderRecall() {
+    const s = session;
+    const hints = state.group === "all" && DATA.groups && DATA.groups.length > 1;
+    const groupLabel = (it) => (DATA.groups.find((g) => g.key === it.group) || {}).short || "";
+    body.innerHTML = `
+      ${MAP ? `<div class="sheet-map">${framedMap(s.pool, null)}</div>` : ""}
+      <div class="recall-row">
+        <input id="recall-input" type="text" autocomplete="off" spellcheck="false" autocapitalize="words"
+          placeholder="Type a ${esc(DATA.noun.one)}…" aria-label="Type a ${esc(DATA.noun.one)}">
+        <button type="button" class="btn ghost" id="recall-giveup">Give up</button>
+      </div>
+      <p class="recall-msg" id="recall-msg" aria-live="polite"></p>
+      <ol class="slots">${s.pool.map((it, i) => `
+        <li class="slot" data-slot="${esc(it.id)}"><span class="n">${i + 1}</span><span class="name"></span>${hints ? `<span class="hint">${esc(groupLabel(it))}</span>` : ""}</li>`).join("")}
+      </ol>
+      <div id="recall-end"></div>`;
+    updateRecall();
+    $("recall-input").focus();
+  }
+
+  function updateRecall() {
+    const s = session;
+    const n = s.pool.length;
+    setHead(`Name them all · ${s.scope}`, `${s.found.size} of ${n}`, s.found.size / n);
+    for (const it of s.pool) {
+      const slot = body.querySelector(`[data-slot="${CSS.escape(it.id)}"]`);
+      const got = s.found.has(it.id);
+      slot.classList.toggle("got", got);
+      slot.classList.toggle("lost", s.over && !got);
+      slot.querySelector(".name").textContent = got || s.over ? it[titleField.key] : "";
+      const path = body.querySelector(`.sheet-map path[data-id="${CSS.escape(it.id)}"]`);
+      if (path) { path.classList.toggle("got", got); path.classList.toggle("lost", s.over && !got); }
+    }
+    if (s.found.size === n && !s.over) finishRecall();
+  }
+
+  function finishRecall() {
+    const s = session;
+    s.over = true;
+    const n = s.pool.length;
+    const time = Date.now() - s.started;
+    const best = recallBest();
+    const prev = best[s.scope];
+    const better = !prev || s.found.size > prev.found || (s.found.size === prev.found && s.found.size === n && time < prev.ms);
+    if (better) { best[s.scope] = { found: s.found.size, of: n, ms: time }; try { localStorage.setItem(RECALL_KEY, JSON.stringify(best)); } catch {} }
+    $("recall-input").disabled = true;
+    $("recall-giveup").hidden = true;
+    const all = s.found.size === n;
+    $("recall-end").innerHTML = `
+      <p class="score-big">${s.found.size}<span> / ${n}</span></p>
+      <p class="q-ask">${all ? `Every one, in ${fmtTime(time)}.` : `${n - s.found.size} got away; they're in red.`}
+        ${prev && !better ? ` Best so far: ${prev.found} of ${prev.of}${prev.found === prev.of ? ` in ${fmtTime(prev.ms)}` : ""}.` : better && prev ? " A new best." : ""}</p>
+      <div class="sheet-actions start">
+        <button type="button" class="btn" id="recall-again">${icon("rotate-ccw")}Go again</button>
+        <button type="button" class="btn ghost" id="done-btn">Done</button>
+      </div>`;
+    updateRecall();
+    $("recall-again").focus();
+  }
+
+  function recallAccept(it) {
+    session.found.add(it.id);
+    $("recall-input").value = "";
+    $("recall-msg").textContent = "";
+    updateRecall();
+  }
+
+  body.addEventListener("input", (e) => {
+    if (e.target.id !== "recall-input" || !session || session.over) return;
+    const it = recallMatch(e.target.value, false);
+    if (!it) return;
+    // "Niger" could still become "Nigeria": wait for more typing, or Enter to mean Niger
+    const g = norm(e.target.value);
+    const longer = session.pool.some((x) => x !== it && !session.found.has(x.id) && recallKeys(x).some((k) => k !== g && k.startsWith(g)));
+    if (!longer) recallAccept(it);
+  });
+
+  body.addEventListener("keydown", (e) => {
+    if (e.target.id !== "recall-input" || e.key !== "Enter" || !session || session.over) return;
+    e.preventDefault();
+    const text = e.target.value;
+    if (!text.trim()) return;
+    const it = recallMatch(text, true);
+    if (it) return recallAccept(it);
+    const already = session.pool.some((x) => session.found.has(x.id) && recallKeys(x).includes(norm(text)));
+    $("recall-msg").textContent = already ? "Already got that one." : `“${text}” isn't one of them.`;
+  });
+
   // ---------- sheet events ----------
 
   body.addEventListener("click", (e) => {
@@ -1852,7 +2246,7 @@
     if (!t || !session) return;
     if (t.dataset.mode) {
       answerMode.typed = t.dataset.mode === "type";
-      session.questions = session.questions.map((q) => makeQuestion(q.item, answerMode.typed));
+      session.questions = session.questions.map((q) => makeQuestion(q.item, answerMode.typed, session.inSet));
       return renderQuestion();
     }
     if (t.dataset.opt !== undefined) {
@@ -1871,9 +2265,38 @@
     if (t.dataset.pair !== undefined) { matchPairIndex = Number(t.dataset.pair); return startMatch(); }
     if (t.dataset.side) return matchTap(t.dataset.side, t.dataset.id);
     if (t.id === "match-again-btn") return startMatch();
+    if (session.kind === "recall") {
+      if (t.id === "recall-giveup") return finishRecall();
+      if (t.id === "recall-again") return startRecall();
+    }
+    if (session.kind === "journey") {
+      if (t.dataset.jmode) { journeyMode.typed = t.dataset.jmode === "type"; return renderJourney(); }
+      if (t.id === "jreveal") { session.revealed = true; return renderJourney(); }
+      if (t.id === "jknew") return gradeJourney(true);
+      if (t.id === "jmissed") return gradeJourney(false);
+      if (t.id === "jnext") return nextStop();
+      if (t.id === "jgive-up") { session.revealed = true; session.graded.set(session.list[session.i].id, false); record(session.list[session.i].id, false); session.typedVerdict = `<p class="verdict wrong"><strong>Next time.</strong></p>`; return renderJourney(); }
+      if (t.id === "jback") { session.typedVerdict = ""; session.i--; session.revealed = true; return renderJourney(); }
+      if (t.id === "jagain") return startJourney();
+    }
   });
 
   body.addEventListener("submit", (e) => {
+    if (e.target.id === "jtyped-form") {
+      e.preventDefault();
+      const s = session;
+      const it = s.list[s.i];
+      const guess = $("jtyped-input").value;
+      if (!guess.trim()) return;
+      const hit = typedMatch(guess, it, { from: titleField.key, to: JOURNEY.ask });
+      s.graded.set(it.id, Boolean(hit));
+      record(it.id, Boolean(hit));
+      s.revealed = true;
+      s.typedVerdict = hit
+        ? `<p class="verdict right"><strong>Right.</strong></p>`
+        : `<p class="verdict wrong"><strong>Not quite.</strong> You said “${esc(guess)}”.</p>`;
+      return renderJourney();
+    }
     if (e.target.id !== "typed-form") return;
     e.preventDefault();
     const qn = session.questions[session.i];
@@ -1896,6 +2319,8 @@
 
   $("test-btn").addEventListener("click", () => startTest());
   $("match-btn").addEventListener("click", startMatch);
+  $("journey-btn").addEventListener("click", startJourney);
+  $("recall-btn").addEventListener("click", startRecall);
 
   // ---------- boot ----------
 
