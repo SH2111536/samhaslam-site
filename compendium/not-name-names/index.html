@@ -62,7 +62,9 @@
   }
 
   * { box-sizing: border-box; }
-  [hidden] { display: none !important; }   /* component display rules must never override hidden */
+  [hidden] { display: none !important; }
+  /* very long words (hippopotomonstro…) wrap rather than push a phone screen sideways */
+  .f-title, .f-subtitle, .q-prompt, .option span, .tile, .slot .name, .missed b, .map-caption .t, .verdict { overflow-wrap: anywhere; }   /* component display rules must never override hidden */
 
   html, body {
     margin: 0;
@@ -1565,7 +1567,7 @@
       if (!members.length) return "";
       const heading = g.label ? `<h2 class="group-heading">${esc(g.label)}<small>${members.length} ${esc(members.length === 1 ? DATA.noun.one : DATA.noun.many)}</small></h2>` : "";
       const note = g.note ? `<p class="group-note">${esc(g.note)}</p>` : "";
-      return `<section>${heading}${note}<div class="grid">${members.map(cardHTML).join("")}</div></section>`;
+      return `<section>${heading}${note}<div class="grid">${members.map((it) => cardHTML(it)).join("")}</div></section>`;
     }).join("");
   }
 
@@ -2415,6 +2417,7 @@
   $("footer").textContent = DATA.footer || "";
   if (MAP) {
     $("map").innerHTML = mapSVG(null, true);
+    if (DATA.map.maxWidth) $("map").style.cssText = `max-width:${DATA.map.maxWidth}px;margin:0 auto;width:100%`;
     $("map-wrap").hidden = false;
     $("frieze").hidden = true;
   }
