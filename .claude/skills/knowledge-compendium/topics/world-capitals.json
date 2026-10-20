@@ -1,0 +1,1826 @@
+{
+  "slug": "world-capitals",
+  "title": "Countries of the world.",
+  "eyebrow": "Compendium · Geography",
+  "lede": "All 197 countries and their capitals. Learn them a letter at a time or a continent at a time, then take the journey across the world from west to east.",
+  "noun": {
+    "one": "country",
+    "many": "countries"
+  },
+  "numerals": "none",
+  "card": {
+    "tag": "Geography",
+    "title": "Countries of the world",
+    "desc": "Every country and its capital, by letter or by continent, with west-to-east journeys across the map.",
+    "icon": "globe",
+    "order": 3.5
+  },
+  "map": {
+    "source": "world",
+    "key": "iso",
+    "hint": "Point at a country to see it. They fill in as I master them."
+  },
+  "filters": [
+    {
+      "key": "letter",
+      "label": "Letter",
+      "firstLetterOf": "name"
+    }
+  ],
+  "journey": {
+    "by": "lon",
+    "order": "asc",
+    "label": "West to east",
+    "ask": "capital"
+  },
+  "fields": [
+    {
+      "key": "name",
+      "label": "Country",
+      "plural": "countries",
+      "role": "title",
+      "typeable": true
+    },
+    {
+      "key": "capital",
+      "label": "Capital",
+      "plural": "capitals",
+      "role": "subtitle",
+      "typeable": true
+    },
+    {
+      "key": "note",
+      "label": "Note",
+      "role": "meta"
+    }
+  ],
+  "hideable": [
+    "name",
+    "capital"
+  ],
+  "questions": [
+    {
+      "from": "name",
+      "to": "capital",
+      "ask": "What's the capital?"
+    },
+    {
+      "from": "capital",
+      "to": "name",
+      "ask": "Which country's capital is this?"
+    }
+  ],
+  "match": [
+    {
+      "left": "name",
+      "right": "capital"
+    }
+  ],
+  "groups": [
+    {
+      "key": "africa",
+      "label": "Africa",
+      "short": "Africa"
+    },
+    {
+      "key": "asia",
+      "label": "Asia",
+      "short": "Asia"
+    },
+    {
+      "key": "europe",
+      "label": "Europe",
+      "short": "Europe"
+    },
+    {
+      "key": "north-america",
+      "label": "North America",
+      "short": "North America"
+    },
+    {
+      "key": "south-america",
+      "label": "South America",
+      "short": "South America"
+    },
+    {
+      "key": "oceania",
+      "label": "Oceania",
+      "short": "Oceania"
+    }
+  ],
+  "items": [
+    {
+      "iso": "DZA",
+      "name": "Algeria",
+      "capital": "Algiers",
+      "group": "africa",
+      "lon": 3
+    },
+    {
+      "iso": "AGO",
+      "name": "Angola",
+      "capital": "Luanda",
+      "group": "africa",
+      "lon": 18.5
+    },
+    {
+      "iso": "BEN",
+      "name": "Benin",
+      "capital": "Porto-Novo",
+      "group": "africa",
+      "lon": 2.25,
+      "note": "Cotonou is the seat of government",
+      "hook": "Porto-Novo is the capital; Cotonou is where the government actually works."
+    },
+    {
+      "iso": "BWA",
+      "name": "Botswana",
+      "capital": "Gaborone",
+      "group": "africa",
+      "lon": 24
+    },
+    {
+      "iso": "BFA",
+      "name": "Burkina Faso",
+      "capital": "Ouagadougou",
+      "group": "africa",
+      "lon": -2,
+      "hook": "Say it aloud: wah-gah-doo-goo. Everyone's favourite capital to pronounce."
+    },
+    {
+      "iso": "BDI",
+      "name": "Burundi",
+      "capital": "Gitega",
+      "group": "africa",
+      "lon": 30,
+      "note": "Bujumbura until 2019",
+      "hook": "Moved from Bujumbura in 2019, so older quiz books are out of date."
+    },
+    {
+      "iso": "CMR",
+      "name": "Cameroon",
+      "capital": "Yaoundé",
+      "group": "africa",
+      "lon": 12,
+      "accept": {
+        "capital": [
+          "Yaounde"
+        ]
+      }
+    },
+    {
+      "iso": "CPV",
+      "name": "Cape Verde",
+      "capital": "Praia",
+      "group": "africa",
+      "lon": -24,
+      "accept": {
+        "name": [
+          "Cabo Verde"
+        ]
+      }
+    },
+    {
+      "iso": "CAF",
+      "name": "Central African Republic",
+      "capital": "Bangui",
+      "group": "africa",
+      "lon": 21
+    },
+    {
+      "iso": "TCD",
+      "name": "Chad",
+      "capital": "N'Djamena",
+      "group": "africa",
+      "lon": 19
+    },
+    {
+      "iso": "COM",
+      "name": "Comoros",
+      "capital": "Moroni",
+      "group": "africa",
+      "lon": 44.25
+    },
+    {
+      "iso": "COG",
+      "name": "Congo",
+      "capital": "Brazzaville",
+      "group": "africa",
+      "lon": 15,
+      "accept": {
+        "name": [
+          "Republic of the Congo",
+          "Congo-Brazzaville"
+        ]
+      },
+      "hook": "Brazzaville and Kinshasa face each other across the Congo River: the closest pair of capitals in the world, bar Rome and the Vatican."
+    },
+    {
+      "iso": "COD",
+      "name": "DR Congo",
+      "capital": "Kinshasa",
+      "group": "africa",
+      "lon": 25,
+      "accept": {
+        "name": [
+          "Democratic Republic of the Congo",
+          "Congo-Kinshasa",
+          "DRC"
+        ]
+      },
+      "hook": "Kinshasa and Brazzaville face each other across the Congo River: the closest pair of capitals in the world, bar Rome and the Vatican."
+    },
+    {
+      "iso": "DJI",
+      "name": "Djibouti",
+      "capital": "Djibouti",
+      "group": "africa",
+      "lon": 43
+    },
+    {
+      "iso": "EGY",
+      "name": "Egypt",
+      "capital": "Cairo",
+      "group": "africa",
+      "lon": 30
+    },
+    {
+      "iso": "GNQ",
+      "name": "Equatorial Guinea",
+      "capital": "Malabo",
+      "group": "africa",
+      "lon": 10,
+      "hook": "Malabo is on an island, Bioko, not on the mainland."
+    },
+    {
+      "iso": "ERI",
+      "name": "Eritrea",
+      "capital": "Asmara",
+      "group": "africa",
+      "lon": 39
+    },
+    {
+      "iso": "SWZ",
+      "name": "Eswatini",
+      "capital": "Mbabane",
+      "group": "africa",
+      "lon": 31.5,
+      "note": "Lobamba is the royal and legislative capital",
+      "accept": {
+        "name": [
+          "Swaziland"
+        ],
+        "capital": [
+          "Lobamba"
+        ]
+      },
+      "hook": "Mbabane runs the country; the king and parliament are at Lobamba."
+    },
+    {
+      "iso": "ETH",
+      "name": "Ethiopia",
+      "capital": "Addis Ababa",
+      "group": "africa",
+      "lon": 38,
+      "hook": "Addis Ababa means “new flower”."
+    },
+    {
+      "iso": "GAB",
+      "name": "Gabon",
+      "capital": "Libreville",
+      "group": "africa",
+      "lon": 11.75,
+      "hook": "Libreville is French for “free town”, also founded by freed slaves."
+    },
+    {
+      "iso": "GMB",
+      "name": "Gambia",
+      "capital": "Banjul",
+      "group": "africa",
+      "lon": -16.57,
+      "accept": {
+        "name": [
+          "The Gambia"
+        ]
+      }
+    },
+    {
+      "iso": "GHA",
+      "name": "Ghana",
+      "capital": "Accra",
+      "group": "africa",
+      "lon": -2
+    },
+    {
+      "iso": "GIN",
+      "name": "Guinea",
+      "capital": "Conakry",
+      "group": "africa",
+      "lon": -10,
+      "hook": "Plain Guinea has Conakry. Guinea-Bissau's capital is in its name."
+    },
+    {
+      "iso": "GNB",
+      "name": "Guinea-Bissau",
+      "capital": "Bissau",
+      "group": "africa",
+      "lon": -15,
+      "hook": "Guinea-Bissau's capital is in its name. Plain Guinea has Conakry."
+    },
+    {
+      "iso": "CIV",
+      "name": "Ivory Coast",
+      "capital": "Yamoussoukro",
+      "group": "africa",
+      "lon": -5,
+      "note": "Abidjan is the economic capital",
+      "accept": {
+        "name": [
+          "Côte d'Ivoire",
+          "Cote d'Ivoire"
+        ]
+      },
+      "hook": "The president's home village, rebuilt with a basilica to rival St Peter's."
+    },
+    {
+      "iso": "KEN",
+      "name": "Kenya",
+      "capital": "Nairobi",
+      "group": "africa",
+      "lon": 38,
+      "hook": "Nairobi comes from the Maasai for “cool water”."
+    },
+    {
+      "iso": "LSO",
+      "name": "Lesotho",
+      "capital": "Maseru",
+      "group": "africa",
+      "lon": 28.5,
+      "hook": "Lesotho is entirely surrounded by South Africa."
+    },
+    {
+      "iso": "LBR",
+      "name": "Liberia",
+      "capital": "Monrovia",
+      "group": "africa",
+      "lon": -9.5,
+      "hook": "Monrovia is named after the American president James Monroe."
+    },
+    {
+      "iso": "LBY",
+      "name": "Libya",
+      "capital": "Tripoli",
+      "group": "africa",
+      "lon": 17
+    },
+    {
+      "iso": "MDG",
+      "name": "Madagascar",
+      "capital": "Antananarivo",
+      "group": "africa",
+      "lon": 47,
+      "hook": "Antananarivo means “city of the thousand”, after its legendary guard of soldiers. Locals say Tana."
+    },
+    {
+      "iso": "MWI",
+      "name": "Malawi",
+      "capital": "Lilongwe",
+      "group": "africa",
+      "lon": 34
+    },
+    {
+      "iso": "MLI",
+      "name": "Mali",
+      "capital": "Bamako",
+      "group": "africa",
+      "lon": -4
+    },
+    {
+      "iso": "MRT",
+      "name": "Mauritania",
+      "capital": "Nouakchott",
+      "group": "africa",
+      "lon": -12
+    },
+    {
+      "iso": "MUS",
+      "name": "Mauritius",
+      "capital": "Port Louis",
+      "group": "africa",
+      "lon": 57.55
+    },
+    {
+      "iso": "MAR",
+      "name": "Morocco",
+      "capital": "Rabat",
+      "group": "africa",
+      "lon": -5,
+      "hook": "Not Casablanca or Marrakesh."
+    },
+    {
+      "iso": "MOZ",
+      "name": "Mozambique",
+      "capital": "Maputo",
+      "group": "africa",
+      "lon": 35
+    },
+    {
+      "iso": "NAM",
+      "name": "Namibia",
+      "capital": "Windhoek",
+      "group": "africa",
+      "lon": 17
+    },
+    {
+      "iso": "NER",
+      "name": "Niger",
+      "capital": "Niamey",
+      "group": "africa",
+      "lon": 8,
+      "hook": "Niger has Niamey; its bigger neighbour Nigeria has Abuja."
+    },
+    {
+      "iso": "NGA",
+      "name": "Nigeria",
+      "capital": "Abuja",
+      "group": "africa",
+      "lon": 8,
+      "hook": "Not Lagos: Abuja took over in 1991, chosen for being central and neutral."
+    },
+    {
+      "iso": "RWA",
+      "name": "Rwanda",
+      "capital": "Kigali",
+      "group": "africa",
+      "lon": 30
+    },
+    {
+      "iso": "SEN",
+      "name": "Senegal",
+      "capital": "Dakar",
+      "group": "africa",
+      "lon": -14
+    },
+    {
+      "iso": "SYC",
+      "name": "Seychelles",
+      "capital": "Victoria",
+      "group": "africa",
+      "lon": 55.67
+    },
+    {
+      "iso": "SLE",
+      "name": "Sierra Leone",
+      "capital": "Freetown",
+      "group": "africa",
+      "lon": -11.5,
+      "hook": "Freetown was founded as a settlement for freed slaves."
+    },
+    {
+      "iso": "SOM",
+      "name": "Somalia",
+      "capital": "Mogadishu",
+      "group": "africa",
+      "lon": 49
+    },
+    {
+      "iso": "ZAF",
+      "name": "South Africa",
+      "capital": "Pretoria",
+      "group": "africa",
+      "lon": 24,
+      "note": "Also Cape Town (parliament) and Bloemfontein (courts)",
+      "accept": {
+        "capital": [
+          "Cape Town",
+          "Bloemfontein"
+        ]
+      },
+      "hook": "Three capitals: Pretoria runs things, Cape Town makes the laws, Bloemfontein judges them."
+    },
+    {
+      "iso": "SSD",
+      "name": "South Sudan",
+      "capital": "Juba",
+      "group": "africa",
+      "lon": 30
+    },
+    {
+      "iso": "SDN",
+      "name": "Sudan",
+      "capital": "Khartoum",
+      "group": "africa",
+      "lon": 30,
+      "hook": "Where the Blue Nile and the White Nile meet."
+    },
+    {
+      "iso": "STP",
+      "name": "São Tomé and Príncipe",
+      "capital": "São Tomé",
+      "group": "africa",
+      "lon": 7,
+      "accept": {
+        "name": [
+          "Sao Tome and Principe"
+        ]
+      }
+    },
+    {
+      "iso": "TZA",
+      "name": "Tanzania",
+      "capital": "Dodoma",
+      "group": "africa",
+      "lon": 35,
+      "note": "Dar es Salaam is the largest city",
+      "hook": "Not Dar es Salaam, though most of the money and the embassies are still there."
+    },
+    {
+      "iso": "TGO",
+      "name": "Togo",
+      "capital": "Lomé",
+      "group": "africa",
+      "lon": 1.17
+    },
+    {
+      "iso": "TUN",
+      "name": "Tunisia",
+      "capital": "Tunis",
+      "group": "africa",
+      "lon": 9
+    },
+    {
+      "iso": "UGA",
+      "name": "Uganda",
+      "capital": "Kampala",
+      "group": "africa",
+      "lon": 32
+    },
+    {
+      "iso": "ZMB",
+      "name": "Zambia",
+      "capital": "Lusaka",
+      "group": "africa",
+      "lon": 30
+    },
+    {
+      "iso": "ZWE",
+      "name": "Zimbabwe",
+      "capital": "Harare",
+      "group": "africa",
+      "lon": 30
+    },
+    {
+      "iso": "AFG",
+      "name": "Afghanistan",
+      "capital": "Kabul",
+      "group": "asia",
+      "lon": 65
+    },
+    {
+      "iso": "ARM",
+      "name": "Armenia",
+      "capital": "Yerevan",
+      "group": "asia",
+      "lon": 45
+    },
+    {
+      "iso": "AZE",
+      "name": "Azerbaijan",
+      "capital": "Baku",
+      "group": "asia",
+      "lon": 47.5,
+      "hook": "Baku is below sea level: the lowest capital in the world."
+    },
+    {
+      "iso": "BHR",
+      "name": "Bahrain",
+      "capital": "Manama",
+      "group": "asia",
+      "lon": 50.55
+    },
+    {
+      "iso": "BGD",
+      "name": "Bangladesh",
+      "capital": "Dhaka",
+      "group": "asia",
+      "lon": 90
+    },
+    {
+      "iso": "BTN",
+      "name": "Bhutan",
+      "capital": "Thimphu",
+      "group": "asia",
+      "lon": 90.5,
+      "hook": "Thimphu is the only capital with no traffic lights."
+    },
+    {
+      "iso": "BRN",
+      "name": "Brunei",
+      "capital": "Bandar Seri Begawan",
+      "group": "asia",
+      "lon": 114.67
+    },
+    {
+      "iso": "KHM",
+      "name": "Cambodia",
+      "capital": "Phnom Penh",
+      "group": "asia",
+      "lon": 105,
+      "hook": "Named after a hill (phnom) and a woman called Penh who built a temple on it."
+    },
+    {
+      "iso": "CHN",
+      "name": "China",
+      "capital": "Beijing",
+      "group": "asia",
+      "lon": 105,
+      "hook": "Beijing means “northern capital”; Nanjing is the southern one."
+    },
+    {
+      "iso": "GEO",
+      "name": "Georgia",
+      "capital": "Tbilisi",
+      "group": "asia",
+      "lon": 43.5,
+      "hook": "Tbilisi comes from the Georgian for “warm”, after its sulphur springs."
+    },
+    {
+      "iso": "IND",
+      "name": "India",
+      "capital": "New Delhi",
+      "group": "asia",
+      "lon": 77,
+      "hook": "New, not old: the British laid it out beside Old Delhi."
+    },
+    {
+      "iso": "IDN",
+      "name": "Indonesia",
+      "capital": "Jakarta",
+      "group": "asia",
+      "lon": 120
+    },
+    {
+      "iso": "IRN",
+      "name": "Iran",
+      "capital": "Tehran",
+      "group": "asia",
+      "lon": 53
+    },
+    {
+      "iso": "IRQ",
+      "name": "Iraq",
+      "capital": "Baghdad",
+      "group": "asia",
+      "lon": 44
+    },
+    {
+      "iso": "ISR",
+      "name": "Israel",
+      "capital": "Jerusalem",
+      "group": "asia",
+      "lon": 35.13,
+      "note": "Status disputed; most embassies are in Tel Aviv"
+    },
+    {
+      "iso": "JPN",
+      "name": "Japan",
+      "capital": "Tokyo",
+      "group": "asia",
+      "lon": 138,
+      "hook": "Tokyo means “eastern capital”. Kyoto had the job before it."
+    },
+    {
+      "iso": "JOR",
+      "name": "Jordan",
+      "capital": "Amman",
+      "group": "asia",
+      "lon": 36
+    },
+    {
+      "iso": "KAZ",
+      "name": "Kazakhstan",
+      "capital": "Astana",
+      "group": "asia",
+      "lon": 68,
+      "note": "Called Nur-Sultan 2019–2022",
+      "accept": {
+        "capital": [
+          "Nur-Sultan"
+        ]
+      },
+      "hook": "Astana simply means “capital”. Renamed Nur-Sultan in 2019, then changed back in 2022."
+    },
+    {
+      "iso": "KWT",
+      "name": "Kuwait",
+      "capital": "Kuwait City",
+      "group": "asia",
+      "lon": 45.75,
+      "accept": {
+        "capital": [
+          "Kuwait"
+        ]
+      }
+    },
+    {
+      "iso": "KGZ",
+      "name": "Kyrgyzstan",
+      "capital": "Bishkek",
+      "group": "asia",
+      "lon": 75
+    },
+    {
+      "iso": "LAO",
+      "name": "Laos",
+      "capital": "Vientiane",
+      "group": "asia",
+      "lon": 105,
+      "hook": "Vientiane means “city of sandalwood”."
+    },
+    {
+      "iso": "LBN",
+      "name": "Lebanon",
+      "capital": "Beirut",
+      "group": "asia",
+      "lon": 35.83
+    },
+    {
+      "iso": "MYS",
+      "name": "Malaysia",
+      "capital": "Kuala Lumpur",
+      "group": "asia",
+      "lon": 112.5,
+      "note": "Government largely in Putrajaya",
+      "hook": "Kuala Lumpur means “muddy confluence”. The government has largely moved to Putrajaya."
+    },
+    {
+      "iso": "MDV",
+      "name": "Maldives",
+      "capital": "Malé",
+      "group": "asia",
+      "lon": 73,
+      "accept": {
+        "capital": [
+          "Male"
+        ]
+      }
+    },
+    {
+      "iso": "MNG",
+      "name": "Mongolia",
+      "capital": "Ulaanbaatar",
+      "group": "asia",
+      "lon": 105,
+      "accept": {
+        "capital": [
+          "Ulan Bator"
+        ]
+      },
+      "hook": "Means “red hero”, and it's the coldest capital in the world."
+    },
+    {
+      "iso": "MMR",
+      "name": "Myanmar",
+      "capital": "Naypyidaw",
+      "group": "asia",
+      "lon": 98,
+      "accept": {
+        "name": [
+          "Burma"
+        ],
+        "capital": [
+          "Nay Pyi Taw",
+          "Naypyitaw"
+        ]
+      },
+      "hook": "Not Yangon: the government moved in 2005 to a new city of famously empty eight-lane roads."
+    },
+    {
+      "iso": "NPL",
+      "name": "Nepal",
+      "capital": "Kathmandu",
+      "group": "asia",
+      "lon": 84
+    },
+    {
+      "iso": "PRK",
+      "name": "North Korea",
+      "capital": "Pyongyang",
+      "group": "asia",
+      "lon": 127,
+      "accept": {
+        "name": [
+          "Korea, North"
+        ]
+      }
+    },
+    {
+      "iso": "OMN",
+      "name": "Oman",
+      "capital": "Muscat",
+      "group": "asia",
+      "lon": 57
+    },
+    {
+      "iso": "PAK",
+      "name": "Pakistan",
+      "capital": "Islamabad",
+      "group": "asia",
+      "lon": 70,
+      "hook": "Not Karachi: Islamabad was purpose-built in the 1960s."
+    },
+    {
+      "iso": "PSE",
+      "name": "Palestine",
+      "capital": "Ramallah",
+      "group": "asia",
+      "lon": 35.2,
+      "note": "Palestine claims East Jerusalem as its capital",
+      "accept": {
+        "capital": [
+          "East Jerusalem"
+        ]
+      }
+    },
+    {
+      "iso": "PHL",
+      "name": "Philippines",
+      "capital": "Manila",
+      "group": "asia",
+      "lon": 122
+    },
+    {
+      "iso": "QAT",
+      "name": "Qatar",
+      "capital": "Doha",
+      "group": "asia",
+      "lon": 51.25
+    },
+    {
+      "iso": "SAU",
+      "name": "Saudi Arabia",
+      "capital": "Riyadh",
+      "group": "asia",
+      "lon": 45,
+      "hook": "Not Mecca or Jeddah."
+    },
+    {
+      "iso": "SGP",
+      "name": "Singapore",
+      "capital": "Singapore",
+      "group": "asia",
+      "lon": 103.8
+    },
+    {
+      "iso": "KOR",
+      "name": "South Korea",
+      "capital": "Seoul",
+      "group": "asia",
+      "lon": 127.5,
+      "accept": {
+        "name": [
+          "Korea, South",
+          "Republic of Korea"
+        ]
+      }
+    },
+    {
+      "iso": "LKA",
+      "name": "Sri Lanka",
+      "capital": "Sri Jayawardenepura Kotte",
+      "group": "asia",
+      "lon": 81,
+      "note": "Colombo is the commercial capital",
+      "accept": {
+        "capital": [
+          "Kotte",
+          "Colombo"
+        ]
+      },
+      "hook": "Officially a suburb of Colombo with a magnificent name; Colombo still does the business."
+    },
+    {
+      "iso": "SYR",
+      "name": "Syria",
+      "capital": "Damascus",
+      "group": "asia",
+      "lon": 38
+    },
+    {
+      "iso": "TWN",
+      "name": "Taiwan",
+      "capital": "Taipei",
+      "group": "asia",
+      "lon": 121
+    },
+    {
+      "iso": "TJK",
+      "name": "Tajikistan",
+      "capital": "Dushanbe",
+      "group": "asia",
+      "lon": 71,
+      "hook": "Dushanbe means “Monday” in Tajik, after the Monday market it grew from."
+    },
+    {
+      "iso": "THA",
+      "name": "Thailand",
+      "capital": "Bangkok",
+      "group": "asia",
+      "lon": 100
+    },
+    {
+      "iso": "TLS",
+      "name": "Timor-Leste",
+      "capital": "Dili",
+      "group": "asia",
+      "lon": 125.92,
+      "accept": {
+        "name": [
+          "East Timor"
+        ]
+      }
+    },
+    {
+      "iso": "TUR",
+      "name": "Turkey",
+      "capital": "Ankara",
+      "group": "asia",
+      "lon": 35,
+      "accept": {
+        "name": [
+          "Türkiye"
+        ]
+      },
+      "hook": "Not Istanbul: Atatürk made Ankara the capital in 1923, well away from the old Ottoman seat."
+    },
+    {
+      "iso": "TKM",
+      "name": "Turkmenistan",
+      "capital": "Ashgabat",
+      "group": "asia",
+      "lon": 60,
+      "hook": "Ashgabat holds the record for the most white marble buildings."
+    },
+    {
+      "iso": "ARE",
+      "name": "United Arab Emirates",
+      "capital": "Abu Dhabi",
+      "group": "asia",
+      "lon": 54,
+      "accept": {
+        "name": [
+          "UAE"
+        ]
+      },
+      "hook": "Not Dubai."
+    },
+    {
+      "iso": "UZB",
+      "name": "Uzbekistan",
+      "capital": "Tashkent",
+      "group": "asia",
+      "lon": 64,
+      "hook": "Tashkent means “stone city”."
+    },
+    {
+      "iso": "VNM",
+      "name": "Vietnam",
+      "capital": "Hanoi",
+      "group": "asia",
+      "lon": 107.83,
+      "hook": "Not Ho Chi Minh City, the old Saigon, which is bigger."
+    },
+    {
+      "iso": "YEM",
+      "name": "Yemen",
+      "capital": "Sana'a",
+      "group": "asia",
+      "lon": 48,
+      "accept": {
+        "capital": [
+          "Sanaa"
+        ]
+      }
+    },
+    {
+      "iso": "ALB",
+      "name": "Albania",
+      "capital": "Tirana",
+      "group": "europe",
+      "lon": 20
+    },
+    {
+      "iso": "AND",
+      "name": "Andorra",
+      "capital": "Andorra la Vella",
+      "group": "europe",
+      "lon": 1.5
+    },
+    {
+      "iso": "AUT",
+      "name": "Austria",
+      "capital": "Vienna",
+      "group": "europe",
+      "lon": 13.33
+    },
+    {
+      "iso": "BLR",
+      "name": "Belarus",
+      "capital": "Minsk",
+      "group": "europe",
+      "lon": 28
+    },
+    {
+      "iso": "BEL",
+      "name": "Belgium",
+      "capital": "Brussels",
+      "group": "europe",
+      "lon": 4
+    },
+    {
+      "iso": "BIH",
+      "name": "Bosnia and Herzegovina",
+      "capital": "Sarajevo",
+      "group": "europe",
+      "lon": 18,
+      "accept": {
+        "name": [
+          "Bosnia"
+        ]
+      }
+    },
+    {
+      "iso": "BGR",
+      "name": "Bulgaria",
+      "capital": "Sofia",
+      "group": "europe",
+      "lon": 25
+    },
+    {
+      "iso": "HRV",
+      "name": "Croatia",
+      "capital": "Zagreb",
+      "group": "europe",
+      "lon": 15.5
+    },
+    {
+      "iso": "CYP",
+      "name": "Cyprus",
+      "capital": "Nicosia",
+      "group": "europe",
+      "lon": 33,
+      "hook": "Nicosia is the last divided capital in Europe."
+    },
+    {
+      "iso": "CZE",
+      "name": "Czechia",
+      "capital": "Prague",
+      "group": "europe",
+      "lon": 15.5,
+      "accept": {
+        "name": [
+          "Czech Republic"
+        ]
+      }
+    },
+    {
+      "iso": "DNK",
+      "name": "Denmark",
+      "capital": "Copenhagen",
+      "group": "europe",
+      "lon": 10
+    },
+    {
+      "iso": "EST",
+      "name": "Estonia",
+      "capital": "Tallinn",
+      "group": "europe",
+      "lon": 26
+    },
+    {
+      "iso": "FIN",
+      "name": "Finland",
+      "capital": "Helsinki",
+      "group": "europe",
+      "lon": 26
+    },
+    {
+      "iso": "FRA",
+      "name": "France",
+      "capital": "Paris",
+      "group": "europe",
+      "lon": 2
+    },
+    {
+      "iso": "DEU",
+      "name": "Germany",
+      "capital": "Berlin",
+      "group": "europe",
+      "lon": 9
+    },
+    {
+      "iso": "GRC",
+      "name": "Greece",
+      "capital": "Athens",
+      "group": "europe",
+      "lon": 22
+    },
+    {
+      "iso": "HUN",
+      "name": "Hungary",
+      "capital": "Budapest",
+      "group": "europe",
+      "lon": 20
+    },
+    {
+      "iso": "ISL",
+      "name": "Iceland",
+      "capital": "Reykjavik",
+      "group": "europe",
+      "lon": -18,
+      "hook": "Reykjavik means “smoky bay”, from the steam off its hot springs."
+    },
+    {
+      "iso": "IRL",
+      "name": "Ireland",
+      "capital": "Dublin",
+      "group": "europe",
+      "lon": -8,
+      "accept": {
+        "name": [
+          "Republic of Ireland"
+        ]
+      }
+    },
+    {
+      "iso": "ITA",
+      "name": "Italy",
+      "capital": "Rome",
+      "group": "europe",
+      "lon": 12.83
+    },
+    {
+      "iso": "UNK",
+      "name": "Kosovo",
+      "capital": "Pristina",
+      "group": "europe",
+      "lon": 21.17
+    },
+    {
+      "iso": "LVA",
+      "name": "Latvia",
+      "capital": "Riga",
+      "group": "europe",
+      "lon": 25
+    },
+    {
+      "iso": "LIE",
+      "name": "Liechtenstein",
+      "capital": "Vaduz",
+      "group": "europe",
+      "lon": 9.53
+    },
+    {
+      "iso": "LTU",
+      "name": "Lithuania",
+      "capital": "Vilnius",
+      "group": "europe",
+      "lon": 24
+    },
+    {
+      "iso": "LUX",
+      "name": "Luxembourg",
+      "capital": "Luxembourg",
+      "group": "europe",
+      "lon": 6.17
+    },
+    {
+      "iso": "MLT",
+      "name": "Malta",
+      "capital": "Valletta",
+      "group": "europe",
+      "lon": 14.58,
+      "hook": "Valletta: double L, double T."
+    },
+    {
+      "iso": "MDA",
+      "name": "Moldova",
+      "capital": "Chișinău",
+      "group": "europe",
+      "lon": 29
+    },
+    {
+      "iso": "MCO",
+      "name": "Monaco",
+      "capital": "Monaco",
+      "group": "europe",
+      "lon": 7.4
+    },
+    {
+      "iso": "MNE",
+      "name": "Montenegro",
+      "capital": "Podgorica",
+      "group": "europe",
+      "lon": 19.3
+    },
+    {
+      "iso": "NLD",
+      "name": "Netherlands",
+      "capital": "Amsterdam",
+      "group": "europe",
+      "lon": 5.75,
+      "note": "Government sits in The Hague",
+      "accept": {
+        "name": [
+          "Holland",
+          "The Netherlands"
+        ]
+      },
+      "hook": "Amsterdam is the capital, but parliament and the government sit in The Hague."
+    },
+    {
+      "iso": "MKD",
+      "name": "North Macedonia",
+      "capital": "Skopje",
+      "group": "europe",
+      "lon": 22,
+      "accept": {
+        "name": [
+          "Macedonia"
+        ]
+      }
+    },
+    {
+      "iso": "NOR",
+      "name": "Norway",
+      "capital": "Oslo",
+      "group": "europe",
+      "lon": 10
+    },
+    {
+      "iso": "POL",
+      "name": "Poland",
+      "capital": "Warsaw",
+      "group": "europe",
+      "lon": 20
+    },
+    {
+      "iso": "PRT",
+      "name": "Portugal",
+      "capital": "Lisbon",
+      "group": "europe",
+      "lon": -8
+    },
+    {
+      "iso": "ROU",
+      "name": "Romania",
+      "capital": "Bucharest",
+      "group": "europe",
+      "lon": 25
+    },
+    {
+      "iso": "RUS",
+      "name": "Russia",
+      "capital": "Moscow",
+      "group": "europe",
+      "lon": 100
+    },
+    {
+      "iso": "SMR",
+      "name": "San Marino",
+      "capital": "San Marino",
+      "group": "europe",
+      "lon": 12.42,
+      "accept": {
+        "capital": [
+          "City of San Marino"
+        ]
+      }
+    },
+    {
+      "iso": "SRB",
+      "name": "Serbia",
+      "capital": "Belgrade",
+      "group": "europe",
+      "lon": 21
+    },
+    {
+      "iso": "SVK",
+      "name": "Slovakia",
+      "capital": "Bratislava",
+      "group": "europe",
+      "lon": 19.5,
+      "hook": "Slovakia has the K and Bratislava. Slovenia has the N and Ljubljana."
+    },
+    {
+      "iso": "SVN",
+      "name": "Slovenia",
+      "capital": "Ljubljana",
+      "group": "europe",
+      "lon": 14.82,
+      "hook": "Slovenia has the N and Ljubljana. Slovakia has the K and Bratislava."
+    },
+    {
+      "iso": "ESP",
+      "name": "Spain",
+      "capital": "Madrid",
+      "group": "europe",
+      "lon": -4
+    },
+    {
+      "iso": "SWE",
+      "name": "Sweden",
+      "capital": "Stockholm",
+      "group": "europe",
+      "lon": 15
+    },
+    {
+      "iso": "CHE",
+      "name": "Switzerland",
+      "capital": "Bern",
+      "group": "europe",
+      "lon": 8,
+      "hook": "Not Zurich or Geneva. Strictly it's only the “federal city”: the Swiss don't officially do capitals."
+    },
+    {
+      "iso": "UKR",
+      "name": "Ukraine",
+      "capital": "Kyiv",
+      "group": "europe",
+      "lon": 32,
+      "accept": {
+        "capital": [
+          "Kiev"
+        ]
+      },
+      "hook": "Now spelled the Ukrainian way, Kyiv, rather than the Russian Kiev."
+    },
+    {
+      "iso": "GBR",
+      "name": "United Kingdom",
+      "capital": "London",
+      "group": "europe",
+      "lon": -2,
+      "accept": {
+        "name": [
+          "UK",
+          "Great Britain",
+          "Britain"
+        ]
+      }
+    },
+    {
+      "iso": "VAT",
+      "name": "Vatican City",
+      "capital": "Vatican City",
+      "group": "europe",
+      "lon": 12.45,
+      "accept": {
+        "name": [
+          "Vatican",
+          "Holy See"
+        ],
+        "capital": [
+          "Vatican"
+        ]
+      }
+    },
+    {
+      "iso": "ATG",
+      "name": "Antigua and Barbuda",
+      "capital": "St John's",
+      "group": "north-america",
+      "lon": -61.8,
+      "accept": {
+        "capital": [
+          "Saint John's"
+        ]
+      }
+    },
+    {
+      "iso": "BHS",
+      "name": "Bahamas",
+      "capital": "Nassau",
+      "group": "north-america",
+      "lon": -76,
+      "accept": {
+        "name": [
+          "The Bahamas"
+        ]
+      }
+    },
+    {
+      "iso": "BRB",
+      "name": "Barbados",
+      "capital": "Bridgetown",
+      "group": "north-america",
+      "lon": -59.53
+    },
+    {
+      "iso": "BLZ",
+      "name": "Belize",
+      "capital": "Belmopan",
+      "group": "north-america",
+      "lon": -88.75,
+      "hook": "Built inland after a hurricane flattened Belize City in 1961."
+    },
+    {
+      "iso": "CAN",
+      "name": "Canada",
+      "capital": "Ottawa",
+      "group": "north-america",
+      "lon": -95,
+      "hook": "Chosen by Queen Victoria, partly for sitting between English- and French-speaking Canada."
+    },
+    {
+      "iso": "CRI",
+      "name": "Costa Rica",
+      "capital": "San José",
+      "group": "north-america",
+      "lon": -84
+    },
+    {
+      "iso": "CUB",
+      "name": "Cuba",
+      "capital": "Havana",
+      "group": "north-america",
+      "lon": -80
+    },
+    {
+      "iso": "DMA",
+      "name": "Dominica",
+      "capital": "Roseau",
+      "group": "north-america",
+      "lon": -61.33,
+      "hook": "Dominica has Roseau. The Dominican Republic has Santo Domingo."
+    },
+    {
+      "iso": "DOM",
+      "name": "Dominican Republic",
+      "capital": "Santo Domingo",
+      "group": "north-america",
+      "lon": -70.67,
+      "hook": "The Dominican Republic has Santo Domingo. Dominica has Roseau."
+    },
+    {
+      "iso": "SLV",
+      "name": "El Salvador",
+      "capital": "San Salvador",
+      "group": "north-america",
+      "lon": -88.92
+    },
+    {
+      "iso": "GRD",
+      "name": "Grenada",
+      "capital": "St George's",
+      "group": "north-america",
+      "lon": -61.67,
+      "accept": {
+        "capital": [
+          "Saint George's"
+        ]
+      }
+    },
+    {
+      "iso": "GTM",
+      "name": "Guatemala",
+      "capital": "Guatemala City",
+      "group": "north-america",
+      "lon": -90.25,
+      "accept": {
+        "capital": [
+          "Guatemala"
+        ]
+      }
+    },
+    {
+      "iso": "HTI",
+      "name": "Haiti",
+      "capital": "Port-au-Prince",
+      "group": "north-america",
+      "lon": -72.42
+    },
+    {
+      "iso": "HND",
+      "name": "Honduras",
+      "capital": "Tegucigalpa",
+      "group": "north-america",
+      "lon": -86.5,
+      "hook": "Tegucigalpa: known to locals, mercifully, as Tegus."
+    },
+    {
+      "iso": "JAM",
+      "name": "Jamaica",
+      "capital": "Kingston",
+      "group": "north-america",
+      "lon": -77.5
+    },
+    {
+      "iso": "MEX",
+      "name": "Mexico",
+      "capital": "Mexico City",
+      "group": "north-america",
+      "lon": -102,
+      "accept": {
+        "capital": [
+          "Mexico"
+        ]
+      }
+    },
+    {
+      "iso": "NIC",
+      "name": "Nicaragua",
+      "capital": "Managua",
+      "group": "north-america",
+      "lon": -85
+    },
+    {
+      "iso": "PAN",
+      "name": "Panama",
+      "capital": "Panama City",
+      "group": "north-america",
+      "lon": -80,
+      "accept": {
+        "capital": [
+          "Panama"
+        ]
+      }
+    },
+    {
+      "iso": "KNA",
+      "name": "Saint Kitts and Nevis",
+      "capital": "Basseterre",
+      "group": "north-america",
+      "lon": -62.75,
+      "accept": {
+        "name": [
+          "St Kitts and Nevis"
+        ]
+      }
+    },
+    {
+      "iso": "LCA",
+      "name": "Saint Lucia",
+      "capital": "Castries",
+      "group": "north-america",
+      "lon": -60.97,
+      "accept": {
+        "name": [
+          "St Lucia"
+        ]
+      }
+    },
+    {
+      "iso": "VCT",
+      "name": "Saint Vincent and the Grenadines",
+      "capital": "Kingstown",
+      "group": "north-america",
+      "lon": -61.2,
+      "accept": {
+        "name": [
+          "St Vincent and the Grenadines"
+        ]
+      }
+    },
+    {
+      "iso": "TTO",
+      "name": "Trinidad and Tobago",
+      "capital": "Port of Spain",
+      "group": "north-america",
+      "lon": -61
+    },
+    {
+      "iso": "USA",
+      "name": "United States",
+      "capital": "Washington, D.C.",
+      "group": "north-america",
+      "lon": -97,
+      "accept": {
+        "name": [
+          "USA",
+          "United States of America",
+          "America",
+          "US"
+        ],
+        "capital": [
+          "Washington",
+          "Washington DC"
+        ]
+      },
+      "hook": "Not New York: a purpose-built capital on land carved out between Maryland and Virginia."
+    },
+    {
+      "iso": "ARG",
+      "name": "Argentina",
+      "capital": "Buenos Aires",
+      "group": "south-america",
+      "lon": -64,
+      "hook": "Buenos Aires means “good airs”."
+    },
+    {
+      "iso": "BOL",
+      "name": "Bolivia",
+      "capital": "Sucre",
+      "group": "south-america",
+      "lon": -65,
+      "note": "La Paz is the seat of government",
+      "accept": {
+        "capital": [
+          "La Paz"
+        ]
+      },
+      "hook": "Sucre has the constitution and La Paz has the government. Sucre's the official answer."
+    },
+    {
+      "iso": "BRA",
+      "name": "Brazil",
+      "capital": "Brasília",
+      "group": "south-america",
+      "lon": -55,
+      "hook": "Not Rio: a modernist capital built in the 1950s in the middle of nowhere, laid out like an aeroplane from above."
+    },
+    {
+      "iso": "CHL",
+      "name": "Chile",
+      "capital": "Santiago",
+      "group": "south-america",
+      "lon": -71
+    },
+    {
+      "iso": "COL",
+      "name": "Colombia",
+      "capital": "Bogotá",
+      "group": "south-america",
+      "lon": -72
+    },
+    {
+      "iso": "ECU",
+      "name": "Ecuador",
+      "capital": "Quito",
+      "group": "south-america",
+      "lon": -77.5,
+      "hook": "Quito sits almost on the equator, which the country is named after."
+    },
+    {
+      "iso": "GUY",
+      "name": "Guyana",
+      "capital": "Georgetown",
+      "group": "south-america",
+      "lon": -59
+    },
+    {
+      "iso": "PRY",
+      "name": "Paraguay",
+      "capital": "Asunción",
+      "group": "south-america",
+      "lon": -58
+    },
+    {
+      "iso": "PER",
+      "name": "Peru",
+      "capital": "Lima",
+      "group": "south-america",
+      "lon": -76
+    },
+    {
+      "iso": "SUR",
+      "name": "Suriname",
+      "capital": "Paramaribo",
+      "group": "south-america",
+      "lon": -56
+    },
+    {
+      "iso": "URY",
+      "name": "Uruguay",
+      "capital": "Montevideo",
+      "group": "south-america",
+      "lon": -56
+    },
+    {
+      "iso": "VEN",
+      "name": "Venezuela",
+      "capital": "Caracas",
+      "group": "south-america",
+      "lon": -66
+    },
+    {
+      "iso": "AUS",
+      "name": "Australia",
+      "capital": "Canberra",
+      "group": "oceania",
+      "lon": 133,
+      "hook": "Built from scratch as a compromise, because Sydney and Melbourne couldn't bear the other one winning."
+    },
+    {
+      "iso": "FJI",
+      "name": "Fiji",
+      "capital": "Suva",
+      "group": "oceania",
+      "lon": 175
+    },
+    {
+      "iso": "KIR",
+      "name": "Kiribati",
+      "capital": "South Tarawa",
+      "group": "oceania",
+      "lon": 173,
+      "accept": {
+        "capital": [
+          "Tarawa"
+        ]
+      },
+      "hook": "Kiribati is said “Kiribass”: it's the local spelling of Gilberts, as in the Gilbert Islands."
+    },
+    {
+      "iso": "MHL",
+      "name": "Marshall Islands",
+      "capital": "Majuro",
+      "group": "oceania",
+      "lon": 168
+    },
+    {
+      "iso": "FSM",
+      "name": "Micronesia",
+      "capital": "Palikir",
+      "group": "oceania",
+      "lon": 158.25,
+      "accept": {
+        "name": [
+          "Federated States of Micronesia"
+        ]
+      }
+    },
+    {
+      "iso": "NRU",
+      "name": "Nauru",
+      "capital": "Yaren",
+      "group": "oceania",
+      "lon": 166.92,
+      "note": "No official capital",
+      "hook": "Nauru has no official capital; Yaren is where the government sits."
+    },
+    {
+      "iso": "NZL",
+      "name": "New Zealand",
+      "capital": "Wellington",
+      "group": "oceania",
+      "lon": 174,
+      "hook": "Not Auckland: Wellington won for being in the middle."
+    },
+    {
+      "iso": "PLW",
+      "name": "Palau",
+      "capital": "Ngerulmud",
+      "group": "oceania",
+      "lon": 134.5
+    },
+    {
+      "iso": "PNG",
+      "name": "Papua New Guinea",
+      "capital": "Port Moresby",
+      "group": "oceania",
+      "lon": 147
+    },
+    {
+      "iso": "WSM",
+      "name": "Samoa",
+      "capital": "Apia",
+      "group": "oceania",
+      "lon": -172.33
+    },
+    {
+      "iso": "SLB",
+      "name": "Solomon Islands",
+      "capital": "Honiara",
+      "group": "oceania",
+      "lon": 159
+    },
+    {
+      "iso": "TON",
+      "name": "Tonga",
+      "capital": "Nuku'alofa",
+      "group": "oceania",
+      "lon": -175,
+      "accept": {
+        "capital": [
+          "Nukualofa"
+        ]
+      }
+    },
+    {
+      "iso": "TUV",
+      "name": "Tuvalu",
+      "capital": "Funafuti",
+      "group": "oceania",
+      "lon": 178
+    },
+    {
+      "iso": "VUT",
+      "name": "Vanuatu",
+      "capital": "Port Vila",
+      "group": "oceania",
+      "lon": 167
+    }
+  ],
+  "groupLabel": "Region"
+}

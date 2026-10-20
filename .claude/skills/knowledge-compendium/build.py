@@ -32,7 +32,7 @@ OUT = REPO / "compendium"
 LUCIDE_VERSION = "0.460.0"
 
 # icons the page chrome itself uses
-UI_ICONS = ["arrow-left", "arrow-right", "shuffle", "link-2", "brain", "eye", "eye-off", "sparkles", "x", "rotate-ccw"]
+UI_ICONS = ["arrow-left", "arrow-right", "shuffle", "link-2", "brain", "eye", "eye-off", "sparkles", "x", "rotate-ccw", "route", "list-checks"]
 
 GATE = """<script>
   if (sessionStorage.getItem("sh-authed") !== "1") {{
@@ -108,7 +108,8 @@ def validate(t, path):
     need(len(t["items"]) >= 4, "need at least 4 items for multiple choice to work")
     if "map" in t:
         m = t["map"]
-        need(m.get("key") in keys, "map.key must be a field")
+        need(m.get("key") in keys or all(m.get("key") in it for it in t["items"]),
+             "map.key must be a field, or a property every item has")
         src = MAPS / f"{m.get('source')}.json"
         need(src.exists(), f"no map source {src.name} in maps/")
         shapes = json.loads(src.read_text())["shapes"]

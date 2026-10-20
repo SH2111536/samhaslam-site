@@ -38,7 +38,10 @@ separately (Greek gods are their own topic, not a column on the Roman one).
 - **Spend time on weak spots.** Progress is stored per item in the browser; the quiz and match
   game weight towards items not yet mastered (3 right in a row) and ones more often missed, and a
   round ends with "practise the ones I missed".
-- **Short rounds.** 10 questions, 5 pairs per match by default (`roundLength`, `matchSize`).
+- **Short rounds, or the whole chunk.** With nothing chosen, "Test me" is a 10-question round
+  weighted towards weak spots (`roundLength`; matches are 5 pairs, `matchSize`). Choose a group
+  or filter (Africa, letter G) and the button becomes "Test all N": every item in that chunk once,
+  with wrong options drawn from the chunk first so you're really telling them apart.
 - **Feedback teaches.** After every answer, show the full fact and the memory hook.
 - **Hooks.** A one-line memory hook per item (etymology, a modern echo, a ridiculous image).
   Hooks are optional extras: offer them; once agreed, write them in Sam's voice — first person,
@@ -119,8 +122,34 @@ the answer away. A source with `"context": true` (the periodic table) also draws
 not in the topic, faintly, for shape.
 
 Map sources live in `maps/<source>.json` as `{ viewBox, shapes: { name: { d, bbox } } }`, with
-a generator script alongside (`make_us_states.js` from `us-atlas`, `make_periodic_table.py`). For a new kind of map
+a generator script alongside (`make_us_states.js` from `us-atlas`, `make_periodic_table.py`,
+`make_world.js` from `world-atlas` and `world-countries`). The world map keys shapes by ISO
+alpha-3 code (`"key": "iso"`, an item property rather than a displayed field), draws countries
+too small for its scale as dots, and gives every shape a `cx`/`cy` centre. For a new kind of map
 (world countries, UK counties), write a generator in the same shape, and check with Sam first.
+
+### Name them all
+
+Any topic whose title field is `typeable` gets a **Name them all** button (it becomes "Name all
+N" when a group or filter is chosen): type every item in the chosen set from memory. Exact names
+(and `accept` alternatives) are taken as you type, Enter forgives one typo, and each find fills
+a numbered slot and lights up on the map. Slots run in journey order where there is one,
+otherwise alphabetically. "Give up" reveals the rest in red; the best score per set is kept in
+the browser. It's recall practice, so it doesn't count towards mastery.
+
+### Filters and journeys
+
+`"filters": [{ "key": "letter", "label": "Letter", "firstLetterOf": "name" }]` adds a row of chips
+(one per first letter of that field) that combines with the group chips: "B" plus "Africa". The
+cards, the map's dimming, the quiz, the match game and the journey all use the filtered set.
+`"groupLabel": "Region"` labels the group chips.
+
+`"journey": { "by": "lon", "order": "asc", "label": "West to east", "ask": "capital" }` adds a
+**Journey** button and an "Order: A–Z / West to east" switch. The journey walks the filtered
+set sorted by the numeric item property `by`, one stop at a time. A map framed on the route
+draws the trail so far; you reveal (then mark "I knew it" or "I didn't") or type the `ask`
+field, and each stop counts towards mastery. It ends with a score and a "practise the ones I
+missed" round. It needs a map whose shapes carry `cx`/`cy` centres (the world map does).
 
 ### Pictures
 
