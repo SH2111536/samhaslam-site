@@ -117,6 +117,7 @@ after the answer, so it never gives the answer away.
 
 Options: `"label": "<field>"` prints that field inside each shape (hidden along with the field);
 `"cardShapes": false` keeps shapes off the cards when they say nothing (a square table cell);
+`"maxWidth": 560` caps the map's width on big screens (a round wheel shouldn't fill the page);
 `"withhold": false` shows the quiz highlight straight away, for maps where position doesn't give
 the answer away. A source with `"context": true` (the periodic table) also draws the shapes
 not in the topic, faintly, for shape.

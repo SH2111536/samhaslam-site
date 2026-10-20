@@ -1,0 +1,240 @@
+{
+  "slug": "phobias",
+  "title": "Names of fears.",
+  "eyebrow": "Compendium · Holly",
+  "lede": "Twenty-four phobias, from the everyday to the gloriously specific, and the Greek roots that let you work out the rest.",
+  "noun": {
+    "one": "phobia",
+    "many": "phobias"
+  },
+  "numerals": "none",
+  "card": {
+    "tag": "Holly · Words",
+    "title": "Names of fears",
+    "desc": "Twenty-four phobias and what they're fears of, with the roots that give them away.",
+    "icon": "ghost",
+    "order": 11
+  },
+  "fields": [
+    {
+      "key": "phobia",
+      "label": "Phobia",
+      "plural": "phobias",
+      "role": "title",
+      "typeable": true
+    },
+    {
+      "key": "fear",
+      "label": "Fear of",
+      "plural": "fears",
+      "role": "subtitle"
+    }
+  ],
+  "hideable": [
+    "phobia",
+    "fear"
+  ],
+  "questions": [
+    {
+      "from": "fear",
+      "to": "phobia",
+      "ask": "What's the name for this fear?"
+    },
+    {
+      "from": "phobia",
+      "to": "fear",
+      "ask": "What's it a fear of?"
+    }
+  ],
+  "match": [
+    {
+      "left": "phobia",
+      "right": "fear"
+    }
+  ],
+  "groups": [
+    {
+      "key": "everyday",
+      "label": "Everyday",
+      "short": "Everyday",
+      "note": "The table: ordinary things with clinical-sounding names."
+    },
+    {
+      "key": "suspects",
+      "label": "Usual suspects",
+      "short": "Usual suspects",
+      "note": "The ones quizmasters reach for once everyone knows arachnophobia."
+    },
+    {
+      "key": "roots",
+      "label": "Guess from the roots",
+      "short": "Guess from the roots",
+      "note": "Know the Greek root and you can work these out on the night."
+    }
+  ],
+  "items": [
+    {
+      "phobia": "Acrophobia",
+      "fear": "Heights",
+      "group": "everyday",
+      "hook": "Greek akron, the peak: as in the Acropolis, the city on the heights."
+    },
+    {
+      "phobia": "Agoraphobia",
+      "fear": "Open or crowded spaces",
+      "group": "everyday",
+      "hook": "The agora was the open marketplace where the Greeks gathered."
+    },
+    {
+      "phobia": "Alektorophobia",
+      "fear": "Chickens",
+      "group": "everyday",
+      "hook": "Alektor is Greek for a cockerel."
+    },
+    {
+      "phobia": "Bogyphobia",
+      "fear": "The bogeyman",
+      "group": "everyday",
+      "hook": "One of the few with an English root: bogey, as in bogeyman."
+    },
+    {
+      "phobia": "Cynophobia",
+      "fear": "Dogs",
+      "group": "everyday",
+      "hook": "Greek kyon, a dog. The Cynic philosophers got their name from being called dog-like."
+    },
+    {
+      "phobia": "Glossophobia",
+      "fear": "Public speaking",
+      "group": "everyday",
+      "hook": "Greek glossa, the tongue, as in glossary."
+    },
+    {
+      "phobia": "Koumpounophobia",
+      "fear": "Buttons",
+      "group": "everyday",
+      "hook": "Koumpouni is modern Greek for a button."
+    },
+    {
+      "phobia": "Mysophobia",
+      "fear": "Dirt and germs",
+      "group": "everyday",
+      "hook": "Greek mysos, filth."
+    },
+    {
+      "phobia": "Ophidiophobia",
+      "fear": "Snakes",
+      "group": "everyday",
+      "hook": "Greek ophis, a serpent, as in Ophiuchus, the snake-bearer of the night sky."
+    },
+    {
+      "phobia": "Pogonophobia",
+      "fear": "Beards",
+      "group": "everyday",
+      "hook": "Greek pogon, a beard."
+    },
+    {
+      "phobia": "Thalassophobia",
+      "fear": "The deep sea",
+      "group": "everyday",
+      "hook": "Greek thalassa, the sea. Xenophon's soldiers cheered “Thalatta! Thalatta!” when they finally saw it."
+    },
+    {
+      "phobia": "Xanthophobia",
+      "fear": "The colour yellow",
+      "group": "everyday",
+      "hook": "Greek xanthos, yellow: xanthan gum comes from a yellowish bacterium."
+    },
+    {
+      "phobia": "Arachibutyrophobia",
+      "fear": "Peanut butter sticking to the roof of your mouth",
+      "group": "suspects",
+      "hook": "Not spiders: Arachis is the peanut's botanical name and butyrum is Latin for butter. Gloriously specific, hence a quiz favourite."
+    },
+    {
+      "phobia": "Hippopotomonstrosesquippedaliophobia",
+      "fear": "Long words",
+      "group": "suspects",
+      "hook": "The cruelest joke in the dictionary. Sesquipedalian means “a foot and a half long”, and someone added hippopotamus and monstrous to make it worse.",
+      "accept": {
+        "phobia": [
+          "Hippopotomonstrosesquipedaliophobia",
+          "Sesquipedalophobia"
+        ]
+      }
+    },
+    {
+      "phobia": "Nomophobia",
+      "fear": "Being without your mobile",
+      "group": "suspects",
+      "hook": "NO MObile PHOne phobia, coined in a 2008 study for the UK Post Office."
+    },
+    {
+      "phobia": "Triskaidekaphobia",
+      "fear": "The number 13",
+      "group": "suspects",
+      "hook": "Greek treis (three) + kai (and) + deka (ten). If it's Friday the 13th in particular, that's paraskevidekatriaphobia."
+    },
+    {
+      "phobia": "Coulrophobia",
+      "fear": "Clowns",
+      "group": "suspects",
+      "hook": "Said to come from the Greek for a stilt-walker. The word only caught on in the 1980s and 90s."
+    },
+    {
+      "phobia": "Trypophobia",
+      "fear": "Clusters of small holes",
+      "group": "suspects",
+      "hook": "Greek trypa, a hole. Think honeycomb, lotus seed pods or an Aero. Technically an aversion rather than a clinical phobia."
+    },
+    {
+      "phobia": "Haematophobia",
+      "fear": "Blood",
+      "group": "roots",
+      "hook": "Greek haima, blood, as in haemoglobin.",
+      "accept": {
+        "phobia": [
+          "Hematophobia",
+          "Hemophobia",
+          "Haemophobia"
+        ]
+      }
+    },
+    {
+      "phobia": "Necrophobia",
+      "fear": "Corpses",
+      "group": "roots",
+      "hook": "Greek nekros, a dead body, as in necropolis, a city of the dead."
+    },
+    {
+      "phobia": "Pyrophobia",
+      "fear": "Fire",
+      "group": "roots",
+      "hook": "Greek pyr, fire, as in pyrotechnics and a funeral pyre."
+    },
+    {
+      "phobia": "Hydrophobia",
+      "fear": "Water",
+      "group": "roots",
+      "hook": "Greek hydor, water. It was also an old name for rabies, because sufferers couldn't bear to swallow."
+    },
+    {
+      "phobia": "Panophobia",
+      "fear": "Everything",
+      "group": "roots",
+      "hook": "Greek pan, all, as in panorama: the whole view.",
+      "accept": {
+        "phobia": [
+          "Pantophobia",
+          "Panphobia"
+        ]
+      }
+    },
+    {
+      "phobia": "Phobophobia",
+      "fear": "Fear itself",
+      "group": "roots",
+      "hook": "The fear of fear, or of developing a phobia. Phobos was the Greek god of fear."
+    }
+  ]
+}

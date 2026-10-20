@@ -1,0 +1,257 @@
+{
+  "slug": "zodiac",
+  "title": "The zodiac.",
+  "eyebrow": "Compendium · Holly",
+  "lede": "The twelve signs of the zodiac, in order round the year: their dates, symbols, elements and ruling planets.",
+  "noun": {
+    "one": "sign",
+    "many": "signs"
+  },
+  "numerals": "arabic",
+  "card": {
+    "tag": "Holly · Astrology",
+    "title": "The zodiac",
+    "desc": "Twelve signs: their dates, symbols, elements and ruling planets, round the zodiac wheel.",
+    "icon": "sparkles",
+    "order": 10
+  },
+  "map": {
+    "source": "zodiac-wheel",
+    "key": "name",
+    "label": "name",
+    "cardShapes": false,
+    "hint": "Point at a sign to see its dates. The wheel fills in as each one is mastered.",
+    "maxWidth": 560
+  },
+  "fields": [
+    {
+      "key": "name",
+      "label": "Sign",
+      "plural": "signs",
+      "role": "title",
+      "typeable": true
+    },
+    {
+      "key": "dates",
+      "label": "Dates",
+      "plural": "dates",
+      "role": "subtitle"
+    },
+    {
+      "key": "symbol",
+      "label": "Symbol",
+      "plural": "symbols",
+      "role": "meta",
+      "typeable": true
+    },
+    {
+      "key": "element",
+      "label": "Element",
+      "plural": "elements",
+      "role": "meta"
+    },
+    {
+      "key": "planet",
+      "label": "Ruling planet",
+      "short": "Planet",
+      "plural": "planets",
+      "role": "meta"
+    }
+  ],
+  "hideable": [
+    "name",
+    "dates",
+    "symbol",
+    "element",
+    "planet"
+  ],
+  "questions": [
+    {
+      "from": "dates",
+      "to": "name",
+      "ask": "Which sign is this?"
+    },
+    {
+      "from": "name",
+      "to": "dates",
+      "ask": "When does it run?"
+    },
+    {
+      "from": "symbol",
+      "to": "name",
+      "ask": "Which sign has this symbol?"
+    },
+    {
+      "from": "name",
+      "to": "symbol",
+      "ask": "What's its symbol?"
+    },
+    {
+      "from": "name",
+      "to": "element",
+      "ask": "Which element is it?"
+    },
+    {
+      "from": "name",
+      "to": "planet",
+      "ask": "What's its ruling planet?"
+    }
+  ],
+  "match": [
+    {
+      "left": "name",
+      "right": "dates"
+    },
+    {
+      "left": "name",
+      "right": "symbol"
+    }
+  ],
+  "items": [
+    {
+      "name": "Aries",
+      "dates": "21 Mar – 19 Apr",
+      "symbol": "The Ram",
+      "element": "Fire",
+      "planet": "Mars",
+      "hook": "The golden ram that flew Phrixus to safety. Its fleece became the Golden Fleece that Jason went looking for.",
+      "accept": {
+        "symbol": [
+          "The Ram"
+        ]
+      }
+    },
+    {
+      "name": "Taurus",
+      "dates": "20 Apr – 20 May",
+      "symbol": "The Bull",
+      "element": "Earth",
+      "planet": "Venus",
+      "hook": "Zeus as a white bull, carrying Europa off across the sea. She gave her name to Europe."
+    },
+    {
+      "name": "Gemini",
+      "dates": "21 May – 20 Jun",
+      "symbol": "The Twins",
+      "element": "Air",
+      "planet": "Mercury",
+      "hook": "Castor and Pollux. When Castor died, Pollux shared his immortality so the twins could stay together."
+    },
+    {
+      "name": "Cancer",
+      "dates": "21 Jun – 22 Jul",
+      "symbol": "The Crab",
+      "element": "Water",
+      "planet": "The Moon",
+      "hook": "The crab Hera sent to nip Heracles while he fought the Hydra. He trod on it; Hera put it in the stars.",
+      "accept": {
+        "planet": [
+          "The Moon"
+        ]
+      }
+    },
+    {
+      "name": "Leo",
+      "dates": "23 Jul – 22 Aug",
+      "symbol": "The Lion",
+      "element": "Fire",
+      "planet": "The Sun",
+      "hook": "The Nemean lion, whose hide no weapon could pierce: Heracles' first labour.",
+      "accept": {
+        "planet": [
+          "The Sun"
+        ]
+      }
+    },
+    {
+      "name": "Virgo",
+      "dates": "23 Aug – 22 Sep",
+      "symbol": "The Maiden",
+      "element": "Earth",
+      "planet": "Mercury",
+      "hook": "Often Astraea, goddess of justice and the last immortal to leave the Earth. Her scales hang next door, in Libra.",
+      "accept": {
+        "symbol": [
+          "Virgin"
+        ]
+      }
+    },
+    {
+      "name": "Libra",
+      "dates": "23 Sep – 22 Oct",
+      "symbol": "The Scales",
+      "element": "Air",
+      "planet": "Venus",
+      "hook": "The only sign that's an object rather than a creature: the scales of justice."
+    },
+    {
+      "name": "Scorpio",
+      "dates": "23 Oct – 21 Nov",
+      "symbol": "The Scorpion",
+      "element": "Water",
+      "planet": "Pluto",
+      "hook": "The scorpion sent to kill the hunter Orion. They sit on opposite sides of the sky, so one sets as the other rises. Its traditional ruler is Mars.",
+      "accept": {
+        "planet": [
+          "Mars"
+        ]
+      }
+    },
+    {
+      "name": "Sagittarius",
+      "dates": "22 Nov – 21 Dec",
+      "symbol": "The Archer",
+      "element": "Fire",
+      "planet": "Jupiter",
+      "hook": "A centaur archer, drawn with his arrow aimed at the heart of the Scorpion next door."
+    },
+    {
+      "name": "Capricorn",
+      "dates": "22 Dec – 19 Jan",
+      "symbol": "The Goat",
+      "element": "Earth",
+      "planet": "Saturn",
+      "hook": "A sea-goat, goat in front and fish behind: said to be Pan, half-changed into a fish as he fled the monster Typhon.",
+      "accept": {
+        "symbol": [
+          "Sea-goat",
+          "Sea goat"
+        ]
+      }
+    },
+    {
+      "name": "Aquarius",
+      "dates": "20 Jan – 18 Feb",
+      "symbol": "The Water-bearer",
+      "element": "Air",
+      "planet": "Uranus",
+      "hook": "Ganymede, the boy Zeus carried off to pour drinks for the gods. Its traditional ruler is Saturn.",
+      "accept": {
+        "planet": [
+          "Saturn"
+        ],
+        "symbol": [
+          "Water bearer",
+          "Water carrier"
+        ]
+      }
+    },
+    {
+      "name": "Pisces",
+      "dates": "19 Feb – 20 Mar",
+      "symbol": "The Fish",
+      "element": "Water",
+      "planet": "Neptune",
+      "hook": "Aphrodite and Eros, turned into fish to escape Typhon and tied together with a cord so they wouldn't lose each other. Its traditional ruler is Jupiter.",
+      "accept": {
+        "planet": [
+          "Jupiter"
+        ],
+        "symbol": [
+          "Fishes",
+          "Two fish"
+        ]
+      }
+    }
+  ]
+}
