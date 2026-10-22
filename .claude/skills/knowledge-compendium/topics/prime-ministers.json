@@ -1,0 +1,1738 @@
+{
+  "slug": "prime-ministers",
+  "title": "The Prime Ministers.",
+  "eyebrow": "Compendium · History",
+  "lede": "Every Prime Minister from Sir Robert Walpole to Andy Burnham, in order: when they served, their party, their nicknames, and who came next. With a new rhyme, a timeline drawn to scale, and a hook for each.",
+  "noun": {
+    "one": "Prime Minister",
+    "many": "Prime Ministers"
+  },
+  "numerals": "arabic",
+  "card": {
+    "tag": "History",
+    "title": "Prime Ministers",
+    "desc": "Walpole to Burnham in order: terms, parties and nicknames, with a rhyme and a timeline to scale.",
+    "icon": "landmark",
+    "order": 7
+  },
+  "map": {
+    "source": "prime-ministers-timeline",
+    "key": "name",
+    "label": "short",
+    "cardShapes": false,
+    "withhold": "always",
+    "hint": "Each bar is a term in office, drawn to scale. Point at one to see who it was; they fill in as I master them."
+  },
+  "journey": {
+    "by": "start",
+    "order": "asc",
+    "label": "In order",
+    "defaultLabel": "By era",
+    "ask": "terms"
+  },
+  "fields": [
+    {
+      "key": "name",
+      "label": "Prime Minister",
+      "plural": "names",
+      "role": "title",
+      "typeable": true
+    },
+    {
+      "key": "terms",
+      "label": "In office",
+      "plural": "dates",
+      "role": "subtitle"
+    },
+    {
+      "key": "party",
+      "label": "Party",
+      "plural": "parties",
+      "role": "meta"
+    },
+    {
+      "key": "nickname",
+      "label": "Nickname",
+      "plural": "nicknames",
+      "role": "meta"
+    },
+    {
+      "key": "next",
+      "label": "Followed by",
+      "short": "Then",
+      "plural": "successors",
+      "role": "meta",
+      "typeable": true
+    }
+  ],
+  "hideable": [
+    "name",
+    "terms",
+    "party",
+    "next"
+  ],
+  "questions": [
+    {
+      "from": "terms",
+      "to": "name",
+      "ask": "Who was Prime Minister then?"
+    },
+    {
+      "from": "name",
+      "to": "terms",
+      "ask": "When were they in office?"
+    },
+    {
+      "from": "name",
+      "to": "next",
+      "ask": "Who came next?"
+    },
+    {
+      "from": "name",
+      "to": "party",
+      "ask": "Which party?"
+    },
+    {
+      "from": "nickname",
+      "to": "name",
+      "ask": "Who was known as this?"
+    }
+  ],
+  "match": [
+    {
+      "left": "name",
+      "right": "terms"
+    },
+    {
+      "left": "name",
+      "right": "party"
+    }
+  ],
+  "groups": [
+    {
+      "key": "georgian",
+      "label": "Georgian",
+      "short": "Georgian",
+      "note": "1721–1830: Walpole invents the job, Pitt the Younger takes it at 24, and America leaves."
+    },
+    {
+      "key": "victorian",
+      "label": "Victorian",
+      "short": "Victorian",
+      "note": "1830–1902: reform, Peel's police, and Gladstone and Disraeli taking turns."
+    },
+    {
+      "key": "edwardian",
+      "label": "Edwardian and the wars",
+      "short": "Edwardian & wars",
+      "note": "1902–1945: pensions, two world wars, and the first Labour PM."
+    },
+    {
+      "key": "postwar",
+      "label": "Post-war",
+      "short": "Post-war",
+      "note": "1945–1979: the NHS, Suez, never having it so good, and the Winter of Discontent."
+    },
+    {
+      "key": "modern",
+      "label": "Modern",
+      "short": "Modern",
+      "note": "1979–today: Thatcher, Blair, Brexit, and a lettuce."
+    }
+  ],
+  "rhyme": {
+    "title": "The rhyme",
+    "intro": "There's no traditional rhyme for the Prime Ministers, so here's a new one, in the same spirit as the monarchs'. Returning PMs come back in the order they returned. Point at a line to see who's who on the timeline.",
+    "lines": [
+      {
+        "text": "Walpole, Wilmington, Pelham, then",
+        "items": [
+          "Robert Walpole",
+          "Earl of Wilmington",
+          "Henry Pelham"
+        ]
+      },
+      {
+        "text": "Newcastle, Devonshire, Newcastle again;",
+        "items": [
+          "Duke of Newcastle",
+          "Duke of Devonshire",
+          "Duke of Newcastle"
+        ]
+      },
+      {
+        "text": "Bute and Grenville, Rockingham, Pitt,",
+        "items": [
+          "Earl of Bute",
+          "George Grenville",
+          "Marquess of Rockingham",
+          "Pitt the Elder"
+        ]
+      },
+      {
+        "text": "Grafton, North (and America quit);",
+        "items": [
+          "Duke of Grafton",
+          "Lord North"
+        ]
+      },
+      {
+        "text": "Rocky, Shelburne, Portland's call,",
+        "items": [
+          "Marquess of Rockingham",
+          "Earl of Shelburne",
+          "Duke of Portland"
+        ]
+      },
+      {
+        "text": "Then Pitt the Younger, youngest of all;",
+        "items": [
+          "Pitt the Younger"
+        ]
+      },
+      {
+        "text": "Addington, Pitt, Grenville, Portland, then",
+        "items": [
+          "Henry Addington",
+          "Pitt the Younger",
+          "Lord Grenville",
+          "Duke of Portland"
+        ]
+      },
+      {
+        "text": "Perceval, shot in the Commons; and then",
+        "items": [
+          "Spencer Perceval"
+        ]
+      },
+      {
+        "text": "Liverpool, Canning, Goderich too,",
+        "items": [
+          "Earl of Liverpool",
+          "George Canning",
+          "Viscount Goderich"
+        ]
+      },
+      {
+        "text": "Wellington, fresh from Waterloo;",
+        "items": [
+          "Duke of Wellington"
+        ]
+      },
+      {
+        "text": "Grey brought reform (and tea for two),",
+        "items": [
+          "Earl Grey"
+        ]
+      },
+      {
+        "text": "Melbourne, Wellington, Peel: then who?",
+        "items": [
+          "Viscount Melbourne",
+          "Duke of Wellington",
+          "Robert Peel"
+        ]
+      },
+      {
+        "text": "Melbourne, Peel again, then Russell,",
+        "items": [
+          "Viscount Melbourne",
+          "Robert Peel",
+          "Lord John Russell"
+        ]
+      },
+      {
+        "text": "Derby, Aberdeen: a Crimean tussle;",
+        "items": [
+          "Earl of Derby",
+          "Earl of Aberdeen"
+        ]
+      },
+      {
+        "text": "Palmerston, Derby, Pam once more,",
+        "items": [
+          "Viscount Palmerston",
+          "Earl of Derby",
+          "Viscount Palmerston"
+        ]
+      },
+      {
+        "text": "Russell, then Derby: three goes, for sure;",
+        "items": [
+          "Lord John Russell",
+          "Earl of Derby"
+        ]
+      },
+      {
+        "text": "Dizzy, Gladstone, Dizzy, Glad,",
+        "items": [
+          "Benjamin Disraeli",
+          "William Gladstone"
+        ]
+      },
+      {
+        "text": "Salisbury, Gladstone (Victoria: mad),",
+        "items": [
+          "Marquess of Salisbury",
+          "William Gladstone"
+        ]
+      },
+      {
+        "text": "Salisbury, Gladstone, Rosebery's run,",
+        "items": [
+          "Marquess of Salisbury",
+          "William Gladstone",
+          "Earl of Rosebery"
+        ]
+      },
+      {
+        "text": "Salisbury's third, and then he's done;",
+        "items": [
+          "Marquess of Salisbury"
+        ]
+      },
+      {
+        "text": "Balfour, Campbell-Bannerman, Asquith,",
+        "items": [
+          "Arthur Balfour",
+          "Henry Campbell-Bannerman",
+          "H. H. Asquith"
+        ]
+      },
+      {
+        "text": "Lloyd George, Bonar Law: the war's aftermath;",
+        "items": [
+          "David Lloyd George",
+          "Bonar Law"
+        ]
+      },
+      {
+        "text": "Baldwin, MacDonald, again and again,",
+        "items": [
+          "Stanley Baldwin",
+          "Ramsay MacDonald"
+        ]
+      },
+      {
+        "text": "Chamberlain's peace, then Churchill's men;",
+        "items": [
+          "Neville Chamberlain",
+          "Winston Churchill"
+        ]
+      },
+      {
+        "text": "Attlee, then Churchill back once more,",
+        "items": [
+          "Clement Attlee",
+          "Winston Churchill"
+        ]
+      },
+      {
+        "text": "Eden (Suez), Macmillan, Home,",
+        "items": [
+          "Anthony Eden",
+          "Harold Macmillan",
+          "Alec Douglas-Home"
+        ]
+      },
+      {
+        "text": "Wilson, Heath, then Wilson's home;",
+        "items": [
+          "Harold Wilson",
+          "Edward Heath",
+          "Harold Wilson"
+        ]
+      },
+      {
+        "text": "Callaghan, Thatcher, Major, Blair,",
+        "items": [
+          "James Callaghan",
+          "Margaret Thatcher",
+          "John Major",
+          "Tony Blair"
+        ]
+      },
+      {
+        "text": "Brown, then Cameron, May, Boris's hair;",
+        "items": [
+          "Gordon Brown",
+          "David Cameron",
+          "Theresa May",
+          "Boris Johnson"
+        ]
+      },
+      {
+        "text": "Truss, outlasted by a lettuce, then",
+        "items": [
+          "Liz Truss"
+        ]
+      },
+      {
+        "text": "Sunak, Starmer, Burnham. Amen.",
+        "items": [
+          "Rishi Sunak",
+          "Keir Starmer",
+          "Andy Burnham"
+        ]
+      }
+    ]
+  },
+  "items": [
+    {
+      "name": "Robert Walpole",
+      "short": "Walpole",
+      "terms": "1721–42",
+      "party": "Whig",
+      "group": "georgian",
+      "segments": [
+        [
+          1721.252,
+          1742.112
+        ]
+      ],
+      "start": 1721.252,
+      "hook": "The first Prime Minister, though nobody called him that yet, and the first to live at No. 10: George II offered it to him, and he took it for the job, not himself.",
+      "nickname": "The Great Man",
+      "accept": {
+        "name": [
+          "Walpole",
+          "Sir Robert Walpole"
+        ]
+      },
+      "next": "Earl of Wilmington"
+    },
+    {
+      "name": "Earl of Wilmington",
+      "short": "Wilmington",
+      "terms": "1742–43",
+      "party": "Whig",
+      "group": "georgian",
+      "segments": [
+        [
+          1742.126,
+          1743.499
+        ]
+      ],
+      "start": 1742.126,
+      "hook": "Died in office after barely seventeen months. Mostly remembered for being forgotten.",
+      "accept": {
+        "name": [
+          "Wilmington",
+          "Spencer Compton"
+        ]
+      },
+      "next": "Henry Pelham"
+    },
+    {
+      "name": "Henry Pelham",
+      "short": "Pelham",
+      "terms": "1743–54",
+      "party": "Whig",
+      "group": "georgian",
+      "segments": [
+        [
+          1743.652,
+          1754.175
+        ]
+      ],
+      "start": 1743.652,
+      "hook": "Ran a tight ship for ten years, then died in office and handed over to his brother, Newcastle.",
+      "next": "Duke of Newcastle",
+      "accept": {
+        "name": [
+          "Pelham"
+        ]
+      }
+    },
+    {
+      "name": "Duke of Newcastle",
+      "short": "Newcastle",
+      "terms": "1754–56, 1757–62",
+      "party": "Whig",
+      "group": "georgian",
+      "segments": [
+        [
+          1754.203,
+          1756.863
+        ],
+        [
+          1757.49,
+          1762.397
+        ]
+      ],
+      "start": 1754.203,
+      "hook": "Pelham's big brother, and a master of patronage: he seemed to know whom to bribe in every borough in England.",
+      "accept": {
+        "name": [
+          "Newcastle",
+          "Thomas Pelham-Holles"
+        ]
+      }
+    },
+    {
+      "name": "Duke of Devonshire",
+      "short": "Devonshire",
+      "terms": "1756–57",
+      "party": "Whig",
+      "group": "georgian",
+      "segments": [
+        [
+          1756.877,
+          1757.49
+        ]
+      ],
+      "start": 1756.877,
+      "hook": "A seven-month stopgap between Newcastle's two goes.",
+      "accept": {
+        "name": [
+          "Devonshire",
+          "William Cavendish"
+        ]
+      },
+      "next": "Duke of Newcastle"
+    },
+    {
+      "name": "Earl of Bute",
+      "short": "Bute",
+      "terms": "1762–63",
+      "party": "Tory",
+      "group": "georgian",
+      "segments": [
+        [
+          1762.397,
+          1763.266
+        ]
+      ],
+      "start": 1762.397,
+      "hook": "The first Scottish Prime Minister, and George III's old tutor. Lasted less than a year.",
+      "accept": {
+        "name": [
+          "Bute",
+          "John Stuart"
+        ]
+      },
+      "next": "George Grenville"
+    },
+    {
+      "name": "George Grenville",
+      "short": "G. Grenville",
+      "terms": "1763–65",
+      "party": "Whig",
+      "group": "georgian",
+      "segments": [
+        [
+          1763.288,
+          1765.529
+        ]
+      ],
+      "start": 1763.288,
+      "hook": "His Stamp Act of 1765 taxed the American colonies, which went down about as well as you'd expect.",
+      "next": "Marquess of Rockingham"
+    },
+    {
+      "name": "Marquess of Rockingham",
+      "short": "Rockingham",
+      "terms": "1765–66, 1782",
+      "party": "Whig",
+      "group": "georgian",
+      "segments": [
+        [
+          1765.529,
+          1766.575
+        ],
+        [
+          1782.233,
+          1782.496
+        ]
+      ],
+      "start": 1765.529,
+      "hook": "Twice PM: repealed the Stamp Act the first time, and died in office fourteen weeks into the second.",
+      "accept": {
+        "name": [
+          "Rockingham"
+        ]
+      }
+    },
+    {
+      "name": "Pitt the Elder",
+      "short": "Pitt (E)",
+      "terms": "1766–68",
+      "party": "Whig",
+      "group": "georgian",
+      "segments": [
+        [
+          1766.575,
+          1768.786
+        ]
+      ],
+      "start": 1766.575,
+      "hook": "Famous as the war leader who won Canada and India in the Seven Years' War, before he was PM. As PM, mostly ill.",
+      "nickname": "The Great Commoner",
+      "accept": {
+        "name": [
+          "William Pitt the Elder",
+          "Earl of Chatham",
+          "Chatham"
+        ]
+      },
+      "next": "Duke of Grafton"
+    },
+    {
+      "name": "Duke of Grafton",
+      "short": "Grafton",
+      "terms": "1768–70",
+      "party": "Whig",
+      "group": "georgian",
+      "segments": [
+        [
+          1768.786,
+          1770.074
+        ]
+      ],
+      "start": 1768.786,
+      "hook": "Only 33 when he took office. Was said to be more interested in horse racing and his mistress.",
+      "accept": {
+        "name": [
+          "Grafton"
+        ]
+      },
+      "next": "Lord North"
+    },
+    {
+      "name": "Lord North",
+      "short": "North",
+      "terms": "1770–82",
+      "party": "Tory",
+      "group": "georgian",
+      "segments": [
+        [
+          1770.074,
+          1782.233
+        ]
+      ],
+      "start": 1770.074,
+      "hook": "Twelve years in office, and the PM who lost America.",
+      "accept": {
+        "name": [
+          "North",
+          "Frederick North"
+        ]
+      },
+      "next": "Marquess of Rockingham"
+    },
+    {
+      "name": "Earl of Shelburne",
+      "short": "Shelburne",
+      "terms": "1782–83",
+      "party": "Whig",
+      "group": "georgian",
+      "segments": [
+        [
+          1782.504,
+          1783.23
+        ]
+      ],
+      "start": 1782.504,
+      "hook": "Negotiated the peace that recognised American independence, then was voted out for it.",
+      "accept": {
+        "name": [
+          "Shelburne"
+        ]
+      },
+      "next": "Duke of Portland"
+    },
+    {
+      "name": "Duke of Portland",
+      "short": "Portland",
+      "terms": "1783, 1807–09",
+      "party": "Whig, then Tory",
+      "group": "georgian",
+      "segments": [
+        [
+          1783.249,
+          1783.964
+        ],
+        [
+          1807.244,
+          1809.756
+        ]
+      ],
+      "start": 1783.249,
+      "hook": "Two goes, 24 years apart, for two different parties, and nominally in charge of both.",
+      "accept": {
+        "name": [
+          "Portland"
+        ]
+      }
+    },
+    {
+      "name": "Pitt the Younger",
+      "short": "Pitt (Y)",
+      "terms": "1783–1801, 1804–06",
+      "party": "Tory",
+      "group": "georgian",
+      "segments": [
+        [
+          1783.964,
+          1801.197
+        ],
+        [
+          1804.356,
+          1806.06
+        ]
+      ],
+      "start": 1783.964,
+      "hook": "PM at 24, still the youngest ever. Saw off Napoleon's invasion plans and reportedly died with “my country” on his lips.",
+      "accept": {
+        "name": [
+          "William Pitt the Younger",
+          "William Pitt"
+        ]
+      }
+    },
+    {
+      "name": "Henry Addington",
+      "short": "Addington",
+      "terms": "1801–04",
+      "party": "Tory",
+      "group": "georgian",
+      "segments": [
+        [
+          1801.205,
+          1804.356
+        ]
+      ],
+      "start": 1801.205,
+      "hook": "Mocked in a famous couplet: “Pitt is to Addington as London is to Paddington.”",
+      "accept": {
+        "name": [
+          "Addington",
+          "Viscount Sidmouth",
+          "Sidmouth"
+        ]
+      },
+      "next": "Pitt the Younger"
+    },
+    {
+      "name": "Lord Grenville",
+      "short": "Lord Grenville",
+      "terms": "1806–07",
+      "party": "Whig",
+      "group": "georgian",
+      "segments": [
+        [
+          1806.112,
+          1807.227
+        ]
+      ],
+      "start": 1806.112,
+      "hook": "George Grenville's son. His “Ministry of All the Talents” abolished the slave trade in 1807.",
+      "accept": {
+        "name": [
+          "William Grenville"
+        ]
+      },
+      "next": "Duke of Portland"
+    },
+    {
+      "name": "Spencer Perceval",
+      "short": "Perceval",
+      "terms": "1809–12",
+      "party": "Tory",
+      "group": "georgian",
+      "segments": [
+        [
+          1809.756,
+          1812.359
+        ]
+      ],
+      "start": 1809.756,
+      "hook": "The only British PM ever assassinated: shot in the lobby of the House of Commons in 1812.",
+      "accept": {
+        "name": [
+          "Perceval"
+        ]
+      },
+      "next": "Earl of Liverpool"
+    },
+    {
+      "name": "Earl of Liverpool",
+      "short": "Liverpool",
+      "terms": "1812–27",
+      "party": "Tory",
+      "group": "georgian",
+      "segments": [
+        [
+          1812.436,
+          1827.268
+        ]
+      ],
+      "start": 1812.436,
+      "hook": "Fifteen years in charge, through Waterloo and Peterloo. Nothing to do with the city; it's a title.",
+      "accept": {
+        "name": [
+          "Liverpool"
+        ]
+      },
+      "next": "George Canning"
+    },
+    {
+      "name": "George Canning",
+      "short": "Canning",
+      "terms": "1827",
+      "party": "Tory",
+      "group": "georgian",
+      "segments": [
+        [
+          1827.277,
+          1827.6
+        ]
+      ],
+      "start": 1827.277,
+      "hook": "Died after 119 days: the shortest premiership for nearly two centuries, until Liz Truss.",
+      "accept": {
+        "name": [
+          "Canning"
+        ]
+      },
+      "next": "Viscount Goderich"
+    },
+    {
+      "name": "Viscount Goderich",
+      "short": "Goderich",
+      "terms": "1827–28",
+      "party": "Tory",
+      "group": "georgian",
+      "segments": [
+        [
+          1827.663,
+          1828.055
+        ]
+      ],
+      "start": 1827.663,
+      "hook": "The only PM never to face Parliament as PM. Said to have burst into tears in front of the King.",
+      "accept": {
+        "name": [
+          "Goderich",
+          "Frederick Robinson"
+        ]
+      },
+      "next": "Duke of Wellington"
+    },
+    {
+      "name": "Duke of Wellington",
+      "short": "Wellington",
+      "terms": "1828–30, 1834",
+      "party": "Tory",
+      "group": "georgian",
+      "segments": [
+        [
+          1828.058,
+          1830.874
+        ],
+        [
+          1834.877,
+          1834.937
+        ]
+      ],
+      "start": 1828.058,
+      "hook": "Beat Napoleon at Waterloo, then found Parliament harder. “Iron Duke”, so the story goes, partly for the iron shutters he fitted after a mob broke his windows.",
+      "nickname": "The Iron Duke",
+      "accept": {
+        "name": [
+          "Wellington",
+          "Arthur Wellesley"
+        ]
+      }
+    },
+    {
+      "name": "Earl Grey",
+      "short": "Grey",
+      "terms": "1830–34",
+      "party": "Whig",
+      "group": "victorian",
+      "segments": [
+        [
+          1830.89,
+          1834.518
+        ]
+      ],
+      "start": 1830.89,
+      "hook": "Passed the Great Reform Act of 1832, and the tea is named after him.",
+      "accept": {
+        "name": [
+          "Grey",
+          "Charles Grey"
+        ]
+      },
+      "next": "Viscount Melbourne"
+    },
+    {
+      "name": "Viscount Melbourne",
+      "short": "Melbourne",
+      "terms": "1834, 1835–41",
+      "party": "Whig",
+      "group": "victorian",
+      "segments": [
+        [
+          1834.537,
+          1834.868
+        ],
+        [
+          1835.293,
+          1841.66
+        ]
+      ],
+      "start": 1834.537,
+      "hook": "Young Queen Victoria's adored mentor. The city in Australia is named after him.",
+      "accept": {
+        "name": [
+          "Melbourne",
+          "William Lamb"
+        ]
+      }
+    },
+    {
+      "name": "Robert Peel",
+      "short": "Peel",
+      "terms": "1834–35, 1841–46",
+      "party": "Conservative",
+      "group": "victorian",
+      "segments": [
+        [
+          1834.94,
+          1835.266
+        ],
+        [
+          1841.66,
+          1846.49
+        ]
+      ],
+      "start": 1834.94,
+      "hook": "Founded the Metropolitan Police, hence “bobbies” and “peelers”. Split his party by repealing the Corn Laws.",
+      "accept": {
+        "name": [
+          "Peel",
+          "Sir Robert Peel"
+        ]
+      }
+    },
+    {
+      "name": "Lord John Russell",
+      "short": "Russell",
+      "terms": "1846–52, 1865–66",
+      "party": "Whig / Liberal",
+      "group": "victorian",
+      "segments": [
+        [
+          1846.493,
+          1852.14
+        ],
+        [
+          1865.825,
+          1866.482
+        ]
+      ],
+      "start": 1846.493,
+      "hook": "Pushed the Great Reform Act through the Commons; later grandfather of the philosopher Bertrand Russell.",
+      "accept": {
+        "name": [
+          "Russell",
+          "John Russell"
+        ]
+      }
+    },
+    {
+      "name": "Earl of Derby",
+      "short": "Derby",
+      "terms": "1852, 1858–59, 1866–68",
+      "party": "Conservative",
+      "group": "victorian",
+      "segments": [
+        [
+          1852.145,
+          1852.962
+        ],
+        [
+          1858.137,
+          1859.441
+        ],
+        [
+          1866.488,
+          1868.151
+        ]
+      ],
+      "start": 1852.145,
+      "hook": "Three terms adding up to less than four years. In his spare time, translated Homer's Iliad.",
+      "accept": {
+        "name": [
+          "Derby"
+        ]
+      }
+    },
+    {
+      "name": "Earl of Aberdeen",
+      "short": "Aberdeen",
+      "terms": "1852–55",
+      "party": "Peelite",
+      "group": "victorian",
+      "segments": [
+        [
+          1852.967,
+          1855.079
+        ]
+      ],
+      "start": 1852.967,
+      "hook": "Drifted into the Crimean War and was brought down by how badly it went.",
+      "accept": {
+        "name": [
+          "Aberdeen"
+        ]
+      },
+      "next": "Viscount Palmerston"
+    },
+    {
+      "name": "Viscount Palmerston",
+      "short": "Palmerston",
+      "terms": "1855–58, 1859–65",
+      "party": "Whig / Liberal",
+      "group": "victorian",
+      "segments": [
+        [
+          1855.099,
+          1858.134
+        ],
+        [
+          1859.444,
+          1865.795
+        ]
+      ],
+      "start": 1855.099,
+      "hook": "Gunboat diplomacy, and the last PM to die in office, at 80.",
+      "nickname": "Pam",
+      "accept": {
+        "name": [
+          "Palmerston",
+          "Pam"
+        ]
+      }
+    },
+    {
+      "name": "Benjamin Disraeli",
+      "short": "Disraeli",
+      "terms": "1868, 1874–80",
+      "party": "Conservative",
+      "group": "victorian",
+      "segments": [
+        [
+          1868.156,
+          1868.918
+        ],
+        [
+          1874.137,
+          1880.304
+        ]
+      ],
+      "start": 1868.156,
+      "hook": "A novelist who reached “the top of the greasy pole” and made Victoria Empress of India. Victoria's favourite.",
+      "nickname": "Dizzy",
+      "accept": {
+        "name": [
+          "Disraeli",
+          "Dizzy"
+        ]
+      }
+    },
+    {
+      "name": "William Gladstone",
+      "short": "Gladstone",
+      "terms": "1868–74, 1880–85, 1886, 1892–94",
+      "party": "Liberal",
+      "group": "victorian",
+      "segments": [
+        [
+          1868.923,
+          1874.129
+        ],
+        [
+          1880.31,
+          1885.436
+        ],
+        [
+          1886.085,
+          1886.548
+        ],
+        [
+          1892.622,
+          1894.164
+        ]
+      ],
+      "start": 1868.923,
+      "hook": "Four times PM, the fourth ending when he was 84. The Gladstone bag is named after him, and Victoria loathed him.",
+      "nickname": "The Grand Old Man",
+      "accept": {
+        "name": [
+          "Gladstone",
+          "William Ewart Gladstone",
+          "GOM"
+        ]
+      }
+    },
+    {
+      "name": "Marquess of Salisbury",
+      "short": "Salisbury",
+      "terms": "1885–86, 1886–92, 1895–1902",
+      "party": "Conservative",
+      "group": "victorian",
+      "segments": [
+        [
+          1885.474,
+          1886.074
+        ],
+        [
+          1886.562,
+          1892.611
+        ],
+        [
+          1895.479,
+          1902.523
+        ]
+      ],
+      "start": 1885.474,
+      "hook": "Three terms, then handed over to his nephew Arthur Balfour: one theory for “Bob's your uncle”.",
+      "accept": {
+        "name": [
+          "Salisbury",
+          "Robert Cecil"
+        ]
+      }
+    },
+    {
+      "name": "Earl of Rosebery",
+      "short": "Rosebery",
+      "terms": "1894–95",
+      "party": "Liberal",
+      "group": "victorian",
+      "segments": [
+        [
+          1894.173,
+          1895.471
+        ]
+      ],
+      "start": 1894.173,
+      "hook": "Said to have set out to marry an heiress, win the Derby and become PM. Managed all three.",
+      "accept": {
+        "name": [
+          "Rosebery"
+        ]
+      },
+      "next": "Marquess of Salisbury"
+    },
+    {
+      "name": "Arthur Balfour",
+      "short": "Balfour",
+      "terms": "1902–05",
+      "party": "Conservative",
+      "group": "edwardian",
+      "segments": [
+        [
+          1902.523,
+          1905.926
+        ]
+      ],
+      "start": 1902.523,
+      "hook": "Salisbury's nephew (Bob was his uncle). Later wrote the 1917 Balfour Declaration as Foreign Secretary.",
+      "accept": {
+        "name": [
+          "Balfour"
+        ]
+      },
+      "next": "Henry Campbell-Bannerman"
+    },
+    {
+      "name": "Henry Campbell-Bannerman",
+      "short": "C-B",
+      "terms": "1905–08",
+      "party": "Liberal",
+      "group": "edwardian",
+      "segments": [
+        [
+          1905.926,
+          1908.255
+        ]
+      ],
+      "start": 1905.926,
+      "hook": "The first to be officially called “Prime Minister”, and the only one to die at No. 10.",
+      "nickname": "C-B",
+      "accept": {
+        "name": [
+          "Campbell-Bannerman",
+          "CB"
+        ]
+      },
+      "next": "H. H. Asquith"
+    },
+    {
+      "name": "H. H. Asquith",
+      "short": "Asquith",
+      "terms": "1908–16",
+      "party": "Liberal",
+      "group": "edwardian",
+      "segments": [
+        [
+          1908.26,
+          1916.929
+        ]
+      ],
+      "start": 1908.26,
+      "hook": "Brought in old-age pensions and took Britain into the First World War. “Wait and see” was his catchphrase.",
+      "accept": {
+        "name": [
+          "Asquith",
+          "Herbert Asquith"
+        ]
+      },
+      "next": "David Lloyd George"
+    },
+    {
+      "name": "David Lloyd George",
+      "short": "Lloyd George",
+      "terms": "1916–22",
+      "party": "Liberal",
+      "group": "edwardian",
+      "segments": [
+        [
+          1916.932,
+          1922.797
+        ]
+      ],
+      "start": 1916.932,
+      "hook": "The only Welsh PM, and the man who won the war. The last Liberal to hold the job.",
+      "nickname": "The Welsh Wizard",
+      "accept": {
+        "name": [
+          "Lloyd George"
+        ]
+      },
+      "next": "Bonar Law"
+    },
+    {
+      "name": "Bonar Law",
+      "short": "Law",
+      "terms": "1922–23",
+      "party": "Conservative",
+      "group": "edwardian",
+      "segments": [
+        [
+          1922.808,
+          1923.381
+        ]
+      ],
+      "start": 1922.808,
+      "hook": "Born in Canada: the first PM from outside the British Isles (Boris Johnson, born in New York, is the other). Called “the Unknown Prime Minister”; he lasted 211 days.",
+      "accept": {
+        "name": [
+          "Andrew Bonar Law",
+          "Law"
+        ]
+      },
+      "next": "Stanley Baldwin"
+    },
+    {
+      "name": "Stanley Baldwin",
+      "short": "Baldwin",
+      "terms": "1923–24, 1924–29, 1935–37",
+      "party": "Conservative",
+      "group": "edwardian",
+      "segments": [
+        [
+          1923.386,
+          1924.058
+        ],
+        [
+          1924.844,
+          1929.425
+        ],
+        [
+          1935.43,
+          1937.403
+        ]
+      ],
+      "start": 1923.386,
+      "hook": "Three goes, swapping back and forth with MacDonald, and saw the country through Edward VIII's abdication.",
+      "accept": {
+        "name": [
+          "Baldwin"
+        ]
+      }
+    },
+    {
+      "name": "Ramsay MacDonald",
+      "short": "MacDonald",
+      "terms": "1924, 1929–35",
+      "party": "Labour",
+      "group": "edwardian",
+      "segments": [
+        [
+          1924.058,
+          1924.844
+        ],
+        [
+          1929.425,
+          1935.43
+        ]
+      ],
+      "start": 1924.058,
+      "hook": "The first Labour Prime Minister: the son of a farm labourer and a housemaid.",
+      "accept": {
+        "name": [
+          "MacDonald",
+          "Macdonald"
+        ]
+      }
+    },
+    {
+      "name": "Neville Chamberlain",
+      "short": "Chamberlain",
+      "terms": "1937–40",
+      "party": "Conservative",
+      "group": "edwardian",
+      "segments": [
+        [
+          1937.403,
+          1940.356
+        ]
+      ],
+      "start": 1937.403,
+      "hook": "Came back from Munich waving a piece of paper: “peace for our time”. Eleven months later, war.",
+      "accept": {
+        "name": [
+          "Chamberlain"
+        ]
+      },
+      "next": "Winston Churchill"
+    },
+    {
+      "name": "Winston Churchill",
+      "short": "Churchill",
+      "terms": "1940–45, 1951–55",
+      "party": "Conservative",
+      "group": "edwardian",
+      "segments": [
+        [
+          1940.356,
+          1945.564
+        ],
+        [
+          1951.816,
+          1955.258
+        ]
+      ],
+      "start": 1940.356,
+      "hook": "Led Britain through the war, lost the 1945 election anyway, came back in 1951, and won the Nobel Prize for Literature.",
+      "accept": {
+        "name": [
+          "Churchill",
+          "Winnie"
+        ]
+      }
+    },
+    {
+      "name": "Clement Attlee",
+      "short": "Attlee",
+      "terms": "1945–51",
+      "party": "Labour",
+      "group": "postwar",
+      "segments": [
+        [
+          1945.564,
+          1951.816
+        ]
+      ],
+      "start": 1945.564,
+      "hook": "Beat Churchill in a landslide and built the NHS and the welfare state. Famously quiet.",
+      "accept": {
+        "name": [
+          "Attlee"
+        ]
+      },
+      "next": "Winston Churchill"
+    },
+    {
+      "name": "Anthony Eden",
+      "short": "Eden",
+      "terms": "1955–57",
+      "party": "Conservative",
+      "group": "postwar",
+      "segments": [
+        [
+          1955.26,
+          1957.022
+        ]
+      ],
+      "start": 1955.26,
+      "hook": "Churchill's long-waiting heir, undone within two years by the Suez Crisis.",
+      "accept": {
+        "name": [
+          "Eden"
+        ]
+      },
+      "next": "Harold Macmillan"
+    },
+    {
+      "name": "Harold Macmillan",
+      "short": "Macmillan",
+      "terms": "1957–63",
+      "party": "Conservative",
+      "group": "postwar",
+      "segments": [
+        [
+          1957.025,
+          1963.795
+        ]
+      ],
+      "start": 1957.025,
+      "hook": "“Most of our people have never had it so good.” Also, perhaps, “Events, dear boy, events.”",
+      "nickname": "Supermac",
+      "accept": {
+        "name": [
+          "Macmillan",
+          "Supermac"
+        ]
+      },
+      "next": "Alec Douglas-Home"
+    },
+    {
+      "name": "Alec Douglas-Home",
+      "short": "Home",
+      "terms": "1963–64",
+      "party": "Conservative",
+      "group": "postwar",
+      "segments": [
+        [
+          1963.797,
+          1964.792
+        ]
+      ],
+      "start": 1963.797,
+      "hook": "Gave up his peerage to sit in the Commons. The only PM to have played first-class cricket.",
+      "accept": {
+        "name": [
+          "Douglas-Home",
+          "Home",
+          "Lord Home"
+        ]
+      },
+      "next": "Harold Wilson"
+    },
+    {
+      "name": "Harold Wilson",
+      "short": "Wilson",
+      "terms": "1964–70, 1974–76",
+      "party": "Labour",
+      "group": "postwar",
+      "segments": [
+        [
+          1964.792,
+          1970.463
+        ],
+        [
+          1974.17,
+          1976.26
+        ]
+      ],
+      "start": 1964.792,
+      "hook": "Pipe, Gannex raincoat and “the white heat of technology”. Won four general elections.",
+      "accept": {
+        "name": [
+          "Wilson"
+        ]
+      }
+    },
+    {
+      "name": "Edward Heath",
+      "short": "Heath",
+      "terms": "1970–74",
+      "party": "Conservative",
+      "group": "postwar",
+      "segments": [
+        [
+          1970.463,
+          1974.17
+        ]
+      ],
+      "start": 1970.463,
+      "hook": "Took Britain into the European Community in 1973, and won the Admiral's Cup yacht race while PM.",
+      "nickname": "Ted",
+      "accept": {
+        "name": [
+          "Heath",
+          "Ted Heath"
+        ]
+      },
+      "next": "Harold Wilson"
+    },
+    {
+      "name": "James Callaghan",
+      "short": "Callaghan",
+      "terms": "1976–79",
+      "party": "Labour",
+      "group": "postwar",
+      "segments": [
+        [
+          1976.26,
+          1979.337
+        ]
+      ],
+      "start": 1976.26,
+      "hook": "The only person to hold all four great offices of state. Undone by the Winter of Discontent.",
+      "nickname": "Sunny Jim",
+      "accept": {
+        "name": [
+          "Callaghan",
+          "Sunny Jim",
+          "Jim Callaghan"
+        ]
+      },
+      "next": "Margaret Thatcher"
+    },
+    {
+      "name": "Margaret Thatcher",
+      "short": "Thatcher",
+      "terms": "1979–90",
+      "party": "Conservative",
+      "group": "modern",
+      "segments": [
+        [
+          1979.337,
+          1990.907
+        ]
+      ],
+      "start": 1979.337,
+      "hook": "The first woman PM, and the longest-serving of the 20th century.",
+      "nickname": "The Iron Lady",
+      "accept": {
+        "name": [
+          "Thatcher",
+          "Iron Lady",
+          "Maggie"
+        ]
+      },
+      "next": "John Major"
+    },
+    {
+      "name": "John Major",
+      "short": "Major",
+      "terms": "1990–97",
+      "party": "Conservative",
+      "group": "modern",
+      "segments": [
+        [
+          1990.907,
+          1997.332
+        ]
+      ],
+      "start": 1990.907,
+      "hook": "Left school at sixteen. The cones hotline, the Citizen's Charter, and an unexpected election win in 1992.",
+      "accept": {
+        "name": [
+          "Major"
+        ]
+      },
+      "next": "Tony Blair"
+    },
+    {
+      "name": "Tony Blair",
+      "short": "Blair",
+      "terms": "1997–2007",
+      "party": "Labour",
+      "group": "modern",
+      "segments": [
+        [
+          1997.332,
+          2007.485
+        ]
+      ],
+      "start": 1997.332,
+      "hook": "Swept in to “Things Can Only Get Better”. Labour's longest-serving PM.",
+      "accept": {
+        "name": [
+          "Blair"
+        ]
+      },
+      "next": "Gordon Brown"
+    },
+    {
+      "name": "Gordon Brown",
+      "short": "Brown",
+      "terms": "2007–10",
+      "party": "Labour",
+      "group": "modern",
+      "segments": [
+        [
+          2007.485,
+          2010.356
+        ]
+      ],
+      "start": 2007.485,
+      "hook": "Ten years as Chancellor first, then the 2008 financial crash.",
+      "accept": {
+        "name": [
+          "Brown"
+        ]
+      },
+      "next": "David Cameron"
+    },
+    {
+      "name": "David Cameron",
+      "short": "Cameron",
+      "terms": "2010–16",
+      "party": "Conservative",
+      "group": "modern",
+      "segments": [
+        [
+          2010.356,
+          2016.532
+        ]
+      ],
+      "start": 2010.356,
+      "hook": "Led a coalition, called the Brexit referendum, lost it, and later came back as Foreign Secretary from the Lords.",
+      "nickname": "Dave",
+      "accept": {
+        "name": [
+          "Cameron"
+        ]
+      },
+      "next": "Theresa May"
+    },
+    {
+      "name": "Theresa May",
+      "short": "May",
+      "terms": "2016–19",
+      "party": "Conservative",
+      "group": "modern",
+      "segments": [
+        [
+          2016.532,
+          2019.559
+        ]
+      ],
+      "start": 2016.532,
+      "hook": "The second woman PM. Her naughtiest childhood deed: running through fields of wheat.",
+      "accept": {
+        "name": [
+          "May"
+        ]
+      },
+      "next": "Boris Johnson"
+    },
+    {
+      "name": "Boris Johnson",
+      "short": "Johnson",
+      "terms": "2019–22",
+      "party": "Conservative",
+      "group": "modern",
+      "segments": [
+        [
+          2019.559,
+          2022.679
+        ]
+      ],
+      "start": 2019.559,
+      "hook": "Born in New York. “Get Brexit done”, then Covid, then Partygate.",
+      "nickname": "Boris",
+      "accept": {
+        "name": [
+          "Johnson",
+          "Boris"
+        ]
+      },
+      "next": "Liz Truss"
+    },
+    {
+      "name": "Liz Truss",
+      "short": "Truss",
+      "terms": "2022",
+      "party": "Conservative",
+      "group": "modern",
+      "segments": [
+        [
+          2022.679,
+          2022.814
+        ]
+      ],
+      "start": 2022.679,
+      "hook": "The shortest-serving PM ever, at 49 days, famously outlasted by a lettuce.",
+      "accept": {
+        "name": [
+          "Truss"
+        ]
+      },
+      "next": "Rishi Sunak"
+    },
+    {
+      "name": "Rishi Sunak",
+      "short": "Sunak",
+      "terms": "2022–24",
+      "party": "Conservative",
+      "group": "modern",
+      "segments": [
+        [
+          2022.814,
+          2024.51
+        ]
+      ],
+      "start": 2022.814,
+      "hook": "The first British Asian and first Hindu PM. Announced the 2024 election in the pouring rain.",
+      "accept": {
+        "name": [
+          "Sunak"
+        ]
+      },
+      "next": "Keir Starmer"
+    },
+    {
+      "name": "Keir Starmer",
+      "short": "Starmer",
+      "terms": "2024–26",
+      "party": "Labour",
+      "group": "modern",
+      "segments": [
+        [
+          2024.51,
+          2026.548
+        ]
+      ],
+      "start": 2024.51,
+      "hook": "Named after Keir Hardie, Labour's first leader. Won a landslide in 2024, and stood down two years later.",
+      "accept": {
+        "name": [
+          "Starmer",
+          "Sir Keir Starmer"
+        ]
+      },
+      "next": "Andy Burnham"
+    },
+    {
+      "name": "Andy Burnham",
+      "short": "Burnham",
+      "terms": "2026–present",
+      "party": "Labour",
+      "group": "modern",
+      "segments": [
+        [
+          2026.548,
+          2026.8
+        ]
+      ],
+      "start": 2026.548,
+      "hook": "The former Mayor of Greater Manchester, known as the “King of the North”, took over in July 2026.",
+      "nickname": "King of the North",
+      "accept": {
+        "name": [
+          "Burnham"
+        ]
+      }
+    }
+  ]
+}

@@ -255,6 +255,8 @@
   /* "context" shapes: the rest of the set (other elements), drawn for shape only */
   .map path.ctx { fill: var(--neutral-900); cursor: default; }
   .map path.dot { stroke-width: 0.6; }
+  /* a context shape can ask to be drawn as an empty track (a timeline row), so gaps read as gaps */
+  .map path.ctx.track, .sheet-map path.ctx.track { fill: none; stroke: var(--neutral-700); stroke-width: 1; stroke-dasharray: 2 4; }
   .map text {
     font-family: var(--font-body);
     font-size: 15px;
@@ -282,6 +284,13 @@
   .map-caption .t { font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 1.5rem; }
   .map-caption .s { font-size: 0.9375rem; color: var(--text-secondary); }
   .map-caption .hint { font-size: 0.875rem; color: var(--text-faint); }
+  /* with a rhyme, the caption changes as you move down the verse: give it a fixed home so the
+     page never shifts under the pointer (which would pick a different line, and so on) */
+  .map-wrap.has-rhyme .map-foot { height: 4.75rem; align-items: flex-start; overflow: hidden; }
+  .map-wrap.has-rhyme .map-caption { flex-wrap: wrap; min-width: 0; flex: 1; }
+  .map-wrap.has-rhyme .map-caption .t { flex-basis: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .map-wrap.has-rhyme .map-caption .s { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  @media (max-width: 620px) { .map-wrap.has-rhyme .map-foot { height: 6.5rem; } }
   .map-legend { display: flex; gap: 1rem; }
   .map-legend span {
     display: inline-flex;
@@ -305,6 +314,27 @@
   .stop { fill: var(--neutral-500); }
   .stop.past { fill: var(--accent-400); }
   .stop.now { fill: var(--accent-300); stroke: var(--bg-surface); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+  /* rhyme */
+  .rhyme { display: flex; flex-direction: column; gap: 0.75rem; }
+  .rhyme-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.75rem; }
+  .rhyme-head .group-heading { margin: 0; }
+  .rhyme .group-note { margin: 0; }
+  .rhyme-lines { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 2.5rem; }
+  @media (max-width: 760px) { .rhyme-lines { columns: 1; } }
+  .rhyme-line {
+    display: block; width: 100%; padding: 0.3rem 0.6rem; text-align: left; break-inside: avoid;
+    background: none; border: 0; border-radius: var(--radius-sm); cursor: pointer;
+    font-family: var(--font-display); font-style: italic; font-size: 1.25rem; line-height: 1.4; color: var(--text-secondary);
+    transition: color var(--duration-fast) var(--ease-standard), background var(--duration-fast) var(--ease-standard);
+  }
+  .rhyme-line:hover, .rhyme-line.is-on { color: var(--text-primary); background: var(--bg-surface); }
+  .rhyme-line .n { font-family: var(--font-body); font-style: normal; font-size: 0.6875rem; color: var(--text-faint); margin-right: 0.6rem; }
+  .map path.is-rhyme, .sheet-map path.is-rhyme { fill: var(--accent-400); opacity: 1; }
+  .map path.is-rhyme + text { fill: var(--accent-on); opacity: 1; }
+  .rhyme-prev { margin: 0; font-family: var(--font-display); font-style: italic; font-size: 1.125rem; line-height: 1.5; color: var(--text-faint); }
+  .rhyme-prev b { font-weight: 500; color: var(--text-secondary); }
+  .option.verse span { font-family: var(--font-display); font-style: italic; font-size: 1.0625rem; }
+
   /* name them all */
   .recall-row { display: flex; gap: 0.5rem; align-items: center; }
   .recall-row input {
@@ -364,6 +394,8 @@
 
   .q-img { margin: 0; display: grid; place-items: center; border-radius: var(--radius-md); background: var(--bg-page); border: 1px solid var(--border-subtle); padding: 0.75rem; }
   .q-img img { display: block; max-width: 100%; max-height: min(44vh, 340px); }
+  .q-img.flag { padding: 1rem; }
+  .q-img.flag img { max-height: min(22vh, 170px); border-radius: 3px; box-shadow: 0 0 0 1px var(--border-subtle); }
 
   /* ---------- toolbar ---------- */
 
@@ -539,6 +571,9 @@
     color: var(--accent-400);
   }
   .card-icon svg.i { width: 22px; height: 22px; }
+  /* "badge" pictures (flags): small, beside the name, rather than a picture panel */
+  .card-icon img.badge { width: 30px; height: 22.5px; object-fit: cover; border-radius: 2px; box-shadow: 0 0 0 1px var(--border-subtle); }
+  img.badge-sm { height: 0.8em; width: auto; margin-right: 0.45em; vertical-align: 0.02em; border-radius: 2px; box-shadow: 0 0 0 1px var(--border-subtle); }
   .numeral {
     font-family: var(--font-display);
     font-style: italic;
@@ -899,6 +934,15 @@
     </div>
   </section>
 
+  <section class="rhyme" id="rhyme" aria-labelledby="rhyme-title" hidden>
+    <div class="rhyme-head">
+      <h2 class="group-heading" id="rhyme-title"></h2>
+      <button class="btn secondary" id="rhyme-btn" type="button"><svg class="i"><use href="#i-brain"/></svg>Practise the rhyme</button>
+    </div>
+    <p class="group-note" id="rhyme-intro"></p>
+    <ol class="rhyme-lines" id="rhyme-lines"></ol>
+  </section>
+
   <nav class="frieze" id="frieze" aria-label="Jump to an entry"></nav>
 
   <div class="toolbar" id="toolbar">
@@ -1216,14 +1260,17 @@
   const shapeOf = (item) => MAP && MAP.shapes[item[DATA.map.key]];
   const cardShapes = MAP && DATA.map.cardShapes !== false;
   // a topic with a map shows each item's own outline instead of an icon
+  const badgeStyle = DATA.imageStyle === "badge";
+  const badge = (it) => badgeStyle && it.image ? `<img class="badge-sm" src="${esc(it.image)}" alt="" loading="lazy">` : "";
   const itemIcon = (item) => {
+    if (badgeStyle && item.image) return `<img class="badge" src="${esc(item.image)}" alt="" loading="lazy">`;
     const sh = cardShapes && shapeOf(item);
     if (!sh || sh.dot) return item.icon || DATA.defaultIcon ? icon(item.icon || DATA.defaultIcon) : "";
     const [x, y, w, h] = sh.bbox;
     const pad = Math.max(w, h) * 0.06;
     return `<svg class="shape" viewBox="${x - pad} ${y - pad} ${w + 2 * pad} ${h + 2 * pad}" aria-hidden="true"><path d="${sh.d}"/></svg>`;
   };
-  const usesImages = items.some((it) => it.image);
+  const usesImages = !badgeStyle && items.some((it) => it.image);
   const imageFor = (item, alt) => item.image ? `<img src="${esc(item.image)}" alt="${esc(alt)}" loading="lazy">` : "";
   const numeral = (n) => DATA.numerals === "roman" ? toRoman(n) : DATA.numerals === "none" ? "" : String(n).padStart(2, "0");
 
@@ -1384,7 +1431,7 @@
     if (JOURNEY) {
       $("order-group").hidden = false;
       $("order-seg").innerHTML =
-        `<button type="button" data-sort="default" aria-pressed="${state.sort === "default"}">A–Z</button>` +
+        `<button type="button" data-sort="default" aria-pressed="${state.sort === "default"}">${esc(JOURNEY.defaultLabel || "A–Z")}</button>` +
         `<button type="button" data-sort="journey" aria-pressed="${state.sort === "journey"}">${esc(JOURNEY.label)}</button>`;
       const n = journeyOrder(visibleItems()).length;
       $("journey-btn").hidden = false;
@@ -1397,7 +1444,7 @@
   function mapSVG(onId, labels) {
     const used = new Set(items.map((it) => it[DATA.map.key]));
     const ctx = MAP.context ? Object.entries(MAP.shapes).filter(([k, sh]) => !used.has(k) && !(sh.dot && MAP.contextSkipDots)).map(([, sh]) =>
-      `<path class="ctx" d="${sh.d}"/>${labels && sh.label ? `<text class="ctx" x="${sh.lx}" y="${sh.ly}">${esc(sh.label)}</text>` : ""}`).join("") : "";
+      `<path class="ctx${sh.cls ? " " + esc(sh.cls) : ""}" d="${sh.d}"/>${labels && sh.label ? `<text class="ctx" x="${sh.lx}" y="${sh.ly}">${esc(sh.label)}</text>` : ""}`).join("") : "";
     return `<svg viewBox="${MAP.viewBox}" aria-hidden="true">${ctx}${items.map((it) => {
       const sh = shapeOf(it);
       if (!sh) return "";
@@ -1408,20 +1455,26 @@
   }
 
   let mapOn = null;
+  let rhymeOn = null;   // index of the rhyme line being pointed at
   function updateMap() {
     if (!MAP) return;
     $("map").querySelectorAll("text[data-for]").forEach((t) => {
       const it = itemById[t.dataset.for];
-      t.textContent = isHidden(it, fieldByKey[DATA.map.label]) ? "" : it[DATA.map.label];
+      t.textContent = isHidden(it, fieldByKey[DATA.map.label] || titleField) ? "" : (it[DATA.map.label] ?? "");
     });
     $("map").querySelectorAll("path[data-id]").forEach((p) => {
       const it = itemById[p.dataset.id];
       const dim = !passes(it);
-      p.setAttribute("class", `lvl-${level(it.id)}${shapeOf(it).dot ? " dot" : ""}${dim ? " is-dim" : ""}${mapOn === it.id ? " is-on" : ""}`);
+      const inLine = rhymeOn != null && rhymeIds(rhymeOn).includes(it.id);
+      p.setAttribute("class", `lvl-${level(it.id)}${shapeOf(it).dot ? " dot" : ""}${dim ? " is-dim" : ""}${mapOn === it.id ? " is-on" : ""}${inLine ? " is-rhyme" : ""}`);
     });
     const it = mapOn && itemById[mapOn];
+    if (rhymeOn != null) {
+      $("map-caption").innerHTML = `<span class="t">${esc(RHYME.lines[rhymeOn].text)}</span><span class="s">${rhymeIds(rhymeOn).map((id) => shown(itemById[id], titleField)).join(" · ")}</span>`;
+      return;
+    }
     $("map-caption").innerHTML = it
-      ? `<span class="t">${shown(it, titleField)}</span>${subtitleField ? `<span class="s">${shown(it, subtitleField)}</span>` : ""}<button type="button" class="text-btn" data-jump="${esc(it.id)}">Show card</button>`
+      ? `<span class="t">${badge(it)}${shown(it, titleField)}</span>${subtitleField ? `<span class="s">${shown(it, subtitleField)}</span>` : ""}<button type="button" class="text-btn" data-jump="${esc(it.id)}">Show card</button>`
       : `<span class="hint">${esc(DATA.map.hint || `Point at a ${DATA.noun.one} to see it. They fill in as I master them.`)}</span>`;
   }
 
@@ -1650,13 +1703,15 @@
          <div><button type="button" class="text-btn" id="give-up">I don't know</button></div>`
       : `<div class="options">${qn.options.map((o, i) => `<button type="button" class="option" data-opt="${i}"><kbd>${i + 1}</kbd><span>${esc(o.value)}</span></button>`).join("")}</div>`;
     // hold back the highlight when it would give the answer away (the state you're asked to name)
-    const asksForPlace = MAP && DATA.map.withhold !== false && qn.q.to === DATA.map.key;
-    const qMap = MAP ? `<div class="sheet-map">${mapSVG(asksForPlace ? null : qn.item.id)}</div>` : "";
+    const asksForPlace = MAP && (DATA.map.withhold === "always" ||
+      (DATA.map.withhold !== false && (qn.q.to === DATA.map.key || qn.q.to === titleField.key)));
+    // a picture question (a flag) has nothing to show on the map until it's answered
+    const qMap = MAP && qn.q.from !== "image" ? `<div class="sheet-map">${mapSVG(asksForPlace ? null : qn.item.id)}</div>` : "";
     body.innerHTML = `
       ${modeRow}
       ${qMap}
       ${qn.q.from === "image"
-        ? `<figure class="q-img"><img src="${esc(qn.item.image)}" alt="The work in question"></figure>`
+        ? `<figure class="q-img${badgeStyle ? " flag" : ""}"><img src="${esc(qn.item.image)}" alt="${badgeStyle ? "The flag in question" : "The work in question"}"></figure>`
         : `<div class="q-head">
         ${MAP || !itemIcon(qn.item) ? "" : `<span class="card-icon">${itemIcon(qn.item)}</span>`}
         <div>
@@ -1705,6 +1760,7 @@
         : `${esc(title)}: ${esc(qn.answer)}`;
     const last = s.i === s.questions.length - 1;
     $("feedback").innerHTML = `
+      ${MAP && qn.q.from === "image" ? `<div class="sheet-map">${mapSVG(qn.item.id)}</div>` : ""}
       <p class="verdict ${correct ? "right" : "wrong"}"><strong>${correct ? "Right." : "Not quite."}</strong> ${reveal}${!correct && qn.typed ? ` (you said “${esc($("typed-input").value || "nothing")}”)` : ""}</p>
       ${qn.item.hook ? `<p class="hook">${esc(qn.item.hook)}</p>` : ""}
       <div class="sheet-actions"><button type="button" class="btn" id="next-btn">${last ? "See how I did" : "Next"}</button></div>`;
@@ -1924,7 +1980,7 @@
       <div class="sheet-map">${journeySVG(s.list, s.i)}</div>
       <div>
         <p class="q-from">${esc(titleField.label)} · stop ${s.i + 1} of ${s.list.length}</p>
-        <p class="q-prompt">${esc(it[titleField.key])}</p>
+        <p class="q-prompt">${badge(it)}${esc(it[titleField.key])}</p>
       </div>
       ${step}`;
     // shade the stops already visited
@@ -1965,6 +2021,99 @@
       </div>`;
     s.list.forEach((v) => body.querySelector(`.sheet-map path[data-id="${CSS.escape(v.id)}"]`)?.classList.add("is-past"));
     $("jagain").focus();
+  }
+
+  // ---------- the rhyme: a mnemonic verse whose lines map to items ----------
+
+  const RHYME = DATA.rhyme || null;
+  const idOfTitle = Object.fromEntries(items.map((it) => [it[titleField.key], it.id]));
+  const rhymeIds = (i) => RHYME.lines[i].items.map((n) => idOfTitle[n]).filter(Boolean);
+
+  function renderRhyme() {
+    if (!RHYME) return;
+    $("rhyme").hidden = false;
+    $("map-wrap").classList.add("has-rhyme");
+    $("rhyme-title").textContent = RHYME.title || "The rhyme";
+    $("rhyme-intro").textContent = RHYME.intro || "";
+    $("rhyme-lines").innerHTML = RHYME.lines.map((l, i) =>
+      `<li><button type="button" class="rhyme-line" data-line="${i}"><span class="n">${i + 1}</span>${esc(l.text)}</button></li>`).join("");
+    const point = (e) => {
+      const b = e.target.closest("[data-line]");
+      if (!b) return;
+      rhymeOn = Number(b.dataset.line);
+      $("rhyme-lines").querySelectorAll(".rhyme-line").forEach((x) => x.classList.toggle("is-on", x === b));
+      updateMap();
+    };
+    $("rhyme-lines").addEventListener("mouseover", point);
+    $("rhyme-lines").addEventListener("focusin", point);
+    $("rhyme-lines").addEventListener("click", (e) => {
+      point(e);
+      if (MAP) $("map-wrap").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+    $("rhyme-lines").addEventListener("mouseleave", () => {
+      rhymeOn = null;
+      $("rhyme-lines").querySelectorAll(".rhyme-line").forEach((x) => x.classList.remove("is-on"));
+      updateMap();
+    });
+    $("rhyme-btn").addEventListener("click", startRhyme);
+  }
+
+  // practice: line by line, pick what comes next from four lines of the verse
+  function startRhyme() {
+    session = { kind: "rhyme", i: 0, right: 0, missed: [], answered: false };
+    openSheet();
+    renderRhymeStep();
+  }
+
+  function renderRhymeStep() {
+    const s = session;
+    const n = RHYME.lines.length;
+    setHead(`${RHYME.title || "The rhyme"} · line ${s.i + 1} of ${n}`, `${s.right} right`, s.i / n);
+    const others = shuffle(RHYME.lines.map((_, k) => k).filter((k) => k !== s.i)).slice(0, 3);
+    s.options = shuffle([s.i, ...others]);
+    s.answered = false;
+    const prev = RHYME.lines.slice(Math.max(0, s.i - 2), s.i).map((l) => esc(l.text));
+    body.innerHTML = `
+      ${MAP ? `<div class="sheet-map">${mapSVG(null, false)}</div>` : ""}
+      ${prev.length ? `<p class="rhyme-prev">${prev.slice(0, -1).map((t) => `${t}<br>`).join("")}<b>${prev[prev.length - 1]}</b></p>` : ""}
+      <p class="q-ask">${s.i === 0 ? "How does it begin?" : "What comes next?"}</p>
+      <div class="options">${s.options.map((k, j) => `<button type="button" class="option verse" data-verse="${k}"><kbd>${j + 1}</kbd><span>${esc(RHYME.lines[k].text)}</span></button>`).join("")}</div>
+      <div class="feedback" id="feedback"></div>`;
+  }
+
+  function answerRhyme(k) {
+    const s = session;
+    if (s.answered) return;
+    s.answered = true;
+    const right = k === s.i;
+    if (right) s.right++; else s.missed.push(s.i);
+    body.querySelectorAll(".option").forEach((b) => {
+      const v = Number(b.dataset.verse);
+      b.disabled = true;
+      b.classList.add(v === s.i ? "is-right" : v === k ? "is-wrong" : "is-dim");
+    });
+    rhymeIds(s.i).forEach((id) => body.querySelector(`.sheet-map path[data-id="${CSS.escape(id)}"]`)?.classList.add("is-rhyme"));
+    const last = s.i === RHYME.lines.length - 1;
+    $("feedback").innerHTML = `
+      <p class="verdict ${right ? "right" : "wrong"}"><strong>${right ? "Right." : "Not quite."}</strong> ${rhymeIds(s.i).map((id) => esc(itemById[id][titleField.key])).join(" · ")}</p>
+      <div class="sheet-actions"><button type="button" class="btn" id="rhyme-next">${last ? "See how I did" : "Next line"}</button></div>`;
+    setHead(`${RHYME.title || "The rhyme"} · line ${s.i + 1} of ${RHYME.lines.length}`, `${s.right} right`, (s.i + 1) / RHYME.lines.length);
+    $("rhyme-next").focus();
+  }
+
+  function renderRhymeDone() {
+    const s = session;
+    const n = RHYME.lines.length;
+    setHead(`${RHYME.title || "The rhyme"} · complete`, "", 1);
+    body.innerHTML = `
+      <p class="score-big">${s.right}<span> / ${n}</span></p>
+      <p class="q-ask">${esc(verdictLine(s.right, n))}</p>
+      ${s.missed.length ? `<ul class="missed">${s.missed.map((i) => `<li><b>${esc(RHYME.lines[i].text)}</b><span>${i + 1}</span></li>`).join("")}</ul>` : ""}
+      <div class="sheet-actions start">
+        <button type="button" class="btn" id="rhyme-again">${icon("rotate-ccw")}Again</button>
+        <button type="button" class="btn ghost" id="done-btn">Done</button>
+      </div>`;
+    $("rhyme-again").focus();
   }
 
   // ---------- name them all: recall every title in the chosen set from memory ----------
@@ -2022,7 +2171,7 @@
       const got = s.found.has(it.id);
       slot.classList.toggle("got", got);
       slot.classList.toggle("lost", s.over && !got);
-      slot.querySelector(".name").textContent = got || s.over ? it[titleField.key] : "";
+      slot.querySelector(".name").innerHTML = got || s.over ? `${badge(it)}${esc(it[titleField.key])}` : "";
       const path = body.querySelector(`.sheet-map path[data-id="${CSS.escape(it.id)}"]`);
       if (path) { path.classList.toggle("got", got); path.classList.toggle("lost", s.over && !got); }
     }
@@ -2107,6 +2256,11 @@
     if (t.dataset.pair !== undefined) { matchPairIndex = Number(t.dataset.pair); return startMatch(); }
     if (t.dataset.side) return matchTap(t.dataset.side, t.dataset.id);
     if (t.id === "match-again-btn") return startMatch();
+    if (session.kind === "rhyme") {
+      if (t.dataset.verse !== undefined) return answerRhyme(Number(t.dataset.verse));
+      if (t.id === "rhyme-next") { session.i++; return session.i < RHYME.lines.length ? renderRhymeStep() : renderRhymeDone(); }
+      if (t.id === "rhyme-again") return startRhyme();
+    }
     if (session.kind === "recall") {
       if (t.id === "recall-giveup") return finishRecall();
       if (t.id === "recall-again") return startRecall();
@@ -2149,6 +2303,10 @@
   });
 
   sheet.addEventListener("keydown", (e) => {
+    if (session && session.kind === "rhyme" && !session.answered && e.target.tagName !== "INPUT") {
+      const n = Number(e.key);
+      if (n >= 1 && n <= session.options.length) { e.preventDefault(); return answerRhyme(session.options[n - 1]); }
+    }
     if (!session || session.kind !== "test" || e.target.tagName === "INPUT") return;
     const qn = session.questions[session.i];
     if (!qn || session.answered || qn.typed) return;
@@ -2171,6 +2329,7 @@
   $("title").textContent = DATA.title;
   $("lede").textContent = DATA.lede || "";
   $("footer").textContent = DATA.footer || "";
+  renderRhyme();
   if (MAP) {
     $("map").innerHTML = mapSVG(null, true);
     if (DATA.map.maxWidth) $("map").style.cssText = `max-width:${DATA.map.maxWidth}px;margin:0 auto;width:100%`;

@@ -129,6 +129,20 @@ alpha-3 code (`"key": "iso"`, an item property rather than a displayed field), d
 too small for its scale as dots, and gives every shape a `cx`/`cy` centre. For a new kind of map
 (world countries, UK counties), write a generator in the same shape, and check with Sam first.
 
+### Rhymes and timelines
+
+`"rhyme": { "title", "intro", "lines": [{ "text": "Willie, Willie, Harry, Stee,", "items": [titles…] }] }`
+adds a verse section under the map: pointing at a line lights its items on the map, and
+**Practise the rhyme** goes line by line ("What comes next?", four lines to choose from). Use
+an established mnemonic where one exists; if you extend one, keep the facts right.
+
+For anything chronological, `maps/make_timeline.py <slug>` draws a to-scale timeline from items'
+`"segments": [[from, to], …]` (fractional years): a century per row, split and joint reigns
+handled, empty years shown as a dotted track. Pair it with `"withhold": "always"` (the quiz
+highlight waits until after the answer, since a bar's position gives dates away) and a journey
+`{ "by": "start", "order": "asc", "label": "In order", "defaultLabel": "By house" }`; the
+`defaultLabel` names the cards' default order when it isn't A–Z.
+
 ### Name them all
 
 Any topic whose title field is `typeable` gets a **Name them all** button (it becomes "Name all
@@ -161,6 +175,10 @@ cropped. Items without a picture show their icon (if any) and `imageNote` (e.g. 
 instead. Add `{ "from": "image", "to": "<title field>", "ask": "Which work is this?" }` to
 `questions` for a picture quiz; it skips items without a picture.
 
+`"imageStyle": "badge"` shows pictures small, in the icon slot beside the name (and in map
+captions, journey stops and name-them-all slots) instead of as a panel: right for flags. The
+countries page gets its flags from `copy_flags.py` (flag-icons, MIT).
+
 Only use images that are public domain or that Sam owns, and credit the source in `footer`.
 Wikimedia Commons is the usual source: resize to about 800px on the long edge as JPEG
 (Pillow is installed) to keep pages light. In the US, works published 95 or more years ago are
@@ -181,6 +199,8 @@ python3 .claude/skills/knowledge-compendium/build.py roman-gods # one topic + hu
 python3 .claude/skills/knowledge-compendium/build.py --preview <scratchpad>/preview   # no password gate
 ```
 
+Preview builds embed every picture inside the page (as data: URIs), so a preview file sent to
+Sam works on its own; the site build keeps them as separate files in `img/`, which load lazily.
 The site pages carry the same `sessionStorage` password check as `main/index.html`, so open a
 `--preview` build to look at them locally. Before showing Sam:
 
