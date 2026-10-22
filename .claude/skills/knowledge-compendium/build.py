@@ -12,6 +12,7 @@ once with `npm pack` and copied in, so later builds work offline.
 """
 
 import argparse
+import base64
 import html
 import json
 import re
@@ -106,6 +107,10 @@ def validate(t, path):
         if groups:
             need(it.get("group") in groups, f"'{name}' has unknown group {it.get('group')!r}")
     need(len(t["items"]) >= 4, "need at least 4 items for multiple choice to work")
+    if "rhyme" in t:
+        for line in t["rhyme"]["lines"]:
+            for n in line["items"]:
+                need(n in seen, f"rhyme line {line['text']!r} names unknown item {n!r}")
     if "map" in t:
         m = t["map"]
         need(m.get("key") in keys or all(m.get("key") in it for it in t["items"]),
@@ -116,7 +121,8 @@ def validate(t, path):
         missing = [it[m["key"]] for it in t["items"] if it.get(m["key"]) not in shapes]
         need(not missing, f"no map shape for: {', '.join(map(str, missing))}")
         if m.get("label"):
-            need(m["label"] in keys, "map.label must be a field")
+            need(m["label"] in keys or all(m["label"] in it for it in t["items"]),
+                 "map.label must be a field, or a property every item has")
 
 
 def load_topics(only=None):
@@ -149,7 +155,21 @@ def map_json(t):
     return json.dumps(m, separators=(",", ":")).replace("</", "<\\/")
 
 
+def inline_images(t):
+    """A copy of the topic with every picture embedded as a data: URI, so a preview file
+    works on its own (e.g. downloaded from chat) without its img/ folder beside it."""
+    t = json.loads(json.dumps(t))
+    kinds = {".svg": "image/svg+xml", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png", ".webp": "image/webp"}
+    for it in t["items"]:
+        if it.get("image"):
+            f = OUT / t["slug"] / it["image"]
+            it["image"] = f"data:{kinds[f.suffix.lower()]};base64,{base64.b64encode(f.read_bytes()).decode()}"
+    return t
+
+
 def build_topic(t, out_dir, gate):
+    if out_dir != OUT:
+        t = inline_images(t)
     page = (SKILL / "template.html").read_text()
     icons = UI_ICONS + [it["icon"] for it in t["items"] if it.get("icon")] + ([t["defaultIcon"]] if t.get("defaultIcon") else [])
     page = (page.replace("{{PAGE_TITLE}}", html.escape(t["title"]))

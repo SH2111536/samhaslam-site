@@ -1,0 +1,1039 @@
+{
+  "slug": "monarchs",
+  "title": "The kings and queens of England.",
+  "eyebrow": "Compendium · History",
+  "lede": "Every monarch from William the Conqueror to Charles III, nearly a thousand years of them, in order: when they reigned, which house they belonged to, and who came next. With the old rhyme, a timeline drawn to scale, and a hook for each.",
+  "noun": {
+    "one": "monarch",
+    "many": "monarchs"
+  },
+  "numerals": "arabic",
+  "card": {
+    "tag": "History",
+    "title": "Kings and queens",
+    "desc": "William I to Charles III in order: reigns, houses and successors, with the rhyme and a timeline to scale.",
+    "icon": "crown",
+    "order": 6
+  },
+  "map": {
+    "source": "monarchs-timeline",
+    "key": "name",
+    "label": "name",
+    "cardShapes": false,
+    "withhold": "always",
+    "hint": "Each bar is as long as the reign. Point at one to see who it was; they fill in as I master them."
+  },
+  "journey": {
+    "by": "start",
+    "order": "asc",
+    "label": "In order",
+    "defaultLabel": "By house",
+    "ask": "reign"
+  },
+  "fields": [
+    {
+      "key": "name",
+      "label": "Monarch",
+      "plural": "monarchs",
+      "role": "title",
+      "typeable": true
+    },
+    {
+      "key": "reign",
+      "label": "Reigned",
+      "plural": "reigns",
+      "role": "subtitle"
+    },
+    {
+      "key": "house",
+      "label": "House",
+      "plural": "houses",
+      "role": "meta"
+    },
+    {
+      "key": "next",
+      "label": "Followed by",
+      "short": "Then",
+      "plural": "successors",
+      "role": "meta",
+      "typeable": true
+    }
+  ],
+  "hideable": [
+    "name",
+    "reign",
+    "house",
+    "next"
+  ],
+  "questions": [
+    {
+      "from": "reign",
+      "to": "name",
+      "ask": "Who reigned then?"
+    },
+    {
+      "from": "name",
+      "to": "reign",
+      "ask": "When did they reign?"
+    },
+    {
+      "from": "name",
+      "to": "next",
+      "ask": "Who came next?"
+    },
+    {
+      "from": "name",
+      "to": "house",
+      "ask": "Which house?"
+    }
+  ],
+  "match": [
+    {
+      "left": "name",
+      "right": "reign"
+    },
+    {
+      "left": "name",
+      "right": "next"
+    }
+  ],
+  "groups": [
+    {
+      "key": "normans",
+      "label": "Normans",
+      "short": "Normans",
+      "note": "1066–1154: the Conqueror, his sons, and a nephew who started a civil war."
+    },
+    {
+      "key": "plantagenets",
+      "label": "Plantagenets",
+      "short": "Plantagenets",
+      "note": "1154–1399: Lionheart, Magna Carta, and a run of Edwards."
+    },
+    {
+      "key": "lancaster",
+      "label": "Lancaster",
+      "short": "Lancaster",
+      "note": "1399–1461: three Henrys, the red rose."
+    },
+    {
+      "key": "york",
+      "label": "York",
+      "short": "York",
+      "note": "1461–1485: the white rose, the Princes in the Tower, Bosworth."
+    },
+    {
+      "key": "tudors",
+      "label": "Tudors",
+      "short": "Tudors",
+      "note": "1485–1603: Henry VIII, his children, and a nine-day queen."
+    },
+    {
+      "key": "stuarts",
+      "label": "Stuarts",
+      "short": "Stuarts",
+      "note": "1603–1649: the crowns united, and one lost head."
+    },
+    {
+      "key": "commonwealth",
+      "label": "Commonwealth",
+      "short": "Commonwealth",
+      "note": "1649–1660: no king at all. The Cromwells ruled as Lord Protectors."
+    },
+    {
+      "key": "restored",
+      "label": "Stuarts restored",
+      "short": "Restored Stuarts",
+      "note": "1660–1714: the Merry Monarch, a revolution, and the Union."
+    },
+    {
+      "key": "hanover",
+      "label": "Hanover",
+      "short": "Hanover",
+      "note": "1714–1901: four Georges, a sailor, and Victoria."
+    },
+    {
+      "key": "windsor",
+      "label": "Saxe-Coburg and Windsor",
+      "short": "Windsor",
+      "note": "1901–today: an abdication, the war, and seventy years of Elizabeth."
+    }
+  ],
+  "rhyme": {
+    "title": "The rhyme",
+    "intro": "The old schoolroom rhyme, brought up to date. Point at a line to see its monarchs on the timeline. It skips Lady Jane Grey and the Cromwells; so does history, mostly.",
+    "lines": [
+      {
+        "text": "Willie, Willie, Harry, Stee,",
+        "items": [
+          "William I",
+          "William II",
+          "Henry I",
+          "Stephen"
+        ]
+      },
+      {
+        "text": "Harry, Dick, John, Harry three;",
+        "items": [
+          "Henry II",
+          "Richard I",
+          "John",
+          "Henry III"
+        ]
+      },
+      {
+        "text": "One, two, three Neds, Richard two,",
+        "items": [
+          "Edward I",
+          "Edward II",
+          "Edward III",
+          "Richard II"
+        ]
+      },
+      {
+        "text": "Harrys four, five, six… then who?",
+        "items": [
+          "Henry IV",
+          "Henry V",
+          "Henry VI"
+        ]
+      },
+      {
+        "text": "Edwards four, five, Dick the bad,",
+        "items": [
+          "Edward IV",
+          "Edward V",
+          "Richard III"
+        ]
+      },
+      {
+        "text": "Harrys twain, and Ned the lad;",
+        "items": [
+          "Henry VII",
+          "Henry VIII",
+          "Edward VI"
+        ]
+      },
+      {
+        "text": "Mary, Bessie, James the vain,",
+        "items": [
+          "Mary I",
+          "Elizabeth I",
+          "James I"
+        ]
+      },
+      {
+        "text": "Charlie, Charlie, James again;",
+        "items": [
+          "Charles I",
+          "Charles II",
+          "James II"
+        ]
+      },
+      {
+        "text": "William and Mary, Anna Gloria,",
+        "items": [
+          "William III",
+          "Mary II",
+          "Anne"
+        ]
+      },
+      {
+        "text": "Four Georges, William and Victoria;",
+        "items": [
+          "George I",
+          "George II",
+          "George III",
+          "George IV",
+          "William IV",
+          "Victoria"
+        ]
+      },
+      {
+        "text": "Edward seven next, and then",
+        "items": [
+          "Edward VII"
+        ]
+      },
+      {
+        "text": "George the fifth in nineteen-ten;",
+        "items": [
+          "George V"
+        ]
+      },
+      {
+        "text": "Ned the eighth soon abdicated,",
+        "items": [
+          "Edward VIII"
+        ]
+      },
+      {
+        "text": "Then George six was coronated;",
+        "items": [
+          "George VI"
+        ]
+      },
+      {
+        "text": "Elizabeth reigned seventy years,",
+        "items": [
+          "Elizabeth II"
+        ]
+      },
+      {
+        "text": "Then Charles the third: three hearty cheers!",
+        "items": [
+          "Charles III"
+        ]
+      }
+    ]
+  },
+  "items": [
+    {
+      "name": "William I",
+      "reign": "1066–1087",
+      "house": "Norman",
+      "next": "William II",
+      "start": 1066.96,
+      "segments": [
+        [
+          1066.96,
+          1087.69
+        ]
+      ],
+      "group": "normans",
+      "hook": "The Conqueror. Won at Hastings in 1066, then wrote everything down in the Domesday Book in case anyone forgot.",
+      "accept": {
+        "name": [
+          "William the Conqueror"
+        ]
+      }
+    },
+    {
+      "name": "William II",
+      "reign": "1087–1100",
+      "house": "Norman",
+      "next": "Henry I",
+      "start": 1087.69,
+      "segments": [
+        [
+          1087.69,
+          1100.59
+        ]
+      ],
+      "group": "normans",
+      "hook": "“Rufus”, for his red face. Shot dead by an arrow while hunting in the New Forest. Accident? Nobody's quite sure.",
+      "accept": {
+        "name": [
+          "William Rufus",
+          "Rufus"
+        ]
+      }
+    },
+    {
+      "name": "Henry I",
+      "reign": "1100–1135",
+      "house": "Norman",
+      "next": "Stephen",
+      "start": 1100.59,
+      "segments": [
+        [
+          1100.59,
+          1135.92
+        ]
+      ],
+      "group": "normans",
+      "hook": "Died, so the story goes, of a “surfeit of lampreys”: too many eels, against doctor's orders."
+    },
+    {
+      "name": "Stephen",
+      "reign": "1135–1154",
+      "house": "Norman",
+      "next": "Henry II",
+      "start": 1135.97,
+      "segments": [
+        [
+          1135.97,
+          1154.82
+        ]
+      ],
+      "group": "normans",
+      "hook": "Strictly of the House of Blois. His reign was “the Anarchy”: nineteen years of civil war with his cousin Matilda.",
+      "accept": {
+        "name": [
+          "King Stephen"
+        ]
+      }
+    },
+    {
+      "name": "Henry II",
+      "reign": "1154–1189",
+      "house": "Plantagenet",
+      "next": "Richard I",
+      "start": 1154.97,
+      "segments": [
+        [
+          1154.97,
+          1189.51
+        ]
+      ],
+      "group": "plantagenets",
+      "hook": "First Plantagenet. His knights murdered Thomas Becket in Canterbury Cathedral after he reportedly asked to be rid of “this turbulent priest”."
+    },
+    {
+      "name": "Richard I",
+      "reign": "1189–1199",
+      "house": "Plantagenet",
+      "next": "John",
+      "start": 1189.51,
+      "segments": [
+        [
+          1189.51,
+          1199.27
+        ]
+      ],
+      "group": "plantagenets",
+      "hook": "The Lionheart. Spent about six months of his ten-year reign actually in England.",
+      "accept": {
+        "name": [
+          "Richard the Lionheart"
+        ]
+      }
+    },
+    {
+      "name": "John",
+      "reign": "1199–1216",
+      "house": "Plantagenet",
+      "next": "Henry III",
+      "start": 1199.27,
+      "segments": [
+        [
+          1199.27,
+          1216.8
+        ]
+      ],
+      "group": "plantagenets",
+      "hook": "Sealed Magna Carta in 1215, and reportedly lost the crown jewels in the Wash a year later.",
+      "accept": {
+        "name": [
+          "King John"
+        ]
+      }
+    },
+    {
+      "name": "Henry III",
+      "reign": "1216–1272",
+      "house": "Plantagenet",
+      "next": "Edward I",
+      "start": 1216.8,
+      "segments": [
+        [
+          1216.8,
+          1272.88
+        ]
+      ],
+      "group": "plantagenets",
+      "hook": "King at nine, for 56 years. Rebuilt Westminster Abbey."
+    },
+    {
+      "name": "Edward I",
+      "reign": "1272–1307",
+      "house": "Plantagenet",
+      "next": "Edward II",
+      "start": 1272.88,
+      "segments": [
+        [
+          1272.88,
+          1307.52
+        ]
+      ],
+      "group": "plantagenets",
+      "hook": "“Longshanks” for his height, and “Hammer of the Scots”. Ringed Wales with castles."
+    },
+    {
+      "name": "Edward II",
+      "reign": "1307–1327",
+      "house": "Plantagenet",
+      "next": "Edward III",
+      "start": 1307.52,
+      "segments": [
+        [
+          1307.52,
+          1327.07
+        ]
+      ],
+      "group": "plantagenets",
+      "hook": "Lost Bannockburn to Robert the Bruce, then his throne to his own wife, Isabella, “the She-Wolf of France”."
+    },
+    {
+      "name": "Edward III",
+      "reign": "1327–1377",
+      "house": "Plantagenet",
+      "next": "Richard II",
+      "start": 1327.07,
+      "segments": [
+        [
+          1327.07,
+          1377.47
+        ]
+      ],
+      "group": "plantagenets",
+      "hook": "Started the Hundred Years' War and founded the Order of the Garter."
+    },
+    {
+      "name": "Richard II",
+      "reign": "1377–1399",
+      "house": "Plantagenet",
+      "next": "Henry IV",
+      "start": 1377.47,
+      "segments": [
+        [
+          1377.47,
+          1399.75
+        ]
+      ],
+      "group": "plantagenets",
+      "hook": "King at ten, faced down the Peasants' Revolt at fourteen, deposed at thirty-two."
+    },
+    {
+      "name": "Henry IV",
+      "reign": "1399–1413",
+      "house": "Lancaster",
+      "next": "Henry V",
+      "start": 1399.75,
+      "segments": [
+        [
+          1399.75,
+          1413.22
+        ]
+      ],
+      "group": "lancaster",
+      "hook": "Henry Bolingbroke: took the throne from his cousin Richard II and started the Lancaster line."
+    },
+    {
+      "name": "Henry V",
+      "reign": "1413–1422",
+      "house": "Lancaster",
+      "next": "Henry VI",
+      "start": 1413.22,
+      "segments": [
+        [
+          1413.22,
+          1422.66
+        ]
+      ],
+      "group": "lancaster",
+      "hook": "Agincourt, 1415. “Once more unto the breach”, in Shakespeare's version at least."
+    },
+    {
+      "name": "Henry VI",
+      "reign": "1422–1461, 1470–71",
+      "house": "Lancaster",
+      "next": "Edward IV",
+      "start": 1422.66,
+      "segments": [
+        [
+          1422.66,
+          1461.22
+        ],
+        [
+          1470.78,
+          1471.36
+        ]
+      ],
+      "group": "lancaster",
+      "hook": "King at nine months old. Lost France, his wits and, twice, the crown."
+    },
+    {
+      "name": "Edward IV",
+      "reign": "1461–1470, 1471–83",
+      "house": "York",
+      "next": "Edward V",
+      "start": 1461.22,
+      "segments": [
+        [
+          1461.22,
+          1470.78
+        ],
+        [
+          1471.36,
+          1483.27
+        ]
+      ],
+      "group": "york",
+      "hook": "First Yorkist king. Won the throne, lost it to Henry VI, then won it back."
+    },
+    {
+      "name": "Edward V",
+      "reign": "1483",
+      "house": "York",
+      "next": "Richard III",
+      "start": 1483.27,
+      "segments": [
+        [
+          1483.27,
+          1483.48
+        ]
+      ],
+      "group": "york",
+      "hook": "One of the Princes in the Tower. Reigned about eleven weeks, never crowned, and vanished."
+    },
+    {
+      "name": "Richard III",
+      "reign": "1483–1485",
+      "house": "York",
+      "next": "Henry VII",
+      "start": 1483.48,
+      "segments": [
+        [
+          1483.48,
+          1485.64
+        ]
+      ],
+      "group": "york",
+      "hook": "Lost at Bosworth in 1485; found under a Leicester car park in 2012."
+    },
+    {
+      "name": "Henry VII",
+      "reign": "1485–1509",
+      "house": "Tudor",
+      "next": "Henry VIII",
+      "start": 1485.64,
+      "segments": [
+        [
+          1485.64,
+          1509.3
+        ]
+      ],
+      "group": "tudors",
+      "hook": "Won at Bosworth and married Elizabeth of York, uniting the roses: the Tudor rose is red and white."
+    },
+    {
+      "name": "Henry VIII",
+      "reign": "1509–1547",
+      "house": "Tudor",
+      "next": "Edward VI",
+      "start": 1509.3,
+      "segments": [
+        [
+          1509.3,
+          1547.08
+        ]
+      ],
+      "group": "tudors",
+      "hook": "Six wives: divorced, beheaded, died; divorced, beheaded, survived."
+    },
+    {
+      "name": "Edward VI",
+      "reign": "1547–1553",
+      "house": "Tudor",
+      "next": "Lady Jane Grey",
+      "start": 1547.08,
+      "segments": [
+        [
+          1547.08,
+          1553.52
+        ]
+      ],
+      "group": "tudors",
+      "hook": "Henry VIII's longed-for son: king at nine, dead at fifteen."
+    },
+    {
+      "name": "Lady Jane Grey",
+      "reign": "1553 (nine days)",
+      "house": "Grey",
+      "next": "Mary I",
+      "start": 1553.52,
+      "segments": [
+        [
+          1553.52,
+          1553.55
+        ]
+      ],
+      "group": "tudors",
+      "hook": "The nine-day queen, proclaimed and then deposed by Mary I. Executed at sixteen or seventeen.",
+      "accept": {
+        "name": [
+          "Jane Grey",
+          "Jane"
+        ]
+      }
+    },
+    {
+      "name": "Mary I",
+      "reign": "1553–1558",
+      "house": "Tudor",
+      "next": "Elizabeth I",
+      "start": 1553.55,
+      "segments": [
+        [
+          1553.55,
+          1558.87
+        ]
+      ],
+      "group": "tudors",
+      "hook": "“Bloody Mary”: burned nearly three hundred Protestants, and lost Calais."
+    },
+    {
+      "name": "Elizabeth I",
+      "reign": "1558–1603",
+      "house": "Tudor",
+      "next": "James I",
+      "start": 1558.87,
+      "segments": [
+        [
+          1558.87,
+          1603.23
+        ]
+      ],
+      "group": "tudors",
+      "hook": "The Virgin Queen: the Armada, Shakespeare, and the last of the Tudors."
+    },
+    {
+      "name": "James I",
+      "reign": "1603–1625",
+      "house": "Stuart",
+      "next": "Charles I",
+      "start": 1603.23,
+      "segments": [
+        [
+          1603.23,
+          1625.24
+        ]
+      ],
+      "group": "stuarts",
+      "hook": "Already James VI of Scotland: united the two crowns. The King James Bible, and the Gunpowder Plot."
+    },
+    {
+      "name": "Charles I",
+      "reign": "1625–1649",
+      "house": "Stuart",
+      "next": "Oliver Cromwell",
+      "start": 1625.24,
+      "segments": [
+        [
+          1625.24,
+          1649.08
+        ]
+      ],
+      "group": "stuarts",
+      "hook": "The only English king to be executed: beheaded in 1649 after losing the Civil War."
+    },
+    {
+      "name": "Oliver Cromwell",
+      "reign": "1653–1658 (Lord Protector)",
+      "house": "Commonwealth",
+      "next": "Richard Cromwell",
+      "start": 1653.96,
+      "segments": [
+        [
+          1653.96,
+          1658.67
+        ]
+      ],
+      "group": "commonwealth",
+      "hook": "Lord Protector, not king: he turned the crown down. After the Restoration he was dug up and his head put on a spike.",
+      "accept": {
+        "name": [
+          "Cromwell"
+        ]
+      }
+    },
+    {
+      "name": "Richard Cromwell",
+      "reign": "1658–1659 (Lord Protector)",
+      "house": "Commonwealth",
+      "next": "Charles II",
+      "start": 1658.67,
+      "segments": [
+        [
+          1658.67,
+          1659.38
+        ]
+      ],
+      "group": "commonwealth",
+      "hook": "“Tumbledown Dick”: inherited his father's job and lasted eight months.",
+      "accept": {
+        "name": [
+          "Tumbledown Dick"
+        ]
+      }
+    },
+    {
+      "name": "Charles II",
+      "reign": "1660–1685",
+      "house": "Stuart",
+      "next": "James II",
+      "start": 1660.41,
+      "segments": [
+        [
+          1660.41,
+          1685.1
+        ]
+      ],
+      "group": "restored",
+      "hook": "The Merry Monarch: brought back theatre and fun after the Puritans. Once hid in an oak tree after losing at Worcester."
+    },
+    {
+      "name": "James II",
+      "reign": "1685–1688",
+      "house": "Stuart",
+      "next": "William III and Mary II",
+      "start": 1685.1,
+      "segments": [
+        [
+          1685.1,
+          1688.95
+        ]
+      ],
+      "group": "restored",
+      "hook": "A Catholic king, deposed in the Glorious Revolution of 1688 by his own daughter and son-in-law.",
+      "accept": {
+        "next": [
+          "William and Mary",
+          "William III",
+          "Mary II"
+        ]
+      }
+    },
+    {
+      "name": "William III",
+      "reign": "1689–1702",
+      "house": "Stuart",
+      "next": "Anne",
+      "start": 1689.12,
+      "segments": [
+        [
+          1689.12,
+          1702.18
+        ]
+      ],
+      "group": "restored",
+      "hook": "William of Orange. Died after his horse tripped on a molehill; his enemies toasted “the little gentleman in the black velvet waistcoat”.",
+      "accept": {
+        "name": [
+          "William of Orange"
+        ]
+      }
+    },
+    {
+      "name": "Mary II",
+      "reign": "1689–1694",
+      "house": "Stuart",
+      "next": null,
+      "start": 1689.12,
+      "segments": [
+        [
+          1689.12,
+          1694.99
+        ]
+      ],
+      "group": "restored",
+      "hook": "Reigned jointly with William, her husband and her cousin. Died of smallpox at 32."
+    },
+    {
+      "name": "Anne",
+      "reign": "1702–1714",
+      "house": "Stuart",
+      "next": "George I",
+      "start": 1702.18,
+      "segments": [
+        [
+          1702.18,
+          1714.59
+        ]
+      ],
+      "group": "restored",
+      "hook": "The last Stuart, and the first monarch of Great Britain, after the Act of Union with Scotland in 1707.",
+      "accept": {
+        "name": [
+          "Queen Anne"
+        ]
+      }
+    },
+    {
+      "name": "George I",
+      "reign": "1714–1727",
+      "house": "Hanover",
+      "next": "George II",
+      "start": 1714.59,
+      "segments": [
+        [
+          1714.59,
+          1727.45
+        ]
+      ],
+      "group": "hanover",
+      "hook": "From Hanover, and spoke little English, so his ministers ran things: hello, first Prime Minister."
+    },
+    {
+      "name": "George II",
+      "reign": "1727–1760",
+      "house": "Hanover",
+      "next": "George III",
+      "start": 1727.45,
+      "segments": [
+        [
+          1727.45,
+          1760.82
+        ]
+      ],
+      "group": "hanover",
+      "hook": "The last British king to lead an army into battle, at Dettingen in 1743."
+    },
+    {
+      "name": "George III",
+      "reign": "1760–1820",
+      "house": "Hanover",
+      "next": "George IV",
+      "start": 1760.82,
+      "segments": [
+        [
+          1760.82,
+          1820.08
+        ]
+      ],
+      "group": "hanover",
+      "hook": "Sixty years on the throne. Lost America, and later his mind."
+    },
+    {
+      "name": "George IV",
+      "reign": "1820–1830",
+      "house": "Hanover",
+      "next": "William IV",
+      "start": 1820.08,
+      "segments": [
+        [
+          1820.08,
+          1830.48
+        ]
+      ],
+      "group": "hanover",
+      "hook": "The Prince Regent: built Brighton Pavilion and spent like there was no tomorrow."
+    },
+    {
+      "name": "William IV",
+      "reign": "1830–1837",
+      "house": "Hanover",
+      "next": "Victoria",
+      "start": 1830.48,
+      "segments": [
+        [
+          1830.48,
+          1837.47
+        ]
+      ],
+      "group": "hanover",
+      "hook": "The Sailor King, Victoria's uncle. No legitimate children, which is how we got Victoria."
+    },
+    {
+      "name": "Victoria",
+      "reign": "1837–1901",
+      "house": "Hanover",
+      "next": "Edward VII",
+      "start": 1837.47,
+      "segments": [
+        [
+          1837.47,
+          1901.06
+        ]
+      ],
+      "group": "hanover",
+      "hook": "63 years and nine children, married into half of Europe's royal families: “the grandmother of Europe”.",
+      "accept": {
+        "name": [
+          "Queen Victoria"
+        ]
+      }
+    },
+    {
+      "name": "Edward VII",
+      "reign": "1901–1910",
+      "house": "Saxe-Coburg-Gotha",
+      "next": "George V",
+      "start": 1901.06,
+      "segments": [
+        [
+          1901.06,
+          1910.35
+        ]
+      ],
+      "group": "windsor",
+      "hook": "Waited nearly sixty years to be king, and gave his name to the Edwardian era."
+    },
+    {
+      "name": "George V",
+      "reign": "1910–1936",
+      "house": "Windsor",
+      "next": "Edward VIII",
+      "start": 1910.35,
+      "segments": [
+        [
+          1910.35,
+          1936.05
+        ]
+      ],
+      "group": "windsor",
+      "hook": "Changed the family name to Windsor in 1917: Saxe-Coburg-Gotha sounded a bit too German mid-war."
+    },
+    {
+      "name": "Edward VIII",
+      "reign": "1936",
+      "house": "Windsor",
+      "next": "George VI",
+      "start": 1936.05,
+      "segments": [
+        [
+          1936.05,
+          1936.95
+        ]
+      ],
+      "group": "windsor",
+      "hook": "Abdicated after 326 days to marry Wallis Simpson. Never crowned."
+    },
+    {
+      "name": "George VI",
+      "reign": "1936–1952",
+      "house": "Windsor",
+      "next": "Elizabeth II",
+      "start": 1936.95,
+      "segments": [
+        [
+          1936.95,
+          1952.1
+        ]
+      ],
+      "group": "windsor",
+      "hook": "Never meant to be king: the stammer of The King's Speech. Saw Britain through the war."
+    },
+    {
+      "name": "Elizabeth II",
+      "reign": "1952–2022",
+      "house": "Windsor",
+      "next": "Charles III",
+      "start": 1952.1,
+      "segments": [
+        [
+          1952.1,
+          2022.69
+        ]
+      ],
+      "group": "windsor",
+      "hook": "Seventy years, the longest reign in British history: fifteen prime ministers, from Churchill to Truss."
+    },
+    {
+      "name": "Charles III",
+      "reign": "2022–present",
+      "house": "Windsor",
+      "next": null,
+      "start": 2022.69,
+      "segments": [
+        [
+          2022.69,
+          2026.8
+        ]
+      ],
+      "group": "windsor",
+      "hook": "The longest-waiting heir in British history: king at 73, in 2022."
+    }
+  ]
+}
