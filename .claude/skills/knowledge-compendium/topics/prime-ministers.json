@@ -3,6 +3,14 @@
   "title": "The Prime Ministers.",
   "eyebrow": "Compendium · History",
   "lede": "Every Prime Minister from Sir Robert Walpole to Andy Burnham, in order: when they served, their party, their nicknames, and who came next. With a new rhyme, a timeline drawn to scale, and a hook for each.",
+  "extras": [
+    {
+      "title": "The Whitehall Despatch",
+      "desc": "A cabinet of prime-ministerial curiosities: a despatch deck, the No. 10 staircase, a Big Ben dial and a monarch matrix.",
+      "href": "whitehall-despatch/index.html",
+      "source": "whitehall-despatch.html"
+    }
+  ],
   "noun": {
     "one": "Prime Minister",
     "many": "Prime Ministers"

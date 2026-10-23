@@ -3,6 +3,14 @@
   "title": "The kings and queens of England.",
   "eyebrow": "Compendium · History",
   "lede": "Every monarch from William the Conqueror to Charles III, nearly a thousand years of them, in order: when they reigned, which house they belonged to, and who came next. With the old rhyme, a timeline drawn to scale, and a hook for each.",
+  "extras": [
+    {
+      "title": "Regia Chronica",
+      "desc": "A cabinet of royal curiosities: tarot cards, an astrolabe, an abbey window and a bloodline tapestry.",
+      "href": "regia-chronica/index.html",
+      "source": "regia-chronica.html"
+    }
+  ],
   "noun": {
     "one": "monarch",
     "many": "monarchs"

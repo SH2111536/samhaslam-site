@@ -13,6 +13,7 @@ once with `npm pack` and copied in, so later builds work offline.
 
 import argparse
 import base64
+import hashlib
 import html
 import json
 import re
@@ -31,6 +32,8 @@ ICONS = SKILL / "icons"
 MAPS = SKILL / "maps"
 OUT = REPO / "compendium"
 LUCIDE_VERSION = "0.460.0"
+TAILWIND_VERSION = "3.4.17"
+TAILWIND_CDN = '<script src="https://cdn.tailwindcss.com"></script>'
 
 # icons the page chrome itself uses
 UI_ICONS = ["arrow-left", "arrow-right", "shuffle", "link-2", "brain", "eye", "eye-off", "sparkles", "x", "rotate-ccw", "route", "list-checks"]
@@ -42,8 +45,64 @@ GATE = """<script>
 </script>"""
 
 
+# a hand-made page that sits beside a topic (an "extra" with a source in tools/):
+# it keeps its own look, gets the password gate and a way back to the topic
+TOOL_BAR = """<div style="position:relative;z-index:60;padding:10px 16px;background:#0b0d12;border-bottom:1px solid rgba(255,255,255,0.08)"><a href="../index.html" style="display:inline-flex;align-items:center;gap:6px;color:#aab0bd;font:500 13px/1.2 system-ui,-apple-system,'Segoe UI',sans-serif;text-decoration:none">&larr; {back}</a></div>"""
+
+
 def fail(msg):
     sys.exit(f"build.py: {msg}")
+
+
+def tailwind_config(tool):
+    """The page's `tailwind.config = {...}` script: (its span in the page, the object literal)."""
+    m = re.search(r"<script>\s*tailwind\.config\s*=\s*", tool)
+    if not m:
+        return None, "{}"
+    depth, i = 0, m.end()
+    for j in range(i, len(tool)):
+        depth += {"{": 1, "}": -1}.get(tool[j], 0)
+        if depth == 0:
+            break
+    end = re.compile(r"\s*;?\s*</script>").match(tool, j + 1)
+    if not end:
+        fail("a tool's tailwind.config script must hold nothing else")
+    return (m.start(), end.end()), tool[i:j + 1]
+
+
+def tailwind_css(src, tool):
+    """Tool pages written against the Tailwind play CDN get real, compiled CSS instead: the CDN
+    is a development aid (it compiles in the browser on every visit). The result is cached as
+    tools/<name>.css, keyed on the page's contents, so it's only rebuilt when the page changes."""
+    key = hashlib.sha256(tool.encode()).hexdigest()[:16]
+    cache = src.with_suffix(".css")
+    if cache.exists() and cache.read_text().startswith(f"/* {src.name} {key} */"):
+        return cache.read_text()
+    _, config = tailwind_config(tool)
+    with tempfile.TemporaryDirectory() as tmp:
+        t = Path(tmp)
+        subprocess.run(["npm", "init", "-y"], cwd=t, check=True, capture_output=True)
+        subprocess.run(["npm", "install", f"tailwindcss@{TAILWIND_VERSION}", "--silent"], cwd=t, check=True, capture_output=True)
+        (t / "page.html").write_text(tool)
+        (t / "tailwind.config.js").write_text(f"module.exports = Object.assign({config}, {{ content: ['./page.html'] }});\n")
+        (t / "in.css").write_text("@tailwind base;\n@tailwind components;\n@tailwind utilities;\n")
+        subprocess.run(["npx", "tailwindcss", "-c", "tailwind.config.js", "-i", "in.css", "-o", "out.css", "--minify"],
+                       cwd=t, check=True, capture_output=True)
+        css = f"/* {src.name} {key} */\n" + (t / "out.css").read_text()
+    cache.write_text(css)
+    return css
+
+
+def build_tool(src, gate_js, bar):
+    tool = src.read_text()
+    if TAILWIND_CDN in tool:
+        css = tailwind_css(src, tool)
+        span, _ = tailwind_config(tool)
+        if span:
+            tool = tool[:span[0]] + tool[span[1]:]
+        tool = tool.replace(TAILWIND_CDN, "<style>\n" + css.replace("</", "<\\/") + "\n</style>", 1)
+    tool = re.sub(r"(<head[^>]*>)", lambda m: m.group(1) + "\n" + gate_js, tool, count=1)
+    return re.sub(r"(<body[^>]*>)", lambda m: m.group(1) + "\n" + bar, tool, count=1)
 
 
 def fetch_icons(names):
@@ -111,6 +170,11 @@ def validate(t, path):
         for line in t["rhyme"]["lines"]:
             for n in line["items"]:
                 need(n in seen, f"rhyme line {line['text']!r} names unknown item {n!r}")
+    for x in t.get("extras", []):
+        need(x.get("title") and x.get("href"), f"extra {x} needs a title and an href")
+        if x.get("source"):
+            need((SKILL / "tools" / x["source"]).exists(), f"extra source not found: tools/{x['source']}")
+            need(re.fullmatch(r"[a-z0-9-]+/index\.html", x["href"]), f"extra {x['title']}: href must look like 'name/index.html'")
     if "map" in t:
         m = t["map"]
         need(m.get("key") in keys or all(m.get("key") in it for it in t["items"]),
@@ -181,6 +245,14 @@ def build_topic(t, out_dir, gate):
     dest = out_dir / t["slug"] / "index.html"
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(page)
+    for x in t.get("extras", []):
+        if x.get("source"):
+            gate_js = GATE.format(root="../../../") if gate else ""
+            bar = TOOL_BAR.format(back=html.escape(t["card"].get("title", t["title"]).rstrip(".")))
+            tool = build_tool(SKILL / "tools" / x["source"], gate_js, bar)
+            tdest = dest.parent / x["href"]
+            tdest.parent.mkdir(parents=True, exist_ok=True)
+            tdest.write_text(tool)
     img = OUT / t["slug"] / "img"
     if out_dir != OUT and img.is_dir():
         shutil.copytree(img, dest.parent / "img", dirs_exist_ok=True)

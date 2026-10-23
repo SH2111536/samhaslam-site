@@ -1,0 +1,2288 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regia Chronica | Cabinet of Royal Artefacts (1066–Present)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Tone.js for Tactile Mechanical & Chime Audio -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['Cinzel Decorative', 'serif'],
+                        serif: ['Cinzel', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        velvet: '#08060c',
+                        obsidian: '#0d0b14',
+                        parchment: '#f5ebd6',
+                        brass: {
+                            light: '#fbe29d',
+                            DEFAULT: '#d4af37',
+                            dark: '#8a6816',
+                            antique: '#4a3608'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #07060b;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.12) 0%, transparent 55%),
+                radial-gradient(circle at 15% 85%, rgba(124, 58, 237, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(220, 38, 38, 0.07) 0%, transparent 45%);
+            color: #f5ebd6;
+            overflow-x: hidden;
+            user-select: none;
+        }
+
+        /* Ambient Dust Canvas */
+        #ambientCanvas {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Ornate Gilt & Velvet Containers */
+        .gilt-frame {
+            background: linear-gradient(145deg, rgba(20, 17, 29, 0.92), rgba(10, 8, 16, 0.96));
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.8),
+                inset 0 0 25px rgba(212, 175, 55, 0.06);
+            backdrop-filter: blur(12px);
+        }
+
+        .velvet-table {
+            background: 
+                radial-gradient(ellipse at center, #1c1124 0%, #0b0710 75%, #050308 100%);
+            box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.95);
+            border: 2px solid rgba(212, 175, 55, 0.4);
+        }
+
+        /* 3D Tarot Card Perspective & Tilt */
+        .perspective-stage {
+            perspective: 1400px;
+        }
+        .tarot-card-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.15s ease-out, box-shadow 0.3s ease;
+            will-change: transform;
+        }
+        .tarot-card-flip-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .tarot-card-flip-inner.is-flipped {
+            transform: rotateY(180deg);
+        }
+        .card-face {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 1.25rem;
+            overflow: hidden;
+        }
+        .card-face-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Illuminated Gold Foil Shimmer */
+        .gold-foil-border {
+            background: linear-gradient(135deg, #8a6816 0%, #fbe29d 25%, #d4af37 50%, #fbe29d 75%, #6e500d 100%);
+            padding: 3px;
+            border-radius: 1.35rem;
+        }
+
+        /* Stained Glass Leadlight Glow */
+        .stained-glass-pane {
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .stained-glass-pane.lit {
+            box-shadow: 
+                inset 0 0 25px rgba(255, 255, 255, 0.25),
+                0 0 20px rgba(212, 175, 55, 0.25);
+        }
+        .stained-glass-pane.shattered {
+            filter: grayscale(0.95) brightness(0.35) contrast(1.2);
+            border-style: dashed;
+        }
+        .stained-glass-pane:hover {
+            transform: translateY(-4px) scale(1.03);
+            z-index: 20;
+        }
+
+        /* Astrolabe Brass Dials */
+        .brass-ring-transition {
+            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* Tapestry Animated Threads */
+        @keyframes dashFlow {
+            to {
+                stroke-dashoffset: -40;
+            }
+        }
+        .animated-thread {
+            stroke-dasharray: 8 6;
+            animation: dashFlow 1.8s linear infinite;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #08060c; }
+        ::-webkit-scrollbar-thumb { background: #4a3608; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #d4af37; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col relative">
+
+    <!-- Ambient Candlelight & Gold Dust Particle Canvas -->
+    <canvas id="ambientCanvas"></canvas>
+
+    <!-- TOP CABINET HEADER & 4-MODULE SWITCHER -->
+    <header class="sticky top-0 z-40 gilt-frame border-b border-brass/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-col lg:flex-row items-center justify-between gap-3">
+            
+            <!-- Brand Crest -->
+            <div class="flex items-center justify-between w-full lg:w-auto">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-xl gold-foil-border shadow-lg shadow-brass/20">
+                        <div class="w-full h-full bg-velvet rounded-[10px] flex items-center justify-center">
+                            <svg class="w-7 h-7 text-brass-light drop-shadow" viewBox="0 0 32 32" fill="none">
+                                <path d="M4 24L2 9L10 15L16 5L22 15L30 9L28 24H4Z" fill="url(#crownGrad)" stroke="#fbe29d" stroke-width="1.5"/>
+                                <rect x="4" y="25" width="24" height="3" rx="1" fill="#d4af37"/>
+                                <circle cx="16" cy="5" r="2" fill="#ef4444"/>
+                                <circle cx="2" cy="9" r="1.5" fill="#38bdf8"/>
+                                <circle cx="30" cy="9" r="1.5" fill="#10b981"/>
+                                <defs>
+                                    <linearGradient id="crownGrad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                                        <stop offset="0%" stop-color="#fbe29d"/>
+                                        <stop offset="50%" stop-color="#d4af37"/>
+                                        <stop offset="100%" stop-color="#8a6816"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                    </div>
+                    <div>
+                        <h1 class="font-display text-lg sm:text-xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-brass-light via-brass to-brass-light">
+                            REGIA CHRONICA
+                        </h1>
+                        <p class="text-[11px] font-mono text-amber-200/70 tracking-widest uppercase">
+                            Cabinet of Royal Curiosities • 1066–2026
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Sound Toggle Mobile -->
+                <button onclick="toggleAudio()" class="lg:hidden px-3 py-2 rounded-xl bg-obsidian border border-brass/40 text-brass-light text-xs font-mono">
+                    <span class="audio-label">🔊 SFX</span>
+                </button>
+            </div>
+
+            <!-- 4 Interactive Graphical Artefact Modules -->
+            <nav class="grid grid-cols-2 sm:flex items-center gap-1.5 bg-velvet/95 p-1.5 rounded-2xl border border-brass/30 w-full lg:w-auto">
+                <button onclick="switchArtefact('tarot')" id="nav-tarot" class="artefact-tab px-3.5 py-2 rounded-xl text-xs font-serif font-bold tracking-wide flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-brass/30 to-brass-dark/30 text-brass-light border border-brass/60 shadow-lg">
+                    <span>🃏</span>
+                    <span>I. Illuminated Tarot</span>
+                </button>
+                <button onclick="switchArtefact('astrolabe')" id="nav-astrolabe" class="artefact-tab px-3.5 py-2 rounded-xl text-xs font-serif font-bold tracking-wide flex items-center justify-center gap-2 transition-all text-slate-400 hover:text-parchment">
+                    <span>🧭</span>
+                    <span>II. Chronos Astrolabe</span>
+                </button>
+                <button onclick="switchArtefact('window')" id="nav-window" class="artefact-tab px-3.5 py-2 rounded-xl text-xs font-serif font-bold tracking-wide flex items-center justify-center gap-2 transition-all text-slate-400 hover:text-parchment">
+                    <span>🪟</span>
+                    <span>III. Abbey Stained Glass</span>
+                </button>
+                <button onclick="switchArtefact('tapestry')" id="nav-tapestry" class="artefact-tab px-3.5 py-2 rounded-xl text-xs font-serif font-bold tracking-wide flex items-center justify-center gap-2 transition-all text-slate-400 hover:text-parchment">
+                    <span>👑</span>
+                    <span>IV. Bloodline Tapestry</span>
+                </button>
+            </nav>
+
+            <!-- Right Audio & Score Counter -->
+            <div class="hidden lg:flex items-center gap-3">
+                <div class="px-3.5 py-1.5 rounded-xl bg-velvet border border-brass/30 text-right font-mono">
+                    <span class="text-[9px] text-slate-400 block uppercase tracking-widest">ROYAL RELIC SCORE</span>
+                    <span id="globalRelicScore" class="text-sm font-bold text-brass-light">0 ✨</span>
+                </div>
+                <button onclick="toggleAudio()" class="p-2.5 rounded-xl bg-velvet border border-brass/30 hover:border-brass text-brass-light transition" title="Toggle Mechanical & Chime Audio">
+                    <span class="audio-label text-xs font-mono">🔊 SFX</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN ARTEFACT STAGE -->
+    <main class="relative z-10 flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6">
+
+        <!-- =================================================================
+             MODULE 1: THE ILLUMINATED TAROT & HERALDRY TABLE
+             ================================================================= -->
+        <section id="module-tarot" class="space-y-6">
+            
+            <!-- Sub-Mode Controls Bar -->
+            <div class="gilt-frame rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="setTarotTableMode('sanctum')" id="tarot-mode-sanctum" class="px-4 py-2 rounded-xl text-xs font-serif font-bold bg-brass text-velvet shadow-md transition">
+                        🔮 Single Card Sanctum (3D Tilt & Coat of Arms)
+                    </button>
+                    <button onclick="setTarotTableMode('spread')" id="tarot-mode-spread" class="px-4 py-2 rounded-xl text-xs font-serif font-bold bg-velvet text-parchment border border-brass/30 hover:border-brass transition">
+                        🎴 Deal 5-Card Chronology Spread (Tabletop Game)
+                    </button>
+                    <button onclick="setTarotTableMode('duel')" id="tarot-mode-duel" class="px-4 py-2 rounded-xl text-xs font-serif font-bold bg-velvet text-parchment border border-brass/30 hover:border-brass transition">
+                        ⚖️ Reign Length Duel (Higher / Lower)
+                    </button>
+                </div>
+
+                <!-- Dynasty Filter for Deck -->
+                <div id="tarotDeckControls" class="flex items-center gap-2">
+                    <select id="tarotHouseFilter" onchange="filterTarotDeck(this.value)" class="bg-velvet border border-brass/40 rounded-xl px-3 py-2 text-xs font-mono text-brass-light focus:outline-none">
+                        <option value="ALL">All 9 Dynasties (43 Monarchs)</option>
+                        <option value="Norman">Norman (Red / Golden Lions)</option>
+                        <option value="Plantagenet">Plantagenet (Anjou / 3 Lions)</option>
+                        <option value="Lancaster">Lancaster (Red Rose & Fleur-de-Lis)</option>
+                        <option value="York">York (White Rose & Sunburst)</option>
+                        <option value="Tudor">Tudor (Union Rose & Welsh Dragon)</option>
+                        <option value="Stuart">Stuart (Scottish Lion & Thistle)</option>
+                        <option value="Hanover">Hanover (White Horse of Saxony)</option>
+                        <option value="Saxe-Coburg">Saxe-Coburg and Gotha (Saxon Bars & Rue)</option>
+                        <option value="Windsor">Windsor (St Edward's Crown & Castle)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- SUBVIEW 1A: SINGLE 3D ILLUMINATED CARD SANCTUM -->
+            <div id="tarot-view-sanctum" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                
+                <!-- Left: 3D Interactive Tilt Tarot Card -->
+                <div class="lg:col-span-6 flex flex-col items-center">
+                    <div class="text-xs font-mono text-brass-light/80 mb-3 flex items-center gap-3">
+                        <span>Move mouse over card for 3D Gold Foil Tilt • Click to Flip</span>
+                    </div>
+
+                    <div id="sanctumCardStage" class="w-[330px] sm:w-[370px] h-[520px] perspective-stage cursor-pointer"
+                         onmousemove="handleCardTilt(event, this)"
+                         onmouseleave="resetCardTilt(this)"
+                         onclick="flipSanctumCard()">
+                        <div class="tarot-card-3d w-full h-full">
+                            <div id="sanctumFlipInner" class="tarot-card-flip-inner">
+                                <!-- Populated dynamically with procedural SVG Heraldry & Relic -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card Navigation & Quick Scrubber -->
+                    <div class="flex items-center gap-4 mt-5">
+                        <button onclick="stepSanctumCard(-1)" class="px-5 py-2.5 rounded-xl gilt-frame hover:border-brass text-brass-light font-serif text-xs font-bold transition">
+                            ◀ Prev Ruler
+                        </button>
+                        <span id="sanctumCardCounter" class="font-mono text-xs text-parchment">ARCANA I / XLIII</span>
+                        <button onclick="stepSanctumCard(1)" class="px-5 py-2.5 rounded-xl gilt-frame hover:border-brass text-brass-light font-serif text-xs font-bold transition">
+                            Next Ruler ▶
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right: Visual Heraldry & Relic Breakdown -->
+                <div class="lg:col-span-6 space-y-5">
+                    <div id="sanctumAnatomyPanel" class="gilt-frame rounded-3xl p-6 sm:p-7 space-y-5">
+                        <!-- Dynamically populated visual symbolism decoder -->
+                    </div>
+
+                    <!-- Mini Ribbon of All Cards in Current Deck -->
+                    <div class="gilt-frame rounded-2xl p-4">
+                        <div class="text-[10px] font-mono uppercase tracking-widest text-brass-light mb-2">
+                            SELECT AN ILLUMINATED CARD FROM THE DECK:
+                        </div>
+                        <div id="sanctumMiniRibbon" class="flex items-center gap-2 overflow-x-auto pb-2">
+                            <!-- Mini visual sigil tiles -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBVIEW 1B: 5-CARD VELVET TABLETOP SPREAD (SWAP TO ORDER) -->
+            <div id="tarot-view-spread" class="hidden velvet-table rounded-3xl p-6 sm:p-8 space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-brass/25 pb-4">
+                    <div>
+                        <h3 class="font-display text-lg sm:text-xl text-brass-light">The Royal Velvet Spread</h3>
+                        <p class="text-xs text-slate-300">Click any two cards on the velvet table to swap their positions until all 5 are in ascending chronological order (Earliest → Latest).</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button onclick="checkSpreadOrder()" id="verifySpreadBtn" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-brass to-brass-light text-velvet font-serif font-bold text-xs shadow-lg hover:brightness-110 transition">
+                            ✨ Reveal & Verify Dates
+                        </button>
+                        <button onclick="dealNewSpread()" class="px-4 py-2.5 rounded-xl bg-obsidian border border-brass/50 text-brass-light font-mono text-xs hover:bg-brass/10 transition">
+                            🎴 Deal New Hand
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 5 Dealt Cards Row -->
+                <div id="spreadCardsContainer" class="grid grid-cols-1 sm:grid-cols-5 gap-4 pt-2">
+                    <!-- Populated via JS -->
+                </div>
+
+                <div id="spreadFeedbackBanner" class="text-center font-serif text-sm text-brass-light min-h-[28px]"></div>
+            </div>
+
+            <!-- SUBVIEW 1C: REIGN LENGTH DUEL (HIGHER / LOWER) -->
+            <div id="tarot-view-duel" class="hidden velvet-table rounded-3xl p-6 sm:p-8 space-y-6">
+                <div class="flex items-center justify-between border-b border-brass/25 pb-4">
+                    <div>
+                        <h3 class="font-display text-lg sm:text-xl text-brass-light">Crown Longevity Duel</h3>
+                        <p class="text-xs text-slate-300">Did the Challenger on the right wear the crown for a <strong class="text-brass-light">LONGER</strong> or <strong class="text-brass-light">SHORTER</strong> reign than the Champion on the left?</p>
+                    </div>
+                    <div class="font-mono text-right">
+                        <span class="text-[10px] text-slate-400 block">DUEL STREAK</span>
+                        <span id="duelStreakDisplay" class="text-2xl font-bold text-emerald-400">0 🔥</span>
+                    </div>
+                </div>
+
+                <div id="duelArenaContainer" class="grid grid-cols-1 md:grid-cols-11 gap-6 items-center py-2">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- =================================================================
+             MODULE 2: THE CHRONOS ASTROLABE (ROTATING BRASS DIALS)
+             ================================================================= -->
+        <section id="module-astrolabe" class="hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                
+                <!-- Left: Giant Interactive SVG Mechanical Brass Astrolabe -->
+                <div class="lg:col-span-7 gilt-frame rounded-3xl p-4 sm:p-6 flex flex-col items-center justify-center relative overflow-hidden">
+                    <div class="w-full flex items-center justify-between text-xs font-mono text-brass-light/80 mb-2 px-2">
+                        <span>⚙️ MECHANICAL BRASS ASTROLABE</span>
+                        <span>ALIGN ALL 3 RINGS AT TOP ZENITH (12 O'CLOCK)</span>
+                    </div>
+
+                    <!-- Interactive SVG Astrolabe -->
+                    <div class="relative w-full max-w-[500px] aspect-square flex items-center justify-center">
+                        <svg id="astrolabeSvg" viewBox="-260 -260 520 520" class="w-full h-full drop-shadow-[0_0_35px_rgba(212,175,55,0.2)]">
+                            <defs>
+                                <radialGradient id="brassPlate" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stop-color="#261c10"/>
+                                    <stop offset="70%" stop-color="#120d08"/>
+                                    <stop offset="100%" stop-color="#3b2b0d"/>
+                                </radialGradient>
+                                <linearGradient id="goldRim" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#fbe29d"/>
+                                    <stop offset="50%" stop-color="#d4af37"/>
+                                    <stop offset="100%" stop-color="#6e500d"/>
+                                </linearGradient>
+                            </defs>
+
+                            <!-- Base Astrolabe Plate -->
+                            <circle cx="0" cy="0" r="248" fill="url(#brassPlate)" stroke="url(#goldRim)" stroke-width="5"/>
+                            <!-- Degree Tick Marks -->
+                            <g id="astrolabeTicks" stroke="#d4af37" stroke-opacity="0.35"></g>
+
+                            <!-- OUTER RING: ROYAL HOUSES (8 Sectors) -->
+                            <g id="astrolabeRingHouse" class="brass-ring-transition"></g>
+
+                            <!-- MIDDLE RING: CENTURY & ACCESSION ERA (12 Sectors) -->
+                            <g id="astrolabeRingEra" class="brass-ring-transition"></g>
+
+                            <!-- INNER RING: RELIC PICTOGRAPHS (8 Sectors) -->
+                            <g id="astrolabeRingRelic" class="brass-ring-transition"></g>
+
+                            <!-- Center Astrolabe Hub -->
+                            <circle cx="0" cy="0" r="56" fill="#0d0b14" stroke="url(#goldRim)" stroke-width="4"/>
+                            <g id="astrolabeCenterHub"></g>
+
+                            <!-- Fixed Top Zenith Alignment Needle (12 O'Clock Pointer) -->
+                            <g>
+                                <polygon points="0,-255 -12,-234 12,-234" fill="#fbe29d" stroke="#08060c" stroke-width="2"/>
+                                <rect x="-36" y="-232" width="72" height="175" rx="8" fill="none" stroke="#fbe29d" stroke-width="2" stroke-dasharray="4 3"/>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Right: Astrolabe Lockpick Controls & Target Monarch -->
+                <div class="lg:col-span-5 gilt-frame rounded-3xl p-6 space-y-5">
+                    <div class="flex items-center justify-between border-b border-brass/30 pb-3">
+                        <div>
+                            <span class="text-[10px] font-mono uppercase tracking-widest text-brass">CHRONOS CIPHER PUZZLE</span>
+                            <h3 class="font-display text-xl text-parchment">Unlock the Royal Seal</h3>
+                        </div>
+                        <button onclick="initAstrolabeTarget()" class="px-3 py-1.5 rounded-xl bg-velvet border border-brass/40 text-xs font-mono text-brass-light hover:border-brass">
+                            New Target ↻
+                        </button>
+                    </div>
+
+                    <!-- Target Monarch Banner -->
+                    <div id="astrolabeTargetBanner" class="p-4 rounded-2xl bg-velvet border border-brass/40 flex items-center gap-4">
+                        <!-- Populated via JS -->
+                    </div>
+
+                    <!-- Tactile Brass Ring Rotation Controls -->
+                    <div class="space-y-3">
+                        <!-- Outer Ring Control: House -->
+                        <div class="p-3.5 rounded-2xl bg-velvet/90 border border-slate-800 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] font-mono uppercase text-brass-light block">OUTER DIAL • ROYAL HOUSE</span>
+                                <span id="dialLabelHouse" class="font-serif text-sm font-bold text-parchment">Normandy</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="rotateAstrolabeDial('house', -1)" class="w-9 h-9 rounded-xl bg-obsidian border border-brass/40 hover:border-brass text-brass-light font-bold">⟲</button>
+                                <button onclick="rotateAstrolabeDial('house', 1)" class="w-9 h-9 rounded-xl bg-obsidian border border-brass/40 hover:border-brass text-brass-light font-bold">⟳</button>
+                            </div>
+                        </div>
+
+                        <!-- Middle Ring Control: Accession Era -->
+                        <div class="p-3.5 rounded-2xl bg-velvet/90 border border-slate-800 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] font-mono uppercase text-amber-400 block">MIDDLE DIAL • ACCESSION WINDOW</span>
+                                <span id="dialLabelEra" class="font-mono text-sm font-bold text-parchment">1066–1154</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="rotateAstrolabeDial('era', -1)" class="w-9 h-9 rounded-xl bg-obsidian border border-brass/40 hover:border-brass text-brass-light font-bold">⟲</button>
+                                <button onclick="rotateAstrolabeDial('era', 1)" class="w-9 h-9 rounded-xl bg-obsidian border border-brass/40 hover:border-brass text-brass-light font-bold">⟳</button>
+                            </div>
+                        </div>
+
+                        <!-- Inner Ring Control: Iconic Relic Sigil -->
+                        <div class="p-3.5 rounded-2xl bg-velvet/90 border border-slate-800 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] font-mono uppercase text-emerald-400 block">INNER DIAL • DEFINING RELIC</span>
+                                <span id="dialLabelRelic" class="font-serif text-sm font-bold text-parchment">Relic Sigil</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="rotateAstrolabeDial('relic', -1)" class="w-9 h-9 rounded-xl bg-obsidian border border-brass/40 hover:border-brass text-brass-light font-bold">⟲</button>
+                                <button onclick="rotateAstrolabeDial('relic', 1)" class="w-9 h-9 rounded-xl bg-obsidian border border-brass/40 hover:border-brass text-brass-light font-bold">⟳</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Engage Astrolabe Lock Button -->
+                    <button onclick="verifyAstrolabeAlignment()" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-brass-dark via-brass to-brass-light text-velvet font-display font-bold text-sm tracking-wider shadow-xl hover:brightness-110 transition">
+                        ⚡ ENGAGE ASTROLABE MECHANISM
+                    </button>
+
+                    <div id="astrolabeFeedback" class="text-xs font-mono text-center min-h-[36px] text-brass-light"></div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- =================================================================
+             MODULE 3: THE STAINED-GLASS ABBEY WINDOW (SPATIAL MEMORY PALACE)
+             ================================================================= -->
+        <section id="module-window" class="hidden space-y-6">
+            
+            <!-- Stained Glass Top Bar -->
+            <div class="gilt-frame rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div>
+                    <h2 class="font-display text-lg sm:text-xl text-brass-light">Westminster Rose & Lancet Stained Glass</h2>
+                    <p class="text-xs text-slate-300">Each gothic arch is a spatial memory palace niche. Memorize the glowing pictorial rebuses, then test yourself in <strong class="text-brass-light">Shattered Glass Recall Mode</strong>.</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="setWindowMode('illuminated')" id="win-mode-lit" class="px-4 py-2 rounded-xl text-xs font-serif font-bold bg-brass text-velvet shadow">
+                        ☀️ Illuminated Abbey (Study Niches)
+                    </button>
+                    <button onclick="setWindowMode('shattered')" id="win-mode-shattered" class="px-4 py-2 rounded-xl text-xs font-serif font-bold bg-velvet text-parchment border border-brass/40 hover:border-brass">
+                        🔨 Shattered Glass Quest (Restore the Panes)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Active Quest Prompt Bar (Only visible in Shattered Mode) -->
+            <div id="windowQuestBar" class="hidden gilt-frame rounded-2xl p-4 border-2 border-brass flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-4">
+                    <div id="windowQuestSigil" class="w-14 h-14 rounded-2xl bg-velvet border border-brass/50 flex items-center justify-center p-1"></div>
+                    <div>
+                        <span class="text-[10px] font-mono uppercase tracking-widest text-brass-light">RESTORE THIS STAINED-GLASS PANE IN THE ABBEY WINDOW:</span>
+                        <h3 id="windowQuestTitle" class="font-serif text-lg sm:text-xl font-bold text-parchment">Find the Niche of William I (1066–1087)</h3>
+                        <p id="windowQuestClue" class="text-xs text-amber-300/90 italic"></p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span id="windowRestoredCount" class="font-mono text-xs text-emerald-400 font-bold">0 Restored</span>
+                    <button onclick="pickNextWindowQuest()" class="px-3.5 py-2 rounded-xl bg-velvet border border-brass/40 text-xs font-mono text-brass-light">Skip Pane →</button>
+                </div>
+            </div>
+
+            <!-- Grand Gothic Cathedral Window Grid (9 Dynasty Lancet Columns) -->
+            <div class="gilt-frame rounded-3xl p-5 sm:p-6 overflow-x-auto">
+                <div id="stainedGlassGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-9 gap-3 min-w-[300px]">
+                    <!-- Populated via JS: 8 Gothic Lancet Arches with glowing SVG panes -->
+                </div>
+            </div>
+
+            <!-- Selected Pane Lightbox Inspector -->
+            <div id="windowPaneInspector" class="gilt-frame rounded-2xl p-5 flex flex-col sm:flex-row items-center justify-between gap-6">
+                <!-- Populated when clicking any stained glass pane -->
+            </div>
+
+        </section>
+
+
+        <!-- =================================================================
+             MODULE 4: THE ROYAL BLOODLINE TAPESTRY (ANIMATED SVG LINEAGE GRAPH)
+             ================================================================= -->
+        <section id="module-tapestry" class="hidden space-y-6">
+            
+            <!-- Tapestry Controls & Era Stepper -->
+            <div class="gilt-frame rounded-2xl p-4 flex flex-col lg:flex-row items-center justify-between gap-4">
+                <div class="flex flex-wrap items-center gap-1.5" id="tapestryEraTabs">
+                    <button onclick="loadTapestryChapter(0)" class="tapestry-tab px-3.5 py-2 rounded-xl text-xs font-serif font-bold bg-brass text-velvet">
+                        I. Normans & Anarchy (1066–1154)
+                    </button>
+                    <button onclick="loadTapestryChapter(1)" class="tapestry-tab px-3.5 py-2 rounded-xl text-xs font-serif font-bold bg-velvet text-slate-300 border border-brass/30">
+                        II. High Plantagenets (1154–1399)
+                    </button>
+                    <button onclick="loadTapestryChapter(2)" class="tapestry-tab px-3.5 py-2 rounded-xl text-xs font-serif font-bold bg-velvet text-slate-300 border border-brass/30">
+                        III. Wars of the Roses (1399–1485)
+                    </button>
+                    <button onclick="loadTapestryChapter(3)" class="tapestry-tab px-3.5 py-2 rounded-xl text-xs font-serif font-bold bg-velvet text-slate-300 border border-brass/30">
+                        IV. Tudors & Stuarts (1485–1714)
+                    </button>
+                    <button onclick="loadTapestryChapter(4)" class="tapestry-tab px-3.5 py-2 rounded-xl text-xs font-serif font-bold bg-velvet text-slate-300 border border-brass/30">
+                        V. Hanover to Windsor (1714–2026)
+                    </button>
+                </div>
+
+                <!-- Trace the Crown Challenge Toggle -->
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleTapestryChallenge()" id="tapestryChallengeBtn" class="px-4 py-2 rounded-xl text-xs font-mono font-bold bg-rose-950/80 text-rose-200 border border-rose-500/50 hover:bg-rose-900 transition">
+                        ⚔️ Play "Trace the Crown" Pathfinding
+                    </button>
+                </div>
+            </div>
+
+            <!-- Interactive SVG Tapestry Canvas + Legend -->
+            <div class="gilt-frame rounded-3xl p-4 sm:p-6 space-y-4">
+                
+                <!-- Legend & Status Bar -->
+                <div class="flex flex-wrap items-center justify-between gap-3 text-xs font-mono border-b border-brass/20 pb-3">
+                    <div class="flex flex-wrap items-center gap-4">
+                        <span class="flex items-center gap-1.5"><span class="w-5 h-0.5 bg-amber-400 inline-block"></span> Direct Parent → Child</span>
+                        <span class="flex items-center gap-1.5"><span class="w-5 h-0.5 bg-sky-400 inline-block"></span> Sibling → Sibling</span>
+                        <span class="flex items-center gap-1.5"><span class="w-5 h-0.5 bg-rose-500 inline-block"></span> ⚔️ Usurpation / Conquest / Cousin or Niece</span>
+                    </div>
+                    <span id="tapestryStatusPrompt" class="text-brass-light font-semibold">Click any Royal Node to inspect how the Crown passed</span>
+                </div>
+
+                <!-- Scalable Interactive SVG Bloodline Graph -->
+                <div class="w-full overflow-x-auto bg-velvet/90 rounded-2xl border border-brass/30 p-2">
+                    <svg id="tapestrySvg" viewBox="0 0 1000 470" class="w-full min-w-[780px] h-[440px] select-none"></svg>
+                </div>
+
+                <!-- Node Relationship Story Bar -->
+                <div id="tapestryStoryBar" class="p-4 rounded-2xl bg-obsidian border border-brass/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- =================================================================
+         COMPLETE GRAPHICAL ENGINE, PROCEDURAL SVG HERALDRY & DATA
+         ================================================================= -->
+    <script>
+        /**
+         * HOUSE HERALDIC PALETTES & VISUAL MOTIFS
+         */
+        const HOUSES = {
+            Norman: {
+                name: "House of Normandy",
+                years: "1066–1154",
+                primary: "#dc2626",
+                secondary: "#fbbf24",
+                glassBg: "from-red-950/90 via-red-900/60 to-amber-950/80",
+                motto: "Dieu et mon droit",
+                crestDesc: "Gules, two leopards passant guardant Or (Two Golden Norman Lions on Crimson)"
+            },
+            Plantagenet: {
+                name: "House of Plantagenet",
+                years: "1154–1399",
+                primary: "#d97706",
+                secondary: "#1d4ed8",
+                glassBg: "from-amber-950/90 via-amber-800/60 to-blue-950/80",
+                motto: "Planta Genista (Broom Sprig)",
+                crestDesc: "Three golden lions passant guardant quartered with French Fleurs-de-Lis"
+            },
+            Lancaster: {
+                name: "House of Lancaster",
+                years: "1399–1461",
+                primary: "#e11d48",
+                secondary: "#fef08a",
+                glassBg: "from-rose-950/90 via-rose-800/60 to-red-950/80",
+                motto: "Sovereigne",
+                crestDesc: "The Red Rose of Lancaster & Sovereign Lily"
+            },
+            York: {
+                name: "House of York",
+                years: "1461–1485",
+                primary: "#0284c7",
+                secondary: "#f8fafc",
+                glassBg: "from-sky-950/90 via-sky-800/60 to-slate-900/80",
+                motto: "Confort et Liesse",
+                crestDesc: "The White Rose of York & Golden Sun in Splendour"
+            },
+            Tudor: {
+                name: "House of Tudor",
+                years: "1485–1603",
+                primary: "#059669",
+                secondary: "#e11d48",
+                glassBg: "from-emerald-950/90 via-emerald-800/60 to-rose-950/80",
+                motto: "Rosa Sine Spina",
+                crestDesc: "The Tudor Union Rose (Red & White) & Welsh Dragon"
+            },
+            Stuart: {
+                name: "House of Stuart",
+                years: "1603–1714",
+                primary: "#9333ea",
+                secondary: "#facc15",
+                glassBg: "from-purple-950/90 via-purple-800/60 to-amber-950/80",
+                motto: "Nemo me impune lacessit",
+                crestDesc: "Union of Crowns: Scottish Rampant Lion, Irish Harp & Thistle"
+            },
+            Hanover: {
+                name: "House of Hanover",
+                years: "1714–1901",
+                primary: "#2563eb",
+                secondary: "#f8fafc",
+                glassBg: "from-blue-950/90 via-blue-800/60 to-indigo-950/80",
+                motto: "Nec Aspera Terrent",
+                crestDesc: "The Silver Running Horse of Hanover & Crown of Charlemagne"
+            },
+            "Saxe-Coburg": {
+                name: "House of Saxe-Coburg and Gotha",
+                years: "1901–1917",
+                primary: "#047857",
+                secondary: "#fcd34d",
+                glassBg: "from-emerald-950/90 via-emerald-800/60 to-amber-950/80",
+                motto: "Treu und Fest",
+                crestDesc: "Barry of ten Or and Sable, a Crancelin of Rue Vert (Prince Albert's Saxon arms)"
+            },
+            Windsor: {
+                name: "House of Windsor",
+                years: "1917–Present",
+                primary: "#4f46e5",
+                secondary: "#fcd34d",
+                glassBg: "from-indigo-950/90 via-indigo-800/60 to-amber-950/80",
+                motto: "Dieu et mon droit",
+                crestDesc: "The Round Tower of Windsor Castle & St Edward's Crown"
+            }
+        };
+
+        /**
+         * 20 BESPOKE SVG RELIC PICTOGRAPHS (Visual Memory Rebuses)
+         * Every monarch is assigned a specific visual relic icon drawn in crisp vector art.
+         */
+        const RELIC_SVGS = {
+            comet_sword: {
+                title: "Halley's Comet & Conqueror's Sword",
+                svg: `<g stroke="#fbe29d" stroke-width="2" fill="none">
+                        <path d="M12 52 L42 22 M36 18 L46 28" stroke="#f87171" stroke-width="3"/>
+                        <polygon points="52,12 40,20 44,24" fill="#fbe29d"/>
+                        <circle cx="20" cy="20" r="6" fill="#fbbf24"/>
+                        <path d="M25 22 Q40 28 54 42" stroke="#fbbf24" stroke-dasharray="3 2"/>
+                      </g>`
+            },
+            arrow_stag: {
+                title: "The Red Arrow of the New Forest (1100)",
+                svg: `<g stroke="#fbe29d" stroke-width="2.2" fill="none">
+                        <line x1="10" y1="54" x2="54" y2="10" stroke="#ef4444" stroke-width="3"/>
+                        <polygon points="56,8 45,12 52,19" fill="#ef4444" stroke="none"/>
+                        <path d="M14 50 L8 56 M18 46 L12 52" stroke="#fbe29d"/>
+                        <circle cx="32" cy="32" r="16" stroke="#d4af37" stroke-dasharray="4 3"/>
+                      </g>`
+            },
+            white_ship: {
+                title: "The Sinking White Ship & Lamprey Eel",
+                svg: `<g fill="none" stroke="#fbe29d" stroke-width="2">
+                        <path d="M14 36 L50 36 L44 48 L20 48 Z" fill="#f8fafc" stroke="#d4af37"/>
+                        <line x1="32" y1="14" x2="32" y2="36"/>
+                        <polygon points="32,14 48,26 32,30" fill="#bae6fd"/>
+                        <path d="M8 52 Q20 46 32 52 T56 52" stroke="#38bdf8" stroke-width="3"/>
+                      </g>`
+            },
+            two_crowns: {
+                title: "Two Rival Crowns of The Anarchy",
+                svg: `<g fill="none" stroke="#fbe29d" stroke-width="2">
+                        <polygon points="10,28 14,16 22,22 30,14 34,28" fill="#d4af37"/>
+                        <polygon points="30,48 34,36 42,42 50,34 54,48" fill="#94a3b8"/>
+                        <line x1="14" y1="52" x2="50" y2="12" stroke="#ef4444" stroke-width="2.5"/>
+                      </g>`
+            },
+            mitre_sword: {
+                title: "Becket's shattered Archbishop Mitre",
+                svg: `<g fill="none" stroke="#fbe29d" stroke-width="2">
+                        <path d="M32 10 L46 28 L42 48 L22 48 L18 28 Z" fill="#dc2626"/>
+                        <line x1="32" y1="18" x2="32" y2="42" stroke="#fbe29d" stroke-width="3"/>
+                        <line x1="24" y1="28" x2="40" y2="28" stroke="#fbe29d" stroke-width="3"/>
+                        <line x1="10" y1="14" x2="54" y2="50" stroke="#e2e8f0" stroke-width="3"/>
+                      </g>`
+            },
+            crusader_lion: {
+                title: "Lionheart's Crusader Shield & Crescent",
+                svg: `<g fill="none" stroke="#fbe29d" stroke-width="2">
+                        <path d="M16 12 H48 V32 C48 46 32 54 32 54 C32 54 16 46 16 32 Z" fill="#f8fafc"/>
+                        <path d="M32 12 V54 M16 30 H48" stroke="#dc2626" stroke-width="6"/>
+                      </g>`
+            },
+            magna_carta: {
+                title: "Magna Carta Scroll & Lost Crown",
+                svg: `<g fill="none" stroke="#fbe29d" stroke-width="2">
+                        <rect x="16" y="12" width="32" height="40" rx="4" fill="#f5ebd6" stroke="#8a6816"/>
+                        <line x1="22" y1="22" x2="42" y2="22" stroke="#4a3608"/>
+                        <line x1="22" y1="30" x2="42" y2="30" stroke="#4a3608"/>
+                        <circle cx="38" cy="46" r="7" fill="#dc2626" stroke="#fbe29d"/>
+                      </g>`
+            },
+            abbey_arch: {
+                title: "Gothic Arch of Westminster Abbey",
+                svg: `<g fill="none" stroke="#fbe29d" stroke-width="2">
+                        <path d="M16 54 V28 Q32 8 48 28 V54 Z" fill="#1e1b4b" stroke="#d4af37" stroke-width="2.5"/>
+                        <circle cx="32" cy="28" r="7" fill="#fbbf24"/>
+                        <line x1="32" y1="35" x2="32" y2="54"/>
+                      </g>`
+            },
+            hammer_stone: {
+                title: "Hammer of the Scots & Stone of Scone",
+                svg: `<g fill="none" stroke="#fbe29d" stroke-width="2">
+                        <rect x="12" y="40" width="40" height="14" rx="2" fill="#64748b"/>
+                        <line x1="32" y1="14" x2="32" y2="42" stroke="#d4af37" stroke-width="4"/>
+                        <rect x="20" y="10" width="24" height="10" rx="2" fill="#cbd5e1"/>
+                      </g>`
+            },
+            poker_flame: {
+                title: "Shattered Shield of Bannockburn",
+                svg: `<g fill="none" stroke="#fbe29d" stroke-width="2">
+                        <polygon points="32,8 48,24 38,52 26,52 16,24" fill="#1e3a8a"/>
+                        <path d="M18 14 L46 50 M46 14 L18 50" stroke="#f8fafc" stroke-width="4"/>
+                        <circle cx="32" cy="32" r="7" fill="#ef4444"/>
+                      </g>`
+            },
+            garter_plague: {
+                title: "Blue Garter & Hundred Years' Sword",
+                svg: `<g fill="none" stroke="#fbe29d" stroke-width="2">
+                        <circle cx="32" cy="32" r="18" stroke="#3b82f6" stroke-width="6"/>
+                        <polygon points="32,10 36,24 50,24 38,32 42,46 32,38 22,46 26,32 14,24 28,24" fill="#fbbf24" stroke="none"/>
+                      </g>`
+            },
+            white_hart: {
+                title: "The Chained White Hart & Broken Sceptre",
+                svg: `<g fill="none" stroke="#fbe29d" stroke-width="2">
+                        <circle cx="32" cy="32" r="16" fill="#0f172a"/>
+                        <path d="M22 44 L44 20 M28 16 L22 26 M36 48 L42 38" stroke="#f8fafc" stroke-width="2.5"/>
+                        <circle cx="32" cy="32" r="5" fill="#d4af37"/>
+                      </g>`
+            },
+            longbow_crown: {
+                title: "The Longbow & Arrow of Agincourt (1415)",
+                svg: `<g fill="none" stroke="#fbe29d" stroke-width="2.2">
+                        <path d="M22 10 Q48 32 22 54" stroke="#d4af37" stroke-width="3"/>
+                        <line x1="22" y1="10" x2="22" y2="54" stroke="#e2e8f0" stroke-width="1"/>
+                        <line x1="12" y1="32" x2="52" y2="32" stroke="#ef4444" stroke-width="3"/>
+                        <polygon points="54,32 46,27 46,37" fill="#ef4444" stroke="none"/>
+                      </g>`
+            },
+            sun_splendour: {
+                title: "Yorkist White Rose & Sun in Splendour",
+                svg: `<g fill="none" stroke="#fbe29d" stroke-width="2">
+                        <circle cx="32" cy="32" r="14" fill="#f8fafc" stroke="#fbbf24" stroke-width="3"/>
+                        <circle cx="32" cy="32" r="5" fill="#fbbf24"/>
+                        <path d="M32 6 V14 M32 50 V58 M6 32 H14 M50 32 H58 M14 14 L20 20 M44 44 L50 50 M50 14 L44 20 M20 44 L14 50" stroke="#fbbf24" stroke-width="2.5"/>
+                      </g>`
+            },
+            tower_bars: {
+                title: "The Locked Iron Grate of the Tower",
+                svg: `<g fill="none" stroke="#94a3b8" stroke-width="2.5">
+                        <rect x="14" y="12" width="36" height="40" rx="3" fill="#090a0f"/>
+                        <line x1="23" y1="12" x2="23" y2="52"/>
+                        <line x1="32" y1="12" x2="32" y2="52"/>
+                        <line x1="41" y1="12" x2="41" y2="52"/>
+                        <line x1="14" y1="25" x2="50" y2="25"/>
+                        <line x1="14" y1="39" x2="50" y2="39"/>
+                      </g>`
+            },
+            boar_hawthorn: {
+                title: "White Boar & Crown in the Hawthorn Bush",
+                svg: `<g fill="none" stroke="#fbe29d" stroke-width="2">
+                        <path d="M12 46 Q32 24 52 46" stroke="#10b981" stroke-width="4"/>
+                        <polygon points="18,38 22,20 32,28 42,20 46,38" fill="#fbbf24"/>
+                        <circle cx="32" cy="18" r="3" fill="#ef4444"/>
+                      </g>`
+            },
+            red_rose: {
+                title: "The Red Rose of Lancaster",
+                svg: `<g fill="none" stroke="#fbe29d" stroke-width="1.5">
+                        <circle cx="32" cy="32" r="18" fill="#be123c"/>
+                        <path d="M32 14 Q38 24 32 32 Q26 24 32 14 M50 32 Q40 38 32 32 Q40 26 50 32 M32 50 Q26 40 32 32 Q38 40 32 50 M14 32 Q24 26 32 32 Q24 38 14 32" fill="#e11d48"/>
+                        <circle cx="32" cy="32" r="5" fill="#fbbf24"/>
+                      </g>`
+            },
+            tudor_rose: {
+                title: "The Double Tudor Rose of Union",
+                svg: `<g fill="none" stroke="#fbe29d" stroke-width="1.5">
+                        <circle cx="32" cy="32" r="18" fill="#e11d48"/>
+                        <circle cx="32" cy="32" r="11" fill="#f8fafc"/>
+                        <circle cx="32" cy="32" r="5" fill="#fbbf24"/>
+                      </g>`
+            },
+            six_rings: {
+                title: "Six Wedding Rings & Executioner's Axe",
+                svg: `<g fill="none" stroke="#fbbf24" stroke-width="2">
+                        <circle cx="20" cy="22" r="6"/><circle cx="32" cy="22" r="6"/><circle cx="44" cy="22" r="6"/>
+                        <circle cx="20" cy="40" r="6"/><circle cx="32" cy="40" r="6"/><circle cx="44" cy="40" r="6"/>
+                        <line x1="10" y1="52" x2="54" y2="12" stroke="#ef4444" stroke-width="3"/>
+                      </g>`
+            },
+            armada_galley: {
+                title: "Defeat of the Spanish Armada & Pearl Crown",
+                svg: `<g fill="none" stroke="#fbe29d" stroke-width="2">
+                        <path d="M10 38 L54 38 L46 50 L18 50 Z" fill="#7c2d12"/>
+                        <path d="M22 14 Q38 24 22 36" fill="#fef08a"/>
+                        <path d="M36 16 Q50 26 36 36" fill="#fef08a"/>
+                        <circle cx="16" cy="18" r="4" fill="#fbbf24"/>
+                      </g>`
+            },
+            gunpowder_barrel: {
+                title: "Union Crowns & Gunpowder Barrel (1605)",
+                svg: `<g fill="none" stroke="#fbe29d" stroke-width="2">
+                        <rect x="20" y="18" width="24" height="32" rx="6" fill="#451a03"/>
+                        <line x1="20" y1="26" x2="44" y2="26" stroke="#94a3b8" stroke-width="2.5"/>
+                        <line x1="20" y1="42" x2="44" y2="42" stroke="#94a3b8" stroke-width="2.5"/>
+                        <circle cx="32" cy="12" r="4" fill="#ef4444"/>
+                      </g>`
+            },
+            axe_crown: {
+                title: "The Regicide Executioner's Block (1649)",
+                svg: `<g fill="none" stroke="#fbe29d" stroke-width="2">
+                        <path d="M14 48 H50 L46 34 H18 Z" fill="#334155"/>
+                        <line x1="16" y1="12" x2="48" y2="44" stroke="#cbd5e1" stroke-width="3"/>
+                        <path d="M36 10 Q52 16 42 30 L30 18 Z" fill="#dc2626"/>
+                      </g>`
+            },
+            royal_oak: {
+                title: "The Royal Oak & Great Fire of London (1666)",
+                svg: `<g fill="none" stroke="#fbe29d" stroke-width="2">
+                        <circle cx="32" cy="24" r="14" fill="#065f46" stroke="#10b981"/>
+                        <rect x="28" y="36" width="8" height="16" fill="#78350f"/>
+                        <polygon points="24,26 27,18 32,23 37,18 40,26" fill="#fbbf24" stroke="none"/>
+                      </g>`
+            },
+            orange_scroll: {
+                title: "1689 Bill of Rights & Dual Orange Crowns",
+                svg: `<g fill="none" stroke="#fbe29d" stroke-width="2">
+                        <circle cx="24" cy="28" r="10" fill="#ea580c"/>
+                        <circle cx="40" cy="28" r="10" fill="#ea580c"/>
+                        <path d="M16 46 H48" stroke="#fef08a" stroke-width="4"/>
+                      </g>`
+            },
+            white_horse: {
+                title: "The Hanoverian Silver Stallion & Crown",
+                svg: `<g fill="none" stroke="#fbe29d" stroke-width="2">
+                        <path d="M16 44 L24 26 L30 28 L38 16 L46 22 L42 34 L48 46" stroke="#f8fafc" stroke-width="3.5"/>
+                        <circle cx="32" cy="32" r="20" stroke="#3b82f6" stroke-width="2"/>
+                      </g>`
+            },
+            empire_sun: {
+                title: "Victorian Steam Wheel & Imperial Crown",
+                svg: `<g fill="none" stroke="#fbe29d" stroke-width="2">
+                        <circle cx="32" cy="32" r="16" stroke="#fbbf24" stroke-width="3.5"/>
+                        <circle cx="32" cy="32" r="6" fill="#a855f7"/>
+                        <line x1="32" y1="16" x2="32" y2="48"/>
+                        <line x1="16" y1="32" x2="48" y2="32"/>
+                      </g>`
+            },
+            microphone_crown: {
+                title: "BBC Radio Microphone & Windsor Tower",
+                svg: `<g fill="none" stroke="#fbe29d" stroke-width="2">
+                        <rect x="24" y="14" width="16" height="22" rx="8" fill="#475569" stroke="#fbe29d"/>
+                        <line x1="24" y1="25" x2="40" y2="25"/>
+                        <path d="M20 28 C20 40 44 40 44 28"/>
+                        <line x1="32" y1="38" x2="32" y2="50"/>
+                        <line x1="22" y1="50" x2="42" y2="50" stroke-width="3"/>
+                      </g>`
+            },
+            jubilee_orb: {
+                title: "The Sovereign's Orb & Sceptre",
+                svg: `<g fill="none" stroke="#fbe29d" stroke-width="2">
+                        <circle cx="32" cy="36" r="14" fill="#7e22ce" stroke="#fbbf24" stroke-width="2.5"/>
+                        <path d="M18 36 H46 M32 22 V50" stroke="#fbbf24" stroke-width="2.5"/>
+                        <line x1="32" y1="8" x2="32" y2="22" stroke="#fbbf24" stroke-width="3"/>
+                        <line x1="26" y1="14" x2="38" y2="14" stroke="#fbbf24" stroke-width="3"/>
+                      </g>`
+            }
+        };
+
+        /**
+         * COMPLETE 43-MONARCH GRAPHICAL DATASET (1066–2026)
+         */
+        const MONARCHS = [
+            // NORMANS
+            { id: "william-1", order: 1, roman: "I", name: "William I", epithet: "The Conqueror", start: 1066, end: 1087, house: "Norman", relic: "comet_sword", symbolClue: "Halley's Comet & Conqueror's Sword (1066 Hastings)", relation: "Conquest over Harold II" },
+            { id: "william-2", order: 2, roman: "II", name: "William II", epithet: "Rufus (The Red)", start: 1087, end: 1100, house: "Norman", relic: "arrow_stag", symbolClue: "Shot by a hunting arrow in the New Forest in 1100 (11-00 looks like two arrows)", relation: "3rd Son of William I" },
+            { id: "henry-1", order: 3, roman: "III", name: "Henry I", epithet: "Beauclerc", start: 1100, end: 1135, house: "Norman", relic: "white_ship", symbolClue: "Heir drowned in the White Ship; died eating a 'surfeit of lampreys'", relation: "Younger Brother of William II" },
+            { id: "stephen", order: 4, roman: "IV", name: "Stephen", epithet: "of Blois", start: 1135, end: 1154, house: "Norman", relic: "two_crowns", symbolClue: "Usurped Empress Matilda, sparking 19 years of civil war ('The Anarchy')", relation: "Nephew of Henry I (Usurper)" },
+
+            // PLANTAGENETS
+            { id: "henry-2", order: 5, roman: "V", name: "Henry II", epithet: "Curtmantle", start: 1154, end: 1189, house: "Plantagenet", relic: "mitre_sword", symbolClue: "'Who will rid me of this turbulent priest?' — Murder of Archbishop Thomas Becket (1170)", relation: "Grandson of Henry I (via Matilda)" },
+            { id: "richard-1", order: 6, roman: "VI", name: "Richard I", epithet: "The Lionheart", start: 1189, end: 1199, house: "Plantagenet", relic: "crusader_lion", symbolClue: "Spent only 6 months in England; fought on the Third Crusade", relation: "Son of Henry II" },
+            { id: "john", order: 7, roman: "VII", name: "John", epithet: "Lackland", start: 1199, end: 1216, house: "Plantagenet", relic: "magna_carta", symbolClue: "Sealed the Magna Carta at Runnymede (1215) & lost the Crown Jewels in the Wash", relation: "Younger Brother of Richard I" },
+            { id: "henry-3", order: 8, roman: "VIII", name: "Henry III", epithet: "of Winchester", start: 1216, end: 1272, house: "Plantagenet", relic: "abbey_arch", symbolClue: "Crowned at age 9; ruled 56 years & rebuilt Westminster Abbey in Gothic style", relation: "Son of King John" },
+            { id: "edward-1", order: 9, roman: "IX", name: "Edward I", epithet: "Longshanks", start: 1272, end: 1307, house: "Plantagenet", relic: "hammer_stone", symbolClue: "'Hammer of the Scots' — conquered Wales & seized the Stone of Scone", relation: "Son of Henry III" },
+            { id: "edward-2", order: 10, roman: "X", name: "Edward II", epithet: "of Caernarfon", start: 1307, end: 1327, house: "Plantagenet", relic: "poker_flame", symbolClue: "Defeated at Bannockburn (1314) & deposed by Queen Isabella", relation: "Son of Edward I" },
+            { id: "edward-3", order: 11, roman: "XI", name: "Edward III", epithet: "Order of the Garter", start: 1327, end: 1377, house: "Plantagenet", relic: "garter_plague", symbolClue: "Ruled 50 years; started Hundred Years' War & survived the Black Death (1348)", relation: "Son of Edward II" },
+            { id: "richard-2", order: 12, roman: "XII", name: "Richard II", epithet: "White Hart", start: 1377, end: 1399, house: "Plantagenet", relic: "white_hart", symbolClue: "Faced Peasants' Revolt at age 14; deposed by cousin Henry Bolingbroke in 1399", relation: "Grandson of Edward III" },
+
+            // LANCASTER
+            { id: "henry-4", order: 13, roman: "XIII", name: "Henry IV", epithet: "Bolingbroke", start: 1399, end: 1413, house: "Lancaster", relic: "red_rose", symbolClue: "First Red Rose of Lancaster! Overthrew cousin Richard II in 1399", relation: "Cousin of Richard II (Usurper)" },
+            { id: "henry-5", order: 14, roman: "XIV", name: "Henry V", epithet: "Hero of Agincourt", start: 1413, end: 1422, house: "Lancaster", relic: "longbow_crown", symbolClue: "Famous longbow victory at the Battle of Agincourt (1415)", relation: "Son of Henry IV" },
+            { id: "henry-6", order: 15, roman: "XV", name: "Henry VI", epithet: "The Pious / Mad", start: 1422, end: 1461, house: "Lancaster", relic: "two_crowns", symbolClue: "Crowned at 9 months old; lost France & deposed in Wars of the Roses (1461)", relation: "Infant Son of Henry V" },
+
+            // YORK
+            { id: "edward-4", order: 16, roman: "XVI", name: "Edward IV", epithet: "Sun in Splendour", start: 1461, end: 1483, house: "York", relic: "sun_splendour", symbolClue: "6'4\" warrior king who won the crown for the White Rose of York at Towton (1461)", relation: "Yorkist Cousin (deposed Henry VI)" },
+            { id: "edward-5", order: 17, roman: "XVII", name: "Edward V", epithet: "Prince in the Tower", start: 1483, end: 1483, house: "York", relic: "tower_bars", symbolClue: "Uncrowned 12-year-old who vanished in the Tower of London after 78 days (1483)", relation: "Boy Son of Edward IV" },
+            { id: "richard-3", order: 18, roman: "XVIII", name: "Richard III", epithet: "White Boar", start: 1483, end: 1485, house: "York", relic: "boar_hawthorn", symbolClue: "Last English king killed in battle at Bosworth Field (1485); crown found in a hawthorn bush", relation: "Uncle of Edward V (Usurper)" },
+
+            // TUDORS
+            { id: "henry-7", order: 19, roman: "XIX", name: "Henry VII", epithet: "Tudor Founder", start: 1485, end: 1509, house: "Tudor", relic: "tudor_rose", symbolClue: "Won at Bosworth (1485) & united the Red and White Roses into the Tudor Rose", relation: "Conquest + Married Elizabeth of York" },
+            { id: "henry-8", order: 20, roman: "XX", name: "Henry VIII", epithet: "Six Wives", start: 1509, end: 1547, house: "Tudor", relic: "six_rings", symbolClue: "Six marriages, broke with Rome & dissolved the monasteries", relation: "2nd Son of Henry VII" },
+            { id: "edward-6", order: 21, roman: "XXI", name: "Edward VI", epithet: "The Boy King", start: 1547, end: 1553, house: "Tudor", relic: "magna_carta", symbolClue: "Fiercely Protestant boy king; introduced Book of Common Prayer & died at 15", relation: "Only Surviving Son of Henry VIII" },
+            { id: "jane", order: 22, roman: "XXII", name: "Lady Jane Grey", epithet: "Nine Days' Queen", start: 1553, end: 1553, house: "Tudor", relic: "tower_bars", symbolClue: "Reigned for just 9 days in July 1553 before Mary I took the throne", relation: "Cousin of Edward VI (Disputed)" },
+            { id: "mary-1", order: 23, roman: "XXIII", name: "Mary I", epithet: "Bloody Mary", start: 1553, end: 1558, house: "Tudor", relic: "poker_flame", symbolClue: "First undisputed Queen Regnant; burned ~280 Protestants trying to restore Catholicism", relation: "Older Half-Sister of Edward VI" },
+            { id: "elizabeth-1", order: 24, roman: "XXIV", name: "Elizabeth I", epithet: "Gloriana", start: 1558, end: 1603, house: "Tudor", relic: "armada_galley", symbolClue: "Defeated the Spanish Armada (1588) & ruled for 45 years as the Virgin Queen", relation: "Younger Half-Sister of Mary I" },
+
+            // STUARTS
+            { id: "james-1", order: 25, roman: "XXV", name: "James I", epithet: "King James Bible", start: 1603, end: 1625, house: "Stuart", relic: "gunpowder_barrel", symbolClue: "United Scottish & English Crowns (1603) and survived Guy Fawkes' Gunpowder Plot (1605)", relation: "Scottish Cousin of Elizabeth I" },
+            { id: "charles-1", order: 26, roman: "XXVI", name: "Charles I", epithet: "The Martyr King", start: 1625, end: 1649, house: "Stuart", relic: "axe_crown", symbolClue: "Lost the English Civil War and was beheaded outside Whitehall in January 1649", relation: "Son of James I" },
+            { id: "cromwell", order: 27, roman: "XXVII", name: "Cromwell (Gap)", epithet: "Lord Protector", start: 1649, end: 1660, house: "Stuart", relic: "axe_crown", symbolClue: "11-Year Republican Interregnum between Charles I's execution and the 1660 Restoration", relation: "Commonwealth Republic" },
+            { id: "charles-2", order: 28, roman: "XXVIII", name: "Charles II", epithet: "Merry Monarch", start: 1660, end: 1685, house: "Stuart", relic: "royal_oak", symbolClue: "Hid in the Royal Oak; restored the monarchy in 1660; Great Plague & Great Fire (1666)", relation: "Son of Charles I (Restored)" },
+            { id: "james-2", order: 29, roman: "XXIX", name: "James II", epithet: "Glorious Revolution", start: 1685, end: 1688, house: "Stuart", relic: "white_ship", symbolClue: "Catholic king deposed after 3 years in the bloodless Glorious Revolution of 1688", relation: "Younger Brother of Charles II" },
+            { id: "william-mary", order: 30, roman: "XXX", name: "William III & Mary II", epithet: "Joint Sovereigns", start: 1689, end: 1702, house: "Stuart", relic: "orange_scroll", symbolClue: "Only joint monarchs; signed the 1689 Bill of Rights establishing constitutional monarchy", relation: "Daughter & Nephew/Son-in-Law of James II" },
+            { id: "anne", order: 31, roman: "XXXI", name: "Anne", epithet: "Great Britain 1707", start: 1702, end: 1714, house: "Stuart", relic: "jubilee_orb", symbolClue: "Last Stuart; signed the 1707 Acts of Union creating the Kingdom of Great Britain", relation: "Younger Sister of Mary II" },
+
+            // HANOVERIANS
+            { id: "george-1", order: 32, roman: "XXXII", name: "George I", epithet: "From Hanover", start: 1714, end: 1727, house: "Hanover", relic: "white_horse", symbolClue: "German protestant cousin invited in 1714; Walpole became the first Prime Minister", relation: "Second Cousin of Anne (Act of Settlement)" },
+            { id: "george-2", order: 33, roman: "XXXIII", name: "George II", epithet: "Dettingen Warrior", start: 1727, end: 1760, house: "Hanover", relic: "comet_sword", symbolClue: "Last British monarch to lead troops in battle (1743) & defeated Jacobites at Culloden (1746)", relation: "Son of George I" },
+            { id: "george-3", order: 34, roman: "XXXIV", name: "George III", epithet: "Farmer George", start: 1760, end: 1820, house: "Hanover", relic: "white_horse", symbolClue: "Ruled 59 years; lost American Colonies (1776), defeated Napoleon (1815), Regency illness", relation: "Grandson of George II" },
+            { id: "george-4", order: 35, roman: "XXXV", name: "George IV", epithet: "Prince Regent", start: 1820, end: 1830, house: "Hanover", relic: "abbey_arch", symbolClue: "Extravagant Prince Regent who built the exotic Brighton Pavilion", relation: "Eldest Son of George III" },
+            { id: "william-4", order: 36, roman: "XXXVI", name: "William IV", epithet: "The Sailor King", start: 1830, end: 1837, house: "Hanover", relic: "white_ship", symbolClue: "Royal Navy veteran whose reign saw Earl Grey's 1832 Reform Act & the abolition of slavery in the Empire (1833)", relation: "Younger Brother of George IV" },
+            { id: "victoria", order: 37, roman: "XXXVII", name: "Victoria", epithet: "Empress of India", start: 1837, end: 1901, house: "Hanover", relic: "empire_sun", symbolClue: "63-year Victorian Era of industry, empire, and mourning for Prince Albert", relation: "Niece of William IV" },
+
+            // WINDSORS
+            { id: "edward-7", order: 38, roman: "XXXVIII", name: "Edward VII", epithet: "Peacemaker", start: 1901, end: 1910, house: "Saxe-Coburg", relic: "garter_plague", symbolClue: "Uncle of Europe; presided over the Edwardian Era (1901–1910) & Entente Cordiale", relation: "Eldest Son of Queen Victoria" },
+            { id: "george-5", order: 39, roman: "XXXIX", name: "George V", epithet: "Founder of Windsor", start: 1910, end: 1936, house: "Windsor", relic: "microphone_crown", symbolClue: "Renamed the royal house to 'Windsor' during WWI (1917) & began Christmas broadcasts", relation: "Son of Edward VII" },
+            { id: "edward-8", order: 40, roman: "XL", name: "Edward VIII", epithet: "The Abdication", start: 1936, end: 1936, house: "Windsor", relic: "two_crowns", symbolClue: "Year of the Three Kings (1936)! Abdicated after 326 days to marry Wallis Simpson", relation: "Eldest Son of George V" },
+            { id: "george-6", order: 41, roman: "XLI", name: "George VI", epithet: "Wartime Steadfast", start: 1936, end: 1952, house: "Windsor", relic: "microphone_crown", symbolClue: "Overcame his stammer ('The King's Speech') to lead Britain through the WWII Blitz", relation: "Younger Brother of Edward VIII" },
+            { id: "elizabeth-2", order: 42, roman: "XLII", name: "Elizabeth II", epithet: "70-Year Platinum", start: 1952, end: 2022, house: "Windsor", relic: "jubilee_orb", symbolClue: "Longest reign in British history (70 years, 1952–2022)", relation: "Eldest Daughter of George VI" },
+            { id: "charles-3", order: 43, roman: "XLIII", name: "Charles III", epithet: "Carolus III Rex", start: 2022, end: 2026, house: "Windsor", relic: "royal_oak", symbolClue: "Ascended in 2022 and crowned at Westminster Abbey in May 2023", relation: "Eldest Son of Elizabeth II" }
+        ];
+
+        /**
+         * PROCEDURAL SVG HERALDIC SHIELD GENERATOR
+         * Builds a bespoke, multi-layered Coat of Arms with Royal Crown, House Quarterings,
+         * and the Monarch's personal Relic Emblem in the central escutcheon.
+         */
+        function generateCoatOfArmsSVG(monarch, size = 190) {
+            const h = HOUSES[monarch.house];
+            const relicObj = RELIC_SVGS[monarch.relic] || RELIC_SVGS.jubilee_orb;
+
+            // House-specific background heraldry inside the shield
+            let housePattern = '';
+            if (monarch.house === 'Norman') {
+                housePattern = `
+                    <rect x="20" y="28" width="100" height="110" fill="#b91c1c"/>
+                    <path d="M35 55 H105 M35 95 H105" stroke="#fbbf24" stroke-width="8" stroke-linecap="round"/>
+                `;
+            } else if (monarch.house === 'Plantagenet') {
+                housePattern = `
+                    <rect x="20" y="28" width="50" height="55" fill="#1d4ed8"/>
+                    <rect x="70" y="28" width="50" height="55" fill="#b91c1c"/>
+                    <rect x="20" y="83" width="50" height="55" fill="#b91c1c"/>
+                    <rect x="70" y="83" width="50" height="55" fill="#1d4ed8"/>
+                    <circle cx="45" cy="52" r="6" fill="#fbbf24"/>
+                    <circle cx="95" cy="105" r="6" fill="#fbbf24"/>
+                `;
+            } else if (monarch.house === 'Lancaster') {
+                housePattern = `
+                    <rect x="20" y="28" width="100" height="110" fill="#9f1239"/>
+                    <circle cx="70" cy="80" r="38" fill="#e11d48" stroke="#fbbf24" stroke-width="2"/>
+                `;
+            } else if (monarch.house === 'York') {
+                housePattern = `
+                    <rect x="20" y="28" width="100" height="110" fill="#0369a1"/>
+                    <polygon points="70,32 78,62 108,70 78,78 70,108 62,78 32,70 62,62" fill="#f8fafc" opacity="0.45"/>
+                `;
+            } else if (monarch.house === 'Tudor') {
+                housePattern = `
+                    <rect x="20" y="28" width="50" height="110" fill="#047857"/>
+                    <rect x="70" y="28" width="50" height="110" fill="#f8fafc"/>
+                    <circle cx="70" cy="80" r="36" fill="#be123c" stroke="#fbbf24" stroke-width="2"/>
+                `;
+            } else if (monarch.house === 'Stuart') {
+                housePattern = `
+                    <rect x="20" y="28" width="50" height="55" fill="#b91c1c"/>
+                    <rect x="70" y="28" width="50" height="55" fill="#eab308"/>
+                    <rect x="20" y="83" width="50" height="55" fill="#1e3a8a"/>
+                    <rect x="70" y="83" width="50" height="55" fill="#b91c1c"/>
+                    <rect x="76" y="34" width="38" height="43" fill="none" stroke="#b91c1c" stroke-width="2"/>
+                `;
+            } else if (monarch.house === 'Hanover') {
+                housePattern = `
+                    <rect x="20" y="28" width="50" height="55" fill="#b91c1c"/>
+                    <rect x="70" y="28" width="50" height="55" fill="#eab308"/>
+                    <rect x="20" y="83" width="50" height="55" fill="#1d4ed8"/>
+                    <rect x="70" y="83" width="50" height="55" fill="#dc2626"/>
+                    <polygon points="70,80 115,135 25,135" fill="#2563eb"/>
+                `;
+            } else if (monarch.house === 'Saxe-Coburg') {
+                housePattern = `
+                    <rect x="20" y="28" width="100" height="110" fill="#eab308"/>
+                    ${[0, 1, 2, 3, 4].map(i => `<rect x="20" y="${39 + i * 22}" width="100" height="11" fill="#111827"/>`).join('')}
+                    <path d="M18 120 L122 44" stroke="#15803d" stroke-width="9"/>
+                `;
+            } else {
+                housePattern = `
+                    <rect x="20" y="28" width="50" height="55" fill="#b91c1c"/>
+                    <rect x="70" y="28" width="50" height="55" fill="#eab308"/>
+                    <rect x="20" y="83" width="50" height="55" fill="#1e3a8a"/>
+                    <rect x="70" y="83" width="50" height="55" fill="#b91c1c"/>
+                `;
+            }
+
+            const clipId = `shieldClip_${monarch.id}_${Math.random().toString(36).slice(2, 7)}`;
+
+            return `
+                <svg width="${size}" height="${size * 1.12}" viewBox="0 0 140 160" class="mx-auto drop-shadow-[0_10px_20px_rgba(0,0,0,0.85)]">
+                    <defs>
+                        <clipPath id="${clipId}">
+                            <path d="M20 30 H120 V82 C120 120 70 146 70 146 C70 146 20 120 20 82 Z"/>
+                        </clipPath>
+                        <linearGradient id="shieldRim" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#fbe29d"/>
+                            <stop offset="50%" stop-color="#d4af37"/>
+                            <stop offset="100%" stop-color="#78560d"/>
+                        </linearGradient>
+                    </defs>
+
+                    <!-- Ornate Mantling / Laurel Rays Behind Shield -->
+                    <path d="M12 45 Q4 85 28 125 M128 45 Q136 85 112 125" stroke="url(#shieldRim)" stroke-width="2.5" fill="none" opacity="0.6"/>
+
+                    <!-- Sovereign Crown Perched Above Shield -->
+                    <g transform="translate(38, 2)">
+                        <path d="M6 22 L2 8 L18 15 L32 3 L46 15 L62 8 L58 22 Z" fill="url(#shieldRim)" stroke="#fbe29d" stroke-width="1.2"/>
+                        <rect x="6" y="22" width="52" height="4" rx="1.5" fill="#d4af37"/>
+                        <circle cx="32" cy="3" r="2.5" fill="#ef4444"/>
+                        <circle cx="18" cy="14" r="1.8" fill="#38bdf8"/>
+                        <circle cx="46" cy="14" r="1.8" fill="#10b981"/>
+                    </g>
+
+                    <!-- Clipped Heraldic Field -->
+                    <g clip-path="url(#${clipId})">
+                        ${housePattern}
+                        <!-- Subtle Diagonal Sheen -->
+                        <polygon points="0,20 140,20 0,140" fill="rgba(255,255,255,0.08)"/>
+                    </g>
+
+                    <!-- Outer Gold Shield Bezel -->
+                    <path d="M20 30 H120 V82 C120 120 70 146 70 146 C70 146 20 120 20 82 Z" fill="none" stroke="url(#shieldRim)" stroke-width="4.5"/>
+
+                    <!-- Central Inescutcheon (Inner Relic Medallion) -->
+                    <circle cx="70" cy="84" r="28" fill="#09070e" stroke="url(#shieldRim)" stroke-width="3"/>
+                    <g transform="translate(38, 52)">
+                        ${relicObj.svg}
+                    </g>
+                </svg>
+            `;
+        }
+
+        // =================================================================
+        // GLOBAL STATE & AUDIO ENGINE
+        // =================================================================
+        let state = {
+            activeArtefact: 'tarot',
+            audioEnabled: true,
+            relicScore: 0,
+
+            // Module 1: Tarot State
+            tarotSubMode: 'sanctum', // 'sanctum' | 'spread' | 'duel'
+            filteredDeck: [...MONARCHS],
+            sanctumIndex: 0,
+            sanctumFlipped: false,
+
+            spreadCards: [],
+            spreadSelectedSlot: null,
+            spreadVerified: false,
+
+            duelLeft: null,
+            duelRight: null,
+            duelStreak: 0,
+            duelRevealed: false,
+
+            // Module 2: Astrolabe State
+            astroTarget: MONARCHS[0],
+            astroHouseIdx: 0,
+            astroEraIdx: 0,
+            astroRelicIdx: 0,
+
+            // Module 3: Stained Glass Window State
+            windowMode: 'illuminated', // 'illuminated' | 'shattered'
+            shatteredIds: new Set(),
+            currentWindowQuest: null,
+            restoredCount: 0,
+
+            // Module 4: Bloodline Tapestry State
+            tapestryChapter: 0,
+            tapestryChallengeActive: false,
+            tapestryPathProgress: 0
+        };
+
+        let synth = null;
+        function playSound(effect = 'click') {
+            if (!state.audioEnabled || typeof Tone === 'undefined') return;
+            try {
+                if (Tone.context.state !== 'running') Tone.context.resume();
+                if (!synth) {
+                    synth = new Tone.PolySynth(Tone.Synth, {
+                        oscillator: { type: "triangle" },
+                        envelope: { attack: 0.008, decay: 0.18, sustain: 0.04, release: 0.35 }
+                    }).toDestination();
+                    synth.volume.value = -11;
+                }
+                const now = Tone.now();
+                if (effect === 'click') synth.triggerAttackRelease("G4", "32n", now);
+                if (effect === 'gear') synth.triggerAttackRelease(["C3", "G3"], "32n", now);
+                if (effect === 'flip') synth.triggerAttackRelease(["D4", "A4"], "16n", now);
+                if (effect === 'unlock') {
+                    synth.triggerAttackRelease("C5", "16n", now);
+                    synth.triggerAttackRelease("E5", "16n", now + 0.08);
+                    synth.triggerAttackRelease("G5", "16n", now + 0.16);
+                    synth.triggerAttackRelease("C6", "8n", now + 0.24);
+                }
+                if (effect === 'error') {
+                    synth.triggerAttackRelease(["E3", "Bb2"], "8n", now);
+                }
+            } catch (e) {}
+        }
+
+        function toggleAudio() {
+            state.audioEnabled = !state.audioEnabled;
+            document.querySelectorAll('.audio-label').forEach(el => {
+                el.textContent = state.audioEnabled ? '🔊 SFX' : '🔇 MUTE';
+            });
+            if (state.audioEnabled) playSound('click');
+        }
+
+        function addRelicScore(pts) {
+            state.relicScore += pts;
+            const el = document.getElementById('globalRelicScore');
+            if (el) el.textContent = `${state.relicScore} ✨`;
+        }
+
+        function switchArtefact(moduleName) {
+            playSound('flip');
+            state.activeArtefact = moduleName;
+
+            ['tarot', 'astrolabe', 'window', 'tapestry'].forEach(m => {
+                const sec = document.getElementById(`module-${m}`);
+                const btn = document.getElementById(`nav-${m}`);
+                if (m === moduleName) {
+                    sec.classList.remove('hidden');
+                    btn.className = "artefact-tab px-3.5 py-2 rounded-xl text-xs font-serif font-bold tracking-wide flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-brass/30 to-brass-dark/30 text-brass-light border border-brass/60 shadow-lg";
+                } else {
+                    sec.classList.add('hidden');
+                    btn.className = "artefact-tab px-3.5 py-2 rounded-xl text-xs font-serif font-bold tracking-wide flex items-center justify-center gap-2 transition-all text-slate-400 hover:text-parchment";
+                }
+            });
+
+            if (moduleName === 'astrolabe') renderAstrolabeAll();
+            if (moduleName === 'window') renderStainedGlassWindow();
+            if (moduleName === 'tapestry') loadTapestryChapter(state.tapestryChapter);
+        }
+
+        // =================================================================
+        // MODULE 1: ILLUMINATED TAROT DECK & TABLETOP MODES
+        // =================================================================
+        function setTarotTableMode(mode) {
+            playSound('flip');
+            state.tarotSubMode = mode;
+
+            ['sanctum', 'spread', 'duel'].forEach(m => {
+                const view = document.getElementById(`tarot-view-${m}`);
+                const btn = document.getElementById(`tarot-mode-${m}`);
+                if (m === mode) {
+                    view.classList.remove('hidden');
+                    btn.className = "px-4 py-2 rounded-xl text-xs font-serif font-bold bg-brass text-velvet shadow-md transition";
+                } else {
+                    view.classList.add('hidden');
+                    btn.className = "px-4 py-2 rounded-xl text-xs font-serif font-bold bg-velvet text-parchment border border-brass/30 hover:border-brass transition";
+                }
+            });
+
+            document.getElementById('tarotDeckControls').classList.toggle('hidden', mode !== 'sanctum');
+
+            if (mode === 'spread') dealNewSpread();
+            if (mode === 'duel') initDuelRound();
+        }
+
+        function filterTarotDeck(houseVal) {
+            playSound('click');
+            state.filteredDeck = houseVal === 'ALL'
+                ? [...MONARCHS]
+                : MONARCHS.filter(m => m.house === houseVal);
+            state.sanctumIndex = 0;
+            state.sanctumFlipped = false;
+            renderSanctumView();
+        }
+
+        function handleCardTilt(e, container) {
+            const card = container.querySelector('.tarot-card-3d');
+            if (!card) return;
+            const rect = container.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const rotateY = ((x / rect.width) - 0.5) * 24;
+            const rotateX = ((0.5 - (y / rect.height))) * 24;
+            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+        }
+
+        function resetCardTilt(container) {
+            const card = container.querySelector('.tarot-card-3d');
+            if (card) card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
+        }
+
+        function flipSanctumCard() {
+            playSound('flip');
+            state.sanctumFlipped = !state.sanctumFlipped;
+            const inner = document.getElementById('sanctumFlipInner');
+            if (inner) inner.classList.toggle('is-flipped', state.sanctumFlipped);
+        }
+
+        function stepSanctumCard(delta) {
+            playSound('click');
+            const len = state.filteredDeck.length;
+            state.sanctumIndex = (state.sanctumIndex + delta + len) % len;
+            state.sanctumFlipped = false;
+            renderSanctumView();
+        }
+
+        function selectSanctumCardByIndex(idx) {
+            playSound('click');
+            state.sanctumIndex = idx;
+            state.sanctumFlipped = false;
+            renderSanctumView();
+        }
+
+        function renderSanctumView() {
+            const m = state.filteredDeck[state.sanctumIndex] || MONARCHS[0];
+            const h = HOUSES[m.house];
+            const relic = RELIC_SVGS[m.relic];
+            const reignLength = m.end - m.start;
+
+            document.getElementById('sanctumCardCounter').textContent = `ARCANA ${m.roman} (${state.sanctumIndex + 1} / ${state.filteredDeck.length})`;
+
+            const inner = document.getElementById('sanctumFlipInner');
+            inner.classList.toggle('is-flipped', state.sanctumFlipped);
+
+            inner.innerHTML = `
+                <!-- FRONT OF ILLUMINATED TAROT CARD -->
+                <div class="card-face gold-foil-border shadow-2xl">
+                    <div class="w-full h-full bg-velvet rounded-[18px] p-5 flex flex-col justify-between relative overflow-hidden">
+                        <!-- Subtle Radial Glow -->
+                        <div class="absolute inset-0 opacity-25 pointer-events-none" style="background: radial-gradient(circle at 50% 38%, ${h.primary}, transparent 70%);"></div>
+
+                        <!-- Top Roman Numeral & Dynasty Header -->
+                        <div class="relative z-10 flex items-center justify-between border-b border-brass/30 pb-2">
+                            <span class="font-serif text-xs font-bold tracking-widest text-brass-light">ARCANA ${m.roman}</span>
+                            <span class="font-mono text-[10px] uppercase px-2 py-0.5 rounded-full border border-brass/40 text-parchment" style="background-color: ${h.primary}33">
+                                ${m.house}
+                            </span>
+                        </div>
+
+                        <!-- Center Procedural SVG Coat of Arms & Relic -->
+                        <div class="relative z-10 my-auto py-2 flex flex-col items-center">
+                            ${generateCoatOfArmsSVG(m, 185)}
+                            <span class="mt-2 text-[10px] font-mono uppercase tracking-widest text-brass-light/80">
+                                ✦ ${relic.title} ✦
+                            </span>
+                        </div>
+
+                        <!-- Bottom Cartouche (Name & Epithet) -->
+                        <div class="relative z-10 bg-obsidian/95 border border-brass/50 rounded-xl p-3 text-center">
+                            <h3 class="font-display text-xl text-parchment tracking-wide">${m.name}</h3>
+                            <p class="text-xs italic text-brass-light">"${m.epithet}"</p>
+                            <div class="mt-1.5 pt-1.5 border-t border-brass/20 flex items-center justify-between text-[11px] font-mono text-slate-400">
+                                <span>#${m.order} from 1066</span>
+                                <span class="text-brass-light">Tap to Flip ↻</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BACK OF ILLUMINATED TAROT CARD (CHRONOLOGY & REBUS DECODER) -->
+                <div class="card-face card-face-back gold-foil-border shadow-2xl">
+                    <div class="w-full h-full bg-obsidian rounded-[18px] p-6 flex flex-col justify-between relative">
+                        <div class="border-b border-brass/30 pb-3 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] font-mono uppercase text-brass">${h.name}</span>
+                                <h4 class="font-display text-lg text-parchment">${m.name}</h4>
+                            </div>
+                            <div class="w-12 h-12 rounded-xl bg-velvet border border-brass/40 p-1 flex items-center justify-center">
+                                <svg viewBox="0 0 64 64" class="w-9 h-9">${relic.svg}</svg>
+                            </div>
+                        </div>
+
+                        <!-- Giant Reign Years Banner -->
+                        <div class="my-auto space-y-4">
+                            <div class="p-4 rounded-2xl bg-velvet border border-brass/40 text-center">
+                                <span class="text-[10px] font-mono uppercase tracking-widest text-slate-400 block">ROYAL REIGN SPAN</span>
+                                <div class="font-mono text-3xl font-extrabold text-brass-light mt-1">
+                                    ${m.start} – ${m.id === 'charles-3' ? 'Pres.' : m.end}
+                                </div>
+                                <span class="text-xs font-mono text-emerald-400">
+                                    ${reignLength === 0 ? '< 1 Year Reign' : `${reignLength} Years on the Throne`}
+                                </span>
+                            </div>
+
+                            <!-- Pictorial Rebus Explanation -->
+                            <div class="p-3.5 rounded-2xl bg-velvet/70 border border-brass/25 space-y-1">
+                                <span class="text-[10px] font-mono uppercase text-amber-300 block">🔍 PICTORIAL RELIC CLUE</span>
+                                <p class="text-xs text-parchment leading-relaxed">${m.symbolClue}</p>
+                            </div>
+
+                            <!-- Lineage Link -->
+                            <div class="p-3 rounded-xl bg-velvet/70 border border-slate-800 text-xs font-mono">
+                                <span class="text-slate-400 block text-[10px]">CROWN CLAIM / SUCCESSION:</span>
+                                <span class="text-brass-light">${m.relation}</span>
+                            </div>
+                        </div>
+
+                        <div class="text-center text-[11px] font-mono text-slate-400 border-t border-brass/20 pt-2">
+                            Click Card to Return to Coat of Arms
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Populate Right Anatomy Decoder Panel
+            document.getElementById('sanctumAnatomyPanel').innerHTML = `
+                <div class="flex items-center justify-between border-b border-brass/30 pb-3">
+                    <div>
+                        <span class="text-[10px] font-mono uppercase tracking-widest text-brass">HERALDIC & MNEMONIC DECODER</span>
+                        <h3 class="font-display text-2xl text-parchment mt-0.5">${m.name} <span class="text-sm font-mono text-brass-light">(${m.start}–${m.id === 'charles-3' ? 'Present' : m.end})</span></h3>
+                    </div>
+                    <span class="px-3 py-1 rounded-xl bg-velvet border border-brass/40 font-mono text-xs text-brass-light">#${m.order}</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Escutcheon Relic Card -->
+                    <div class="p-4 rounded-2xl bg-velvet border border-brass/30 flex items-start gap-3.5">
+                        <div class="w-14 h-14 shrink-0 rounded-xl bg-obsidian border border-brass/40 flex items-center justify-center">
+                            <svg viewBox="0 0 64 64" class="w-11 h-11">${relic.svg}</svg>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-mono uppercase text-amber-400 block">1. CENTER RELIC SIGIL</span>
+                            <h4 class="font-serif text-sm font-bold text-parchment">${relic.title}</h4>
+                            <p class="text-xs text-slate-300 mt-1 leading-relaxed">${m.symbolClue}</p>
+                        </div>
+                    </div>
+
+                    <!-- Shield Field Heraldry -->
+                    <div class="p-4 rounded-2xl bg-velvet border border-brass/30 space-y-1.5">
+                        <span class="text-[10px] font-mono uppercase text-brass-light block">2. DYNASTY SHIELD ARMS</span>
+                        <h4 class="font-serif text-sm font-bold text-parchment">${h.name} (${h.years})</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed">${h.crestDesc}</p>
+                        <div class="pt-1 text-[11px] font-mono text-amber-300/90">Lineage: ${m.relation}</div>
+                    </div>
+                </div>
+            `;
+
+            // Populate Mini Ribbon
+            const ribbon = document.getElementById('sanctumMiniRibbon');
+            ribbon.innerHTML = state.filteredDeck.map((item, idx) => {
+                const active = idx === state.sanctumIndex;
+                const rel = RELIC_SVGS[item.relic];
+                return `
+                    <button onclick="selectSanctumCardByIndex(${idx})" 
+                            class="shrink-0 w-16 p-2 rounded-xl border transition-all flex flex-col items-center gap-1 ${active ? 'bg-brass/25 border-brass scale-105 shadow-lg' : 'bg-velvet border-slate-800 opacity-70 hover:opacity-100'}">
+                        <svg viewBox="0 0 64 64" class="w-7 h-7">${rel.svg}</svg>
+                        <span class="font-mono text-[10px] text-parchment truncate w-full text-center">${item.name}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        // -----------------------------------------------------------------
+        // SUBVIEW 1B: 5-CARD VELVET SPREAD (CHRONOLOGY SWAP GAME)
+        // -----------------------------------------------------------------
+        function dealNewSpread() {
+            playSound('flip');
+            state.spreadSelectedSlot = null;
+            state.spreadVerified = false;
+            document.getElementById('spreadFeedbackBanner').textContent = "Click any two cards on the table to swap their positions.";
+
+            const shuffled = [...MONARCHS].sort(() => Math.random() - 0.5).slice(0, 5);
+            state.spreadCards = shuffled;
+            renderSpreadTable();
+        }
+
+        function renderSpreadTable() {
+            const container = document.getElementById('spreadCardsContainer');
+            const correctOrder = [...state.spreadCards].sort((a, b) => a.order - b.order);
+
+            container.innerHTML = state.spreadCards.map((m, slotIdx) => {
+                const isSelected = state.spreadSelectedSlot === slotIdx;
+                const isCorrectSlot = state.spreadVerified && correctOrder[slotIdx].id === m.id;
+                const isWrongSlot = state.spreadVerified && correctOrder[slotIdx].id !== m.id;
+
+                let borderStyle = isSelected ? 'ring-4 ring-brass-light scale-105' : 'border-brass/40 hover:border-brass';
+                if (isCorrectSlot) borderStyle = 'ring-4 ring-emerald-400';
+                if (isWrongSlot) borderStyle = 'ring-4 ring-rose-500';
+
+                return `
+                    <div onclick="clickSpreadSlot(${slotIdx})" 
+                         class="gilt-frame rounded-2xl p-3.5 cursor-pointer transition-all flex flex-col items-center justify-between min-h-[300px] ${borderStyle}">
+                        <div class="w-full flex items-center justify-between text-[10px] font-mono text-slate-400">
+                            <span>SLOT ${slotIdx + 1}</span>
+                            <span>${m.house}</span>
+                        </div>
+
+                        <div class="my-2">
+                            ${generateCoatOfArmsSVG(m, 125)}
+                        </div>
+
+                        <div class="text-center w-full bg-velvet/90 rounded-xl p-2.5 border border-brass/25">
+                            <div class="font-serif font-bold text-sm text-parchment">${m.name}</div>
+                            <div class="text-[11px] italic text-brass-light truncate">"${m.epithet}"</div>
+                            ${state.spreadVerified 
+                                ? `<div class="mt-1 font-mono text-xs font-bold ${isCorrectSlot ? 'text-emerald-400' : 'text-rose-400'}">${m.start}–${m.end} (#${m.order})</div>`
+                                : `<div class="mt-1 font-mono text-[10px] text-slate-500">Year Hidden</div>`
+                            }
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function clickSpreadSlot(slotIdx) {
+            if (state.spreadVerified) return;
+            playSound('click');
+
+            if (state.spreadSelectedSlot === null) {
+                state.spreadSelectedSlot = slotIdx;
+            } else if (state.spreadSelectedSlot === slotIdx) {
+                state.spreadSelectedSlot = null;
+            } else {
+                // Swap the two cards
+                const a = state.spreadSelectedSlot;
+                const temp = state.spreadCards[a];
+                state.spreadCards[a] = state.spreadCards[slotIdx];
+                state.spreadCards[slotIdx] = temp;
+                state.spreadSelectedSlot = null;
+                playSound('flip');
+            }
+            renderSpreadTable();
+        }
+
+        function checkSpreadOrder() {
+            if (state.spreadVerified) return;
+            state.spreadVerified = true;
+            state.spreadSelectedSlot = null;
+
+            const correctOrder = [...state.spreadCards].sort((a, b) => a.order - b.order);
+            let correctCount = 0;
+            state.spreadCards.forEach((m, i) => {
+                if (m.id === correctOrder[i].id) correctCount++;
+            });
+
+            const banner = document.getElementById('spreadFeedbackBanner');
+            if (correctCount === 5) {
+                playSound('unlock');
+                addRelicScore(250);
+                banner.innerHTML = `<span class="text-emerald-400 font-bold">👑 FLAWLESS ROYAL SPREAD! (+250 Relic Score) All 5 Monarchs are in exact chronological order!</span>`;
+            } else {
+                playSound('error');
+                banner.innerHTML = `<span class="text-amber-300">${correctCount} of 5 slots matched chronological order. Inspect the revealed dates below or deal a new hand!</span>`;
+            }
+            renderSpreadTable();
+        }
+
+        // -----------------------------------------------------------------
+        // SUBVIEW 1C: REIGN LENGTH DUEL (HIGHER / LOWER)
+        // -----------------------------------------------------------------
+        function initDuelRound() {
+            state.duelRevealed = false;
+            if (!state.duelLeft) {
+                state.duelLeft = MONARCHS[Math.floor(Math.random() * MONARCHS.length)];
+            } else if (state.duelRight) {
+                state.duelLeft = state.duelRight;
+            }
+
+            let candidate;
+            do {
+                candidate = MONARCHS[Math.floor(Math.random() * MONARCHS.length)];
+            } while (candidate.id === state.duelLeft.id || (candidate.end - candidate.start) === (state.duelLeft.end - state.duelLeft.start));
+
+            state.duelRight = candidate;
+            renderDuelArena();
+        }
+
+        function renderDuelArena() {
+            const left = state.duelLeft;
+            const right = state.duelRight;
+            const leftLen = left.end - left.start;
+            const rightLen = right.end - right.start;
+
+            document.getElementById('duelStreakDisplay').textContent = `${state.duelStreak} 🔥`;
+
+            document.getElementById('duelArenaContainer').innerHTML = `
+                <!-- Left Champion Card -->
+                <div class="md:col-span-5 gilt-frame rounded-3xl p-6 text-center space-y-3 border-2 border-brass/50">
+                    <span class="text-[10px] font-mono uppercase tracking-widest text-brass-light">REIGNING CHAMPION</span>
+                    ${generateCoatOfArmsSVG(left, 150)}
+                    <h4 class="font-display text-2xl text-parchment">${left.name}</h4>
+                    <p class="text-xs italic text-slate-400">"${left.epithet}" (${left.start}–${left.end})</p>
+                    <div class="p-3 rounded-2xl bg-velvet border border-brass/40 font-mono text-2xl font-bold text-brass-light">
+                        ${leftLen} YEARS
+                    </div>
+                </div>
+
+                <!-- VS Emblem -->
+                <div class="md:col-span-1 flex flex-col items-center justify-center">
+                    <div class="w-12 h-12 rounded-full gold-foil-border flex items-center justify-center shadow-xl">
+                        <div class="w-full h-full bg-velvet rounded-full flex items-center justify-center font-display text-sm text-brass-light">VS</div>
+                    </div>
+                </div>
+
+                <!-- Right Challenger Card -->
+                <div class="md:col-span-5 gilt-frame rounded-3xl p-6 text-center space-y-3 border-2 border-brass/50">
+                    <span class="text-[10px] font-mono uppercase tracking-widest text-amber-400">ROYAL CHALLENGER</span>
+                    ${generateCoatOfArmsSVG(right, 150)}
+                    <h4 class="font-display text-2xl text-parchment">${right.name}</h4>
+                    <p class="text-xs italic text-slate-400">"${right.epithet}" (${right.house})</p>
+
+                    ${state.duelRevealed 
+                        ? `<div class="p-3 rounded-2xl bg-velvet border border-brass font-mono text-2xl font-bold text-emerald-400">
+                             ${rightLen} YEARS (${right.start}–${right.end})
+                           </div>`
+                        : `<div class="grid grid-cols-2 gap-3 pt-1">
+                             <button onclick="guessDuel('higher')" class="py-3 rounded-xl bg-emerald-950/90 hover:bg-emerald-900 border border-emerald-400/50 text-emerald-200 font-serif font-bold text-xs">
+                               ▲ LONGER REIGN
+                             </button>
+                             <button onclick="guessDuel('lower')" class="py-3 rounded-xl bg-rose-950/90 hover:bg-rose-900 border border-rose-400/50 text-rose-200 font-serif font-bold text-xs">
+                               ▼ SHORTER REIGN
+                             </button>
+                           </div>`
+                    }
+                </div>
+            `;
+        }
+
+        function guessDuel(direction) {
+            if (state.duelRevealed) return;
+            state.duelRevealed = true;
+
+            const leftLen = state.duelLeft.end - state.duelLeft.start;
+            const rightLen = state.duelRight.end - state.duelRight.start;
+            const isHigher = rightLen > leftLen;
+
+            if ((direction === 'higher' && isHigher) || (direction === 'lower' && !isHigher)) {
+                playSound('unlock');
+                state.duelStreak++;
+                addRelicScore(50);
+            } else {
+                playSound('error');
+                state.duelStreak = 0;
+            }
+
+            renderDuelArena();
+            setTimeout(() => {
+                initDuelRound();
+            }, 1500);
+        }
+
+
+        // =================================================================
+        // MODULE 2: THE CHRONOS ASTROLABE (CONCENTRIC BRASS DIALS)
+        // =================================================================
+        const ASTRO_HOUSES = Object.keys(HOUSES); // 9 Sectors (40 deg each)
+        const ASTRO_ERAS = [
+            "1066–1154", "1154–1216", "1216–1307", "1307–1399",
+            "1399–1461", "1461–1485", "1485–1547", "1547–1603",
+            "1603–1660", "1660–1714", "1714–1837", "1837–2026"
+        ]; // 12 Sectors (30 deg each)
+        const ASTRO_RELICS = [
+            "comet_sword", "arrow_stag", "white_ship", "mitre_sword",
+            "crusader_lion", "magna_carta", "longbow_crown", "sun_splendour",
+            "boar_hawthorn", "red_rose", "tudor_rose", "six_rings", "armada_galley",
+            "axe_crown", "royal_oak", "white_horse", "jubilee_orb"
+        ]; // 17 Sectors
+
+        function getMonarchAstrolabeEra(m) {
+            if (m.start < 1154) return "1066–1154";
+            if (m.start < 1216) return "1154–1216";
+            if (m.start < 1307) return "1216–1307";
+            if (m.start < 1399) return "1307–1399";
+            if (m.start < 1461) return "1399–1461";
+            if (m.start < 1485) return "1461–1485";
+            if (m.start < 1547) return "1485–1547";
+            if (m.start < 1603) return "1547–1603";
+            if (m.start < 1660) return "1603–1660";
+            if (m.start < 1714) return "1660–1714";
+            if (m.start < 1837) return "1714–1837";
+            return "1837–2026";
+        }
+
+        function buildAstrolabeGeometry() {
+            // Degree Ticks
+            const ticksGroup = document.getElementById('astrolabeTicks');
+            let ticksHtml = '';
+            for (let deg = 0; deg < 360; deg += 5) {
+                const r1 = deg % 30 === 0 ? 232 : 240;
+                const rad = (deg * Math.PI) / 180;
+                const x1 = Math.sin(rad) * r1;
+                const y1 = -Math.cos(rad) * r1;
+                const x2 = Math.sin(rad) * 247;
+                const y2 = -Math.cos(rad) * 247;
+                ticksHtml += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke-width="${deg % 30 === 0 ? 2 : 1}"/>`;
+            }
+            ticksGroup.innerHTML = ticksHtml;
+
+            // Outer Ring: 8 Royal Houses (Radius 182 to 230)
+            const houseRing = document.getElementById('astrolabeRingHouse');
+            let houseHtml = `<circle cx="0" cy="0" r="230" fill="none" stroke="#d4af37" stroke-width="2"/>
+                             <circle cx="0" cy="0" r="180" fill="none" stroke="#d4af37" stroke-width="2.5"/>`;
+            ASTRO_HOUSES.forEach((hKey, i) => {
+                const angle = i * (360 / ASTRO_HOUSES.length);
+                const h = HOUSES[hKey];
+                houseHtml += `
+                    <g transform="rotate(${angle})">
+                        <line x1="0" y1="-180" x2="0" y2="-230" stroke="#d4af37" stroke-opacity="0.4" transform="rotate(${180 / ASTRO_HOUSES.length})"/>
+                        <circle cx="0" cy="-205" r="18" fill="${h.primary}" fill-opacity="0.35" stroke="#fbe29d" stroke-width="1"/>
+                        <text x="0" y="-201" text-anchor="middle" fill="#fbe29d" font-family="Cinzel" font-size="11" font-weight="bold">${hKey.toUpperCase()}</text>
+                    </g>
+                `;
+            });
+            houseRing.innerHTML = houseHtml;
+
+            // Middle Ring: 12 Accession Era Windows (Radius 124 to 178)
+            const eraRing = document.getElementById('astrolabeRingEra');
+            let eraHtml = `<circle cx="0" cy="0" r="124" fill="none" stroke="#d4af37" stroke-width="2.5"/>`;
+            ASTRO_ERAS.forEach((eraStr, i) => {
+                const angle = i * (360 / ASTRO_ERAS.length);
+                eraHtml += `
+                    <g transform="rotate(${angle})">
+                        <line x1="0" y1="-124" x2="0" y2="-178" stroke="#d4af37" stroke-opacity="0.3" transform="rotate(15)"/>
+                        <text x="0" y="-147" text-anchor="middle" fill="#f5ebd6" font-family="JetBrains Mono" font-size="10" font-weight="bold">${eraStr}</text>
+                    </g>
+                `;
+            });
+            eraRing.innerHTML = eraHtml;
+
+            // Inner Ring: 16 Relic Sigils (Radius 60 to 122)
+            const relicRing = document.getElementById('astrolabeRingRelic');
+            let relicHtml = '';
+            ASTRO_RELICS.forEach((rKey, i) => {
+                const angle = i * (360 / ASTRO_RELICS.length);
+                const rObj = RELIC_SVGS[rKey];
+                relicHtml += `
+                    <g transform="rotate(${angle})">
+                        <g transform="translate(-16, -112) scale(0.5)">
+                            ${rObj.svg}
+                        </g>
+                    </g>
+                `;
+            });
+            relicRing.innerHTML = relicHtml;
+        }
+
+        function initAstrolabeTarget() {
+            playSound('gear');
+            // Pick a monarch whose relic is in ASTRO_RELICS
+            const pool = MONARCHS.filter(m => ASTRO_RELICS.includes(m.relic));
+            state.astroTarget = pool[Math.floor(Math.random() * pool.length)];
+
+            // Scramble dials
+            state.astroHouseIdx = Math.floor(Math.random() * ASTRO_HOUSES.length);
+            state.astroEraIdx = Math.floor(Math.random() * ASTRO_ERAS.length);
+            state.astroRelicIdx = Math.floor(Math.random() * ASTRO_RELICS.length);
+
+            document.getElementById('astrolabeFeedback').textContent = "Rotate the 3 concentric brass dials to align this Monarch's House, Accession Era, and Relic at the 12 o'clock Zenith.";
+            renderAstrolabeAll();
+        }
+
+        function rotateAstrolabeDial(ring, delta) {
+            playSound('gear');
+            if (ring === 'house') {
+                state.astroHouseIdx = (state.astroHouseIdx + delta + ASTRO_HOUSES.length) % ASTRO_HOUSES.length;
+            } else if (ring === 'era') {
+                state.astroEraIdx = (state.astroEraIdx + delta + ASTRO_ERAS.length) % ASTRO_ERAS.length;
+            } else if (ring === 'relic') {
+                state.astroRelicIdx = (state.astroRelicIdx + delta + ASTRO_RELICS.length) % ASTRO_RELICS.length;
+            }
+            renderAstrolabeAll();
+        }
+
+        function renderAstrolabeAll() {
+            const houseDeg = -state.astroHouseIdx * (360 / ASTRO_HOUSES.length);
+            const eraDeg = -state.astroEraIdx * (360 / ASTRO_ERAS.length);
+            const relicDeg = -state.astroRelicIdx * (360 / ASTRO_RELICS.length);
+
+            document.getElementById('astrolabeRingHouse').style.transform = `rotate(${houseDeg}deg)`;
+            document.getElementById('astrolabeRingEra').style.transform = `rotate(${eraDeg}deg)`;
+            document.getElementById('astrolabeRingRelic').style.transform = `rotate(${relicDeg}deg)`;
+
+            const curHouse = ASTRO_HOUSES[state.astroHouseIdx];
+            const curEra = ASTRO_ERAS[state.astroEraIdx];
+            const curRelicKey = ASTRO_RELICS[state.astroRelicIdx];
+
+            document.getElementById('dialLabelHouse').textContent = HOUSES[curHouse].name;
+            document.getElementById('dialLabelEra').textContent = curEra;
+            document.getElementById('dialLabelRelic').textContent = RELIC_SVGS[curRelicKey].title;
+
+            // Update Target Monarch Banner & Center Hub
+            const t = state.astroTarget;
+            document.getElementById('astrolabeTargetBanner').innerHTML = `
+                <div class="w-14 h-14 rounded-2xl bg-obsidian border border-brass/50 flex items-center justify-center font-display text-lg text-brass-light shrink-0">
+                    ${t.roman}
+                </div>
+                <div>
+                    <span class="text-[10px] font-mono uppercase text-slate-400">TARGET SOVEREIGN TO ALIGN:</span>
+                    <h4 class="font-display text-xl text-parchment">${t.name}</h4>
+                    <p class="text-xs italic text-brass-light">"${t.epithet}"</p>
+                </div>
+            `;
+
+            document.getElementById('astrolabeCenterHub').innerHTML = `
+                <text x="0" y="-6" text-anchor="middle" fill="#fbe29d" font-family="Cinzel Decorative" font-size="13" font-weight="bold">${t.name}</text>
+                <text x="0" y="14" text-anchor="middle" fill="#94a3b8" font-family="JetBrains Mono" font-size="9">ARCANA ${t.roman}</text>
+            `;
+        }
+
+        function verifyAstrolabeAlignment() {
+            const t = state.astroTarget;
+            const correctHouse = t.house;
+            const correctEra = getMonarchAstrolabeEra(t);
+            const correctRelic = t.relic;
+
+            const chosenHouse = ASTRO_HOUSES[state.astroHouseIdx];
+            const chosenEra = ASTRO_ERAS[state.astroEraIdx];
+            const chosenRelic = ASTRO_RELICS[state.astroRelicIdx];
+
+            const houseMatch = chosenHouse === correctHouse;
+            const eraMatch = chosenEra === correctEra;
+            const relicMatch = chosenRelic === correctRelic;
+
+            const fb = document.getElementById('astrolabeFeedback');
+            if (houseMatch && eraMatch && relicMatch) {
+                playSound('unlock');
+                addRelicScore(300);
+                fb.innerHTML = `<span class="text-emerald-400 font-bold">🔓 ASTROLABE UNLOCKED! (+300 Relic Score) ${t.name} (${t.start}–${t.end}) aligned perfectly!</span>`;
+            } else {
+                playSound('error');
+                fb.innerHTML = `
+                    <span class="text-rose-400">Alignment Incomplete:</span>
+                    <span class="${houseMatch ? 'text-emerald-400' : 'text-rose-400'}">House ${houseMatch ? '✓' : '✗'}</span> •
+                    <span class="${eraMatch ? 'text-emerald-400' : 'text-rose-400'}">Era ${eraMatch ? '✓' : '✗'}</span> •
+                    <span class="${relicMatch ? 'text-emerald-400' : 'text-rose-400'}">Relic ${relicMatch ? '✓' : '✗'}</span>
+                `;
+            }
+        }
+
+
+        // =================================================================
+        // MODULE 3: STAINED-GLASS ABBEY WINDOW (SPATIAL MEMORY PALACE)
+        // =================================================================
+        function setWindowMode(mode) {
+            playSound('flip');
+            state.windowMode = mode;
+
+            const litBtn = document.getElementById('win-mode-lit');
+            const shatBtn = document.getElementById('win-mode-shattered');
+            const questBar = document.getElementById('windowQuestBar');
+
+            if (mode === 'illuminated') {
+                litBtn.className = "px-4 py-2 rounded-xl text-xs font-serif font-bold bg-brass text-velvet shadow";
+                shatBtn.className = "px-4 py-2 rounded-xl text-xs font-serif font-bold bg-velvet text-parchment border border-brass/40 hover:border-brass";
+                questBar.classList.add('hidden');
+                state.shatteredIds.clear();
+            } else {
+                shatBtn.className = "px-4 py-2 rounded-xl text-xs font-serif font-bold bg-brass text-velvet shadow";
+                litBtn.className = "px-4 py-2 rounded-xl text-xs font-serif font-bold bg-velvet text-parchment border border-brass/40 hover:border-brass";
+                questBar.classList.remove('hidden');
+
+                // Shatter 14 random panes across the Abbey Window
+                state.shatteredIds.clear();
+                const shuffled = [...MONARCHS].sort(() => Math.random() - 0.5).slice(0, 14);
+                shuffled.forEach(m => state.shatteredIds.add(m.id));
+                state.restoredCount = 0;
+                pickNextWindowQuest();
+            }
+            renderStainedGlassWindow();
+        }
+
+        function pickNextWindowQuest() {
+            const remaining = MONARCHS.filter(m => state.shatteredIds.has(m.id));
+            document.getElementById('windowRestoredCount').textContent = `${state.restoredCount} Restored`;
+
+            if (remaining.length === 0) {
+                state.currentWindowQuest = null;
+                document.getElementById('windowQuestTitle').textContent = "✨ Entire Abbey Window Restored to Full Glory!";
+                document.getElementById('windowQuestClue').textContent = "All shattered panes have been re-illuminated.";
+                return;
+            }
+
+            const nextTarget = remaining[Math.floor(Math.random() * remaining.length)];
+            state.currentWindowQuest = nextTarget;
+            const rel = RELIC_SVGS[nextTarget.relic];
+
+            document.getElementById('windowQuestSigil').innerHTML = `<svg viewBox="0 0 64 64" class="w-10 h-10">${rel.svg}</svg>`;
+            document.getElementById('windowQuestTitle').textContent = `Restore Niche: ${nextTarget.name} (${nextTarget.start}–${nextTarget.end})`;
+            document.getElementById('windowQuestClue').textContent = `Clue: "${nextTarget.epithet}" — ${nextTarget.symbolClue}`;
+        }
+
+        function renderStainedGlassWindow() {
+            const grid = document.getElementById('stainedGlassGrid');
+            const houseKeys = Object.keys(HOUSES);
+
+            grid.innerHTML = houseKeys.map(hKey => {
+                const h = HOUSES[hKey];
+                const houseMonarchs = MONARCHS.filter(m => m.house === hKey);
+
+                return `
+                    <!-- Gothic Lancet Column for House -->
+                    <div class="rounded-t-[70px] rounded-b-2xl bg-velvet border-2 border-brass/50 p-2.5 flex flex-col gap-2 shadow-2xl">
+                        <!-- Gothic Arch Apex Rose -->
+                        <div class="pt-4 pb-2 px-1 text-center border-b border-brass/30 rounded-t-[60px] bg-gradient-to-b ${h.glassBg}">
+                            <div class="font-display text-xs text-brass-light tracking-wider uppercase">${hKey}</div>
+                            <div class="font-mono text-[10px] text-parchment/80">${h.years}</div>
+                        </div>
+
+                        <!-- Individual Stained-Glass Monarch Panes -->
+                        <div class="space-y-2 flex-1 flex flex-col justify-between">
+                            ${houseMonarchs.map(m => {
+                                const isShattered = state.shatteredIds.has(m.id);
+                                const rel = RELIC_SVGS[m.relic];
+                                return `
+                                    <div onclick="clickWindowPane('${m.id}')"
+                                         class="stained-glass-pane ${isShattered ? 'shattered border-slate-700' : 'lit border-brass/60'} rounded-xl p-2 border bg-gradient-to-br ${h.glassBg} cursor-pointer flex items-center gap-2">
+                                        <div class="w-9 h-9 shrink-0 rounded-lg bg-black/50 border border-brass/40 flex items-center justify-center">
+                                            <svg viewBox="0 0 64 64" class="w-7 h-7">${rel.svg}</svg>
+                                        </div>
+                                        <div class="min-w-0 flex-1">
+                                            <div class="font-serif font-bold text-xs text-parchment truncate">
+                                                ${isShattered ? `Niche #${m.order} (Dimmed)` : m.name}
+                                            </div>
+                                            <div class="font-mono text-[10px] text-brass-light">
+                                                ${isShattered ? 'Click to Restore' : `${m.start}–${m.id === 'charles-3' ? 'Pres.' : m.end}`}
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            inspectWindowPane(MONARCHS[0].id);
+        }
+
+        function clickWindowPane(monarchId) {
+            if (state.windowMode === 'shattered' && state.currentWindowQuest) {
+                if (monarchId === state.currentWindowQuest.id) {
+                    playSound('unlock');
+                    state.shatteredIds.delete(monarchId);
+                    state.restoredCount++;
+                    addRelicScore(100);
+                    pickNextWindowQuest();
+                    renderStainedGlassWindow();
+                    inspectWindowPane(monarchId);
+                } else {
+                    playSound('error');
+                }
+                return;
+            }
+            playSound('click');
+            inspectWindowPane(monarchId);
+        }
+
+        function inspectWindowPane(monarchId) {
+            const m = MONARCHS.find(x => x.id === monarchId) || MONARCHS[0];
+            const rel = RELIC_SVGS[m.relic];
+            const inspector = document.getElementById('windowPaneInspector');
+
+            inspector.innerHTML = `
+                <div class="flex items-center gap-4">
+                    ${generateCoatOfArmsSVG(m, 95)}
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <span class="font-mono text-xs px-2 py-0.5 rounded bg-brass/20 text-brass-light border border-brass/40">Niche #${m.order}</span>
+                            <span class="font-mono text-xs text-amber-300">${m.start}–${m.id === 'charles-3' ? 'Present' : m.end}</span>
+                        </div>
+                        <h4 class="font-display text-xl text-parchment">${m.name} ("${m.epithet}")</h4>
+                        <p class="text-xs text-slate-300 max-w-2xl">${m.symbolClue}</p>
+                    </div>
+                </div>
+                <div class="text-right font-mono text-xs text-brass-light shrink-0">
+                    <span class="text-[10px] text-slate-400 block">STAINED GLASS REBUS</span>
+                    <span>${rel.title}</span>
+                </div>
+            `;
+        }
+
+
+        // =================================================================
+        // MODULE 4: THE ROYAL BLOODLINE TAPESTRY (ANIMATED SVG LINEAGE)
+        // =================================================================
+        const TAPESTRY_CHAPTERS = [
+            {
+                title: "Chapter I: The Norman Conquest & The Anarchy (1066–1154)",
+                nodes: [
+                    { id: "william-1", x: 140, y: 120 },
+                    { id: "william-2", x: 380, y: 70 },
+                    { id: "henry-1", x: 380, y: 220 },
+                    { id: "stephen", x: 650, y: 110 },
+                    { id: "henry-2", x: 860, y: 240 }
+                ],
+                edges: [
+                    { from: "william-1", to: "william-2", type: "parent", label: "3rd Son" },
+                    { from: "william-2", to: "henry-1", type: "sibling", label: "Brother (After Arrow)" },
+                    { from: "henry-1", to: "stephen", type: "usurp", label: "⚔️ Nephew Usurped Matilda" },
+                    { from: "stephen", to: "henry-2", type: "usurp", label: "Treaty: Matilda's Son" }
+                ]
+            },
+            {
+                title: "Chapter II: High Plantagenets (1154–1399)",
+                nodes: [
+                    { id: "henry-2", x: 100, y: 200 },
+                    { id: "richard-1", x: 250, y: 90 },
+                    { id: "john", x: 250, y: 310 },
+                    { id: "henry-3", x: 430, y: 310 },
+                    { id: "edward-1", x: 580, y: 200 },
+                    { id: "edward-2", x: 720, y: 90 },
+                    { id: "edward-3", x: 840, y: 220 },
+                    { id: "richard-2", x: 930, y: 360 }
+                ],
+                edges: [
+                    { from: "henry-2", to: "richard-1", type: "parent", label: "Son" },
+                    { from: "richard-1", to: "john", type: "sibling", label: "Younger Brother" },
+                    { from: "john", to: "henry-3", type: "parent", label: "9-yr Son" },
+                    { from: "henry-3", to: "edward-1", type: "parent", label: "Son" },
+                    { from: "edward-1", to: "edward-2", type: "parent", label: "Son" },
+                    { from: "edward-2", to: "edward-3", type: "parent", label: "Son (After Deposing)" },
+                    { from: "edward-3", to: "richard-2", type: "parent", label: "Grandson (Black Prince)" }
+                ]
+            },
+            {
+                title: "Chapter III: Wars of the Roses — Lancaster vs York (1399–1485)",
+                nodes: [
+                    { id: "richard-2", x: 100, y: 220 },
+                    { id: "henry-4", x: 260, y: 100 },
+                    { id: "henry-5", x: 420, y: 100 },
+                    { id: "henry-6", x: 580, y: 100 },
+                    { id: "edward-4", x: 580, y: 330 },
+                    { id: "edward-5", x: 750, y: 330 },
+                    { id: "richard-3", x: 890, y: 220 }
+                ],
+                edges: [
+                    { from: "richard-2", to: "henry-4", type: "usurp", label: "⚔️ Cousin Usurped (1399)" },
+                    { from: "henry-4", to: "henry-5", type: "parent", label: "Son" },
+                    { from: "henry-5", to: "henry-6", type: "parent", label: "Infant Son" },
+                    { from: "henry-6", to: "edward-4", type: "usurp", label: "⚔️ Yorkist Overthrow (1461)" },
+                    { from: "edward-4", to: "edward-5", type: "parent", label: "Boy Son (Tower)" },
+                    { from: "edward-5", to: "richard-3", type: "usurp", label: "⚔️ Uncle Seized Crown (1483)" }
+                ]
+            },
+            {
+                title: "Chapter IV: Tudors & Stuarts (1485–1714)",
+                nodes: [
+                    { id: "henry-7", x: 80, y: 110 },
+                    { id: "henry-8", x: 210, y: 110 },
+                    { id: "edward-6", x: 340, y: 60 },
+                    { id: "mary-1", x: 340, y: 200 },
+                    { id: "elizabeth-1", x: 470, y: 110 },
+                    { id: "james-1", x: 600, y: 260 },
+                    { id: "charles-1", x: 720, y: 120 },
+                    { id: "charles-2", x: 820, y: 260 },
+                    { id: "james-2", x: 820, y: 390 },
+                    { id: "william-mary", x: 930, y: 240 },
+                    { id: "anne", x: 930, y: 90 }
+                ],
+                edges: [
+                    { from: "henry-7", to: "henry-8", type: "parent", label: "Son" },
+                    { from: "henry-8", to: "edward-6", type: "parent", label: "Son" },
+                    { from: "edward-6", to: "mary-1", type: "sibling", label: "Half-Sister" },
+                    { from: "mary-1", to: "elizabeth-1", type: "sibling", label: "Half-Sister" },
+                    { from: "elizabeth-1", to: "james-1", type: "usurp", label: "Scottish Cousin (1603)" },
+                    { from: "james-1", to: "charles-1", type: "parent", label: "Son" },
+                    { from: "charles-1", to: "charles-2", type: "parent", label: "Restored 1660" },
+                    { from: "charles-2", to: "james-2", type: "sibling", label: "Brother" },
+                    { from: "james-2", to: "william-mary", type: "usurp", label: "⚔️ 1688 Revolution" },
+                    { from: "william-mary", to: "anne", type: "sibling", label: "Sister" }
+                ]
+            },
+            {
+                title: "Chapter V: Hanoverians & Windsors (1714–2026)",
+                nodes: [
+                    { id: "george-1", x: 80, y: 120 },
+                    { id: "george-2", x: 190, y: 260 },
+                    { id: "george-3", x: 300, y: 120 },
+                    { id: "george-4", x: 410, y: 70 },
+                    { id: "william-4", x: 410, y: 240 },
+                    { id: "victoria", x: 530, y: 340 },
+                    { id: "edward-7", x: 640, y: 200 },
+                    { id: "george-5", x: 740, y: 90 },
+                    { id: "edward-8", x: 840, y: 90 },
+                    { id: "george-6", x: 840, y: 260 },
+                    { id: "elizabeth-2", x: 930, y: 370 },
+                    { id: "charles-3", x: 940, y: 170 }
+                ],
+                edges: [
+                    { from: "george-1", to: "george-2", type: "parent", label: "Son" },
+                    { from: "george-2", to: "george-3", type: "parent", label: "Grandson" },
+                    { from: "george-3", to: "george-4", type: "parent", label: "Son" },
+                    { from: "george-4", to: "william-4", type: "sibling", label: "Brother" },
+                    { from: "william-4", to: "victoria", type: "usurp", label: "Niece" },
+                    { from: "victoria", to: "edward-7", type: "parent", label: "Son" },
+                    { from: "edward-7", to: "george-5", type: "parent", label: "Son" },
+                    { from: "george-5", to: "edward-8", type: "parent", label: "Son" },
+                    { from: "edward-8", to: "george-6", type: "sibling", label: "Abdicated → Brother" },
+                    { from: "george-6", to: "elizabeth-2", type: "parent", label: "Daughter" },
+                    { from: "elizabeth-2", to: "charles-3", type: "parent", label: "Son" }
+                ]
+            }
+        ];
+
+        function loadTapestryChapter(chapIdx) {
+            playSound('click');
+            state.tapestryChapter = chapIdx;
+            state.tapestryPathProgress = 0;
+
+            document.querySelectorAll('.tapestry-tab').forEach((btn, i) => {
+                btn.className = i === chapIdx
+                    ? "tapestry-tab px-3.5 py-2 rounded-xl text-xs font-serif font-bold bg-brass text-velvet"
+                    : "tapestry-tab px-3.5 py-2 rounded-xl text-xs font-serif font-bold bg-velvet text-slate-300 border border-brass/30";
+            });
+
+            renderTapestryGraph();
+        }
+
+        function toggleTapestryChallenge() {
+            playSound('flip');
+            state.tapestryChallengeActive = !state.tapestryChallengeActive;
+            state.tapestryPathProgress = 0;
+
+            const btn = document.getElementById('tapestryChallengeBtn');
+            const prompt = document.getElementById('tapestryStatusPrompt');
+            if (state.tapestryChallengeActive) {
+                btn.textContent = "👁️ Exit Challenge (Show All Names)";
+                btn.className = "px-4 py-2 rounded-xl text-xs font-mono font-bold bg-emerald-900 text-emerald-200 border border-emerald-400";
+                prompt.textContent = "TRACE THE CROWN: Click the nodes in exact chronological succession order!";
+            } else {
+                btn.textContent = "⚔️ Play 'Trace the Crown' Pathfinding";
+                btn.className = "px-4 py-2 rounded-xl text-xs font-mono font-bold bg-rose-950/80 text-rose-200 border border-rose-500/50";
+                prompt.textContent = "Click any Royal Node to inspect how the Crown passed";
+            }
+            renderTapestryGraph();
+        }
+
+        function renderTapestryGraph() {
+            const chapter = TAPESTRY_CHAPTERS[state.tapestryChapter];
+            const svg = document.getElementById('tapestrySvg');
+
+            // Build Edges
+            const edgesHtml = chapter.edges.map(edge => {
+                const n1 = chapter.nodes.find(n => n.id === edge.from);
+                const n2 = chapter.nodes.find(n => n.id === edge.to);
+                if (!n1 || !n2) return '';
+
+                let strokeColor = '#fbbf24'; // parent
+                if (edge.type === 'sibling') strokeColor = '#38bdf8';
+                if (edge.type === 'usurp') strokeColor = '#f43f5e';
+
+                const midX = (n1.x + n2.x) / 2;
+                const midY = (n1.y + n2.y) / 2;
+
+                return `
+                    <g>
+                        <line x1="${n1.x}" y1="${n1.y}" x2="${n2.x}" y2="${n2.y}" stroke="${strokeColor}" stroke-width="3" class="animated-thread"/>
+                        <rect x="${midX - 58}" y="${midY - 11}" width="116" height="20" rx="6" fill="#08060c" stroke="${strokeColor}" stroke-width="1"/>
+                        <text x="${midX}" y="${midY + 3}" text-anchor="middle" fill="#f5ebd6" font-family="JetBrains Mono" font-size="9">${edge.label}</text>
+                    </g>
+                `;
+            }).join('');
+
+            // Build Monarch Nodes
+            const nodesHtml = chapter.nodes.map((node, idx) => {
+                const m = MONARCHS.find(x => x.id === node.id);
+                const h = HOUSES[m.house];
+                const rel = RELIC_SVGS[m.relic];
+
+                const isRevealed = !state.tapestryChallengeActive || idx < state.tapestryPathProgress;
+
+                return `
+                    <g transform="translate(${node.x}, ${node.y})" onclick="clickTapestryNode('${m.id}', ${idx})" class="cursor-pointer">
+                        <circle cx="0" cy="0" r="38" fill="#0d0b14" stroke="${isRevealed ? '#fbe29d' : '#64748b'}" stroke-width="3.5"/>
+                        <circle cx="0" cy="0" r="32" fill="${h.primary}" fill-opacity="0.35"/>
+                        <g transform="translate(-20, -24) scale(0.62)">
+                            ${rel.svg}
+                        </g>
+                        <rect x="-54" y="28" width="108" height="32" rx="8" fill="#08060c" stroke="#d4af37" stroke-width="1.5"/>
+                        <text x="0" y="43" text-anchor="middle" fill="#fbe29d" font-family="Cinzel" font-size="11" font-weight="bold">
+                            ${isRevealed ? m.name : `Click Step #${idx + 1}?`}
+                        </text>
+                        <text x="0" y="55" text-anchor="middle" fill="#94a3b8" font-family="JetBrains Mono" font-size="9">
+                            ${isRevealed ? `${m.start}–${m.end}` : m.house}
+                        </text>
+                    </g>
+                `;
+            }).join('');
+
+            svg.innerHTML = edgesHtml + nodesHtml;
+            updateTapestryStoryBar(chapter.nodes[0].id);
+        }
+
+        function clickTapestryNode(monarchId, nodeIndex) {
+            const chapter = TAPESTRY_CHAPTERS[state.tapestryChapter];
+
+            if (state.tapestryChallengeActive) {
+                if (nodeIndex === state.tapestryPathProgress) {
+                    playSound('unlock');
+                    state.tapestryPathProgress++;
+                    addRelicScore(75);
+                    renderTapestryGraph();
+                    updateTapestryStoryBar(monarchId);
+
+                    if (state.tapestryPathProgress >= chapter.nodes.length) {
+                        document.getElementById('tapestryStatusPrompt').textContent = "👑 CHAPTER BLOODLINE COMPLETE! (+Relic Bonus)";
+                    }
+                } else {
+                    playSound('error');
+                    document.getElementById('tapestryStatusPrompt').textContent = `✗ Wrong branch! Find Ruler #${state.tapestryPathProgress + 1} in this chapter's sequence.`;
+                }
+                return;
+            }
+
+            playSound('click');
+            updateTapestryStoryBar(monarchId);
+        }
+
+        function updateTapestryStoryBar(monarchId) {
+            const m = MONARCHS.find(x => x.id === monarchId) || MONARCHS[0];
+            const bar = document.getElementById('tapestryStoryBar');
+            bar.innerHTML = `
+                <div class="flex items-center gap-4">
+                    <div class="px-3 py-2 rounded-xl bg-velvet border border-brass/50 font-display text-lg text-brass-light">
+                        #${m.order}
+                    </div>
+                    <div>
+                        <h4 class="font-display text-lg text-parchment">${m.name} ("${m.epithet}") • <span class="font-mono text-sm text-brass-light">${m.start}–${m.end}</span></h4>
+                        <p class="text-xs text-slate-300"><strong class="text-amber-300">How the Crown Passed:</strong> ${m.relation} — ${m.symbolClue}</p>
+                    </div>
+                </div>
+                <div class="font-mono text-xs text-brass-light shrink-0">
+                    House of ${m.house}
+                </div>
+            `;
+        }
+
+
+        // =================================================================
+        // AMBIENT GOLD DUST PARTICLE ENGINE (HTML5 CANVAS)
+        // =================================================================
+        function initAmbientCanvas() {
+            const canvas = document.getElementById('ambientCanvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            for (let i = 0; i < 42; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: Math.random() * 1.8 + 0.5,
+                    vy: -(Math.random() * 0.25 + 0.08),
+                    vx: (Math.random() - 0.5) * 0.2,
+                    alpha: Math.random() * 0.45 + 0.1
+                });
+            }
+
+            function animateParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    if (p.y < 0) p.y = canvas.height;
+                    if (p.x < 0) p.x = canvas.width;
+                    if (p.x > canvas.width) p.x = 0;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(251, 226, 157, ${p.alpha})`;
+                    ctx.fill();
+                });
+                requestAnimationFrame(animateParticles);
+            }
+            animateParticles();
+        }
+
+        // Keyboard shortcuts for Tarot Sanctum
+        window.addEventListener('keydown', (e) => {
+            if (state.activeArtefact === 'tarot' && state.tarotSubMode === 'sanctum') {
+                if (e.code === 'ArrowRight') stepSanctumCard(1);
+                if (e.code === 'ArrowLeft') stepSanctumCard(-1);
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    flipSanctumCard();
+                }
+            }
+        });
+
+        // Boot Cabinet on Window Load
+        window.onload = function () {
+            initAmbientCanvas();
+            renderSanctumView();
+            buildAstrolabeGeometry();
+            initAstrolabeTarget();
+            renderStainedGlassWindow();
+            loadTapestryChapter(0);
+        };
+    </script>
+</body>
+</html>
