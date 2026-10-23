@@ -191,6 +191,20 @@ under the title (which needs every item to have an icon or picture) is dropped. 
 are names from [lucide.dev/icons](https://lucide.dev/icons), which `build.py` fetches and
 vendors into `icons/`. Pick icons that cue the *meaning*, and don't reuse one across items.
 
+### Extras: Sam's own tools beside a topic
+
+`"extras": [{ "title", "desc", "href": "<folder>/index.html", "source": "<file>.html" }]` adds
+a row of link cards under the topic's title. With a `source`, `build.py` takes the hand-made page
+from `tools/<file>.html`, adds the password gate and a slim "← <topic>" strip at the top of
+`<body>`, and writes it to `compendium/<slug>/<folder>/index.html`. These pages are Sam's and keep
+their own look; don't restyle them or change their content without asking. Edit the copy in
+`tools/` and rebuild, never the built page. (Without a `source`, `href` is a plain link.)
+
+If a tool loads the Tailwind play CDN (`cdn.tailwindcss.com`), the build compiles its classes
+(with the page's own `tailwind.config`) into real CSS and inlines that instead, since the CDN is
+for development only. The CSS is cached as `tools/<name>.css` and recompiled, which needs
+npm, whenever the page changes. Commit the `.css` alongside the page.
+
 ## Build, check, share
 
 ```bash

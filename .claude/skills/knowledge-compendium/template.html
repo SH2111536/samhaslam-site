@@ -154,6 +154,25 @@
     margin-top: 0.75rem;
   }
 
+  .extras { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 0.75rem; margin-top: 0.5rem; }
+  .extra {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: background var(--duration-base) var(--ease-standard), border-color var(--duration-base) var(--ease-standard);
+  }
+  .extra:hover { background: var(--bg-hover); border-color: var(--accent-700); }
+  .extra-text { display: flex; flex-direction: column; gap: 0.2rem; flex: 1; min-width: 0; }
+  .extra-title { font-family: var(--font-display); font-style: italic; font-size: 1.125rem; line-height: 1.2; }
+  .extra-desc { font-size: 0.8125rem; color: var(--text-muted); }
+  .extra svg.i { width: 16px; height: 16px; color: var(--text-muted); flex-shrink: 0; }
+  .extra:hover svg.i { color: var(--accent-300); }
+
   .stat { display: flex; flex-direction: column; gap: 0.25rem; }
   .stat-value {
     font-family: var(--font-display);
@@ -905,6 +924,7 @@
     <h1 id="title"></h1>
     <p class="lede" id="lede"></p>
     <div class="stats" id="stats"></div>
+    <nav class="extras" id="extras" aria-label="More for this topic" hidden></nav>
   </header>
 
   <section class="map-wrap" id="map-wrap" aria-label="Map" hidden>
@@ -2075,6 +2095,12 @@
   $("title").textContent = DATA.title;
   $("lede").textContent = DATA.lede || "";
   $("footer").textContent = DATA.footer || "";
+  if (DATA.extras) {
+    $("extras").innerHTML = DATA.extras.map((x) =>
+      `<a class="extra" href="${esc(x.href)}"><span class="extra-text"><span class="extra-title">${esc(x.title)}</span>` +
+      `${x.desc ? `<span class="extra-desc">${esc(x.desc)}</span>` : ""}</span>${icon("arrow-right")}</a>`).join("");
+    $("extras").hidden = false;
+  }
   renderRhyme();
   if (MAP) {
     $("map").innerHTML = mapSVG(null, true);
