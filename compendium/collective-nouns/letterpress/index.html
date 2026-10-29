@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  if (sessionStorage.getItem("sh-authed") !== "1") {
+    window.location.href = "../../../index.html";
+  }
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Letterpress</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --wood: #5a3a22;
+    --wood-dark: #3b2414;
+    --brass: #c99a3b;
+    --paper: #f3e9d2;
+    --ink: #1d1712;
+    --red: #a3271f;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body {
+    margin: 0; min-height: 100vh; color: var(--paper);
+    font-family: "IM Fell English", Georgia, serif;
+    background:
+      repeating-linear-gradient(90deg, #ffffff06 0 2px, transparent 2px 9px),
+      repeating-linear-gradient(0deg, #00000014 0 1px, transparent 1px 23px),
+      linear-gradient(180deg, var(--wood), var(--wood-dark));
+  }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 22px 16px 56px; }
+  header.top { text-align: center; margin-bottom: 18px; }
+  header.top .est { font-family: "IM Fell English SC", serif; letter-spacing: 4px; color: var(--brass); font-size: 13px; }
+  header.top h1 { font-family: "Abril Fatface", serif; font-weight: 400; font-size: clamp(34px, 8vw, 62px); margin: 2px 0 0; color: var(--paper); text-shadow: 0 2px 0 #0006; letter-spacing: 1px; }
+  header.top p { font-style: italic; margin: 4px 0 0; color: #f3e9d2bb; }
+  .rule { height: 0; border-top: 2px solid var(--brass); border-bottom: 1px solid var(--brass); width: min(420px, 80%); margin: 12px auto; padding-top: 3px; }
+
+  .controls { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 18px; }
+  .plate {
+    font: 15px "IM Fell English SC", serif; letter-spacing: 1px; color: var(--ink); cursor: pointer;
+    background: linear-gradient(180deg, #e2bb63, var(--brass) 55%, #9c7425); border: 1px solid #6b4f17;
+    border-radius: 4px; padding: 7px 14px; box-shadow: inset 0 1px 0 #fff6, 0 2px 0 #0007;
+  }
+  .plate[aria-pressed="true"] { background: var(--paper); }
+  .plate:disabled { opacity: 0.5; cursor: default; }
+  select.plate { appearance: none; padding-right: 28px; background-image: linear-gradient(45deg, transparent 50%, var(--ink) 50%), linear-gradient(135deg, var(--ink) 50%, transparent 50%), linear-gradient(180deg, #e2bb63, var(--brass) 55%, #9c7425); background-position: calc(100% - 15px) 55%, calc(100% - 10px) 55%, 0 0; background-size: 5px 5px, 5px 5px, 100% 100%; background-repeat: no-repeat; }
+
+  /* the sheet on the press */
+  .sheet {
+    background: var(--paper); color: var(--ink); border-radius: 2px; position: relative;
+    box-shadow: 0 20px 40px -20px #000c, 0 0 0 1px #0002;
+    padding: clamp(20px, 5vw, 44px) clamp(16px, 4vw, 40px); text-align: center;
+    background-image: radial-gradient(circle at 20% 30%, #0000000a, transparent 40%), radial-gradient(circle at 80% 80%, #0000000d, transparent 45%);
+  }
+  .sheet .count { font-family: "IM Fell English SC", serif; letter-spacing: 3px; font-size: 13px; color: #1d1712aa; }
+  .phrase { font-family: "Abril Fatface", serif; font-size: clamp(26px, 6vw, 48px); line-height: 1.2; margin: 14px 0 8px; overflow-wrap: anywhere; }
+  .phrase .slot { display: inline-flex; gap: 3px; vertical-align: middle; flex-wrap: wrap; justify-content: center; }
+  .phrase .slot i { display: inline-grid; place-items: center; width: 0.82em; height: 1.05em; border-bottom: 3px solid var(--ink); font-style: normal; }
+  .phrase .slot i.filled { color: var(--ink); }
+  .phrase .printed-word { color: var(--red); letter-spacing: 0.04em; animation: ink 0.5s ease; }
+  @keyframes ink { from { opacity: 0; filter: blur(3px); transform: scale(1.06); } }
+  .phrase small { display: block; font-family: "IM Fell English", serif; font-style: italic; font-size: 0.42em; color: #1d1712aa; margin-top: 4px; }
+  .verdict { min-height: 54px; font-style: italic; font-size: 18px; line-height: 1.5; margin-top: 10px; }
+  .verdict b { font-style: normal; font-family: "IM Fell English SC", serif; letter-spacing: 1px; }
+  .flourish { font-size: 22px; color: var(--red); letter-spacing: 8px; }
+
+  /* the type case */
+  .case {
+    margin-top: 18px; background: linear-gradient(180deg, #7a5333, #5c3c22); border: 6px solid #3a2414; border-radius: 6px;
+    padding: 12px; display: grid; grid-template-columns: repeat(auto-fill, minmax(54px, 1fr)); gap: 8px;
+    box-shadow: inset 0 3px 10px #0008;
+  }
+  .sort {
+    all: unset; cursor: pointer; aspect-ratio: 1; border-radius: 5px; display: grid; place-items: center;
+    font-family: "Abril Fatface", serif; font-size: 30px; color: #2a1a0c;
+    background: linear-gradient(160deg, #e9cf9f, #cfa96a 60%, #b98f4f);
+    box-shadow: inset 0 -4px 0 #8a6332, inset 0 1px 0 #fff8, 0 3px 4px #0008;
+    transition: transform 0.08s;
+  }
+  .sort:hover { transform: translateY(-2px); }
+  .sort:active { transform: translateY(2px); }
+  .sort.used { visibility: hidden; }
+  .bench { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 14px; }
+
+  /* proofs */
+  .proofs { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+  .proof { background: var(--paper); color: var(--ink); padding: 18px 14px; text-align: center; box-shadow: 0 10px 20px -12px #000c; transform: rotate(var(--r, 0deg)); }
+  .proof .a { font-family: "IM Fell English SC", serif; letter-spacing: 3px; font-size: 13px; }
+  .proof .n { font-family: "Abril Fatface", serif; font-size: 32px; color: var(--red); line-height: 1.1; overflow-wrap: anywhere; }
+  .proof .o { font-style: italic; font-size: 17px; }
+  .proof.blank { opacity: 0.25; }
+  .proof.blank .n { color: var(--ink); }
+  .proofs-head { text-align: center; margin-bottom: 14px; font-style: italic; }
+
+  @media (max-width: 560px) {
+    .case { grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); }
+    .sort { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div style="position:relative;z-index:60;padding:10px 16px;background:#0b0d12;border-bottom:1px solid rgba(255,255,255,0.08)"><a href="../index.html" style="display:inline-flex;align-items:center;gap:6px;color:#aab0bd;font:500 13px/1.2 system-ui,-apple-system,'Segoe UI',sans-serif;text-decoration:none">&larr; Collective nouns</a></div>
+<div class="wrap">
+  <header class="top">
+    <div class="est">Est. for Holly</div>
+    <h1>The Letterpress</h1>
+    <div class="rule"></div>
+    <p>Set the right word in type, and pull the press.</p>
+  </header>
+
+  <div class="controls">
+    <button class="plate" data-mode="press" aria-pressed="true">The press</button>
+    <button class="plate" data-mode="proofs" aria-pressed="false">Book of proofs</button>
+    <select class="plate" id="group" aria-label="Which collective nouns"></select>
+  </div>
+
+  <section id="mode-press">
+    <div class="sheet">
+      <div class="count" id="count"></div>
+      <div class="phrase" id="phrase"></div>
+      <div class="verdict" id="verdict"></div>
+    </div>
+    <div class="case" id="case" aria-label="Type case"></div>
+    <div class="bench">
+      <button class="plate" id="undo">Take out a letter</button>
+      <button class="plate" id="hint">Hint</button>
+      <button class="plate" id="pull">Pull the press</button>
+      <button class="plate" id="skip">Skip</button>
+    </div>
+  </section>
+
+  <section id="mode-proofs" hidden>
+    <p class="proofs-head" id="proofs-head"></p>
+    <div class="proofs" id="proofs"></div>
+  </section>
+</div>
+
+<script>
+  const TOPIC = {  "slug": "collective-nouns",  "title": "Collective nouns.",  "eyebrow": "Compendium · Holly",  "lede": "A murder of crows, a parliament of owls, a crash of rhinos: the names for groups of animals, and the everyday ones that trip people up.",  "noun": {   "one": "group",   "many": "groups"  },  "numerals": "none",  "card": {   "tag": "Holly · Words",   "title": "Collective nouns",   "desc": "A murder of crows, a shiver of sharks, a business of ferrets: the names for groups of animals.",   "icon": "bird",   "order": 14  },  "extras": [   {    "title": "The Letterpress",    "desc": "A Victorian printer's workshop. Pick the right type from the case and set each collective noun on the press.",    "href": "letterpress/index.html",    "source": "collective-letterpress.html"   }  ],  "fields": [   {    "key": "animals",    "label": "Animals",    "plural": "animals",    "role": "title",    "typeable": true   },   {    "key": "noun",    "label": "A group is a…",    "plural": "collective nouns",    "role": "subtitle",    "typeable": true   },   {    "key": "also",    "label": "Also",    "short": "Also",    "role": "meta"   }  ],  "hideable": [   "animals",   "noun"  ],  "questions": [   {    "from": "animals",    "to": "noun",    "ask": "What's a group of these called?"   },   {    "from": "noun",    "to": "animals",    "ask": "A group of what?"   }  ],  "match": [   {    "left": "animals",    "right": "noun"   }  ],  "groups": [   {    "key": "birds",    "label": "Birds",    "short": "Birds",    "note": "Murders, parliaments and murmurations."   },   {    "key": "land",    "label": "Land mammals",    "short": "Land mammals",    "note": "From a crash of rhinos to a grumble of pugs."   },   {    "key": "water",    "label": "In the sea",    "short": "In the sea",    "note": "A shiver, a smack and a fever."   },   {    "key": "reptiles",    "label": "Frogs and reptiles",    "short": "Frogs and reptiles",    "note": "An army, a knot, a bask and a bale."   },   {    "key": "crawlies",    "label": "Insects and spiders",    "short": "Insects and spiders",    "note": "Including the kaleidoscope."   },   {    "key": "everyday",    "label": "Pack, pride or pod?",    "short": "Pack, pride or pod?",    "note": "The everyday words that are easy to mix up."   }  ],  "items": [   {    "animals": "Crows",    "noun": "Murder",    "also": null,    "group": "birds",    "hook": "Crows gathered on old battlefields and gallows, so folklore made them a murder."   },   {    "animals": "Owls",    "noun": "Parliament",    "also": null,    "group": "birds",    "hook": "The wise owl: a parliament of wise heads (in theory)."   },   {    "animals": "Starlings",    "noun": "Murmuration",    "also": null,    "group": "birds",    "hook": "Named for the murmuring rush of thousands of wings as the flock swirls at dusk."   },   {    "animals": "Ravens",    "noun": "Unkindness",    "also": "Conspiracy",    "group": "birds",    "accept": {     "noun": [      "Conspiracy"     ]    },    "hook": "Folklore said ravens pushed their young out of the nest: unkind."   },   {    "animals": "Larks",    "noun": "Exaltation",    "also": null,    "group": "birds",    "hook": "Larks sing as they rise high into the sky: exalted, lifted up."   },   {    "animals": "Geese (on the ground)",    "noun": "Gaggle",    "also": null,    "group": "birds",    "hook": "Gaggle sounds like their honking chatter."   },   {    "animals": "Geese (in flight)",    "noun": "Skein",    "also": null,    "group": "birds",    "hook": "A skein is a loose coil of wool: think of the long V of geese threaded across the sky."   },   {    "animals": "Flamingos",    "noun": "Flamboyance",    "also": null,    "group": "birds",    "hook": "Pink, showy and standing on one leg: what else could it be?"   },   {    "animals": "Parrots",    "noun": "Pandemonium",    "also": null,    "group": "birds",    "hook": "The racket of a flock of parrots: Pandemonium was Milton's capital of Hell."   },   {    "animals": "Penguins (on land)",    "noun": "Waddle",    "also": null,    "group": "birds",    "hook": "Exactly how they walk."   },   {    "animals": "Penguins (in water)",    "noun": "Raft",    "also": null,    "group": "birds",    "hook": "Bobbing together on the sea like a raft."   },   {    "animals": "Peafowl",    "noun": "Ostentation",    "also": null,    "group": "birds",    "hook": "The peacock shows off its tail: ostentatious."   },   {    "animals": "Rhinoceroses",    "noun": "Crash",    "also": null,    "group": "land",    "accept": {     "animals": [      "Rhinos"     ]    },    "hook": "Horn down and charging: a crash of rhinos."   },   {    "animals": "Giraffes",    "noun": "Tower",    "also": null,    "group": "land",    "hook": "Tall and standing still on the savanna, like a tower."   },   {    "animals": "Ferrets",    "noun": "Business",    "also": null,    "group": "land",    "hook": "From 'busyness': ferrets never stop darting about."   },   {    "animals": "Porcupines",    "noun": "Prickle",    "also": null,    "group": "land"   },   {    "animals": "Bears",    "noun": "Sleuth",    "also": null,    "group": "land",    "hook": "A sleuth is a tracker, and a bear can smell food from miles away. (Old books also have a sloth of bears.)"   },   {    "animals": "Foxes",    "noun": "Skulk",    "also": null,    "group": "land",    "hook": "Foxes skulk: they sneak about, out of sight."   },   {    "animals": "Cheetahs",    "noun": "Coalition",    "also": null,    "group": "land",    "hook": "Male cheetahs, often brothers, team up to hunt and hold territory: a coalition."   },   {    "animals": "Hyenas",    "noun": "Cackle",    "also": null,    "group": "land",    "hook": "The 'laughing' hyena's cackling call."   },   {    "animals": "Apes",    "noun": "Shrewdness",    "also": null,    "group": "land",    "hook": "Apes are clever, shrewd, problem-solvers."   },   {    "animals": "Lemurs",    "noun": "Conspiracy",    "also": null,    "group": "land",    "hook": "Wide-eyed and huddled together, plotting. (Ravens can be a conspiracy too.)"   },   {    "animals": "Kangaroos",    "noun": "Mob",    "also": null,    "group": "land",    "hook": "Australian slang: a mob is just a crowd."   },   {    "animals": "Pugs",    "noun": "Grumble",    "also": null,    "group": "land",    "hook": "All that snorting and snuffling."   },   {    "animals": "Sharks",    "noun": "Shiver",    "also": null,    "group": "water",    "hook": "What you'd do if you saw one."   },   {    "animals": "Jellyfish",    "noun": "Smack",    "also": null,    "group": "water",    "hook": "What a jellyfish sting feels like."   },   {    "animals": "Stingrays",    "noun": "Fever",    "also": null,    "group": "water",    "hook": "A sting can bring on a fever."   },   {    "animals": "Frogs",    "noun": "Army",    "also": null,    "group": "reptiles",    "hook": "Frogs and caterpillars are both an army."   },   {    "animals": "Toads",    "noun": "Knot",    "also": null,    "group": "reptiles",    "hook": "Toads gather in tangled knots to mate."   },   {    "animals": "Crocodiles",    "noun": "Bask",    "also": null,    "group": "reptiles",    "hook": "Crocodiles bask in the sun on the riverbank."   },   {    "animals": "Turtles",    "noun": "Bale",    "also": null,    "group": "reptiles"   },   {    "animals": "Caterpillars",    "noun": "Army",    "also": null,    "group": "crawlies",    "hook": "Marching in line, munching everything in their path."   },   {    "animals": "Butterflies",    "noun": "Kaleidoscope",    "also": null,    "group": "crawlies",    "hook": "All those colours, shifting as they flutter."   },   {    "animals": "Locusts",    "noun": "Plague",    "also": null,    "group": "crawlies",    "hook": "One of the ten plagues of Egypt."   },   {    "animals": "Spiders",    "noun": "Cluster",    "also": "Clutter",    "group": "crawlies",    "accept": {     "noun": [      "Clutter"     ]    }   },   {    "animals": "Wolves",    "noun": "Pack",    "also": null,    "group": "everyday",    "hook": "Pack for hunters that run together: wolves and dogs."   },   {    "animals": "Dogs",    "noun": "Pack",    "also": null,    "group": "everyday"   },   {    "animals": "Lions",    "noun": "Pride",    "also": null,    "group": "everyday",    "hook": "Pride for the proud king of beasts: lions only."   },   {    "animals": "Whales",    "noun": "Pod",    "also": null,    "group": "everyday",    "hook": "Pod for the sea: whales, dolphins and seals."   },   {    "animals": "Dolphins",    "noun": "Pod",    "also": null,    "group": "everyday"   },   {    "animals": "Seals",    "noun": "Pod",    "also": null,    "group": "everyday"   },   {    "animals": "Cattle and other grazers",    "noun": "Herd",    "also": null,    "group": "everyday",    "accept": {     "animals": [      "Cows",      "Cattle",      "Grazers"     ]    },    "hook": "Herd for grazers; flock for birds and sheep."   },   {    "animals": "Birds",    "noun": "Flock",    "also": null,    "group": "everyday"   },   {    "animals": "Sheep",    "noun": "Flock",    "also": null,    "group": "everyday"   },   {    "animals": "Insects on the move",    "noun": "Swarm",    "also": null,    "group": "everyday",    "accept": {     "animals": [      "Bees"     ]    },    "hook": "Swarm when insects are on the move; colony when they've settled down."   },   {    "animals": "Insects settled in a nest",    "noun": "Colony",    "also": null,    "group": "everyday",    "accept": {     "animals": [      "Ants"     ]    }   }  ] };
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const shuffle = (a) => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const KEY = "letterpress:proofs";
+  let proofs = new Set();
+  try { proofs = new Set(JSON.parse(localStorage.getItem(KEY) || "[]")); } catch (e) {}
+  const saveProofs = () => { try { localStorage.setItem(KEY, JSON.stringify([...proofs])); } catch (e) {} };
+
+  const lowerFirst = (s) => s.charAt(0).toLowerCase() + s.slice(1);
+  const article = (w) => /^[aeiou]/i.test(w) ? "An" : "A";
+
+  $("group").innerHTML = `<option value="all">Every noun in the case</option>` +
+    TOPIC.groups.map((g) => `<option value="${g.key}">${esc(g.label)}</option>`).join("");
+
+  const R = { list: [], i: 0, set: [], tiles: [], done: false, score: 0, hints: 0 };
+  function newRound() {
+    const g = $("group").value;
+    R.list = shuffle(TOPIC.items.filter((it) => g === "all" || it.group === g)).slice(0, 10);
+    R.i = 0; R.score = 0;
+    showItem();
+  }
+  function showItem() {
+    const it = R.list[R.i];
+    const word = it.noun.toUpperCase();
+    const pool = "ABCDEFGHIKLMNOPRSTUW".split("").filter((c) => !word.includes(c));
+    const decoys = shuffle(pool).slice(0, Math.max(3, Math.min(5, 12 - word.length)));
+    R.tiles = shuffle([...word.split(""), ...decoys]).map((ch, k) => ({ ch, k, used: false }));
+    R.set = []; R.done = false; R.hints = 0;
+    renderPress();
+    $("verdict").innerHTML = "";
+  }
+  function renderPress(printed = false) {
+    const it = R.list[R.i];
+    const word = it.noun.toUpperCase();
+    $("count").textContent = `Sheet ${R.i + 1} of ${R.list.length}  ·  ${R.score} printed`;
+    const slots = word.split("").map((_, k) => {
+      const t = R.set[k];
+      return `<i class="${t ? "filled" : ""}">${t ? esc(t.ch) : "&nbsp;"}</i>`;
+    }).join("");
+    const set = printed ? `<span class="printed-word">${esc(it.noun.toUpperCase())}</span>` : `<span class="slot">${slots}</span>`;
+    $("phrase").innerHTML = `${printed ? article(it.noun) : "A"} ${set} of ${esc(lowerFirst(it.animals))}`;
+    $("case").innerHTML = R.tiles.map((t) => `<button class="sort ${t.used ? "used" : ""}" data-k="${t.k}" aria-label="Letter ${t.ch}">${t.ch}</button>`).join("");
+    $("pull").disabled = R.done || R.set.length !== word.length;
+    $("undo").disabled = R.done || !R.set.length;
+    $("hint").disabled = R.done;
+    $("skip").textContent = R.done ? (R.i === R.list.length - 1 ? "New round" : "Next sheet") : "Skip";
+  }
+  $("case").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-k]");
+    if (!b || R.done) return;
+    const word = R.list[R.i].noun.toUpperCase();
+    const t = R.tiles.find((x) => x.k === Number(b.dataset.k));
+    if (t.used || R.set.length >= word.length) return;
+    t.used = true; R.set.push(t);
+    renderPress();
+  });
+  $("undo").addEventListener("click", () => {
+    const t = R.set.pop(); if (t) t.used = false; renderPress();
+  });
+  $("hint").addEventListener("click", () => {
+    // set the next correct letter for you
+    const word = R.list[R.i].noun.toUpperCase();
+    while (R.set.length && R.set.some((t, k) => t.ch !== word[k])) { R.set.pop().used = false; }
+    const k = R.set.length;
+    if (k >= word.length) return;
+    const t = R.tiles.find((x) => !x.used && x.ch === word[k]);
+    t.used = true; R.set.push(t); R.hints++;
+    renderPress();
+  });
+  $("pull").addEventListener("click", () => {
+    const it = R.list[R.i];
+    const word = it.noun.toUpperCase();
+    const guess = R.set.map((t) => t.ch).join("");
+    if (guess === word) {
+      R.done = true;
+      if (!R.hints) { R.score++; proofs.add(it.animals); saveProofs(); }
+      renderPress(true);
+      const extra = it.also ? ` Also: a ${esc(it.also.toLowerCase())}.` : "";
+      $("verdict").innerHTML = `<div class="flourish">❦ ❦ ❦</div><b>${R.hints ? "Printed, with help." : "A clean impression!"}</b> ${it.hook ? esc(it.hook) : ""}${extra}`;
+    } else {
+      $("verdict").innerHTML = `<b>Smudged!</b> That's not it: take out a letter and try again, or ask for a hint.`;
+    }
+  });
+  $("skip").addEventListener("click", () => {
+    if (!R.done) {
+      R.done = true; renderPress(true);
+      const it = R.list[R.i];
+      $("verdict").innerHTML = `The compositor sets it for you: <b>${esc(article(it.noun).toLowerCase())} ${esc(it.noun.toLowerCase())}</b>. ${it.hook ? esc(it.hook) : ""}`;
+      return;
+    }
+    if (R.i === R.list.length - 1) newRound(); else { R.i++; showItem(); }
+  });
+  $("group").addEventListener("change", newRound);
+
+  function renderProofs() {
+    $("proofs-head").textContent = `${proofs.size} of ${TOPIC.items.length} printed cleanly (no hints). The blanks are still to print.`;
+    $("proofs").innerHTML = TOPIC.items.map((it, i) => {
+      const got = proofs.has(it.animals);
+      return `<div class="proof ${got ? "" : "blank"}" style="--r:${((i * 37) % 7) - 3}deg">
+        <div class="a">${got ? article(it.noun) : "A"}</div>
+        <div class="n">${got ? esc(it.noun) : "· · ·"}</div>
+        <div class="o">of ${esc(lowerFirst(it.animals))}</div></div>`;
+    }).join("");
+  }
+
+  document.querySelector(".controls").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-mode]");
+    if (!b) return;
+    document.querySelectorAll("[data-mode]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    $("mode-press").hidden = b.dataset.mode !== "press";
+    $("mode-proofs").hidden = b.dataset.mode !== "proofs";
+    $("group").hidden = b.dataset.mode !== "press";
+    if (b.dataset.mode === "proofs") renderProofs();
+  });
+
+  newRound();
+</script>
+</body>
+</html>

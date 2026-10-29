@@ -1,0 +1,297 @@
+{
+  "slug": "rivers",
+  "title": "Famous rivers.",
+  "eyebrow": "Compendium · Holly",
+  "lede": "The record-breakers, the rivers of the world's capitals and Britain's cities, and a few from history and myth, down to the five rivers of the Greek underworld.",
+  "noun": {
+    "one": "river",
+    "many": "rivers"
+  },
+  "numerals": "none",
+  "card": {
+    "tag": "Holly · Geography",
+    "title": "Famous rivers",
+    "desc": "The longest, the deepest, the rivers of the great cities, and the five rivers of the underworld.",
+    "icon": "waves",
+    "order": 16
+  },
+  "extras": [
+    {
+      "title": "The Grand River Cruise",
+      "desc": "A vintage travel-poster voyage. Sail from city to city, collecting a poster for every river you name.",
+      "href": "river-cruise/index.html",
+      "source": "rivers-cruise.html"
+    }
+  ],
+  "fields": [
+    {
+      "key": "river",
+      "label": "River",
+      "plural": "rivers",
+      "role": "title",
+      "typeable": true
+    },
+    {
+      "key": "known",
+      "label": "Known for",
+      "plural": "what they're known for",
+      "role": "subtitle"
+    },
+    {
+      "key": "length",
+      "label": "Detail",
+      "short": "Detail",
+      "role": "meta"
+    }
+  ],
+  "hideable": [
+    "river",
+    "known"
+  ],
+  "questions": [
+    {
+      "from": "known",
+      "to": "river",
+      "ask": "Which river?"
+    },
+    {
+      "from": "river",
+      "to": "known",
+      "ask": "What's it known for?"
+    }
+  ],
+  "match": [
+    {
+      "left": "river",
+      "right": "known"
+    }
+  ],
+  "groups": [
+    {
+      "key": "world",
+      "label": "World records",
+      "short": "World records",
+      "note": "Longest, largest, deepest, and the one that crosses the most borders."
+    },
+    {
+      "key": "capitals",
+      "label": "Capital cities",
+      "short": "Capital cities",
+      "note": "Which river runs through which capital."
+    },
+    {
+      "key": "uk",
+      "label": "UK and Ireland",
+      "short": "UK and Ireland",
+      "note": "The longest in each country, and the rivers of three great cities."
+    },
+    {
+      "key": "history",
+      "label": "Odd ones and history",
+      "short": "Odd ones and history",
+      "note": "A river running backwards, a canyon, Caesar, and Mesopotamia."
+    },
+    {
+      "key": "myth",
+      "label": "The Greek underworld",
+      "short": "The Greek underworld",
+      "note": "Five rivers of Hades."
+    }
+  ],
+  "items": [
+    {
+      "river": "Nile",
+      "known": "The world's longest river; flows through Cairo and Khartoum",
+      "length": "About 6,650 km",
+      "group": "world",
+      "hook": "The usual answer, though some surveys measure the Amazon as longer. The Blue and White Niles meet at Khartoum."
+    },
+    {
+      "river": "Amazon",
+      "known": "The largest river by volume",
+      "length": "About a fifth of all the river water reaching the world's seas",
+      "group": "world",
+      "hook": "More water than the next several biggest rivers put together."
+    },
+    {
+      "river": "Congo",
+      "known": "The deepest river",
+      "length": "Over 220 m deep in places",
+      "group": "world"
+    },
+    {
+      "river": "Danube",
+      "known": "Crosses the most countries (10) and four capitals: Vienna, Bratislava, Budapest and Belgrade",
+      "length": "About 2,850 km",
+      "group": "world",
+      "hook": "Vienna, Bratislava, Budapest, Belgrade: 'Very Brave Bears Bathe'."
+    },
+    {
+      "river": "Yangtze",
+      "known": "The longest river in Asia",
+      "length": "About 6,300 km: third longest in the world",
+      "group": "world",
+      "accept": {
+        "river": [
+          "Yangtse",
+          "Chang Jiang"
+        ]
+      }
+    },
+    {
+      "river": "Seine",
+      "known": "Paris",
+      "length": null,
+      "group": "capitals"
+    },
+    {
+      "river": "Tiber",
+      "known": "Rome",
+      "length": null,
+      "group": "capitals",
+      "hook": "Romulus and Remus were found on its bank."
+    },
+    {
+      "river": "Thames",
+      "known": "London; the longest river in England",
+      "length": "About 346 km",
+      "group": "capitals",
+      "hook": "Longest wholly in England; the Severn is longer but starts in Wales."
+    },
+    {
+      "river": "Liffey",
+      "known": "Dublin",
+      "length": null,
+      "group": "capitals"
+    },
+    {
+      "river": "Potomac",
+      "known": "Washington, D.C.",
+      "length": null,
+      "group": "capitals"
+    },
+    {
+      "river": "Tigris",
+      "known": "Baghdad; with the Euphrates, the river of Mesopotamia",
+      "length": null,
+      "group": "capitals"
+    },
+    {
+      "river": "Yamuna",
+      "known": "New Delhi",
+      "length": null,
+      "group": "capitals",
+      "accept": {
+        "river": [
+          "Jamuna"
+        ]
+      },
+      "hook": "It also flows past the Taj Mahal at Agra."
+    },
+    {
+      "river": "Severn",
+      "known": "The longest river in the UK",
+      "length": "About 354 km, from Wales to the Bristol Channel",
+      "group": "uk"
+    },
+    {
+      "river": "Tay",
+      "known": "The longest river in Scotland",
+      "length": "About 188 km",
+      "group": "uk"
+    },
+    {
+      "river": "Shannon",
+      "known": "The longest river in Ireland",
+      "length": "About 360 km",
+      "group": "uk"
+    },
+    {
+      "river": "Mersey",
+      "known": "Liverpool",
+      "length": null,
+      "group": "uk",
+      "hook": "'Ferry Cross the Mersey'."
+    },
+    {
+      "river": "Tyne",
+      "known": "Newcastle",
+      "length": null,
+      "group": "uk",
+      "hook": "'The Fog on the Tyne'."
+    },
+    {
+      "river": "Clyde",
+      "known": "Glasgow",
+      "length": null,
+      "group": "uk"
+    },
+    {
+      "river": "Chicago River",
+      "known": "Flows backwards",
+      "length": "Engineers reversed it in 1900 to carry the city's sewage away from Lake Michigan",
+      "group": "history",
+      "accept": {
+        "river": [
+          "Chicago"
+        ]
+      }
+    },
+    {
+      "river": "Colorado",
+      "known": "Carved the Grand Canyon",
+      "length": null,
+      "group": "history",
+      "accept": {
+        "river": [
+          "Colorado River"
+        ]
+      }
+    },
+    {
+      "river": "Rubicon",
+      "known": "Julius Caesar crossed it in 49 BC",
+      "length": "Leading his army into Italy meant civil war; hence 'crossing the Rubicon', the point of no return",
+      "group": "history",
+      "hook": "'The die is cast', he is supposed to have said."
+    },
+    {
+      "river": "Euphrates",
+      "known": "With the Tigris, the river of Mesopotamia",
+      "length": null,
+      "group": "history",
+      "hook": "Mesopotamia is Greek for 'between the rivers': the Tigris and the Euphrates."
+    },
+    {
+      "river": "Styx",
+      "known": "Greek underworld: the river of hatred",
+      "length": "The gods swore their unbreakable oaths by it",
+      "group": "myth"
+    },
+    {
+      "river": "Acheron",
+      "known": "Greek underworld: the river of woe",
+      "length": "Charon ferried the souls of the dead across it",
+      "group": "myth"
+    },
+    {
+      "river": "Lethe",
+      "known": "Greek underworld: the river of forgetfulness",
+      "length": "The dead drank from it to forget their lives",
+      "group": "myth",
+      "hook": "Lethe gives us 'lethargy'."
+    },
+    {
+      "river": "Phlegethon",
+      "known": "Greek underworld: the river of fire",
+      "length": null,
+      "group": "myth"
+    },
+    {
+      "river": "Cocytus",
+      "known": "Greek underworld: the river of wailing",
+      "length": null,
+      "group": "myth"
+    }
+  ]
+}
