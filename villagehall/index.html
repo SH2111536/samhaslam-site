@@ -84,6 +84,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
 :root {
   padding-top: env(safe-area-inset-top, 0px);
   padding-bottom: env(safe-area-inset-bottom, 0px);
@@ -404,12 +405,29 @@ body:not(.preview) .ph-note { display: none; }
 .gallery button:hover .thumb { border-color: var(--amber); }
 [tabindex="-1"]:focus { outline: none; }
 .gallery .cap { display: block; padding-top: 0.45rem; font-weight: 700; color: var(--ink); }
-.gallery .sub { display: block; color: var(--muted); font-size: 0.95rem; }
-.sample-tag {
-  position: absolute; top: 0.5rem; left: 0.5rem;
-  background: rgba(43, 20, 40, 0.85); color: #F6ECD8;
-  font-size: 0.8rem; padding: 0.1rem 0.5rem; border-radius: 2px;
+/* Scarecrow and Sip & Paint grids: square photos with captions laid over them */
+.gallery-feature { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.gallery-feature button:first-child { grid-column: span 2; grid-row: span 2; }
+.gallery-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 46rem; }
+.gallery-feature .thumb, .gallery-pair .thumb { aspect-ratio: 1 / 1; }
+.gallery-feature .thumb img, .gallery-pair .thumb img { object-position: center 30%; }
+.gallery-feature .cap, .gallery-pair .cap {
+  position: absolute; inset: auto 1px 1px 1px;
+  padding: 1.6rem 0.7rem 0.5rem;
+  background: linear-gradient(transparent, rgba(30, 12, 28, 0.82));
+  color: #F6ECD8; font-size: 0.95rem; line-height: 1.3;
 }
+.gallery-feature button:first-child .cap { font-size: 1.1rem; padding: 2.2rem 1rem 0.8rem; }
+.event-intro { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 1rem 2.5rem; margin: 2.6rem 0 1.25rem; }
+.page-body > .event-intro:first-child { margin-top: 0; }
+.event-intro h2 { margin-top: 0; }
+.event-intro .prose p:last-child { margin-bottom: 0; }
+.stats { display: flex; gap: 0.75rem; margin: 0; }
+.stats div { background: var(--surface); border: 1px solid var(--line); border-top: 5px solid var(--amber); padding: 0.6rem 1rem 0.7rem; min-width: 8.5rem; }
+.stats dt { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.stats dd { margin: 0; font-family: var(--display); font-size: 2rem; line-height: 1.1; color: var(--accent-text); font-variant-numeric: tabular-nums; }
+.band-inline { background: var(--surface); border: 1px solid var(--line); padding: 1.5rem; margin: 3rem 0 2rem; }
+.band-inline h2 { margin-top: 0; }
 dialog {
   border: 0; padding: 0;
   width: min(92vw, 60rem);
@@ -419,6 +437,41 @@ dialog {
 dialog::backdrop { background: rgba(30, 12, 28, 0.85); }
 dialog .dlg-img > * { width: 100%; height: auto; max-height: 75vh; object-fit: contain; display: block; }
 .dlg-foot { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 1.1rem; gap: 1rem; flex-wrap: wrap; }
+
+/* ---------- Booking ---------- */
+.callout-amber { border-left-color: var(--amber); }
+.rooms { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+.room { background: var(--surface); border: 1px solid var(--line); display: flex; flex-direction: column; }
+.room img { aspect-ratio: 4 / 3; width: 100%; object-fit: cover; }
+.room-body { padding: 1rem 1.2rem 1.2rem; }
+.room h3 { font-size: 1.3rem; margin-bottom: 0.6rem; }
+.dims { margin: 0 0 0.5rem; display: grid; gap: 0.3rem; }
+.dims div { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: 0.5rem; }
+.dims dt { color: var(--muted); }
+.dims dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+.dims dd span { font-weight: 400; color: var(--muted); }
+.price-card { background: var(--surface); border: 1px solid var(--line); border-top: 6px solid var(--plum); padding: 0.4rem 1.3rem; max-width: 40rem; }
+.price-card dl { margin: 0; }
+.price-card div { display: grid; grid-template-columns: 13rem minmax(0, 1fr); gap: 0.4rem 1rem; padding: 0.8rem 0; border-bottom: 1px solid var(--line); }
+.price-card div:last-child { border-bottom: 0; }
+.price-card dt { font-weight: 700; }
+.price-card dd { margin: 0; }
+.price-card dd b { font-family: var(--display); font-weight: 400; font-size: 1.3rem; color: var(--accent-text); }
+.ticks { list-style: none; padding: 0; margin: 0 0 1.5rem; display: grid; gap: 0.5rem; }
+.ticks li { position: relative; padding-left: 2rem; }
+.ticks li::before { content: ""; position: absolute; left: 0.2rem; top: 0.55rem; width: 0.7rem; height: 0.7rem; background: var(--olive); transform: rotate(45deg); }
+
+/* ---------- Hire terms ---------- */
+.terms h2 { font-size: 1.45rem; margin: 2.2rem 0 0.7rem; }
+.terms h3 { font-size: 1.15rem; margin-bottom: 0.4rem; }
+.terms .lead-in { font-size: 1.2rem; }
+.clauses { list-style: none; padding: 0; margin: 0 0 1rem; display: grid; gap: 0.55rem; }
+.clauses li { display: grid; grid-template-columns: 2.9rem minmax(0, 1fr); gap: 0.4rem; }
+.clauses li span { font-weight: 700; color: var(--accent-text); font-variant-numeric: tabular-nums; }
+.terms-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+.terms-cols > div { background: var(--surface); border: 1px solid var(--line); padding: 0.9rem 1.1rem; }
+.terms-cols ul { margin: 0; padding-left: 1.2rem; }
+
 
 /* ---------- History ---------- */
 .history { display: grid; grid-template-columns: minmax(0, 1fr) 18rem; gap: 3rem; align-items: start; }
@@ -488,8 +541,8 @@ textarea { min-height: 9rem; resize: vertical; }
 @media (max-width: 52rem) {
   .hero-grid, .split, .events-teaser, .two-col, .history, .events-head .wrap { grid-template-columns: minmax(0, 1fr); }
   .aside-card, .timeline { position: static; }
-  .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .park-grid { grid-template-columns: minmax(0, 1fr); }
+  .gallery, .gallery-feature { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .park-grid, .rooms { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 36rem) {
   body { font-size: 1.0625rem; }
@@ -501,6 +554,10 @@ textarea { min-height: 9rem; resize: vertical; }
   .site-nav a { padding: 0.35rem 0.6rem; font-size: 0.98rem; }
   .tiles { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
   .gallery { grid-template-columns: minmax(0, 1fr); }
+  .gallery-feature, .gallery-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; }
+  .gallery-feature .cap, .gallery-pair .cap { font-size: 0.85rem; padding: 1.2rem 0.5rem 0.4rem; }
+  .price-card div, .terms-cols { grid-template-columns: minmax(0, 1fr); }
+  .stats div { min-width: 0; }
   .field-row { grid-template-columns: minmax(0, 1fr); }
   .page-head .head-art { display: none; }
   .page-head .wrap { grid-template-columns: minmax(0, 1fr); }
@@ -571,7 +628,7 @@ textarea { min-height: 9rem; resize: vertical; }
     <div class="tile t-plum">
       <a class="tile-body" href="#book">
         <h2>Book the hall</h2>
-        <p>Check free dates and book online, on your phone or computer.</p>
+        <p>Prices, room sizes, free dates and how to send a booking request.</p>
         <span class="more">How to book</span>
       </a>
     </div>
@@ -585,7 +642,7 @@ textarea { min-height: 9rem; resize: vertical; }
     <div class="tile t-amber">
       <a class="tile-body" href="#events">
         <h2>Village events</h2>
-        <p>Photos from the Scarecrow Festival and other village get-togethers.</p>
+        <p>Photos from the Scarecrow Festival, Sip &amp; Paint and other village get-togethers.</p>
         <span class="more">See the photos</span>
       </a>
     </div>
@@ -616,7 +673,7 @@ textarea { min-height: 9rem; resize: vertical; }
       </a>
       <div>
         <h2 class="sec-title" id="ev-h">Village events</h2>
-        <p>From the Scarecrow Festival to fundraisers and seasonal get-togethers, the hall is at the centre of village life. Have a look at the photos from past events.</p>
+        <p>Our first Scarecrow Festival in 2026 brought 42 scarecrows to the village and raised over £1,500 for the hall roof. Have a look at the photos from that and our other events.</p>
         <a class="btn btn-line" href="#events">See event photos</a>
       </div>
     </div>
@@ -640,50 +697,245 @@ textarea { min-height: 9rem; resize: vertical; }
     <div class="wrap">
       <div>
         <h1>Book the hall</h1>
-        <p>Parties, classes, clubs and meetings. Check free dates and book online.</p>
+        <p>Parties, celebrations, classes and meetings. The whole venue is £25 an hour for private hire.</p>
       </div>
     </div>
     <svg class="wave" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 100 L0 60 C 240 10, 420 90, 720 55 C 1000 20, 1200 85, 1440 40 L1440 100 Z"/></svg>
   </section>
 
   <div class="wrap page-body two-col">
-    <div class="prose">
-      <h2>How to book</h2>
-      <ol class="steps">
-        <li><div><b>Check the calendar.</b> Our online booking calendar shows which dates and times are free. It works on phones, tablets and computers.</div></li>
-        <li><div><b>Request your booking.</b> Choose your date, room and times, and send your request through the calendar.</div></li>
-        <li><div><b>We confirm it.</b> A committee member will check your request and confirm your booking by email.</div></li>
-      </ol>
-      <div class="btns">
-        <a class="btn btn-primary" data-link="hallmaster" href="#contact">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7zm-2 8h14v10H5V10zm2 2v2h2v-2H7zm4 0v2h2v-2h-2zm4 0v2h2v-2h-2zm-8 4v2h2v-2H7zm4 0v2h2v-2h-2z"/></svg>
-          Open the booking calendar
-        </a>
-        <a class="btn btn-line" href="#contact">Ask a question first</a>
+    <div>
+      <div class="prose">
+        <h2>How to book</h2>
+        <ol class="steps">
+          <li><div><b>Check the calendar.</b> Our online calendar shows which dates and times are already taken. It works on phones, tablets and computers.</div></li>
+          <li><div><b>Send us a booking request.</b> Use our <a href="#contact">enquiry form</a>, email us, or speak to a committee member. Tell us the date, the times and what you’re planning.</div></li>
+          <li><div><b>A committee member confirms it.</b> Once your booking is approved, a £50 refundable deposit secures your date.</div></li>
+        </ol>
+        <div class="btns">
+          <a class="btn btn-primary" data-link="hallmaster" href="#contact">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7zm-2 8h14v10H5V10zm2 2v2h2v-2H7zm4 0v2h2v-2h-2zm4 0v2h2v-2h-2zm-8 4v2h2v-2H7zm4 0v2h2v-2h-2z"/></svg>
+            View the booking calendar
+          </a>
+          <a class="btn btn-line" href="#contact">Send a booking request</a>
+        </div>
+        <p class="form-note" data-hallmaster-note hidden>The online calendar is being set up. Until then, please <a href="#contact">send us a message</a> with the date and times you would like.</p>
+        <div class="callout callout-amber">
+          <h3>A free date isn’t always available</h3>
+          <p>Even if a date looks free on the calendar, someone may already have asked for it by email. Every booking has to be approved by a committee member before it is confirmed.</p>
+        </div>
       </div>
-      <p class="form-note" data-hallmaster-note hidden>The online calendar is being set up. Until then, please <a href="#contact">send us a message</a> with the date and times you would like.</p>
 
       <h2>The rooms</h2>
-      <p>The hall has two rooms to hire, suitable for children’s parties, family celebrations, exercise and dance classes, clubs and meetings.</p>
-      <p><span class="ph">[Room names, how many people each holds, and hire prices. Or tell us if these are shown on Hallmaster and we’ll link there instead.]</span></p>
-
-      <h2>Before your event</h2>
-      <div class="callout">
-        <h3>Please tell your guests about parking</h3>
-        <p>There are only about 10 spaces at the hall. Please send our <a href="#parking">parking page</a> to everyone coming, so they know where to park and where not to.</p>
+      <p class="prose">Private hire is for the whole venue: the large hall, the small hall, the kitchen, and the outdoor space when it’s available. Regular groups can hire the halls separately. <a href="#contact">Ask us</a> about this.</p>
+      <div class="rooms">
+        <article class="room">
+          <img src="assets/photos/large-hall-2-sm.jpg" width="720" height="540" loading="lazy" alt="The large hall: a long, bright room with a wooden floor and tall arched windows, with stacked chairs and tables at the far end.">
+          <div class="room-body">
+            <h3>Large hall</h3>
+            <dl class="dims">
+              <div><dt>Length</dt><dd>16.5 m</dd></div>
+              <div><dt>Width</dt><dd>8.25 m <span>(7.25 m at the nursery corridor)</span></dd></div>
+              <div><dt>Ceiling</dt><dd>3.6 m</dd></div>
+            </dl>
+          </div>
+        </article>
+        <article class="room">
+          <img src="assets/photos/small-hall-kitchen-sm.jpg" width="720" height="540" loading="lazy" alt="The small hall, with a wooden floor and a serving hatch through to the kitchen.">
+          <div class="room-body">
+            <h3>Small hall and kitchen</h3>
+            <dl class="dims">
+              <div><dt>Length</dt><dd>7 m</dd></div>
+              <div><dt>Width</dt><dd>5.8 m</dd></div>
+              <div><dt>Ceiling</dt><dd>3 m</dd></div>
+            </dl>
+            <p class="form-note">The kitchen opens onto the small hall through a serving hatch.</p>
+          </div>
+        </article>
       </div>
-      <p><span class="ph">[Link to hire terms and conditions, if you have them.]</span></p>
+
+      <h2>Prices</h2>
+      <div class="price-card">
+        <dl>
+          <div><dt>Private hire, whole venue</dt><dd><b>£25</b> per hour</dd></div>
+          <div><dt>Deposit</dt><dd><b>£50</b>, paid when you book and returned after your event if the hall is left as you found it</dd></div>
+          <div><dt>Full payment</dt><dd>Due no later than <b>14 days</b> before your event</dd></div>
+        </dl>
+      </div>
+
+      <h2>Before you book</h2>
+      <div class="prose">
+        <p>The main points from our hire terms:</p>
+        <ul class="ticks">
+          <li>Leave the hall clean and tidy: tables wiped and put away, chairs stacked, decorations taken down and rubbish taken away.</li>
+          <li>No confetti or confetti balloons, inside or outside.</li>
+          <li>No candles, naked flames, BBQs, fireworks or smoke machines anywhere on the premises.</li>
+          <li>Bouncy castles and other inflatables need our written approval first.</li>
+          <li>No smoking or vaping inside the hall or near the entrances.</li>
+          <li>Music must stop at your agreed finishing time.</li>
+          <li>Parking is limited. Please share our <a href="#parking">parking page</a> with your guests.</li>
+        </ul>
+        <a class="btn btn-line" href="#terms">Read the full hire terms</a>
+      </div>
     </div>
 
     <aside class="aside-card" aria-labelledby="bk-glance">
       <h2 id="bk-glance">Good to know</h2>
       <dl>
         <dt>Address</dt><dd>West View, Wheelton, Chorley PR6 8HJ</dd>
-        <dt>Questions about booking</dt><dd><a href="#contact">Use our enquiry form</a></dd>
+        <dt>Accessibility</dt><dd>Step-free access into the building, and an accessible toilet.</dd>
+        <dt>Music</dt><dd>The hall holds a music licence for recorded music and some live performances.</dd>
         <dt>Defibrillator</dt><dd>A public defibrillator is mounted outside the main entrance, available 24 hours a day.</dd>
-        <dt>Accessibility</dt><dd><span class="ph">[Step-free access, accessible toilet, hearing loop: to confirm]</span></dd>
+        <dt>Questions</dt><dd><a href="#contact">Send us a message</a> or speak to a committee member.</dd>
       </dl>
     </aside>
+  </div>
+</main>
+
+<!-- ================= TERMS ================= -->
+<main class="view" id="view-terms" data-title="Hire terms · Heapey and Wheelton Village Hall" hidden>
+  <section class="page-head">
+    <div class="wrap">
+      <div>
+        <h1>Hire terms and conditions</h1>
+        <p>For private hire of Heapey and Wheelton Village Hall, West View, Wheelton, Chorley, Lancashire PR6 8HJ.</p>
+      </div>
+    </div>
+    <svg class="wave" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 100 L0 55 C 300 90, 520 15, 800 50 C 1050 85, 1250 20, 1440 55 L1440 100 Z"/></svg>
+  </section>
+
+  <div class="wrap page-body">
+    <article class="prose terms">
+      <p class="lead-in">Space hire includes the large hall, small hall, kitchen facilities and outdoor space when applicable.</p>
+
+      <h2>1. Nature of hire</h2>
+      <ol class="clauses">
+        <li><span>1.1</span>Agreement is for a one-off private event hire only.</li>
+        <li><span>1.2</span>The Hall may only be used for the event described in your booking.</li>
+        <li><span>1.3</span>The Hirer may not sub-let or transfer this booking.</li>
+        <li><span>1.4</span>The Committee reserves the right to refuse or cancel bookings where necessary.</li>
+      </ol>
+
+      <h2>2. Hire fee and payment terms</h2>
+      <ol class="clauses">
+        <li><span>2.1</span>The total hire fee for the event is £25 per hour.</li>
+        <li><span>2.2</span>A refundable deposit of £50 is required at the time of booking to secure the event date.</li>
+        <li><span>2.3</span>The full hire fee must be paid no later than 14 days prior to the event date.</li>
+        <li><span>2.4</span>If the full hire fee is not received by this deadline, the Committee reserves the right to cancel the booking.</li>
+        <li><span>2.5</span>Following the event, a Trustee or authorised representative will inspect the premises.</li>
+        <li><span>2.6</span>The £50 deposit will be returned after inspection, provided there is no damage, breakages, additional cleaning required, overstaying of the agreed booking time, or breach of this Agreement.</li>
+        <li><span>2.7</span>Should damage, breakages, additional cleaning requirements, overstaying, or breaches of this Agreement be identified and the costs exceed the £50 deposit, the Hirer will be invoiced for the additional amount.</li>
+        <li><span>2.8</span>The Hirer agrees to pay any such invoice within 7 days of the invoice date.</li>
+        <li><span>2.9</span>The Committee reserves the right to recover unpaid sums through appropriate legal procedures if necessary.</li>
+      </ol>
+
+      <h2>3. Cleaning and end-of-event responsibilities</h2>
+      <p>The Hall must be left clean, tidy, and in the condition in which it was found.</p>
+      <div class="terms-cols">
+        <div>
+          <h3>Main hall and small hall</h3>
+          <ul>
+            <li>Tables wiped and returned to storage</li>
+            <li>Chairs stacked safely</li>
+            <li>Floors left clean and free from debris</li>
+            <li>All decorations removed</li>
+            <li>All rubbish bagged and removed from site unless otherwise agreed</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Kitchen (if used)</h3>
+          <ul>
+            <li>Surfaces cleaned</li>
+            <li>Sink area left clean</li>
+            <li>All food removed</li>
+            <li>Spillages cleaned immediately</li>
+          </ul>
+        </div>
+      </div>
+      <ol class="clauses">
+        <li><span>3.1</span>An additional cleaning fee will be charged if the Hall is not left clean and tidy.</li>
+      </ol>
+
+      <h2>4. Breakages and damage</h2>
+      <ol class="clauses">
+        <li><span>4.1</span>The Hirer is responsible for all loss, damage, or breakages occurring during the hire period.</li>
+        <li><span>4.2</span>All breakages must be paid for in full.</li>
+        <li><span>4.3</span>The cost of repair or replacement will be invoiced to the Hirer following inspection.</li>
+      </ol>
+
+      <h2>5. Prohibited areas and equipment</h2>
+      <ol class="clauses">
+        <li><span>5.1</span>Access to any locked, restricted, or clearly marked cupboards, storage areas, or rooms is strictly prohibited.</li>
+        <li><span>5.2</span>The Hirer and their guests must not access or use equipment belonging to regular Village Hall user groups unless expressly authorised in writing by the Committee.</li>
+        <li><span>5.3</span>Any unauthorised access to restricted areas or use of user group equipment will be treated as a breach of this Agreement.</li>
+        <li><span>5.4</span>The Hirer will be responsible for any loss or damage arising from such unauthorised access or use and will be invoiced accordingly.</li>
+      </ol>
+
+      <h2>6. Supervision and conduct</h2>
+      <ol class="clauses">
+        <li><span>6.1</span>The Hirer is responsible for the conduct and supervision of all guests.</li>
+        <li><span>6.2</span>Children must be supervised at all times.</li>
+        <li><span>6.3</span>Noise must be kept to a reasonable level, especially when leaving the premises.</li>
+        <li><span>6.4</span>The Hall must be vacated by the agreed finishing time.</li>
+        <li><span>6.5</span>Overstaying the agreed booking time may result in additional charges.</li>
+      </ol>
+
+      <h2>7. Music</h2>
+      <ol class="clauses">
+        <li><span>7.1</span>The Hall holds a Music Licence permitting recorded music and certain live performances.</li>
+        <li><span>7.2</span>Music must cease at the agreed finishing time and must not cause nuisance to neighbouring properties.</li>
+      </ol>
+
+      <h2>8. Alcohol</h2>
+      <p>Alcohol may be consumed for private use only and must not be sold without the appropriate licence.</p>
+      <p>The Hirer is responsible for ensuring that no alcohol is supplied to persons under 18.</p>
+
+      <h2>9. Bouncy castles and inflatables</h2>
+      <ol class="clauses">
+        <li><span>9.1</span>Inflatables are permitted only with prior written approval.</li>
+        <li><span>9.2</span>The Hirer must use a reputable hire company holding Public Liability Insurance (minimum £5 million). Proof must be provided prior to the event.</li>
+        <li><span>9.3</span>Continuous adult supervision is required at all times.</li>
+        <li><span>9.4</span>Any damage caused by inflatable equipment will be charged to the Hirer.</li>
+        <li><span>9.5</span>The Committee accepts no responsibility for injury or loss arising from the use of inflatables.</li>
+      </ol>
+
+      <h2>10. Cooker, BBQs, naked flames and spark effects</h2>
+      <ol class="clauses">
+        <li><span>10.1</span>BBQs, fire pits, fireworks, smoke machines, Chinese lanterns, candles, tea lights, flare candles, sparkler candles, or any naked flames are strictly prohibited anywhere on the premises, including the outdoor space and car park.</li>
+        <li><span>10.2</span>Use of the Hall’s fixed cooker is permitted only where the kitchen has been booked by the Hirer.</li>
+        <li><span>10.3</span>The cooker must be used responsibly and must be fully switched off after use, with all controls returned to the off position before vacating the premises.</li>
+        <li><span>10.4</span>The Hirer is responsible for ensuring the cooker and all kitchen appliances are left clean, safe, and in good working order.</li>
+        <li><span>10.5</span>Any damage or issues arising from misuse of the cooker or kitchen appliances will be charged to the Hirer.</li>
+      </ol>
+
+      <h2>11. No smoking or vaping</h2>
+      <p>Smoking and vaping are strictly prohibited inside the Hall and near entrances.</p>
+      <p>Cigarette ends must not be discarded on the premises.</p>
+      <p>Additional cleaning charges may apply if this clause is breached.</p>
+
+      <h2>12. No confetti or confetti balloons</h2>
+      <p>Confetti, artificial petals, confetti balloons, or similar materials are strictly prohibited inside and outside the Hall.</p>
+      <p>Additional cleaning charges will apply where this clause is breached.</p>
+
+      <h2>13. Outdoor space (if hired and available)</h2>
+      <p>Use of the outdoor space must be agreed in advance and is undertaken entirely at the Hirer’s own risk.</p>
+      <p>The Hirer is responsible for ensuring the area is left clean and tidy after use.</p>
+      <p>The Hirer must ensure that neighbouring properties are considered and respected at all times, including minimising noise and disturbance.</p>
+
+      <h2>14. Parking</h2>
+      <p>Parking is limited. Guests MUST park considerately and not block neighbouring properties or emergency access routes. Please see our <a href="#parking">parking page</a> for the most convenient places to park.</p>
+      <p>The Committee accepts no responsibility for loss or damage to vehicles.</p>
+
+      <h2>15. Health and safety</h2>
+      <p>The Hirer is responsible for the safety of all guests.</p>
+      <p>Fire exits must remain clear at all times.</p>
+      <p>The Hirer must familiarise themselves with fire evacuation procedures.</p>
+
+      <div class="btns" style="margin-top:2rem">
+        <a class="btn btn-primary" href="#book">Back to booking</a>
+        <a class="btn btn-line" href="#contact">Ask a question</a>
+      </div>
+    </article>
   </div>
 </main>
 
@@ -698,18 +950,45 @@ textarea { min-height: 9rem; resize: vertical; }
       <img src="assets/events-logo.png" width="1456" height="504" alt="Wheelton village events">
       <div>
         <h1>Village events</h1>
-        <p>Photos from the Scarecrow Festival and other events at the hall and around the village. Select a photo to see it larger.</p>
+        <p>Photos from events at the hall and around the village. Select a photo to see it larger.</p>
       </div>
     </div>
   </section>
 
   <div class="wrap page-body">
-    <h2>Scarecrow Festival</h2>
-    <p class="prose">Each year the village fills with scarecrows made by households, groups and businesses. <span class="ph">[A sentence or two about the festival: when it started, when it runs, and what it raises money for.]</span></p>
-    <div class="gallery" data-gallery="scarecrow"></div>
+    <div class="event-intro">
+      <div class="prose">
+        <h2>Scarecrow Festival 2026</h2>
+        <p>2026 was our first Scarecrow Festival, and it was a huge success. There were 42 scarecrow entries around the village, and together we raised over £1,500 towards repairs to the village hall roof.</p>
+        <p>The festival will now be an annual event, so start planning your scarecrow for next year.</p>
+      </div>
+      <dl class="stats" aria-label="Scarecrow Festival 2026 in numbers">
+        <div><dt>Scarecrows</dt><dd>42</dd></div>
+        <div><dt>Raised for the roof</dt><dd>£1,500+</dd></div>
+      </dl>
+    </div>
+    <div class="gallery gallery-feature" data-gallery="scarecrow"></div>
 
-    <h2>More from our events</h2>
-    <div class="gallery" data-gallery="other"></div>
+    <div class="event-intro">
+      <div class="prose">
+        <h2>Sip &amp; Paint with RJ Collective</h2>
+        <p>A lovely Friday evening spent painting our clock tower, which raised £435 for the village hall.</p>
+      </div>
+      <dl class="stats" aria-label="Sip and Paint in numbers">
+        <div><dt>Raised for the hall</dt><dd>£435</dd></div>
+      </dl>
+    </div>
+    <div class="gallery gallery-pair" data-gallery="sippaint"></div>
+
+    <section class="band-inline" aria-labelledby="host-h">
+      <h2 id="host-h">Host your own event</h2>
+      <p class="prose">Planning a party, a celebration or a community event? The large hall, the small hall and the kitchen are all included in private hire, at £25 an hour.</p>
+      <div class="gallery" data-gallery="halls"></div>
+      <div class="btns" style="margin-top:1rem">
+        <a class="btn btn-primary" href="#book">Prices and how to book</a>
+        <a class="btn btn-line" href="#contact">Ask us a question</a>
+      </div>
+    </section>
 
     <div class="callout">
       <h3>Coming up</h3>
@@ -885,7 +1164,7 @@ textarea { min-height: 9rem; resize: vertical; }
     <div class="wrap">
       <div>
         <h1>Contact us</h1>
-        <p>Questions about booking, events or anything else? Send us a message and a committee member will reply by email.</p>
+        <p>Questions about booking, events or anything else? Send us a message and a committee member will get back to you by email, phone or in person.</p>
       </div>
     </div>
     <svg class="wave" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 100 L0 60 C 240 10, 420 90, 720 55 C 1000 20, 1200 85, 1440 40 L1440 100 Z"/></svg>
@@ -898,23 +1177,20 @@ textarea { min-height: 9rem; resize: vertical; }
         <p>Heapey and Wheelton Village Hall is a registered charity run by a committee of volunteers. Committee members are the charity’s trustees, and they are responsible for the day-to-day running of the hall, including its finances, maintenance and events.</p>
       </div>
 
-      <h2 id="form-h">Send an enquiry</h2>
+      <h2 id="form-h">Send us a message</h2>
       <form class="form" id="enquiry" novalidate aria-labelledby="form-h">
-        <div class="field-row">
-          <div class="field">
-            <label for="f-name">Your name</label>
-            <input id="f-name" name="name" autocomplete="name" required>
-          </div>
-          <div class="field">
-            <label for="f-email">Email address</label>
-            <input id="f-email" name="email" type="email" autocomplete="email" required>
-          </div>
+        <div class="field">
+          <label for="f-name">Your name</label>
+          <input id="f-name" name="name" autocomplete="name" required>
         </div>
+
+        <div class="field">
+          <label for="f-contact">How would you like us to get back to you?</label>
+          <textarea id="f-contact" name="contact" rows="2" aria-describedby="f-contact-hint" required></textarea>
+          <p class="form-note" id="f-contact-hint">For example, your email address or phone number, or your address if you’d like a committee member to pop round.</p>
+        </div>
+
         <div class="field-row">
-          <div class="field">
-            <label for="f-phone">Phone <span class="opt">(optional)</span></label>
-            <input id="f-phone" name="phone" type="tel" autocomplete="tel">
-          </div>
           <div class="field">
             <label for="f-topic">What’s it about?</label>
             <select id="f-topic" name="topic">
@@ -925,10 +1201,10 @@ textarea { min-height: 9rem; resize: vertical; }
               <option>Something else</option>
             </select>
           </div>
-        </div>
-        <div class="field">
-          <label for="f-date">Date you have in mind <span class="opt">(optional)</span></label>
-          <input id="f-date" name="date" type="date">
+          <div class="field">
+            <label for="f-date">Date you have in mind <span class="opt">(optional)</span></label>
+            <input id="f-date" name="date" type="date">
+          </div>
         </div>
         <div class="field">
           <label for="f-msg">Your message</label>
@@ -975,6 +1251,7 @@ textarea { min-height: 9rem; resize: vertical; }
       <ul>
         <li><a href="#book">Book the hall</a></li>
         <li><a href="#parking">Parking</a></li>
+        <li><a href="#terms">Hire terms</a></li>
         <li><a href="#contact">Contact us</a></li>
       </ul>
     </div>
@@ -991,34 +1268,45 @@ textarea { min-height: 9rem; resize: vertical; }
 </dialog>
 
 <script>
-/* ===== Site settings: fill these in when the hall sends the details ===== */
+/* ===== Site settings ===== */
 const SITE = {
   email: "heapeyandwheeltonvillagehall@gmail.com",
-  // The hall's Hallmaster booking page, e.g. "https://v2.hallmaster.co.uk/Scheduler/View/1234"
-  hallmasterUrl: "",
+  // The hall's Hallmaster calendar
+  hallmasterUrl: "https://v2.hallmaster.co.uk/Diary/ViewHallEventList/15116",
   facebookUrl: "https://www.facebook.com/heapeyandwheeltonvillagehall/",
-  instagramUrl: "",
+  instagramUrl: "https://www.instagram.com/heapeyandwheeltonvillagehall/",
   // Messages from the enquiry form are emailed to the hall via FormSubmit.
   formEndpoint: "https://formsubmit.co/ajax/heapeyandwheeltonvillagehall@gmail.com",
-  // Shows the amber banner and the dotted-underline placeholders. Set to false at launch.
-  preview: true
+  // Shows the amber banner and the dotted-underline placeholders.
+  preview: false
 };
 
-/* Event photos: add files to assets/events/ and list them here.
-   Leave src empty to show an illustrated placeholder. */
+/* Event photos live in assets/photos/. Each has a large version (name.jpg)
+   and a small one for the grid (name-sm.jpg). */
 const EVENT_PHOTOS = {
   scarecrow: [
-    { title: "Scarecrow Festival", sub: "[Year and caption]", src: "" },
-    { title: "Scarecrow Festival", sub: "[Year and caption]", src: "" },
-    { title: "Scarecrow Festival", sub: "[Year and caption]", src: "" },
-    { title: "Scarecrow Festival", sub: "[Year and caption]", src: "" },
-    { title: "Scarecrow Festival", sub: "[Year and caption]", src: "" },
-    { title: "Scarecrow Festival", sub: "[Year and caption]", src: "" }
+    { src: "scarecrow-wallace-gromit", caption: "Wallace and Gromit: “More cheese, Gromit?”", alt: "Wallace and Gromit scarecrows at a café table with a sign reading More cheese, Gromit?" },
+    { src: "scarecrow-hulk", caption: "The Incredible Hulk", alt: "A green Hulk scarecrow with straw hair, against the trees" },
+    { src: "scarecrow-red-riding-hood", caption: "Little Red Riding Hood and the Big Bad Wolf", alt: "The Big Bad Wolf dressed as Grandma, beside Little Red Riding Hood with her basket" },
+    { src: "scarecrow-gardener", caption: "The gardener and his barrow", alt: "A gardener scarecrow with a wheelbarrow full of vegetables, beside a brick gatepost" },
+    { src: "scarecrow-minions", caption: "Gru and his Minions", alt: "Minions made from painted yellow and blue tyres, with Gru, outside the garage" },
+    { src: "scarecrow-wonder-woman", caption: "Wonder Woman", alt: "A Wonder Woman scarecrow in her red, gold and blue costume" },
+    { src: "scarecrow-bluey", caption: "Bluey", alt: "A Bluey scarecrow sitting on a hay bale" },
+    { src: "scarecrow-superheroes", caption: "Superheroes in a paddling pool", alt: "Superhero scarecrows with Captain America's shield, in a paddling pool" },
+    { src: "scarecrow-queen-of-hearts", caption: "The Queen of Hearts", alt: "A Queen of Hearts scarecrow with red hair and a heart-patterned costume" },
+    { src: "scarecrow-bond", caption: "Bond, James Bond", alt: "A scarecrow in a dinner suit leaning on a silver sports car" },
+    { src: "scarecrow-pirate", caption: "The pirate captain", alt: "A pirate captain scarecrow between two lanterns, outside a stone cottage" },
+    { src: "scarecrow-beetlejuice", caption: "Beetlejuice", alt: "A Beetlejuice scarecrow in a black and white striped suit, sitting in a garden" },
+    { src: "scarecrow-maleficent", caption: "Maleficent and Sleeping Beauty", alt: "Maleficent standing over Sleeping Beauty, asleep under a grey blanket" }
   ],
-  other: [
-    { title: "[Event name]", sub: "[Year and caption]", src: "" },
-    { title: "[Event name]", sub: "[Year and caption]", src: "" },
-    { title: "[Event name]", sub: "[Year and caption]", src: "" }
+  sippaint: [
+    { src: "sip-paint-1", caption: "Painting the clock tower", alt: "Paintings of the Wheelton clock tower on easels, with palettes of paint on the table" },
+    { src: "sip-paint-2", caption: "Finishing touches", alt: "A painter adding detail to a painting of the clock tower among flowers" }
+  ],
+  halls: [
+    { src: "large-hall-1", caption: "The large hall", alt: "The large hall, with a wooden floor and sunlight from tall arched windows" },
+    { src: "small-hall", caption: "The small hall", alt: "The small hall, with arched windows and a wooden floor" },
+    { src: "small-hall-kitchen", caption: "The kitchen, through the serving hatch", alt: "The kitchen seen through the serving hatch from the small hall" }
   ]
 };
 
@@ -1071,58 +1359,24 @@ document.querySelectorAll('[data-link="hallmaster"]').forEach(a => {
   }
 });
 
-/* ---------- Placeholder scarecrow illustrations ---------- */
-const PAL = [
-  { sky: "#F6ECD8", hill: "#8A752E", shirt: "#B05A26", hat: "#DC9725", trouser: "#521F4B" },
-  { sky: "#9FB3BE", hill: "#521F4B", shirt: "#DC9725", hat: "#7B412E", trouser: "#8A752E" },
-  { sky: "#DC9725", hill: "#3A1535", shirt: "#521F4B", hat: "#C3B49B", trouser: "#B05A26" },
-  { sky: "#C3B49B", hill: "#8A752E", shirt: "#9FB3BE", hat: "#B05A26", trouser: "#521F4B" },
-  { sky: "#F6ECD8", hill: "#521F4B", shirt: "#8A752E", hat: "#DC9725", trouser: "#7B412E" },
-  { sky: "#AEAE56", hill: "#3A1535", shirt: "#B05A26", hat: "#F6ECD8", trouser: "#521F4B" }
-];
-function scarecrow(i) {
-  const p = PAL[i % PAL.length];
-  const flip = i % 2 ? -1 : 1;
-  const cx = 200 + flip * 30;
-  return `<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration of a scarecrow">
-    <rect width="400" height="300" fill="${p.sky}"/>
-    <circle cx="${200 - flip * 120}" cy="62" r="26" fill="#F6ECD8" opacity=".9"/>
-    <path d="M0 240 C 110 200, 260 225, 400 196 L400 300 L0 300 Z" fill="${p.hill}"/>
-    <rect x="${cx - 4}" y="120" width="8" height="160" fill="#7B412E"/>
-    <rect x="${cx - 88}" y="128" width="176" height="7" fill="#7B412E"/>
-    <path d="M${cx - 34} 118 L${cx + 34} 118 L${cx + 40} 190 L${cx - 40} 190 Z" fill="${p.shirt}"/>
-    <rect x="${cx - 78}" y="122" width="44" height="18" fill="${p.shirt}"/>
-    <rect x="${cx + 34}" y="122" width="44" height="18" fill="${p.shirt}"/>
-    <rect x="${cx + 8}" y="140" width="16" height="16" fill="#F6ECD8" opacity=".75"/>
-    <path d="M${cx - 92} 124 l-12 -6 M${cx - 92} 131 l-14 0 M${cx - 92} 138 l-12 6 M${cx + 92} 124 l12 -6 M${cx + 92} 131 l14 0 M${cx + 92} 138 l12 6" stroke="#C7A65E" stroke-width="4" stroke-linecap="round"/>
-    <path d="M${cx - 34} 190 L${cx - 30} 236 L${cx - 8} 236 L${cx} 200 L${cx + 8} 236 L${cx + 30} 236 L${cx + 34} 190 Z" fill="${p.trouser}"/>
-    <circle cx="${cx}" cy="96" r="24" fill="#E8D6B0"/>
-    <circle cx="${cx - 8}" cy="93" r="3" fill="#3A1535"/><circle cx="${cx + 8}" cy="93" r="3" fill="#3A1535"/>
-    <path d="M${cx - 9} 104 Q ${cx} 111 ${cx + 9} 104" stroke="#3A1535" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-    <rect x="${cx - 40}" y="74" width="80" height="8" rx="3" fill="${p.hat}"/>
-    <path d="M${cx - 22} 76 L${cx - 16} 46 L${cx + 16} 46 L${cx + 22} 76 Z" fill="${p.hat}"/>
-    <path d="M${cx + 60} 56 q 10 -8 20 0 q 10 -8 20 0" stroke="#3A1535" stroke-width="3" fill="none"/>
-  </svg>`;
-}
+/* ---------- Photo galleries ---------- */
 const dlg = document.getElementById("dlg");
-let n = 0;
+const dlgImg = document.getElementById("dlg-img");
 document.querySelectorAll("[data-gallery]").forEach(grid => {
   (EVENT_PHOTOS[grid.dataset.gallery] || []).forEach(item => {
-    const i = n++;
     const b = document.createElement("button");
     b.type = "button";
-    const media = item.src
-      ? `<img src="${item.src}" alt="${item.title}" loading="lazy">`
-      : scarecrow(i);
-    b.innerHTML = `<span class="thumb">${media}</span>${item.src ? "" : '<span class="sample-tag">Photo to come</span>'}<span class="cap"></span><span class="sub"></span>`;
-    b.querySelector(".cap").textContent = item.title;
-    const sub = b.querySelector(".sub");
-    if (/^\[.*\]$/.test(item.sub)) { sub.innerHTML = '<span class="ph"></span>'; sub.firstChild.textContent = item.sub; }
-    else sub.textContent = item.sub;
-    b.setAttribute("aria-label", "View larger: " + item.title);
+    b.innerHTML = `<span class="thumb"><img src="assets/photos/${item.src}-sm.jpg" loading="lazy" alt=""></span><span class="cap"></span>`;
+    b.querySelector("img").alt = item.alt;
+    b.querySelector(".cap").textContent = item.caption;
+    b.setAttribute("aria-label", "View larger: " + item.caption);
     b.addEventListener("click", () => {
-      document.getElementById("dlg-img").innerHTML = media;
-      document.getElementById("dlg-cap").textContent = item.title + (/^\[/.test(item.sub) ? "" : " · " + item.sub);
+      dlgImg.innerHTML = "";
+      const img = document.createElement("img");
+      img.src = `assets/photos/${item.src}.jpg`;
+      img.alt = item.alt;
+      dlgImg.appendChild(img);
+      document.getElementById("dlg-cap").textContent = item.caption;
       dlg.showModal();
     });
     grid.appendChild(b);
@@ -1132,15 +1386,16 @@ document.getElementById("dlg-close").addEventListener("click", () => dlg.close()
 dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
 
 /* ---------- Page switching ---------- */
-const VIEWS = ["home", "book", "events", "parking", "history", "contact"];
-const ALIASES = { info: "book", hire: "book", gallery: "events", directions: "parking" };
+const VIEWS = ["home", "book", "terms", "events", "parking", "history", "contact"];
+const ALIASES = { info: "book", hire: "book", "hire-terms": "terms", gallery: "events", directions: "parking" };
+const NAV_FOR = { terms: "book" };
 function route() {
   let r = (location.hash || "#home").slice(1).toLowerCase();
   r = ALIASES[r] || r;
   if (!VIEWS.includes(r)) r = "home";
   VIEWS.forEach(v => (document.getElementById("view-" + v).hidden = v !== r));
   document.querySelectorAll(".site-nav a").forEach(a => {
-    if (a.getAttribute("href") === "#" + r) a.setAttribute("aria-current", "page");
+    if (a.getAttribute("href") === "#" + (NAV_FOR[r] || r)) a.setAttribute("aria-current", "page");
     else a.removeAttribute("aria-current");
   });
   document.title = document.getElementById("view-" + r).dataset.title;
@@ -1187,13 +1442,14 @@ document.querySelectorAll("[data-copy-page]").forEach(btn => {
 /* ---------- Enquiry form ---------- */
 const form = document.getElementById("enquiry");
 const statusEl = document.getElementById("f-status");
+
 form.addEventListener("submit", async e => {
   e.preventDefault();
   statusEl.className = "status";
   const data = Object.fromEntries(new FormData(form).entries());
   const missing = [];
   if (!data.name.trim()) missing.push("your name");
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email.trim())) missing.push("a valid email address");
+  if (!data.contact.trim()) missing.push("how you’d like us to get back to you");
   if (!data.message.trim()) missing.push("a message");
   if (missing.length) {
     statusEl.classList.add("err");
@@ -1201,28 +1457,34 @@ form.addEventListener("submit", async e => {
     return;
   }
   if (data._honey) return;
+  const payload = {
+    _subject: "Website enquiry: " + data.topic,
+    _template: "table",
+    Name: data.name.trim(),
+    "Get back to them by": data.contact.trim()
+  };
+  const emailInContact = data.contact.match(/[^\s@,;]+@[^\s@,;]+\.[^\s@,;]+/);
+  if (emailInContact) payload._replyto = emailInContact[0];
+  payload.Topic = data.topic;
+  payload["Date in mind"] = data.date || "Not given";
+  payload.Message = data.message.trim();
+
   const btn = document.getElementById("f-send");
   btn.disabled = true; btn.textContent = "Sending…";
   try {
     const res = await fetch(SITE.formEndpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({
-        _subject: "Website enquiry: " + data.topic,
-        _template: "table",
-        _replyto: data.email,
-        Name: data.name, Email: data.email, Phone: data.phone || "Not given",
-        Topic: data.topic, "Date in mind": data.date || "Not given", Message: data.message
-      })
+      body: JSON.stringify(payload)
     });
     const out = await res.json().catch(() => ({}));
     if (!res.ok || String(out.success) === "false") throw new Error("Send failed");
     form.reset();
     statusEl.classList.add("ok");
-    statusEl.textContent = "Thank you, " + data.name.trim().split(" ")[0] + ". Your message has been sent to the hall committee. We’ll reply by email.";
+    statusEl.textContent = "Thank you, " + data.name.trim().split(" ")[0] + ". Your message has been sent to the hall committee, and someone will get back to you soon.";
   } catch (err) {
     statusEl.classList.add("err");
-    statusEl.textContent = "Your message couldn’t be sent just now. Please email us at " + SITE.email + " instead.";
+    statusEl.textContent = "Your message couldn’t be sent just now. Please email us at " + SITE.email + ", or speak to a committee member.";
   } finally {
     btn.disabled = false; btn.textContent = "Send message";
   }
