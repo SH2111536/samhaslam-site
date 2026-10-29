@@ -472,19 +472,6 @@ dialog .dlg-img > * { width: 100%; height: auto; max-height: 75vh; object-fit: c
 .terms-cols > div { background: var(--surface); border: 1px solid var(--line); padding: 0.9rem 1.1rem; }
 .terms-cols ul { margin: 0; padding-left: 1.2rem; }
 
-/* ---------- Contact options ---------- */
-fieldset.choice { border: 0; padding: 0; margin: 0; min-width: 0; }
-fieldset.choice legend { font-weight: 700; padding: 0; margin-bottom: 0.4rem; }
-.choices { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.5rem; }
-.choice-opt {
-  display: flex; align-items: center; gap: 0.55rem;
-  font-weight: 700; cursor: pointer;
-  background: var(--bg); border: 2px solid var(--line); border-radius: 4px;
-  padding: 0.65rem 0.75rem;
-}
-.choice-opt input { width: 1.2rem; height: 1.2rem; margin: 0; accent-color: var(--plum); flex: none; }
-.choice-opt:has(input:checked) { border-color: var(--plum); background: color-mix(in srgb, var(--plum) 10%, var(--bg)); }
-.choice-opt:has(input:focus-visible) { outline: 3px solid var(--amber); outline-offset: 2px; }
 
 /* ---------- History ---------- */
 .history { display: grid; grid-template-columns: minmax(0, 1fr) 18rem; gap: 3rem; align-items: start; }
@@ -556,7 +543,6 @@ textarea { min-height: 9rem; resize: vertical; }
   .aside-card, .timeline { position: static; }
   .gallery, .gallery-feature { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .park-grid, .rooms { grid-template-columns: minmax(0, 1fr); }
-  .choices { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 36rem) {
   body { font-size: 1.0625rem; }
@@ -1198,28 +1184,10 @@ textarea { min-height: 9rem; resize: vertical; }
           <input id="f-name" name="name" autocomplete="name" required>
         </div>
 
-        <fieldset class="field choice">
-          <legend>How would you like us to get back to you?</legend>
-          <div class="choices">
-            <label class="choice-opt"><input type="radio" name="contactBy" id="f-by-email" value="Email"> Email</label>
-            <label class="choice-opt"><input type="radio" name="contactBy" id="f-by-phone" value="Phone call"> Phone call</label>
-            <label class="choice-opt"><input type="radio" name="contactBy" id="f-by-text" value="Text message"> Text message</label>
-            <label class="choice-opt"><input type="radio" name="contactBy" id="f-by-person" value="In person"> In person</label>
-          </div>
-        </fieldset>
-
-        <div class="field" data-for="Email" hidden>
-          <label for="f-email">Your email address</label>
-          <input id="f-email" name="email" type="email" autocomplete="email">
-        </div>
-        <div class="field" data-for="Phone call|Text message" hidden>
-          <label for="f-phone">Your phone number</label>
-          <input id="f-phone" name="phone" type="tel" autocomplete="tel">
-        </div>
-        <div class="field" data-for="In person" hidden>
-          <label for="f-where">Where can we find you?</label>
-          <input id="f-where" name="where" autocomplete="street-address">
-          <p class="form-note">Your address, or when you’re usually at the hall. It’s a small village, so a committee member will pop round or catch you there.</p>
+        <div class="field">
+          <label for="f-contact">How would you like us to get back to you?</label>
+          <textarea id="f-contact" name="contact" rows="2" aria-describedby="f-contact-hint" required></textarea>
+          <p class="form-note" id="f-contact-hint">For example, your email address or phone number, or your address if you’d like a committee member to pop round.</p>
         </div>
 
         <div class="field-row">
@@ -1250,10 +1218,6 @@ textarea { min-height: 9rem; resize: vertical; }
         <div><button class="btn btn-primary" type="submit" id="f-send">Send message</button></div>
         <p class="status" id="f-status" role="status" aria-live="polite"></p>
       </form>
-      <div class="callout">
-        <h3>Not online?</h3>
-        <p>That’s fine. You can speak to any committee member in person, or ask a friend or family member to send this form for you.</p>
-      </div>
     </div>
 
     <aside class="aside-card" aria-labelledby="ct-glance">
@@ -1478,33 +1442,14 @@ document.querySelectorAll("[data-copy-page]").forEach(btn => {
 /* ---------- Enquiry form ---------- */
 const form = document.getElementById("enquiry");
 const statusEl = document.getElementById("f-status");
-const DETAIL = {
-  "Email": { input: "f-email", ask: "your email address", check: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
-  "Phone call": { input: "f-phone", ask: "your phone number", check: v => v.replace(/\D/g, "").length >= 6 },
-  "Text message": { input: "f-phone", ask: "your phone number", check: v => v.replace(/\D/g, "").length >= 6 },
-  "In person": { input: "f-where", ask: "where we can find you", check: v => v.length > 0 }
-};
-function showContactField() {
-  const by = (form.querySelector('input[name="contactBy"]:checked') || {}).value || "";
-  form.querySelectorAll("[data-for]").forEach(f => {
-    f.hidden = !f.dataset.for.split("|").includes(by);
-  });
-}
-form.querySelectorAll('input[name="contactBy"]').forEach(r => r.addEventListener("change", showContactField));
-showContactField();
 
 form.addEventListener("submit", async e => {
   e.preventDefault();
   statusEl.className = "status";
   const data = Object.fromEntries(new FormData(form).entries());
-  const by = data.contactBy || "";
   const missing = [];
   if (!data.name.trim()) missing.push("your name");
-  if (!by) missing.push("how you’d like us to get back to you");
-  else {
-    const d = DETAIL[by];
-    if (!d.check(document.getElementById(d.input).value.trim())) missing.push(d.ask);
-  }
+  if (!data.contact.trim()) missing.push("how you’d like us to get back to you");
   if (!data.message.trim()) missing.push("a message");
   if (missing.length) {
     statusEl.classList.add("err");
@@ -1516,11 +1461,10 @@ form.addEventListener("submit", async e => {
     _subject: "Website enquiry: " + data.topic,
     _template: "table",
     Name: data.name.trim(),
-    "Get back to them by": by
+    "Get back to them by": data.contact.trim()
   };
-  if (by === "Email") { payload.Email = data.email.trim(); payload._replyto = data.email.trim(); }
-  if (by === "Phone call" || by === "Text message") payload.Phone = data.phone.trim();
-  if (by === "In person") payload["Where to find them"] = data.where.trim();
+  const emailInContact = data.contact.match(/[^\s@,;]+@[^\s@,;]+\.[^\s@,;]+/);
+  if (emailInContact) payload._replyto = emailInContact[0];
   payload.Topic = data.topic;
   payload["Date in mind"] = data.date || "Not given";
   payload.Message = data.message.trim();
@@ -1536,10 +1480,8 @@ form.addEventListener("submit", async e => {
     const out = await res.json().catch(() => ({}));
     if (!res.ok || String(out.success) === "false") throw new Error("Send failed");
     form.reset();
-    showContactField();
-    const how = { "Email": "by email", "Phone call": "by phone", "Text message": "by text", "In person": "in person" }[by];
     statusEl.classList.add("ok");
-    statusEl.textContent = "Thank you, " + data.name.trim().split(" ")[0] + ". Your message has been sent to the hall committee, and someone will get back to you " + how + ".";
+    statusEl.textContent = "Thank you, " + data.name.trim().split(" ")[0] + ". Your message has been sent to the hall committee, and someone will get back to you soon.";
   } catch (err) {
     statusEl.classList.add("err");
     statusEl.textContent = "Your message couldn’t be sent just now. Please email us at " + SITE.email + ", or speak to a committee member.";
