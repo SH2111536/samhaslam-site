@@ -1,0 +1,410 @@
+{
+  "slug": "odd-body-parts",
+  "title": "Odd body parts.",
+  "eyebrow": "Compendium · Holly",
+  "lede": "Three hearts, nine brains, twenty-four eyes, no stomach at all: the animals with the strangest numbers of body parts.",
+  "noun": {
+    "one": "creature",
+    "many": "creatures"
+  },
+  "numerals": "none",
+  "card": {
+    "tag": "Holly · Animals",
+    "title": "Odd body parts",
+    "desc": "Who has three hearts, who has no stomach, and why a centipede never has a hundred legs.",
+    "icon": "bone",
+    "order": 15
+  },
+  "extras": [
+    {
+      "title": "The X-Ray Lab",
+      "desc": "Slide each specimen onto the light box, count the hearts, eyes, legs and teeth, and see if you're right.",
+      "href": "xray-lab/index.html",
+      "source": "body-xray-lab.html"
+    }
+  ],
+  "fields": [
+    {
+      "key": "creature",
+      "label": "Creature",
+      "plural": "creatures",
+      "role": "title",
+      "typeable": true
+    },
+    {
+      "key": "oddity",
+      "label": "Oddity",
+      "plural": "oddities",
+      "role": "subtitle"
+    },
+    {
+      "key": "detail",
+      "label": "Detail",
+      "short": "Detail",
+      "role": "meta"
+    }
+  ],
+  "hideable": [
+    "creature",
+    "oddity"
+  ],
+  "questions": [
+    {
+      "from": "oddity",
+      "to": "creature",
+      "ask": "Who has this?"
+    },
+    {
+      "from": "creature",
+      "to": "oddity",
+      "ask": "What's odd about it?"
+    }
+  ],
+  "match": [
+    {
+      "left": "creature",
+      "right": "oddity"
+    }
+  ],
+  "groups": [
+    {
+      "key": "hearts",
+      "label": "Hearts and brains",
+      "short": "Hearts and brains",
+      "note": "Octopus, squid, worm, leech and hagfish."
+    },
+    {
+      "key": "stomachs",
+      "label": "Stomachs",
+      "short": "Stomachs",
+      "note": "From thirteen chambers to none."
+    },
+    {
+      "key": "eyes",
+      "label": "Eyes",
+      "short": "Eyes",
+      "note": "Three, five, twenty-four, or one per arm."
+    },
+    {
+      "key": "legs",
+      "label": "Legs",
+      "short": "Legs",
+      "note": "The standard counts, and the record-breakers."
+    },
+    {
+      "key": "teeth",
+      "label": "Teeth",
+      "short": "Teeth",
+      "note": "Twenty-five thousand, a hundred, or one."
+    },
+    {
+      "key": "necks",
+      "label": "Necks",
+      "short": "Necks",
+      "note": "Seven neck bones, with two exceptions."
+    }
+  ],
+  "items": [
+    {
+      "creature": "Octopus",
+      "oddity": "3 hearts and 9 brains",
+      "detail": "One brain in the head and a cluster of nerves in each of its eight arms",
+      "group": "hearts",
+      "accept": {
+        "creature": [
+          "Octopuses",
+          "Octopi"
+        ]
+      },
+      "hook": "Two hearts pump blood through the gills, one round the body; its blood is blue."
+    },
+    {
+      "creature": "Squid",
+      "oddity": "3 hearts",
+      "detail": "Like the octopus: two for the gills, one for the body",
+      "group": "hearts",
+      "accept": {
+        "creature": [
+          "Squids"
+        ]
+      },
+      "hook": "Three hearts, but only the octopus has the nine brains."
+    },
+    {
+      "creature": "Earthworm",
+      "oddity": "5 pairs of aortic arches",
+      "detail": "Often called its 'five hearts': muscly loops that pump its blood",
+      "group": "hearts",
+      "accept": {
+        "creature": [
+          "Earthworms",
+          "Worm"
+        ]
+      }
+    },
+    {
+      "creature": "Leech",
+      "oddity": "32 brains and up to 10 stomachs",
+      "detail": "A bundle of nerves in each of its 32 segments, and a crop divided into pouches",
+      "group": "hearts",
+      "accept": {
+        "creature": [
+          "Leeches"
+        ]
+      },
+      "hook": "Thirty-two brains, ten stomachs, and still it only thinks about blood."
+    },
+    {
+      "creature": "Hagfish",
+      "oddity": "4 hearts and 1 nostril",
+      "detail": null,
+      "group": "hearts",
+      "accept": {
+        "creature": [
+          "Hagfishes"
+        ]
+      },
+      "hook": "It can also tie itself in a knot and fill a bucket with slime."
+    },
+    {
+      "creature": "Ruminants",
+      "oddity": "4 stomach chambers",
+      "detail": "Cows, sheep, goats and deer: they chew the cud",
+      "group": "stomachs",
+      "accept": {
+        "creature": [
+          "Cow",
+          "Cows",
+          "Ruminant"
+        ]
+      },
+      "hook": "Ruminate: to chew something over, as a cow chews its cud."
+    },
+    {
+      "creature": "Camels and llamas",
+      "oddity": "3 stomach chambers",
+      "detail": null,
+      "group": "stomachs",
+      "accept": {
+        "creature": [
+          "Camel",
+          "Camels",
+          "Llama",
+          "Llamas"
+        ]
+      }
+    },
+    {
+      "creature": "Baird's beaked whale",
+      "oddity": "13 stomach chambers",
+      "detail": "The most of any animal",
+      "group": "stomachs",
+      "accept": {
+        "creature": [
+          "Bairds beaked whale",
+          "Baird beaked whale"
+        ]
+      }
+    },
+    {
+      "creature": "Platypus",
+      "oddity": "No stomach",
+      "detail": "Its gullet joins straight onto its intestine",
+      "group": "stomachs",
+      "hook": "The odd one out on every list: it lays eggs, has a duck's bill and no stomach at all."
+    },
+    {
+      "creature": "Tuatara",
+      "oddity": "A third eye",
+      "detail": "A 'parietal eye' on top of its head, covered by skin and scales in adults",
+      "group": "eyes",
+      "hook": "A New Zealand reptile that isn't a lizard: the last of a line as old as the dinosaurs."
+    },
+    {
+      "creature": "Bees, wasps and mantises",
+      "oddity": "5 eyes",
+      "detail": "Two big compound eyes and three small simple ones (ocelli)",
+      "group": "eyes",
+      "accept": {
+        "creature": [
+          "Bee",
+          "Bees",
+          "Wasp",
+          "Wasps",
+          "Mantis",
+          "Mantises",
+          "Praying mantis"
+        ]
+      }
+    },
+    {
+      "creature": "Box jellyfish",
+      "oddity": "24 eyes",
+      "detail": "In four clusters of six",
+      "group": "eyes",
+      "accept": {
+        "creature": [
+          "Box jelly"
+        ]
+      },
+      "hook": "Twenty-four eyes but no brain: see Nature's extremes for its venom."
+    },
+    {
+      "creature": "Starfish",
+      "oddity": "An eye at the tip of every arm",
+      "detail": null,
+      "group": "eyes",
+      "accept": {
+        "creature": [
+          "Starfishes",
+          "Sea star",
+          "Sea stars"
+        ]
+      }
+    },
+    {
+      "creature": "Eumillipes persephone",
+      "oddity": "1,306 legs: the most of any animal",
+      "detail": "An Australian millipede found deep underground in 2021",
+      "group": "legs",
+      "accept": {
+        "creature": [
+          "Millipede",
+          "Millipedes"
+        ]
+      },
+      "hook": "Persephone, queen of the underworld: it lives 60 m down."
+    },
+    {
+      "creature": "Centipedes",
+      "oddity": "Never exactly 100 legs",
+      "detail": "They always have an odd number of pairs of legs, so 50 pairs is impossible",
+      "group": "legs",
+      "accept": {
+        "creature": [
+          "Centipede"
+        ]
+      }
+    },
+    {
+      "creature": "Insects",
+      "oddity": "6 legs",
+      "detail": null,
+      "group": "legs",
+      "accept": {
+        "creature": [
+          "Insect"
+        ]
+      }
+    },
+    {
+      "creature": "Arachnids",
+      "oddity": "8 legs",
+      "detail": "Spiders, scorpions, mites and ticks",
+      "group": "legs",
+      "accept": {
+        "creature": [
+          "Arachnid",
+          "Spiders",
+          "Spider"
+        ]
+      }
+    },
+    {
+      "creature": "Decapods",
+      "oddity": "10 legs",
+      "detail": "Crabs, lobsters, prawns and shrimps",
+      "group": "legs",
+      "accept": {
+        "creature": [
+          "Decapod",
+          "Crabs",
+          "Lobsters"
+        ]
+      },
+      "hook": "Greek deca, ten, and pous, foot: as in decade."
+    },
+    {
+      "creature": "Woodlice",
+      "oddity": "14 legs",
+      "detail": null,
+      "group": "legs",
+      "accept": {
+        "creature": [
+          "Woodlouse"
+        ]
+      },
+      "hook": "Not insects at all: they're crustaceans, cousins of crabs."
+    },
+    {
+      "creature": "Garden snail",
+      "oddity": "14,000 to 25,000 teeth",
+      "detail": "Microscopic, on a ribbon-like tongue called a radula",
+      "group": "teeth",
+      "accept": {
+        "creature": [
+          "Snail",
+          "Snails"
+        ]
+      }
+    },
+    {
+      "creature": "Giant armadillo",
+      "oddity": "Up to 100 teeth",
+      "detail": "The most of any land mammal",
+      "group": "teeth",
+      "accept": {
+        "creature": [
+          "Armadillo"
+        ]
+      }
+    },
+    {
+      "creature": "Narwhal",
+      "oddity": "1 giant tooth",
+      "detail": "Its tusk, up to 3 m long, is a tooth growing out through its lip",
+      "group": "teeth",
+      "accept": {
+        "creature": [
+          "Narwhals"
+        ]
+      },
+      "hook": "The 'unicorn of the sea': tusks were once sold as unicorn horns."
+    },
+    {
+      "creature": "Most mammals",
+      "oddity": "7 neck bones",
+      "detail": "Even a giraffe has only seven, each one very long",
+      "group": "necks",
+      "accept": {
+        "creature": [
+          "Mammals",
+          "Giraffe"
+        ]
+      },
+      "hook": "Mouse or giraffe, the same seven."
+    },
+    {
+      "creature": "Manatee",
+      "oddity": "6 neck bones",
+      "detail": null,
+      "group": "necks",
+      "accept": {
+        "creature": [
+          "Manatees"
+        ]
+      }
+    },
+    {
+      "creature": "Sloths",
+      "oddity": "5 to 10 neck bones",
+      "detail": "Two-toed sloths have five to seven, three-toed sloths eight to ten",
+      "group": "necks",
+      "accept": {
+        "creature": [
+          "Sloth"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,586 @@
+{
+  "slug": "animal-young",
+  "title": "Animal young.",
+  "eyebrow": "Compendium · Holly",
+  "lede": "What the babies are called, from calves and cubs to cygnets, puggles and porcupettes: 69 animals and their young.",
+  "noun": {
+    "one": "animal",
+    "many": "animals"
+  },
+  "numerals": "none",
+  "card": {
+    "tag": "Holly · Animals",
+    "title": "Animal young",
+    "desc": "Calf, cub, cria, cygnet: what the babies of nearly seventy animals are called.",
+    "icon": "baby",
+    "order": 13
+  },
+  "extras": [
+    {
+      "title": "The Nursery Storybook",
+      "desc": "A picture book of mums and babies. Turn the pages, then pair each baby with its mother.",
+      "href": "storybook/index.html",
+      "source": "animal-young-storybook.html"
+    }
+  ],
+  "fields": [
+    {
+      "key": "animal",
+      "label": "Animal",
+      "plural": "animals",
+      "role": "title",
+      "typeable": true
+    },
+    {
+      "key": "young",
+      "label": "Young",
+      "plural": "young",
+      "role": "subtitle",
+      "typeable": true
+    },
+    {
+      "key": "also",
+      "label": "Also",
+      "short": "Also",
+      "role": "meta"
+    }
+  ],
+  "hideable": [
+    "animal",
+    "young"
+  ],
+  "questions": [
+    {
+      "from": "animal",
+      "to": "young",
+      "ask": "What's its baby called?"
+    },
+    {
+      "from": "young",
+      "to": "animal",
+      "ask": "Whose baby is this?"
+    }
+  ],
+  "match": [
+    {
+      "left": "animal",
+      "right": "young"
+    }
+  ],
+  "groups": [
+    {
+      "key": "mammals",
+      "label": "Mammals",
+      "short": "Mammals",
+      "note": "Calves, pups, cubs and kits: most of the list."
+    },
+    {
+      "key": "pouches",
+      "label": "Pouches and eggs",
+      "short": "Pouches and eggs",
+      "note": "Marsupials have joeys; the egg-laying platypus and echidna have puggles."
+    },
+    {
+      "key": "birds",
+      "label": "Birds",
+      "short": "Birds",
+      "note": "Chick does for most, but plenty have names of their own."
+    },
+    {
+      "key": "others",
+      "label": "Fish, frogs and others",
+      "short": "Fish, frogs and others",
+      "note": "From the water, and a spider."
+    }
+  ],
+  "groupLabel": "Kind",
+  "filters": [
+    {
+      "key": "young",
+      "label": "Baby name"
+    }
+  ],
+  "items": [
+    {
+      "animal": "Cow",
+      "young": "Calf",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Elephant",
+      "young": "Calf",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Whale",
+      "young": "Calf",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Giraffe",
+      "young": "Calf",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Camel",
+      "young": "Calf",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Rhinoceros",
+      "young": "Calf",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Hippopotamus",
+      "young": "Calf",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Moose",
+      "young": "Calf",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Reindeer",
+      "young": "Calf",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Walrus",
+      "young": "Calf",
+      "also": null,
+      "group": "mammals",
+      "hook": "A calf, not a cub: like whales and elephants, the big beasts have calves."
+    },
+    {
+      "animal": "Dog",
+      "young": "Pup",
+      "also": "Puppy",
+      "group": "mammals",
+      "accept": {
+        "young": [
+          "Puppy"
+        ]
+      }
+    },
+    {
+      "animal": "Wolf",
+      "young": "Pup",
+      "also": "Cub",
+      "group": "mammals",
+      "accept": {
+        "young": [
+          "Cub"
+        ]
+      }
+    },
+    {
+      "animal": "Seal",
+      "young": "Pup",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Shark",
+      "young": "Pup",
+      "also": null,
+      "group": "others"
+    },
+    {
+      "animal": "Bat",
+      "young": "Pup",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Rat",
+      "young": "Pup",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Mouse",
+      "young": "Pup",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Otter",
+      "young": "Pup",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Guinea pig",
+      "young": "Pup",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Stingray",
+      "young": "Pup",
+      "also": null,
+      "group": "others"
+    },
+    {
+      "animal": "Bear",
+      "young": "Cub",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Lion",
+      "young": "Cub",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Tiger",
+      "young": "Cub",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Leopard",
+      "young": "Cub",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Fox",
+      "young": "Cub",
+      "also": "Kit",
+      "group": "mammals",
+      "accept": {
+        "young": [
+          "Kit"
+        ]
+      }
+    },
+    {
+      "animal": "Badger",
+      "young": "Cub",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Cat",
+      "young": "Kitten",
+      "also": null,
+      "group": "mammals",
+      "accept": {
+        "young": [
+          "Kit"
+        ]
+      }
+    },
+    {
+      "animal": "Rabbit",
+      "young": "Kit",
+      "also": "Kitten",
+      "group": "mammals",
+      "accept": {
+        "young": [
+          "Kitten"
+        ]
+      }
+    },
+    {
+      "animal": "Skunk",
+      "young": "Kit",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Ferret",
+      "young": "Kit",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Beaver",
+      "young": "Kit",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Squirrel",
+      "young": "Kit",
+      "also": "Kitten",
+      "group": "mammals",
+      "accept": {
+        "young": [
+          "Kitten"
+        ]
+      }
+    },
+    {
+      "animal": "Horse",
+      "young": "Foal",
+      "also": "Colt (male), filly (female)",
+      "group": "mammals",
+      "accept": {
+        "young": [
+          "Colt",
+          "Filly"
+        ]
+      },
+      "hook": "A colt is a young male and a filly a young female; both are foals until they're weaned."
+    },
+    {
+      "animal": "Zebra",
+      "young": "Foal",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Donkey",
+      "young": "Foal",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Penguin",
+      "young": "Chick",
+      "also": null,
+      "group": "birds"
+    },
+    {
+      "animal": "Ostrich",
+      "young": "Chick",
+      "also": null,
+      "group": "birds"
+    },
+    {
+      "animal": "Chicken",
+      "young": "Chick",
+      "also": null,
+      "group": "birds"
+    },
+    {
+      "animal": "Most birds",
+      "young": "Chick",
+      "also": null,
+      "group": "birds"
+    },
+    {
+      "animal": "Goat",
+      "young": "Kid",
+      "also": null,
+      "group": "mammals",
+      "hook": "Hence 'kid gloves': soft leather from young goats."
+    },
+    {
+      "animal": "Sheep",
+      "young": "Lamb",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Deer",
+      "young": "Fawn",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Pig",
+      "young": "Piglet",
+      "also": "Shoat (once weaned)",
+      "group": "mammals",
+      "accept": {
+        "young": [
+          "Shoat"
+        ]
+      }
+    },
+    {
+      "animal": "Duck",
+      "young": "Duckling",
+      "also": null,
+      "group": "birds"
+    },
+    {
+      "animal": "Goose",
+      "young": "Gosling",
+      "also": null,
+      "group": "birds"
+    },
+    {
+      "animal": "Alpaca",
+      "young": "Cria",
+      "also": null,
+      "group": "mammals",
+      "hook": "Spanish cría, 'baby': alpacas and llamas come from South America."
+    },
+    {
+      "animal": "Llama",
+      "young": "Cria",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Hare",
+      "young": "Leveret",
+      "also": null,
+      "group": "mammals",
+      "hook": "French lièvre, a hare, plus -et for 'little': a little hare."
+    },
+    {
+      "animal": "Platypus",
+      "young": "Puggle",
+      "also": null,
+      "group": "pouches",
+      "hook": "Platypus and echidna are the only mammals that lay eggs; what hatches is a puggle."
+    },
+    {
+      "animal": "Echidna",
+      "young": "Puggle",
+      "also": null,
+      "group": "pouches"
+    },
+    {
+      "animal": "Kangaroo",
+      "young": "Joey",
+      "also": null,
+      "group": "pouches",
+      "hook": "Every marsupial baby is a joey: if it grows up in a pouch, it's a joey."
+    },
+    {
+      "animal": "Koala",
+      "young": "Joey",
+      "also": null,
+      "group": "pouches"
+    },
+    {
+      "animal": "Possum",
+      "young": "Joey",
+      "also": null,
+      "group": "pouches"
+    },
+    {
+      "animal": "Wombat",
+      "young": "Joey",
+      "also": null,
+      "group": "pouches"
+    },
+    {
+      "animal": "Swan",
+      "young": "Cygnet",
+      "also": null,
+      "group": "birds",
+      "hook": "Latin cygnus, a swan: the constellation Cygnus is the Swan."
+    },
+    {
+      "animal": "Pigeon",
+      "young": "Squab",
+      "also": null,
+      "group": "birds"
+    },
+    {
+      "animal": "Dove",
+      "young": "Squab",
+      "also": null,
+      "group": "birds"
+    },
+    {
+      "animal": "Eel",
+      "young": "Elver",
+      "also": null,
+      "group": "others"
+    },
+    {
+      "animal": "Porcupine",
+      "young": "Porcupette",
+      "also": null,
+      "group": "mammals",
+      "hook": "Porcupine plus -ette for 'little', like a kitchenette."
+    },
+    {
+      "animal": "Turkey",
+      "young": "Poult",
+      "also": null,
+      "group": "birds",
+      "hook": "From the same root as poultry."
+    },
+    {
+      "animal": "Hawk",
+      "young": "Eyas",
+      "also": null,
+      "group": "birds",
+      "hook": "Once 'a nyas', from French niais, fresh from the nest; the n slid across to make 'an eyas'."
+    },
+    {
+      "animal": "Falcon",
+      "young": "Eyas",
+      "also": null,
+      "group": "birds"
+    },
+    {
+      "animal": "Jellyfish",
+      "young": "Ephyra",
+      "also": null,
+      "group": "others"
+    },
+    {
+      "animal": "Owl",
+      "young": "Owlet",
+      "also": null,
+      "group": "birds"
+    },
+    {
+      "animal": "Fish",
+      "young": "Fry",
+      "also": "Fingerling (a bit bigger)",
+      "group": "others",
+      "accept": {
+        "young": [
+          "Fingerling"
+        ]
+      }
+    },
+    {
+      "animal": "Frog",
+      "young": "Tadpole",
+      "also": "Polliwog",
+      "group": "others",
+      "accept": {
+        "young": [
+          "Polliwog"
+        ]
+      }
+    },
+    {
+      "animal": "Toad",
+      "young": "Tadpole",
+      "also": "Polliwog",
+      "group": "others",
+      "accept": {
+        "young": [
+          "Polliwog"
+        ]
+      }
+    },
+    {
+      "animal": "Wild boar",
+      "young": "Squeaker",
+      "also": null,
+      "group": "mammals"
+    },
+    {
+      "animal": "Spider",
+      "young": "Spiderling",
+      "also": null,
+      "group": "others"
+    }
+  ]
+}

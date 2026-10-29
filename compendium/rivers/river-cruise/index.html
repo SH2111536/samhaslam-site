@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  if (sessionStorage.getItem("sh-authed") !== "1") {
+    window.location.href = "../../../index.html";
+  }
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Grand River Cruise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Limelight&family=Josefin+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f4ead5;
+    --navy: #14233c;
+    --teal: #1f7a7a;
+    --coral: #e2674a;
+    --mustard: #e8b33a;
+    --ink: #14233c;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body {
+    margin: 0; min-height: 100vh; color: var(--ink); font-family: "Josefin Sans", system-ui, sans-serif;
+    background: repeating-linear-gradient(90deg, #14233c08 0 1px, transparent 1px 40px), var(--cream);
+  }
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 22px 16px 56px; }
+  header.top { text-align: center; margin-bottom: 18px; }
+  header.top .line { font-weight: 700; letter-spacing: 6px; font-size: 12px; color: var(--coral); }
+  header.top h1 { font-family: "Limelight", serif; font-weight: 400; font-size: clamp(30px, 7vw, 56px); margin: 4px 0; letter-spacing: 2px; }
+  header.top p { margin: 0; font-size: 15px; letter-spacing: 1px; }
+
+  .routes { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 16px 0 22px; }
+  .ticket {
+    font: 700 13px "Josefin Sans", sans-serif; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+    color: var(--cream); background: var(--navy); border: none; padding: 10px 16px 8px;
+    clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 8px 100%, 0 50%);
+  }
+  .ticket[aria-pressed="true"] { background: var(--coral); }
+  .ticket:disabled { opacity: 0.4; cursor: default; }
+  .ticket.light { background: var(--mustard); color: var(--navy); }
+
+  .deck { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 22px; align-items: start; }
+  .poster {
+    position: relative; aspect-ratio: 3 / 4; border: 10px solid var(--cream); outline: 2px solid var(--navy);
+    box-shadow: 10px 10px 0 var(--navy); overflow: hidden; background: var(--sky2);
+  }
+  .poster svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .poster .head { position: absolute; top: 0; left: 0; right: 0; padding: 16px 16px 0; text-align: center; color: var(--cream); }
+  .poster .head .via { font-weight: 700; letter-spacing: 5px; font-size: 11px; opacity: 0.9; }
+  .poster .head .dest { font-family: "Limelight", serif; font-size: clamp(22px, 4.4vw, 34px); line-height: 1.05; margin-top: 6px; text-shadow: 2px 2px 0 #14233c, 0 0 14px #14233caa; }
+  .poster .foot { position: absolute; bottom: 0; left: 0; right: 0; background: var(--navy); color: var(--cream); padding: 12px 14px 10px; text-align: center; }
+  .poster .foot .river { font-family: "Limelight", serif; font-size: clamp(22px, 4.8vw, 34px); letter-spacing: 3px; }
+  .poster .foot .river.unknown { letter-spacing: 8px; color: var(--mustard); }
+  .stamp {
+    position: absolute; right: 8%; top: 38%; transform: rotate(-14deg) scale(0); transition: transform 0.35s cubic-bezier(.2,1.6,.4,1);
+    border: 4px double var(--coral); color: var(--coral); background: #f4ead5dd; font: 700 15px "Josefin Sans", sans-serif; letter-spacing: 3px;
+    padding: 8px 12px 6px; text-align: center; border-radius: 6px;
+  }
+  .stamp.show { transform: rotate(-14deg) scale(1); }
+  .stamp.missed { border-color: var(--navy); color: var(--navy); }
+
+  .desk { background: #fffaf0; border: 2px solid var(--navy); padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+  .desk .leg { font-weight: 700; letter-spacing: 3px; font-size: 12px; color: var(--teal); text-transform: uppercase; }
+  .desk .clue { font-size: 21px; line-height: 1.35; }
+  .desk .detail { font-size: 15px; line-height: 1.5; color: #14233ccc; }
+  .answer { display: flex; gap: 8px; }
+  .answer input { flex: 1; min-width: 0; font: 600 20px "Josefin Sans", sans-serif; padding: 10px 12px 7px; border: 2px solid var(--navy); background: var(--cream); color: var(--navy); }
+  .answer input:focus { outline: 3px solid var(--mustard); }
+  .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .opts .ticket { clip-path: none; text-align: center; }
+  .opts .ticket.right { background: var(--teal); }
+  .opts .ticket.wrong { background: var(--coral); }
+  .msg { min-height: 48px; font-size: 16px; line-height: 1.5; }
+  .msg b { color: var(--teal); }
+  .msg b.no { color: var(--coral); }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .trunk { margin-top: 26px; border-top: 3px solid var(--navy); padding-top: 16px; }
+  .trunk h2 { font-family: "Limelight", serif; font-weight: 400; margin: 0 0 4px; font-size: 24px; }
+  .trunk p { margin: 0 0 12px; font-size: 14px; }
+  .labels { display: flex; flex-wrap: wrap; gap: 10px; }
+  .label {
+    font: 700 12px "Josefin Sans", sans-serif; letter-spacing: 2px; text-transform: uppercase; padding: 10px 14px 7px; border-radius: 40px;
+    border: 2px dashed currentColor; transform: rotate(var(--r)); background: var(--bg); color: var(--fg);
+  }
+  .label.empty { --bg: transparent; --fg: #14233c44; }
+
+  @media (max-width: 720px) {
+    .deck { grid-template-columns: minmax(0, 1fr); }
+    .poster { max-width: 380px; width: 100%; margin: 0 auto; }
+  }
+</style>
+</head>
+<body>
+<div style="position:relative;z-index:60;padding:10px 16px;background:#0b0d12;border-bottom:1px solid rgba(255,255,255,0.08)"><a href="../index.html" style="display:inline-flex;align-items:center;gap:6px;color:#aab0bd;font:500 13px/1.2 system-ui,-apple-system,'Segoe UI',sans-serif;text-decoration:none">&larr; Famous rivers</a></div>
+<div class="wrap">
+  <header class="top">
+    <div class="line">FIRST CLASS · ALL RIVERS · ALL SEASONS</div>
+    <h1>The Grand River Cruise</h1>
+    <p>Name the river at each port to collect its luggage label.</p>
+  </header>
+
+  <nav class="routes" id="routes" aria-label="Choose a voyage"></nav>
+
+  <div class="deck">
+    <div class="poster" id="poster"></div>
+    <div class="desk">
+      <div class="leg" id="leg"></div>
+      <div class="clue" id="clue"></div>
+      <div id="answer-area"></div>
+      <div class="msg" id="msg" aria-live="polite"></div>
+      <div class="detail" id="detail"></div>
+    </div>
+  </div>
+
+  <section class="trunk">
+    <h2>The steamer trunk</h2>
+    <p id="trunk-count"></p>
+    <div class="labels" id="labels"></div>
+  </section>
+</div>
+
+<script>
+  const TOPIC = {  "slug": "rivers",  "title": "Famous rivers.",  "eyebrow": "Compendium · Holly",  "lede": "The record-breakers, the rivers of the world's capitals and Britain's cities, and a few from history and myth, down to the five rivers of the Greek underworld.",  "noun": {   "one": "river",   "many": "rivers"  },  "numerals": "none",  "card": {   "tag": "Holly · Geography",   "title": "Famous rivers",   "desc": "The longest, the deepest, the rivers of the great cities, and the five rivers of the underworld.",   "icon": "waves",   "order": 16  },  "extras": [   {    "title": "The Grand River Cruise",    "desc": "A vintage travel-poster voyage. Sail from city to city, collecting a poster for every river you name.",    "href": "river-cruise/index.html",    "source": "rivers-cruise.html"   }  ],  "fields": [   {    "key": "river",    "label": "River",    "plural": "rivers",    "role": "title",    "typeable": true   },   {    "key": "known",    "label": "Known for",    "plural": "what they're known for",    "role": "subtitle"   },   {    "key": "length",    "label": "Detail",    "short": "Detail",    "role": "meta"   }  ],  "hideable": [   "river",   "known"  ],  "questions": [   {    "from": "known",    "to": "river",    "ask": "Which river?"   },   {    "from": "river",    "to": "known",    "ask": "What's it known for?"   }  ],  "match": [   {    "left": "river",    "right": "known"   }  ],  "groups": [   {    "key": "world",    "label": "World records",    "short": "World records",    "note": "Longest, largest, deepest, and the one that crosses the most borders."   },   {    "key": "capitals",    "label": "Capital cities",    "short": "Capital cities",    "note": "Which river runs through which capital."   },   {    "key": "uk",    "label": "UK and Ireland",    "short": "UK and Ireland",    "note": "The longest in each country, and the rivers of three great cities."   },   {    "key": "history",    "label": "Odd ones and history",    "short": "Odd ones and history",    "note": "A river running backwards, a canyon, Caesar, and Mesopotamia."   },   {    "key": "myth",    "label": "The Greek underworld",    "short": "The Greek underworld",    "note": "Five rivers of Hades."   }  ],  "items": [   {    "river": "Nile",    "known": "The world's longest river; flows through Cairo and Khartoum",    "length": "About 6,650 km",    "group": "world",    "hook": "The usual answer, though some surveys measure the Amazon as longer. The Blue and White Niles meet at Khartoum."   },   {    "river": "Amazon",    "known": "The largest river by volume",    "length": "About a fifth of all the river water reaching the world's seas",    "group": "world",    "hook": "More water than the next several biggest rivers put together."   },   {    "river": "Congo",    "known": "The deepest river",    "length": "Over 220 m deep in places",    "group": "world"   },   {    "river": "Danube",    "known": "Crosses the most countries (10) and four capitals: Vienna, Bratislava, Budapest and Belgrade",    "length": "About 2,850 km",    "group": "world",    "hook": "Vienna, Bratislava, Budapest, Belgrade: 'Very Brave Bears Bathe'."   },   {    "river": "Yangtze",    "known": "The longest river in Asia",    "length": "About 6,300 km: third longest in the world",    "group": "world",    "accept": {     "river": [      "Yangtse",      "Chang Jiang"     ]    }   },   {    "river": "Seine",    "known": "Paris",    "length": null,    "group": "capitals"   },   {    "river": "Tiber",    "known": "Rome",    "length": null,    "group": "capitals",    "hook": "Romulus and Remus were found on its bank."   },   {    "river": "Thames",    "known": "London; the longest river in England",    "length": "About 346 km",    "group": "capitals",    "hook": "Longest wholly in England; the Severn is longer but starts in Wales."   },   {    "river": "Liffey",    "known": "Dublin",    "length": null,    "group": "capitals"   },   {    "river": "Potomac",    "known": "Washington, D.C.",    "length": null,    "group": "capitals"   },   {    "river": "Tigris",    "known": "Baghdad; with the Euphrates, the river of Mesopotamia",    "length": null,    "group": "capitals"   },   {    "river": "Yamuna",    "known": "New Delhi",    "length": null,    "group": "capitals",    "accept": {     "river": [      "Jamuna"     ]    },    "hook": "It also flows past the Taj Mahal at Agra."   },   {    "river": "Severn",    "known": "The longest river in the UK",    "length": "About 354 km, from Wales to the Bristol Channel",    "group": "uk"   },   {    "river": "Tay",    "known": "The longest river in Scotland",    "length": "About 188 km",    "group": "uk"   },   {    "river": "Shannon",    "known": "The longest river in Ireland",    "length": "About 360 km",    "group": "uk"   },   {    "river": "Mersey",    "known": "Liverpool",    "length": null,    "group": "uk",    "hook": "'Ferry Cross the Mersey'."   },   {    "river": "Tyne",    "known": "Newcastle",    "length": null,    "group": "uk",    "hook": "'The Fog on the Tyne'."   },   {    "river": "Clyde",    "known": "Glasgow",    "length": null,    "group": "uk"   },   {    "river": "Chicago River",    "known": "Flows backwards",    "length": "Engineers reversed it in 1900 to carry the city's sewage away from Lake Michigan",    "group": "history",    "accept": {     "river": [      "Chicago"     ]    }   },   {    "river": "Colorado",    "known": "Carved the Grand Canyon",    "length": null,    "group": "history",    "accept": {     "river": [      "Colorado River"     ]    }   },   {    "river": "Rubicon",    "known": "Julius Caesar crossed it in 49 BC",    "length": "Leading his army into Italy meant civil war; hence 'crossing the Rubicon', the point of no return",    "group": "history",    "hook": "'The die is cast', he is supposed to have said."   },   {    "river": "Euphrates",    "known": "With the Tigris, the river of Mesopotamia",    "length": null,    "group": "history",    "hook": "Mesopotamia is Greek for 'between the rivers': the Tigris and the Euphrates."   },   {    "river": "Styx",    "known": "Greek underworld: the river of hatred",    "length": "The gods swore their unbreakable oaths by it",    "group": "myth"   },   {    "river": "Acheron",    "known": "Greek underworld: the river of woe",    "length": "Charon ferried the souls of the dead across it",    "group": "myth"   },   {    "river": "Lethe",    "known": "Greek underworld: the river of forgetfulness",    "length": "The dead drank from it to forget their lives",    "group": "myth",    "hook": "Lethe gives us 'lethargy'."   },   {    "river": "Phlegethon",    "known": "Greek underworld: the river of fire",    "length": null,    "group": "myth"   },   {    "river": "Cocytus",    "known": "Greek underworld: the river of wailing",    "length": null,    "group": "myth"   }  ] };
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const shuffle = (a) => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const norm = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/^the\s+/, "").replace(/\s+river$/, "").replace(/[^a-z]/g, "");
+  function lev(a, b) {
+    const d = Array.from({ length: a.length + 1 }, (_, i) => [i, ...Array(b.length).fill(0)]);
+    for (let j = 1; j <= b.length; j++) d[0][j] = j;
+    for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++)
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    return d[a.length][b.length];
+  }
+
+  // a palette per voyage: sky top, sky bottom, sun, far hills, near hills, water
+  const PALETTES = {
+    world: ["#f2a65a", "#f7d9a0", "#fff1c9", "#c4703f", "#8a4a2e", "#1f7a7a"],
+    capitals: ["#7fb7c9", "#f4ead5", "#e8b33a", "#5d8aa8", "#37586f", "#1f5f8b"],
+    uk: ["#9fb8a3", "#e6e2c8", "#f4ead5", "#6f8f6f", "#3f5f45", "#3d6d7a"],
+    history: ["#e2674a", "#f2c27a", "#fff1c9", "#b5502f", "#7a3420", "#2a6f97"],
+    myth: ["#0c0f1f", "#3a2453", "#c9b8ff", "#2a1e3f", "#140f24", "#4b2a5c"],
+  };
+  const LEG_NAMES = { world: "The record-breakers", capitals: "Capital cities", uk: "Home waters", history: "Curiosities and history", myth: "The underworld (by night)" };
+
+  function posterSVG(pal, seed, myth) {
+    const [s1, s2, sun, far, near, water] = pal;
+    const r = (n) => ((Math.sin(seed * 9301 + n * 49297) + 1) / 2);
+    const hill = (y, amp, n) => {
+      let d = `M0 ${y}`;
+      for (let i = 0; i <= 6; i++) d += ` Q${i * 50 + 25} ${y - amp * r(n + i)} ${(i + 1) * 50} ${y}`;
+      return d + " V400 H0Z";
+    };
+    const rays = myth ? "" : Array.from({ length: 12 }, (_, i) => {
+      const a = (i / 12) * Math.PI * 2;
+      return `<line x1="${150 + Math.cos(a) * 46}" y1="${150 + Math.sin(a) * 46}" x2="${150 + Math.cos(a) * 140}" y2="${150 + Math.sin(a) * 140}" stroke="${sun}" stroke-width="6" stroke-opacity="0.35"/>`;
+    }).join("");
+    const stars = myth ? Array.from({ length: 30 }, (_, i) => `<circle cx="${r(i) * 300}" cy="${r(i + 50) * 170}" r="${0.6 + r(i + 90) * 1.4}" fill="#fff" opacity="${0.4 + r(i + 7) * 0.6}"/>`).join("") : "";
+    const bend = 120 + r(3) * 60;
+    const boat = myth
+      ? `<g transform="translate(${130 + r(5) * 40} 300)"><path d="M-30 0 Q0 14 30 0 Z" fill="#0c0f1f"/><line x1="10" y1="-26" x2="18" y2="6" stroke="#0c0f1f" stroke-width="2"/><circle cx="6" cy="-22" r="4" fill="#0c0f1f"/><path d="M2 -18 L10 -18 L8 0 L4 0 Z" fill="#0c0f1f"/><circle cx="-18" cy="-6" r="3" fill="#ffd27a"/></g>`
+      : `<g transform="translate(${120 + r(5) * 50} 296)"><path d="M-28 0 H28 L20 10 H-20 Z" fill="${myth ? "#000" : "#f4ead5"}"/><rect x="-14" y="-10" width="26" height="10" fill="#f4ead5"/><rect x="-4" y="-22" width="7" height="12" fill="#e2674a"/></g>`;
+    return `<svg viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs><linearGradient id="sky${seed}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${s1}"/><stop offset="1" stop-color="${s2}"/></linearGradient></defs>
+      <rect width="300" height="400" fill="url(#sky${seed})"/>
+      ${stars}${rays}
+      <circle cx="150" cy="150" r="${myth ? 26 : 40}" fill="${sun}"/>
+      <path d="${hill(220, 70, 10)}" fill="${far}"/>
+      <path d="${hill(260, 50, 20)}" fill="${near}"/>
+      <path d="M-10 400 C 60 360, ${bend} 330, 150 280 S 260 250, 310 262 V400Z" fill="${water}"/>
+      <path d="M40 360 h40 M150 330 h30 M210 300 h24 M90 380 h50" stroke="#ffffff66" stroke-width="3" stroke-linecap="round"/>
+      ${boat}
+    </svg>`;
+  }
+
+  const KEY = "river-cruise:labels";
+  let labels = new Set();
+  try { labels = new Set(JSON.parse(localStorage.getItem(KEY) || "[]")); } catch (e) {}
+  const saveLabels = () => { try { localStorage.setItem(KEY, JSON.stringify([...labels])); } catch (e) {} };
+
+  let route = "all";
+  const V = { stops: [], i: 0, done: false, score: 0, choices: false };
+  function renderRoutes() {
+    const opts = [["all", "Grand tour"], ...TOPIC.groups.map((g) => [g.key, g.short || g.label])];
+    $("routes").innerHTML = opts.map(([k, l]) => `<button class="ticket" data-route="${k}" aria-pressed="${route === k}">${esc(l)}</button>`).join("");
+  }
+  $("routes").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-route]");
+    if (b) { route = b.dataset.route; renderRoutes(); newVoyage(); }
+  });
+
+  function newVoyage() {
+    V.stops = shuffle(TOPIC.items.filter((it) => route === "all" || it.group === route)).slice(0, 8);
+    V.i = 0; V.score = 0;
+    showStop();
+  }
+  function showStop(revealed = null) {
+    const it = V.stops[V.i];
+    const myth = it.group === "myth";
+    const pal = PALETTES[it.group] || PALETTES.world;
+    const seed = TOPIC.items.indexOf(it) + 1;
+    const stamp = revealed == null ? "" : `<div class="stamp show ${revealed ? "" : "missed"}">${revealed ? "VISITED" : "MISSED<br>THE BOAT"}</div>`;
+    $("poster").innerHTML = posterSVG(pal, seed, myth) +
+      `<div class="head"><div class="via">${myth ? "BY CHARON'S FERRY" : "SAIL BY RIVER"}</div><div class="dest">${esc(it.known.split(";")[0])}</div></div>` +
+      `<div class="foot"><div class="river ${revealed == null ? "unknown" : ""}">${revealed == null ? "? ? ?" : esc(it.river.toUpperCase())}</div></div>` + stamp;
+    $("leg").textContent = `Port ${V.i + 1} of ${V.stops.length} · ${LEG_NAMES[it.group] || ""}`;
+    $("clue").textContent = it.known;
+    if (revealed != null) return;
+    V.done = false; V.choices = false;
+    $("detail").textContent = "";
+    $("msg").innerHTML = "";
+    $("answer-area").innerHTML = `<div class="answer"><input id="guess" autocomplete="off" spellcheck="false" placeholder="Name the river" aria-label="The river's name"><button class="ticket" id="go">Sail</button></div>
+      <div class="row" style="margin-top:8px"><button class="ticket light" id="show-opts">Show me four</button></div>`;
+    $("guess").addEventListener("keydown", (e) => { if (e.key === "Enter") typed(); });
+    $("go").addEventListener("click", typed);
+    $("show-opts").addEventListener("click", showOptions);
+    $("guess").focus({ preventScroll: true });
+  }
+  function accepts(it) { return [it.river, ...((it.accept || {}).river || [])].map(norm); }
+  function typed() {
+    if (V.done) return;
+    const it = V.stops[V.i];
+    const g = norm($("guess").value);
+    if (!g) return;
+    const ok = accepts(it).some((a) => a === g || (a.length >= 5 && lev(a, g) <= 1));
+    if (!ok) {
+      const other = TOPIC.items.find((x) => x !== it && accepts(x).includes(g));
+      $("msg").innerHTML = other ? `<b class="no">Not the ${esc(other.river)}</b> (that one's ${esc(other.known)}). Try again, or ask for four.` : `<b class="no">No such river on this map.</b> Try again, or ask for four.`;
+      return;
+    }
+    arrive(true, !V.choices);
+  }
+  function showOptions() {
+    const it = V.stops[V.i];
+    V.choices = true;
+    const others = shuffle(TOPIC.items.filter((x) => x !== it)).sort((a, b) => (b.group === it.group) - (a.group === it.group)).slice(0, 3);
+    $("answer-area").innerHTML = `<div class="opts">${shuffle([it, ...others]).map((x) => `<button class="ticket" data-r="${esc(x.river)}">${esc(x.river)}</button>`).join("")}</div>`;
+    $("answer-area").querySelector(".opts").addEventListener("click", (e) => {
+      const b = e.target.closest("[data-r]");
+      if (!b || V.done) return;
+      const right = b.dataset.r === it.river;
+      $("answer-area").querySelectorAll("[data-r]").forEach((x) => {
+        x.disabled = true;
+        if (x.dataset.r === it.river) x.classList.add("right"); else if (x === b) x.classList.add("wrong");
+      });
+      arrive(right, false);
+    });
+  }
+  function arrive(right, label) {
+    V.done = true;
+    const it = V.stops[V.i];
+    if (right) V.score++;
+    if (right && label) { labels.add(it.river); saveLabels(); renderTrunk(); }
+    showStop(right);
+    const last = V.i === V.stops.length - 1;
+    $("msg").innerHTML = right
+      ? `<b>All aboard: the ${esc(it.river)}!</b> ${label ? "Its label goes in your trunk." : "(Name it without the four to earn its label.)"}`
+      : `<b class="no">It was the ${esc(it.river)}.</b>`;
+    $("detail").textContent = [it.length, it.hook].filter(Boolean).join(". ").replace(/\.\./g, ".");
+    const nav = document.createElement("div");
+    nav.className = "row";
+    nav.innerHTML = `<button class="ticket" id="next">${last ? `Voyage over: ${V.score} of ${V.stops.length}. Sail again` : "Next port →"}</button>`;
+    $("answer-area").replaceChildren(nav);
+    $("next").addEventListener("click", () => { if (last) newVoyage(); else { V.i++; showStop(); } });
+    $("next").focus({ preventScroll: true });
+  }
+
+  const LABEL_COLOURS = [["#1f7a7a", "#f4ead5"], ["#e2674a", "#f4ead5"], ["#e8b33a", "#14233c"], ["#14233c", "#e8b33a"], ["#3a2453", "#c9b8ff"]];
+  function renderTrunk() {
+    $("trunk-count").textContent = `${labels.size} of ${TOPIC.items.length} labels collected (named without the four).`;
+    $("labels").innerHTML = TOPIC.items.map((it, i) => {
+      const got = labels.has(it.river);
+      const [bg, fg] = LABEL_COLOURS[TOPIC.groups.findIndex((g) => g.key === it.group) % LABEL_COLOURS.length];
+      return `<span class="label ${got ? "" : "empty"}" style="--r:${((i * 29) % 9) - 4}deg;${got ? `--bg:${bg};--fg:${fg}` : ""}">${got ? esc(it.river) : "· · ·"}</span>`;
+    }).join("");
+  }
+
+  renderRoutes();
+  renderTrunk();
+  newVoyage();
+</script>
+</body>
+</html>

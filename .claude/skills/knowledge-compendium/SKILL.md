@@ -205,6 +205,11 @@ If a tool loads the Tailwind play CDN (`cdn.tailwindcss.com`), the build compile
 for development only. The CSS is cached as `tools/<name>.css` and recompiled, which needs
 npm, whenever the page changes. Commit the `.css` alongside the page.
 
+A tool can take its facts from its topic rather than keeping its own copy: write
+`const TOPIC = /*TOPIC_JSON*/null;` and the build swaps in the topic's JSON (items, groups and all),
+so the cards and the game can never disagree. Holly's five tools (Top Trumps, the storybook, the
+letterpress, the X-ray lab and the river cruise) all work this way.
+
 ## Build, check, share
 
 ```bash

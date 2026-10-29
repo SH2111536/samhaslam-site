@@ -93,8 +93,10 @@ def tailwind_css(src, tool):
     return css
 
 
-def build_tool(src, gate_js, bar):
+def build_tool(src, gate_js, bar, t):
     tool = src.read_text()
+    # a tool may take its facts from the topic itself, so the cards and the game never disagree
+    tool = tool.replace("/*TOPIC_JSON*/null", as_script_json(t).replace("\n", " "))
     if TAILWIND_CDN in tool:
         css = tailwind_css(src, tool)
         span, _ = tailwind_config(tool)
@@ -249,7 +251,7 @@ def build_topic(t, out_dir, gate):
         if x.get("source"):
             gate_js = GATE.format(root="../../../") if gate else ""
             bar = TOOL_BAR.format(back=html.escape(t["card"].get("title", t["title"]).rstrip(".")))
-            tool = build_tool(SKILL / "tools" / x["source"], gate_js, bar)
+            tool = build_tool(SKILL / "tools" / x["source"], gate_js, bar, t)
             tdest = dest.parent / x["href"]
             tdest.parent.mkdir(parents=True, exist_ok=True)
             tdest.write_text(tool)

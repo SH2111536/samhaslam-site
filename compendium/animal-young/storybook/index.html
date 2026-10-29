@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  if (sessionStorage.getItem("sh-authed") !== "1") {
+    window.location.href = "../../../index.html";
+  }
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Nursery Storybook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #fbf6ec;
+    --ink: #4a3f55;
+    --soft: #8a7d94;
+    --rose: #f2b8c6;
+    --sky: #b8d8f2;
+    --sage: #c4e0b8;
+    --butter: #f7e1a1;
+    --lilac: #d8c4ef;
+    --peach: #f7c9a8;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body {
+    margin: 0; min-height: 100vh; color: var(--ink);
+    font-family: "Nunito", system-ui, sans-serif;
+    background:
+      radial-gradient(40vmax 30vmax at 10% 10%, #f2b8c633, transparent 70%),
+      radial-gradient(40vmax 30vmax at 90% 20%, #b8d8f244, transparent 70%),
+      radial-gradient(50vmax 40vmax at 50% 100%, #c4e0b844, transparent 70%),
+      #f5efe3;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 24px 16px 56px; }
+  header.top { text-align: center; margin-bottom: 22px; }
+  header.top h1 { font-family: "Fraunces", Georgia, serif; font-style: italic; font-weight: 600; font-size: clamp(32px, 7vw, 54px); margin: 0; letter-spacing: -0.5px; }
+  header.top p { margin: 6px 0 0; color: var(--soft); font-size: 15px; }
+  nav.tabs { display: flex; justify-content: center; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+  .pill {
+    font: 800 14px "Nunito", sans-serif; color: var(--ink); background: #fff8; border: 2px solid #4a3f5533;
+    border-radius: 999px; padding: 9px 18px; cursor: pointer; transition: background 0.2s, border-color 0.2s;
+  }
+  .pill:hover { background: #fff; }
+  .pill[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .pill:disabled { opacity: 0.4; cursor: default; }
+
+  /* ---------- the book ---------- */
+  .book {
+    position: relative; background: var(--paper); border-radius: 6px 18px 18px 6px;
+    box-shadow: 0 1px 0 #0000000d, 0 18px 40px -18px #4a3f5566, inset 14px 0 18px -14px #4a3f5533;
+    padding: clamp(20px, 5vw, 48px); min-height: 460px; overflow: hidden;
+  }
+  .book::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 6px; background: linear-gradient(90deg, #4a3f5522, transparent); }
+  .page { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(18px, 4vw, 40px); align-items: center; animation: turn 0.5s ease; }
+  @keyframes turn { from { opacity: 0; transform: translateX(18px) rotateY(-8deg); } to { opacity: 1; transform: none; } }
+  .art { position: relative; aspect-ratio: 1; display: grid; place-items: center; }
+  .blob { position: absolute; inset: 6%; border-radius: 46% 54% 58% 42% / 52% 44% 56% 48%; background: var(--c1); filter: blur(1px); opacity: 0.85; }
+  .blob.two { inset: 18% 10% 4% 20%; border-radius: 58% 42% 40% 60% / 46% 58% 42% 54%; background: var(--c2); opacity: 0.6; mix-blend-mode: multiply; }
+  .art .baby { position: relative; font-family: "Fraunces", serif; font-style: italic; font-weight: 600; font-size: clamp(34px, 8vw, 64px); text-align: center; line-height: 1; }
+  .art .baby small { display: block; font: 800 12px "Nunito", sans-serif; letter-spacing: 3px; text-transform: uppercase; color: var(--soft); margin-bottom: 8px; font-style: normal; }
+  .mums { position: absolute; inset: 0; pointer-events: none; }
+  .mum { position: absolute; transform: translate(-50%, -50%); background: #fffc; border-radius: 999px; padding: 4px 10px; font-weight: 800; font-size: 12px; white-space: nowrap; box-shadow: 0 2px 8px -4px #4a3f5588; }
+  .words h2 { font-family: "Fraunces", serif; font-weight: 400; font-size: clamp(22px, 4vw, 30px); line-height: 1.35; margin: 0 0 14px; }
+  .words h2 em { font-weight: 600; }
+  .words .also { color: var(--soft); font-style: italic; margin: 0 0 14px; }
+  .words .hooks { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .words .hooks li { background: #fff9; border-left: 4px solid var(--c1); padding: 8px 12px; border-radius: 0 10px 10px 0; font-size: 14px; line-height: 1.5; }
+  .folio { display: flex; justify-content: space-between; align-items: center; margin-top: 22px; gap: 12px; }
+  .folio .num { font-family: "Fraunces", serif; font-style: italic; color: var(--soft); }
+  .contents { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 18px; }
+  .contents button { font: 600 13px "Nunito", sans-serif; border: none; background: #fff8; color: var(--ink); border-radius: 999px; padding: 5px 11px; cursor: pointer; }
+  .contents button[aria-current="true"] { background: var(--ink); color: var(--paper); }
+
+  /* ---------- pairs ---------- */
+  .pairs-head { text-align: center; margin-bottom: 16px; color: var(--soft); }
+  .pairs-head strong { color: var(--ink); }
+  .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; perspective: 900px; }
+  .tile { all: unset; cursor: pointer; aspect-ratio: 3 / 4; position: relative; transform-style: preserve-3d; transition: transform 0.45s; }
+  .tile.up, .tile.done { transform: rotateY(180deg); }
+  .tile .face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 16px; display: grid; place-items: center; text-align: center; padding: 10px; }
+  .tile .back { background: repeating-radial-gradient(circle at 30% 30%, var(--rose) 0 10px, var(--butter) 10px 20px); box-shadow: inset 0 0 0 6px #fff9; }
+  .tile .front { transform: rotateY(180deg); background: var(--paper); box-shadow: 0 6px 18px -10px #4a3f5599, inset 0 0 0 3px var(--c, var(--sky)); }
+  .tile .front b { font-family: "Fraunces", serif; font-style: italic; font-weight: 600; font-size: clamp(16px, 3.6vw, 24px); display: block; }
+  .tile .front span { font: 800 10px "Nunito", sans-serif; letter-spacing: 2px; text-transform: uppercase; color: var(--soft); display: block; margin-bottom: 6px; }
+  .tile.done .front { background: var(--sage); }
+  .tile.miss .front { animation: shake 0.4s; }
+  @keyframes shake { 25% { translate: -4px 0; } 75% { translate: 4px 0; } }
+  .done-note { text-align: center; margin-top: 18px; min-height: 42px; }
+  .done-note p { font-family: "Fraunces", serif; font-style: italic; font-size: 22px; margin: 0 0 10px; }
+
+  @media (max-width: 680px) {
+    .page { grid-template-columns: 1fr; }
+    .art { max-width: 320px; width: 100%; margin: 0 auto; }
+    .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+</style>
+</head>
+<body>
+<div style="position:relative;z-index:60;padding:10px 16px;background:#0b0d12;border-bottom:1px solid rgba(255,255,255,0.08)"><a href="../index.html" style="display:inline-flex;align-items:center;gap:6px;color:#aab0bd;font:500 13px/1.2 system-ui,-apple-system,'Segoe UI',sans-serif;text-decoration:none">&larr; Animal young</a></div>
+<div class="wrap">
+  <header class="top">
+    <h1>The Nursery Storybook</h1>
+    <p>Who's the baby, and who's the mum?</p>
+    <nav class="tabs">
+      <button class="pill" data-mode="book" aria-pressed="true">Read the book</button>
+      <button class="pill" data-mode="pairs" aria-pressed="false">Mums and babies</button>
+    </nav>
+  </header>
+
+  <section id="mode-book">
+    <div class="book" id="book"></div>
+    <nav class="contents" id="contents" aria-label="Pages"></nav>
+  </section>
+
+  <section id="mode-pairs" hidden>
+    <p class="pairs-head">Turn over two cards: find each mum's baby. <strong id="pairs-moves">0 turns</strong></p>
+    <div class="grid" id="grid"></div>
+    <div class="done-note" id="pairs-done"></div>
+  </section>
+</div>
+
+<script>
+  const TOPIC = {  "slug": "animal-young",  "title": "Animal young.",  "eyebrow": "Compendium · Holly",  "lede": "What the babies are called, from calves and cubs to cygnets, puggles and porcupettes: 69 animals and their young.",  "noun": {   "one": "animal",   "many": "animals"  },  "numerals": "none",  "card": {   "tag": "Holly · Animals",   "title": "Animal young",   "desc": "Calf, cub, cria, cygnet: what the babies of nearly seventy animals are called.",   "icon": "baby",   "order": 13  },  "extras": [   {    "title": "The Nursery Storybook",    "desc": "A picture book of mums and babies. Turn the pages, then pair each baby with its mother.",    "href": "storybook/index.html",    "source": "animal-young-storybook.html"   }  ],  "fields": [   {    "key": "animal",    "label": "Animal",    "plural": "animals",    "role": "title",    "typeable": true   },   {    "key": "young",    "label": "Young",    "plural": "young",    "role": "subtitle",    "typeable": true   },   {    "key": "also",    "label": "Also",    "short": "Also",    "role": "meta"   }  ],  "hideable": [   "animal",   "young"  ],  "questions": [   {    "from": "animal",    "to": "young",    "ask": "What's its baby called?"   },   {    "from": "young",    "to": "animal",    "ask": "Whose baby is this?"   }  ],  "match": [   {    "left": "animal",    "right": "young"   }  ],  "groups": [   {    "key": "mammals",    "label": "Mammals",    "short": "Mammals",    "note": "Calves, pups, cubs and kits: most of the list."   },   {    "key": "pouches",    "label": "Pouches and eggs",    "short": "Pouches and eggs",    "note": "Marsupials have joeys; the egg-laying platypus and echidna have puggles."   },   {    "key": "birds",    "label": "Birds",    "short": "Birds",    "note": "Chick does for most, but plenty have names of their own."   },   {    "key": "others",    "label": "Fish, frogs and others",    "short": "Fish, frogs and others",    "note": "From the water, and a spider."   }  ],  "groupLabel": "Kind",  "filters": [   {    "key": "young",    "label": "Baby name"   }  ],  "items": [   {    "animal": "Cow",    "young": "Calf",    "also": null,    "group": "mammals"   },   {    "animal": "Elephant",    "young": "Calf",    "also": null,    "group": "mammals"   },   {    "animal": "Whale",    "young": "Calf",    "also": null,    "group": "mammals"   },   {    "animal": "Giraffe",    "young": "Calf",    "also": null,    "group": "mammals"   },   {    "animal": "Camel",    "young": "Calf",    "also": null,    "group": "mammals"   },   {    "animal": "Rhinoceros",    "young": "Calf",    "also": null,    "group": "mammals"   },   {    "animal": "Hippopotamus",    "young": "Calf",    "also": null,    "group": "mammals"   },   {    "animal": "Moose",    "young": "Calf",    "also": null,    "group": "mammals"   },   {    "animal": "Reindeer",    "young": "Calf",    "also": null,    "group": "mammals"   },   {    "animal": "Walrus",    "young": "Calf",    "also": null,    "group": "mammals",    "hook": "A calf, not a cub: like whales and elephants, the big beasts have calves."   },   {    "animal": "Dog",    "young": "Pup",    "also": "Puppy",    "group": "mammals",    "accept": {     "young": [      "Puppy"     ]    }   },   {    "animal": "Wolf",    "young": "Pup",    "also": "Cub",    "group": "mammals",    "accept": {     "young": [      "Cub"     ]    }   },   {    "animal": "Seal",    "young": "Pup",    "also": null,    "group": "mammals"   },   {    "animal": "Shark",    "young": "Pup",    "also": null,    "group": "others"   },   {    "animal": "Bat",    "young": "Pup",    "also": null,    "group": "mammals"   },   {    "animal": "Rat",    "young": "Pup",    "also": null,    "group": "mammals"   },   {    "animal": "Mouse",    "young": "Pup",    "also": null,    "group": "mammals"   },   {    "animal": "Otter",    "young": "Pup",    "also": null,    "group": "mammals"   },   {    "animal": "Guinea pig",    "young": "Pup",    "also": null,    "group": "mammals"   },   {    "animal": "Stingray",    "young": "Pup",    "also": null,    "group": "others"   },   {    "animal": "Bear",    "young": "Cub",    "also": null,    "group": "mammals"   },   {    "animal": "Lion",    "young": "Cub",    "also": null,    "group": "mammals"   },   {    "animal": "Tiger",    "young": "Cub",    "also": null,    "group": "mammals"   },   {    "animal": "Leopard",    "young": "Cub",    "also": null,    "group": "mammals"   },   {    "animal": "Fox",    "young": "Cub",    "also": "Kit",    "group": "mammals",    "accept": {     "young": [      "Kit"     ]    }   },   {    "animal": "Badger",    "young": "Cub",    "also": null,    "group": "mammals"   },   {    "animal": "Cat",    "young": "Kitten",    "also": null,    "group": "mammals",    "accept": {     "young": [      "Kit"     ]    }   },   {    "animal": "Rabbit",    "young": "Kit",    "also": "Kitten",    "group": "mammals",    "accept": {     "young": [      "Kitten"     ]    }   },   {    "animal": "Skunk",    "young": "Kit",    "also": null,    "group": "mammals"   },   {    "animal": "Ferret",    "young": "Kit",    "also": null,    "group": "mammals"   },   {    "animal": "Beaver",    "young": "Kit",    "also": null,    "group": "mammals"   },   {    "animal": "Squirrel",    "young": "Kit",    "also": "Kitten",    "group": "mammals",    "accept": {     "young": [      "Kitten"     ]    }   },   {    "animal": "Horse",    "young": "Foal",    "also": "Colt (male), filly (female)",    "group": "mammals",    "accept": {     "young": [      "Colt",      "Filly"     ]    },    "hook": "A colt is a young male and a filly a young female; both are foals until they're weaned."   },   {    "animal": "Zebra",    "young": "Foal",    "also": null,    "group": "mammals"   },   {    "animal": "Donkey",    "young": "Foal",    "also": null,    "group": "mammals"   },   {    "animal": "Penguin",    "young": "Chick",    "also": null,    "group": "birds"   },   {    "animal": "Ostrich",    "young": "Chick",    "also": null,    "group": "birds"   },   {    "animal": "Chicken",    "young": "Chick",    "also": null,    "group": "birds"   },   {    "animal": "Most birds",    "young": "Chick",    "also": null,    "group": "birds"   },   {    "animal": "Goat",    "young": "Kid",    "also": null,    "group": "mammals",    "hook": "Hence 'kid gloves': soft leather from young goats."   },   {    "animal": "Sheep",    "young": "Lamb",    "also": null,    "group": "mammals"   },   {    "animal": "Deer",    "young": "Fawn",    "also": null,    "group": "mammals"   },   {    "animal": "Pig",    "young": "Piglet",    "also": "Shoat (once weaned)",    "group": "mammals",    "accept": {     "young": [      "Shoat"     ]    }   },   {    "animal": "Duck",    "young": "Duckling",    "also": null,    "group": "birds"   },   {    "animal": "Goose",    "young": "Gosling",    "also": null,    "group": "birds"   },   {    "animal": "Alpaca",    "young": "Cria",    "also": null,    "group": "mammals",    "hook": "Spanish cría, 'baby': alpacas and llamas come from South America."   },   {    "animal": "Llama",    "young": "Cria",    "also": null,    "group": "mammals"   },   {    "animal": "Hare",    "young": "Leveret",    "also": null,    "group": "mammals",    "hook": "French lièvre, a hare, plus -et for 'little': a little hare."   },   {    "animal": "Platypus",    "young": "Puggle",    "also": null,    "group": "pouches",    "hook": "Platypus and echidna are the only mammals that lay eggs; what hatches is a puggle."   },   {    "animal": "Echidna",    "young": "Puggle",    "also": null,    "group": "pouches"   },   {    "animal": "Kangaroo",    "young": "Joey",    "also": null,    "group": "pouches",    "hook": "Every marsupial baby is a joey: if it grows up in a pouch, it's a joey."   },   {    "animal": "Koala",    "young": "Joey",    "also": null,    "group": "pouches"   },   {    "animal": "Possum",    "young": "Joey",    "also": null,    "group": "pouches"   },   {    "animal": "Wombat",    "young": "Joey",    "also": null,    "group": "pouches"   },   {    "animal": "Swan",    "young": "Cygnet",    "also": null,    "group": "birds",    "hook": "Latin cygnus, a swan: the constellation Cygnus is the Swan."   },   {    "animal": "Pigeon",    "young": "Squab",    "also": null,    "group": "birds"   },   {    "animal": "Dove",    "young": "Squab",    "also": null,    "group": "birds"   },   {    "animal": "Eel",    "young": "Elver",    "also": null,    "group": "others"   },   {    "animal": "Porcupine",    "young": "Porcupette",    "also": null,    "group": "mammals",    "hook": "Porcupine plus -ette for 'little', like a kitchenette."   },   {    "animal": "Turkey",    "young": "Poult",    "also": null,    "group": "birds",    "hook": "From the same root as poultry."   },   {    "animal": "Hawk",    "young": "Eyas",    "also": null,    "group": "birds",    "hook": "Once 'a nyas', from French niais, fresh from the nest; the n slid across to make 'an eyas'."   },   {    "animal": "Falcon",    "young": "Eyas",    "also": null,    "group": "birds"   },   {    "animal": "Jellyfish",    "young": "Ephyra",    "also": null,    "group": "others"   },   {    "animal": "Owl",    "young": "Owlet",    "also": null,    "group": "birds"   },   {    "animal": "Fish",    "young": "Fry",    "also": "Fingerling (a bit bigger)",    "group": "others",    "accept": {     "young": [      "Fingerling"     ]    }   },   {    "animal": "Frog",    "young": "Tadpole",    "also": "Polliwog",    "group": "others",    "accept": {     "young": [      "Polliwog"     ]    }   },   {    "animal": "Toad",    "young": "Tadpole",    "also": "Polliwog",    "group": "others",    "accept": {     "young": [      "Polliwog"     ]    }   },   {    "animal": "Wild boar",    "young": "Squeaker",    "also": null,    "group": "mammals"   },   {    "animal": "Spider",    "young": "Spiderling",    "also": null,    "group": "others"   }  ] };
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const shuffle = (a) => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const PALETTE = ["--rose", "--sky", "--sage", "--butter", "--lilac", "--peach"];
+
+  const lower = (s) => s === s.toUpperCase() ? s : s.charAt(0).toLowerCase() + s.slice(1);
+  const withArticle = (name) => /^most /i.test(name) ? lower(name) : `${/^[aeiou]/i.test(name) ? "an" : "a"} ${lower(name)}`;
+  const listOf = (xs) => xs.length < 2 ? xs.join("") : `${xs.slice(0, -1).join(", ")} and ${xs[xs.length - 1]}`;
+
+  // one page per baby name, in the order they first appear
+  const PAGES = [];
+  for (const it of TOPIC.items) {
+    let p = PAGES.find((x) => x.young === it.young);
+    if (!p) PAGES.push(p = { young: it.young, animals: [] });
+    p.animals.push(it);
+  }
+
+  let pageIdx = 0;
+  function renderPage() {
+    const p = PAGES[pageIdx];
+    const c1 = PALETTE[pageIdx % PALETTE.length], c2 = PALETTE[(pageIdx + 2) % PALETTE.length];
+    const n = p.animals.length;
+    const mums = p.animals.map((a, i) => {
+      const ang = (i / n) * Math.PI * 2 - Math.PI / 2;
+      const r = n === 1 ? 0 : 40;
+      const x = 50 + Math.cos(ang) * r, y = n === 1 ? 86 : 50 + Math.sin(ang) * r;
+      return `<span class="mum" style="left:${x}%;top:${y}%">${esc(a.animal)}</span>`;
+    }).join("");
+    const alsos = [...new Set(p.animals.map((a) => a.also).filter(Boolean))];
+    const hooks = p.animals.filter((a) => a.hook).map((a) => `<li>${esc(a.hook)}</li>`).join("");
+    const art = /^[aeiou]/i.test(p.young) ? "An" : "A";
+    $("book").style.setProperty("--c1", `var(${c1})`);
+    $("book").style.setProperty("--c2", `var(${c2})`);
+    $("book").innerHTML = `
+      <div class="page">
+        <div class="art">
+          <div class="blob"></div><div class="blob two"></div>
+          <div class="baby"><small>${art}</small>${esc(p.young)}</div>
+          <div class="mums">${mums}</div>
+        </div>
+        <div class="words">
+          <h2>${art} <em>${esc(lower(p.young))}</em> is the baby of ${esc(listOf(p.animals.map((a) => withArticle(a.animal))))}.</h2>
+          ${alsos.length ? `<p class="also">Also called: ${esc(alsos.join("; "))}.</p>` : ""}
+          ${hooks ? `<ul class="hooks">${hooks}</ul>` : ""}
+        </div>
+      </div>
+      <div class="folio">
+        <button class="pill" id="prev" ${pageIdx === 0 ? "disabled" : ""}>&larr; Back</button>
+        <span class="num">Page ${pageIdx + 1} of ${PAGES.length}</span>
+        <button class="pill" id="next" ${pageIdx === PAGES.length - 1 ? "disabled" : ""}>Turn the page &rarr;</button>
+      </div>`;
+    $("prev").addEventListener("click", () => turn(-1));
+    $("next").addEventListener("click", () => turn(1));
+    $("contents").innerHTML = PAGES.map((x, i) => `<button data-page="${i}" aria-current="${i === pageIdx}">${esc(x.young)}</button>`).join("");
+  }
+  function turn(d) { pageIdx = Math.max(0, Math.min(PAGES.length - 1, pageIdx + d)); renderPage(); }
+  $("contents").addEventListener("click", (e) => { const b = e.target.closest("[data-page]"); if (b) { pageIdx = Number(b.dataset.page); renderPage(); } });
+  document.addEventListener("keydown", (e) => {
+    if ($("mode-book").hidden) return;
+    if (e.key === "ArrowRight") turn(1);
+    if (e.key === "ArrowLeft") turn(-1);
+  });
+
+  // ---------- pairs: six mums, six babies, all with different baby names ----------
+  const P = { open: [], moves: 0, found: 0, lock: false };
+  function newPairs() {
+    const pick = [];
+    for (const it of shuffle(TOPIC.items)) {
+      if (pick.length === 6) break;
+      if (!pick.some((x) => x.young === it.young)) pick.push(it);
+    }
+    const tiles = shuffle(pick.flatMap((it, i) => [
+      { pair: i, kind: "Mum", text: it.animal, c: PALETTE[i % PALETTE.length] },
+      { pair: i, kind: "Baby", text: it.young, c: PALETTE[i % PALETTE.length] },
+    ]));
+    P.open = []; P.moves = 0; P.found = 0; P.lock = false; P.items = pick;
+    $("grid").innerHTML = tiles.map((t) =>
+      `<button class="tile" data-pair="${t.pair}" aria-label="Face-down card"><span class="face back"></span><span class="face front" style="--c:var(${t.c})"><span><span>${t.kind}</span><b>${esc(t.text)}</b></span></span></button>`).join("");
+    $("pairs-moves").textContent = "0 turns";
+    $("pairs-done").innerHTML = "";
+  }
+  $("grid").addEventListener("click", (e) => {
+    const t = e.target.closest(".tile");
+    if (!t || P.lock || t.classList.contains("up") || t.classList.contains("done")) return;
+    t.classList.add("up");
+    t.setAttribute("aria-label", t.querySelector(".front").textContent);
+    P.open.push(t);
+    if (P.open.length < 2) return;
+    P.moves++;
+    $("pairs-moves").textContent = `${P.moves} turn${P.moves === 1 ? "" : "s"}`;
+    const [a, b] = P.open;
+    if (a.dataset.pair === b.dataset.pair) {
+      a.classList.add("done"); b.classList.add("done"); P.open = []; P.found++;
+      if (P.found === 6) {
+        $("pairs-done").innerHTML = `<p>All the babies are home, in ${P.moves} turns.</p><button class="pill" id="pairs-again">Another six</button>`;
+        $("pairs-again").addEventListener("click", newPairs);
+      }
+    } else {
+      P.lock = true;
+      a.classList.add("miss"); b.classList.add("miss");
+      setTimeout(() => {
+        [a, b].forEach((x) => { x.classList.remove("up", "miss"); x.setAttribute("aria-label", "Face-down card"); });
+        P.open = []; P.lock = false;
+      }, 1100);
+    }
+  });
+
+  document.querySelector("nav.tabs").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-mode]");
+    if (!b) return;
+    document.querySelectorAll("[data-mode]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    $("mode-book").hidden = b.dataset.mode !== "book";
+    $("mode-pairs").hidden = b.dataset.mode !== "pairs";
+    if (b.dataset.mode === "pairs" && !P.items) newPairs();
+  });
+
+  renderPage();
+</script>
+</body>
+</html>

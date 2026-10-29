@@ -1,0 +1,329 @@
+{
+  "slug": "nature-extremes",
+  "title": "Nature's extremes.",
+  "eyebrow": "Compendium · Holly",
+  "lede": "Twenty-two of nature's record-holders, from the blue whale to a frog the size of a fingernail: what holds each record, and by how much.",
+  "noun": {
+    "one": "record",
+    "many": "records"
+  },
+  "numerals": "none",
+  "card": {
+    "tag": "Holly · Nature",
+    "title": "Nature's extremes",
+    "desc": "Twenty-two record-holders: the biggest, fastest, loudest, longest-lived and deadliest.",
+    "icon": "trophy",
+    "order": 12
+  },
+  "extras": [
+    {
+      "title": "Top Trumps: Nature's Extremes",
+      "desc": "A pack of record-holder cards. Play the computer, pick your best stat, and learn what beats what.",
+      "href": "top-trumps/index.html",
+      "source": "nature-top-trumps.html"
+    }
+  ],
+  "fields": [
+    {
+      "key": "holder",
+      "label": "Record-holder",
+      "plural": "record-holders",
+      "role": "title",
+      "typeable": true
+    },
+    {
+      "key": "record",
+      "label": "Record",
+      "plural": "records",
+      "role": "subtitle"
+    },
+    {
+      "key": "figure",
+      "label": "How much",
+      "short": "How much",
+      "role": "meta"
+    }
+  ],
+  "hideable": [
+    "holder",
+    "record"
+  ],
+  "questions": [
+    {
+      "from": "record",
+      "to": "holder",
+      "ask": "What holds this record?"
+    },
+    {
+      "from": "holder",
+      "to": "record",
+      "ask": "What record does it hold?"
+    }
+  ],
+  "match": [
+    {
+      "left": "holder",
+      "right": "record"
+    }
+  ],
+  "groups": [
+    {
+      "key": "giants",
+      "label": "Giants and minis",
+      "short": "Giants and minis",
+      "note": "The biggest, the tallest, the longest and the smallest."
+    },
+    {
+      "key": "speed",
+      "label": "Speed, distance and depth",
+      "short": "Speed, distance and depth",
+      "note": "Faster, further, higher and deeper than anything else."
+    },
+    {
+      "key": "senses",
+      "label": "Senses and weapons",
+      "short": "Senses and weapons",
+      "note": "The loudest, the strongest bite, and the most eyes."
+    },
+    {
+      "key": "life",
+      "label": "Life and death",
+      "short": "Life and death",
+      "note": "The longest lives, the shortest, and the deadliest."
+    }
+  ],
+  "items": [
+    {
+      "holder": "Blue whale",
+      "record": "Largest animal",
+      "figure": "Up to about 30 m long and around 150 tonnes",
+      "group": "giants",
+      "hook": "The largest animal that has ever lived, dinosaurs included: its heart is the size of a small car."
+    },
+    {
+      "holder": "Honey fungus",
+      "record": "Largest organism by area",
+      "figure": "One fungus in Oregon covers about 9.6 km²",
+      "group": "giants",
+      "accept": {
+        "holder": [
+          "Armillaria"
+        ]
+      },
+      "hook": "Mostly hidden underground as black bootlace-like threads; the honey-coloured mushrooms are just the tip."
+    },
+    {
+      "holder": "Pando",
+      "record": "Largest organism by mass",
+      "figure": "A quaking aspen colony in Utah: one root system, about 47,000 stems, roughly 6,000 tonnes",
+      "group": "giants",
+      "accept": {
+        "holder": [
+          "Quaking aspen"
+        ]
+      },
+      "hook": "Latin pando, 'I spread': what looks like a forest is a single tree."
+    },
+    {
+      "holder": "Chinese stick insect",
+      "record": "Longest insect",
+      "figure": "62.4 cm with its legs stretched out",
+      "group": "giants",
+      "accept": {
+        "holder": [
+          "Phryganistria chinensis"
+        ]
+      },
+      "hook": "Found in Guangxi, China, in 2014: longer than your arm."
+    },
+    {
+      "holder": "Brazilian flea toad",
+      "record": "Smallest vertebrate",
+      "figure": "About 7 mm: it sits on a fingernail",
+      "group": "giants",
+      "accept": {
+        "holder": [
+          "Brachycephalus pulex",
+          "Flea toad"
+        ]
+      },
+      "hook": "Brachycephalus pulex; pulex means flea. A 2024 study confirmed it smaller than the old record-holder, Paedophryne amauensis of Papua New Guinea (about 7.7 mm)."
+    },
+    {
+      "holder": "Hyperion",
+      "record": "Tallest tree",
+      "figure": "A coast redwood, about 116 m tall",
+      "group": "giants",
+      "accept": {
+        "holder": [
+          "Coast redwood"
+        ]
+      },
+      "hook": "Named after a Titan; its spot in Redwood National Park, California, is kept secret."
+    },
+    {
+      "holder": "Peregrine falcon",
+      "record": "Fastest animal",
+      "figure": "Over 320 km/h (200 mph) in a dive",
+      "group": "speed",
+      "accept": {
+        "holder": [
+          "Peregrine"
+        ]
+      },
+      "hook": "It drops on its prey from above, folding its wings into a teardrop."
+    },
+    {
+      "holder": "Cheetah",
+      "record": "Fastest land animal",
+      "figure": "About 100 to 120 km/h, in short bursts",
+      "group": "speed",
+      "hook": "0 to 60 mph in around three seconds, like a sports car, but only for a few hundred metres."
+    },
+    {
+      "holder": "Arctic tern",
+      "record": "Longest migration",
+      "figure": "Pole to pole and back: 70,000 km or more a year",
+      "group": "speed",
+      "hook": "Chasing two summers a year, it sees more daylight than any other animal."
+    },
+    {
+      "holder": "Cuvier's beaked whale",
+      "record": "Deepest-diving mammal",
+      "figure": "Nearly 3,000 m down, and over three hours on one breath",
+      "group": "speed",
+      "accept": {
+        "holder": [
+          "Cuviers beaked whale",
+          "Cuvier beaked whale"
+        ]
+      }
+    },
+    {
+      "holder": "Rüppell's vulture",
+      "record": "Highest-flying bird",
+      "figure": "11,300 m: one hit a plane over Ivory Coast in 1973",
+      "group": "speed",
+      "accept": {
+        "holder": [
+          "Ruppells vulture",
+          "Ruppell's vulture",
+          "Rüppell vulture"
+        ]
+      },
+      "hook": "Cruising altitude for a jet airliner."
+    },
+    {
+      "holder": "Sperm whale",
+      "record": "Loudest animal",
+      "figure": "Clicks of around 230 decibels",
+      "group": "senses",
+      "hook": "It hunts by sonar: the clicks echo back off squid in the dark."
+    },
+    {
+      "holder": "Saltwater crocodile",
+      "record": "Most powerful bite",
+      "figure": "About 16,000 newtons (3,700 psi), measured",
+      "group": "senses",
+      "accept": {
+        "holder": [
+          "Saltie",
+          "Saltwater croc"
+        ]
+      }
+    },
+    {
+      "holder": "Colossal squid",
+      "record": "Largest eyes",
+      "figure": "About 27 cm across: the size of a football",
+      "group": "senses",
+      "hook": "Big eyes for spotting sperm whales (see: loudest animal) in the deep."
+    },
+    {
+      "holder": "Scallop",
+      "record": "Most eyes",
+      "figure": "Up to 200 tiny eyes round the edge of its shell",
+      "group": "senses",
+      "accept": {
+        "holder": [
+          "Scallops"
+        ]
+      },
+      "hook": "The usual quiz answer; chitons, a kind of mollusc, can have even more."
+    },
+    {
+      "holder": "African elephant",
+      "record": "Longest pregnancy (mammal)",
+      "figure": "About 22 months",
+      "group": "life",
+      "accept": {
+        "holder": [
+          "Elephant"
+        ]
+      },
+      "hook": "Among mammals: the frilled shark and the Alpine salamander carry their young for years."
+    },
+    {
+      "holder": "Jonathan",
+      "record": "Oldest living land animal",
+      "figure": "A Seychelles giant tortoise, about 194 years old in 2026",
+      "group": "life",
+      "accept": {
+        "holder": [
+          "Jonathan the tortoise"
+        ]
+      },
+      "hook": "Hatched around 1832; he lives on St Helena, in the governor's garden."
+    },
+    {
+      "holder": "Greenland shark",
+      "record": "Longest-lived vertebrate",
+      "figure": "At least 272 years, perhaps nearly 400",
+      "group": "life",
+      "hook": "It grows about 1 cm a year and isn't grown up until it's around 150."
+    },
+    {
+      "holder": "Mayfly",
+      "record": "Shortest lifespan",
+      "figure": "As an adult, from minutes to a day or so",
+      "group": "life",
+      "hook": "Its group name, Ephemeroptera, gives us 'ephemeral'."
+    },
+    {
+      "holder": "Tardigrade",
+      "record": "Toughest creature",
+      "figure": "Survives boiling, near absolute zero, radiation and the vacuum of space",
+      "group": "life",
+      "accept": {
+        "holder": [
+          "Water bear",
+          "Tardigrades"
+        ]
+      },
+      "hook": "Also called the water bear or moss piglet; about half a millimetre long."
+    },
+    {
+      "holder": "Box jellyfish",
+      "record": "Most venomous marine animal",
+      "figure": "Its sting can kill a person within minutes",
+      "group": "life",
+      "accept": {
+        "holder": [
+          "Box jelly"
+        ]
+      }
+    },
+    {
+      "holder": "Mosquito",
+      "record": "Deadliest animal to humans",
+      "figure": "Hundreds of thousands of deaths a year, mostly from malaria",
+      "group": "life",
+      "accept": {
+        "holder": [
+          "Mosquitoes",
+          "Mosquitos"
+        ]
+      }
+    }
+  ]
+}

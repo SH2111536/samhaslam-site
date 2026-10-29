@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The X-Ray Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Chakra+Petch:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #071417;
+    --panel: #0d2328;
+    --line: #1d4a52;
+    --glow: #6ff3ff;
+    --glow-soft: #6ff3ff33;
+    --text: #cfeff2;
+    --dim: #7fa9ae;
+    --ok: #7dff9a;
+    --bad: #ff6b7d;
+    --amber: #ffc857;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body {
+    margin: 0; min-height: 100vh; color: var(--text); font-family: "Chakra Petch", system-ui, sans-serif;
+    background:
+      linear-gradient(transparent 0 calc(100% - 1px), #6ff3ff0d 0) 0 0 / 100% 28px,
+      linear-gradient(90deg, transparent 0 calc(100% - 1px), #6ff3ff0d 0) 0 0 / 28px 100%,
+      radial-gradient(ellipse at 50% 0%, #10343b, var(--bg) 70%);
+  }
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 22px 16px 56px; }
+  header.top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 14px; margin-bottom: 18px; border-bottom: 1px solid var(--line); padding-bottom: 14px; }
+  header.top h1 { margin: 0; font-weight: 700; font-size: clamp(26px, 6vw, 40px); letter-spacing: 3px; text-transform: uppercase; color: var(--glow); text-shadow: 0 0 18px #6ff3ff88; }
+  header.top p { margin: 4px 0 0; font-family: "Share Tech Mono", monospace; color: var(--dim); font-size: 13px; }
+  .readouts { display: flex; gap: 10px; font-family: "Share Tech Mono", monospace; }
+  .readout { border: 1px solid var(--line); background: var(--panel); padding: 6px 12px; border-radius: 4px; text-align: center; }
+  .readout b { display: block; font-size: 20px; color: var(--glow); font-weight: 400; }
+  .readout span { font-size: 10px; letter-spacing: 2px; color: var(--dim); }
+
+  .lab { display: grid; grid-template-columns: 1.25fr 1fr; gap: 18px; }
+  .lightbox {
+    position: relative; border-radius: 10px; border: 2px solid var(--line); min-height: 380px; overflow: hidden;
+    background: radial-gradient(ellipse at center, #0f3138, #06161a 75%); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 24px; text-align: center;
+  }
+  .lightbox.on { background: radial-gradient(ellipse at center, #b8fbff, #4fd8e6 45%, #0b5560 100%); border-color: var(--glow); box-shadow: 0 0 40px #6ff3ff55, inset 0 0 60px #ffffff66; }
+  .lightbox.on .tag { color: #052a30; border-color: #052a30; }
+  .lightbox.on .film-title { color: #031a1e; text-shadow: none; }
+  .lightbox::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, #00000014 0 2px, transparent 2px 4px); pointer-events: none; }
+  .tag { font-family: "Share Tech Mono", monospace; font-size: 12px; letter-spacing: 2px; color: var(--dim); border: 1px dashed var(--line); padding: 3px 10px; border-radius: 3px; max-width: 100%; }
+  .film-title { overflow-wrap: anywhere; font-size: clamp(26px, 5vw, 40px); font-weight: 700; margin: 14px 0 6px; color: var(--glow); text-shadow: 0 0 16px #6ff3ff77; line-height: 1.1; }
+  .glyphs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 420px; margin-top: 14px; min-height: 30px; }
+  .glyphs svg { width: 30px; height: 30px; animation: pop 0.3s backwards; }
+  @keyframes pop { from { transform: scale(0); opacity: 0; } }
+  .big-number { font-family: "Share Tech Mono", monospace; font-size: clamp(54px, 12vw, 96px); color: #031a1e; line-height: 1; margin-top: 10px; }
+  .scan { position: absolute; left: 0; right: 0; height: 40%; background: linear-gradient(180deg, transparent, #6ff3ff44, transparent); top: -40%; pointer-events: none; }
+  .scan.go { animation: scan 0.9s ease-in; }
+  @keyframes scan { to { top: 100%; } }
+
+  .console { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+  .console .q { font-size: 20px; line-height: 1.35; }
+  .console .q em { font-style: normal; color: var(--amber); }
+  .dial { display: flex; align-items: stretch; gap: 8px; }
+  .dial button, .key {
+    font: 700 16px "Chakra Petch", sans-serif; color: var(--glow); background: #0a1d21; border: 1px solid var(--line); border-radius: 6px; cursor: pointer; padding: 10px 14px; min-width: 52px;
+  }
+  .dial button:hover, .key:hover { border-color: var(--glow); box-shadow: 0 0 12px #6ff3ff44; }
+  .dial input { flex: 1; min-width: 0; font: 34px "Share Tech Mono", monospace; text-align: center; color: var(--glow); background: #031013; border: 1px solid var(--line); border-radius: 6px; padding: 6px; }
+  .dial input:focus { outline: 2px solid var(--glow); }
+  .key.expose { background: var(--glow); color: #031a1e; border-color: var(--glow); font-size: 18px; letter-spacing: 3px; text-transform: uppercase; }
+  .key:disabled { opacity: 0.4; cursor: default; box-shadow: none; }
+  .choices { display: flex; flex-direction: column; gap: 8px; }
+  .choices .key { text-align: left; font-weight: 600; color: var(--text); }
+  .choices .key.right { border-color: var(--ok); color: var(--ok); }
+  .choices .key.wrong { border-color: var(--bad); color: var(--bad); }
+  .report { font-family: "Share Tech Mono", monospace; font-size: 14px; line-height: 1.6; color: var(--dim); min-height: 66px; border-top: 1px dashed var(--line); padding-top: 12px; }
+  .report b { color: var(--ok); font-weight: 400; }
+  .report b.bad { color: var(--bad); }
+  .report b.amber { color: var(--amber); }
+  .shelf { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; }
+  .shelf span { font-family: "Share Tech Mono", monospace; font-size: 11px; padding: 3px 8px; border-radius: 3px; border: 1px solid var(--line); color: var(--dim); }
+  .shelf span.got { border-color: var(--ok); color: var(--ok); }
+  .shelf span.miss { border-color: var(--bad); color: var(--bad); }
+
+  @media (max-width: 760px) {
+    .lab { grid-template-columns: minmax(0, 1fr); }
+    .lightbox { min-height: 300px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>The X-Ray Lab</h1>
+      <p>// count the parts, then expose the plate</p>
+    </div>
+    <div class="readouts">
+      <div class="readout"><b id="r-plate">1/12</b><span>PLATE</span></div>
+      <div class="readout"><b id="r-score">0</b><span>CORRECT</span></div>
+      <div class="readout"><b id="r-best">0</b><span>BEST</span></div>
+    </div>
+  </header>
+
+  <div class="lab">
+    <div class="lightbox" id="box">
+      <div class="scan" id="scan"></div>
+      <span class="tag" id="tag"></span>
+      <div class="film-title" id="film"></div>
+      <div id="film-out"></div>
+    </div>
+    <div class="console">
+      <div class="q" id="q"></div>
+      <div id="input"></div>
+      <div class="report" id="report"></div>
+    </div>
+  </div>
+  <div class="shelf" id="shelf"></div>
+</div>
+
+<script>
+  const TOPIC = /*TOPIC_JSON*/null;
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const shuffle = (a) => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+  // counting questions: [creature (as on its card), what to count, the number, the glyph to draw]
+  const COUNTS = [
+    ["Octopus", "hearts", 3, "heart"], ["Octopus", "brains", 9, "brain"],
+    ["Squid", "hearts", 3, "heart"],
+    ["Earthworm", "pairs of aortic arches (its 'hearts')", 5, "heart"],
+    ["Leech", "brains", 32, "brain"], ["Leech", "stomachs, at most", 10, "stomach"],
+    ["Hagfish", "hearts", 4, "heart"], ["Hagfish", "nostrils", 1, "dot"],
+    ["Ruminants", "stomach chambers", 4, "stomach"], ["Camels and llamas", "stomach chambers", 3, "stomach"],
+    ["Baird's beaked whale", "stomach chambers", 13, "stomach"], ["Platypus", "stomachs", 0, "stomach"],
+    ["Tuatara", "eyes, counting the third", 3, "eye"], ["Bees, wasps and mantises", "eyes", 5, "eye"],
+    ["Box jellyfish", "eyes", 24, "eye"],
+    ["Eumillipes persephone", "legs", 1306, "leg"],
+    ["Insects", "legs", 6, "leg"], ["Arachnids", "legs", 8, "leg"], ["Decapods", "legs", 10, "leg"], ["Woodlice", "legs", 14, "leg"],
+    ["Giant armadillo", "teeth, at most", 100, "tooth"], ["Narwhal", "giant teeth (tusks)", 1, "tooth"],
+    ["Most mammals", "neck bones", 7, "bone"], ["Manatee", "neck bones", 6, "bone"],
+  ];
+  const BY_NAME = Object.fromEntries(TOPIC.items.map((it) => [it.creature, it]));
+  const COUNTED = new Set(COUNTS.map((c) => c[0]));
+  // everything else is a "what's odd about it?" plate
+  const QUESTIONS = [
+    ...COUNTS.filter((c) => BY_NAME[c[0]]).map(([name, what, n, glyph]) => ({ kind: "count", it: BY_NAME[name], what, n, glyph })),
+    ...TOPIC.items.filter((it) => !COUNTED.has(it.creature)).map((it) => ({ kind: "odd", it })),
+  ];
+
+  const G = {
+    heart: '<path d="M15 26 C4 18 3 10 8 7 c3-2 6-1 7 2 c1-3 4-4 7-2 c5 3 4 11-7 19z"/>',
+    brain: '<path d="M10 24c-4 0-6-3-5-6-2-2-2-6 1-7 0-4 4-6 7-4 2-3 7-2 8 1 4-1 7 3 5 6 3 2 2 7-2 7-1 3-6 4-8 1-2 3-5 3-6 2z"/>',
+    stomach: '<path d="M12 4v6c0 3-6 4-6 11 0 5 4 7 8 7 6 0 10-4 10-9 0-4-3-5-6-4-3 1-5 0-5-3V4z"/>',
+    eye: '<path d="M3 15c4-7 20-7 24 0-4 7-20 7-24 0z"/><circle cx="15" cy="15" r="4" fill="#031a1e"/>',
+    leg: '<path d="M8 4l6 10-4 12h3l5-12-6-10z"/>',
+    tooth: '<path d="M8 6c3-3 11-3 14 0 2 3 0 8-1 12-1 5-3 8-4 4l-2-6-2 6c-1 4-3 1-4-4-1-4-3-9-1-12z"/>',
+    bone: '<rect x="6" y="11" width="18" height="8" rx="3"/><circle cx="6" cy="11" r="3.5"/><circle cx="6" cy="19" r="3.5"/><circle cx="24" cy="11" r="3.5"/><circle cx="24" cy="19" r="3.5"/>',
+    dot: '<circle cx="15" cy="15" r="6"/>',
+  };
+  const glyph = (g, i) => `<svg viewBox="0 0 30 30" fill="#031a1e" style="animation-delay:${Math.min(i * 40, 1200)}ms">${G[g]}</svg>`;
+
+  let best = 0;
+  try { best = Number(localStorage.getItem("xray-lab:best")) || 0; } catch (e) {}
+  const L = { plates: [], i: 0, score: 0, done: false, results: [] };
+
+  function newRun() {
+    L.plates = shuffle(QUESTIONS).slice(0, 12); L.i = 0; L.score = 0; L.results = [];
+    showPlate();
+  }
+  function showPlate() {
+    const p = L.plates[L.i];
+    L.done = false;
+    $("box").classList.remove("on");
+    $("tag").textContent = `SPECIMEN ${String(L.i + 1).padStart(2, "0")} · ${(TOPIC.groups.find((g) => g.key === p.it.group) || {}).label?.toUpperCase() || ""}`;
+    $("film").textContent = p.it.creature;
+    $("film-out").innerHTML = "";
+    $("r-plate").textContent = `${L.i + 1}/${L.plates.length}`;
+    $("r-score").textContent = L.score;
+    $("r-best").textContent = best;
+    if (p.kind === "count") {
+      $("q").innerHTML = `How many <em>${esc(p.what)}</em>?`;
+      $("input").innerHTML = `<div class="dial"><button type="button" data-step="-1" aria-label="One fewer">−</button><input id="n" type="number" inputmode="numeric" min="0" value="0" aria-label="Your count"><button type="button" data-step="1" aria-label="One more">+</button></div>
+        <div style="margin-top:10px"><button class="key expose" id="expose" style="width:100%">Expose</button></div>`;
+      $("n").addEventListener("keydown", (e) => { if (e.key === "Enter") expose(); });
+      $("expose").addEventListener("click", expose);
+      $("n").focus({ preventScroll: true });
+    } else {
+      const others = shuffle(TOPIC.items.filter((x) => x !== p.it && x.oddity !== p.it.oddity)).slice(0, 3);
+      $("q").innerHTML = `What's odd about it?`;
+      $("input").innerHTML = `<div class="choices">${shuffle([p.it, ...others]).map((x) => `<button class="key" data-odd="${esc(x.oddity)}">${esc(x.oddity)}</button>`).join("")}</div>`;
+    }
+    $("report").innerHTML = "Awaiting exposure…";
+    renderShelf();
+  }
+  $("input").addEventListener("click", (e) => {
+    const s = e.target.closest("[data-step]");
+    if (s && !L.done) { const n = $("n"); n.value = Math.max(0, (Number(n.value) || 0) + Number(s.dataset.step)); }
+    const o = e.target.closest("[data-odd]");
+    if (o && !L.done) answerOdd(o);
+  });
+
+  function flash(right) {
+    $("box").classList.add("on");
+    const s = $("scan"); s.classList.remove("go"); void s.offsetWidth; s.classList.add("go");
+    L.results[L.i] = right;
+    if (right) L.score++;
+    $("r-score").textContent = L.score;
+  }
+  function expose() {
+    if (L.done) return;
+    const p = L.plates[L.i];
+    const guess = Number($("n").value);
+    if ($("n").value === "" || Number.isNaN(guess)) return;
+    L.done = true;
+    const right = guess === p.n;
+    flash(right);
+    $("film-out").innerHTML = p.n <= 40 && p.n > 0
+      ? `<div class="glyphs">${Array.from({ length: p.n }, (_, i) => glyph(p.glyph, i)).join("")}</div><div class="big-number">${p.n}</div>`
+      : `<div class="big-number">${p.n.toLocaleString("en-GB")}</div>`;
+    const close = !right && p.n > 20 && Math.abs(guess - p.n) / p.n <= 0.1;
+    const verdict = right ? `<b>CORRECT.</b>` : close ? `<b class="amber">CLOSE:</b> you said ${guess.toLocaleString("en-GB")}.` : `<b class="bad">NOT QUITE:</b> you said ${guess.toLocaleString("en-GB")}.`;
+    finish(`${verdict} ${esc(p.it.creature)}: ${esc(p.it.oddity)}.${p.it.detail ? " " + esc(p.it.detail) + "." : ""}${p.it.hook ? "<br>" + esc(p.it.hook) : ""}`);
+  }
+  function answerOdd(btn) {
+    L.done = true;
+    const p = L.plates[L.i];
+    const right = btn.dataset.odd === p.it.oddity;
+    document.querySelectorAll("[data-odd]").forEach((b) => {
+      b.disabled = true;
+      if (b.dataset.odd === p.it.oddity) b.classList.add("right"); else if (b === btn) b.classList.add("wrong");
+    });
+    flash(right);
+    $("film-out").innerHTML = `<div class="big-number" style="font-size:clamp(22px,4vw,30px);font-family:'Chakra Petch',sans-serif;font-weight:700">${esc(p.it.oddity)}</div>`;
+    finish(`${right ? "<b>CORRECT.</b>" : '<b class="bad">NOT QUITE.</b>'}${p.it.detail ? " " + esc(p.it.detail) + "." : ""}${p.it.hook ? "<br>" + esc(p.it.hook) : ""}`);
+  }
+  function finish(html) {
+    const last = L.i === L.plates.length - 1;
+    if (last && L.score > best) { best = L.score; try { localStorage.setItem("xray-lab:best", String(best)); } catch (e) {} }
+    $("report").innerHTML = `${html}<div style="margin-top:12px"><button class="key" id="next">${last ? `${L.score} of ${L.plates.length}. New batch of plates` : "Next plate →"}</button></div>`;
+    $("next").addEventListener("click", () => { if (last) newRun(); else { L.i++; showPlate(); } });
+    $("next").focus({ preventScroll: true });
+    renderShelf();
+  }
+  function renderShelf() {
+    $("shelf").innerHTML = L.plates.map((p, i) => {
+      const r = L.results[i];
+      return `<span class="${r === true ? "got" : r === false ? "miss" : ""}">${String(i + 1).padStart(2, "0")} ${i <= L.i ? esc(p.it.creature) : "· · ·"}</span>`;
+    }).join("");
+  }
+  newRun();
+</script>
+</body>
+</html>
