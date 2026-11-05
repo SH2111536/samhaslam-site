@@ -24,7 +24,9 @@
     {
       "key": "letter",
       "label": "Letter",
-      "firstLetterOf": "name"
+      "firstLetterOf": "name",
+      "multi": true,
+      "plural": "Letters"
     }
   ],
   "journey": {

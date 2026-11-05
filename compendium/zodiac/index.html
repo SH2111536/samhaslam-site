@@ -439,6 +439,7 @@
     color: var(--text-faint);
     margin-right: 0.25rem;
   }
+  .tool-hint { display: block; text-transform: none; letter-spacing: 0; font-size: 0.6875rem; color: var(--text-muted); }
   .tool-actions { margin-left: auto; }
 
   @media (max-width: 760px) {
@@ -1006,7 +1007,7 @@
  "slug": "zodiac",
  "title": "The zodiac.",
  "eyebrow": "Compendium · Holly",
- "lede": "The twelve signs of the zodiac, in order round the year: their dates, symbols, elements and ruling planets.",
+ "lede": "The twelve signs of the zodiac, in order round the year: their dates, symbols and elements.",
  "noun": {
   "one": "sign",
   "many": "signs"
@@ -1015,7 +1016,7 @@
  "card": {
   "tag": "Holly · Astrology",
   "title": "The zodiac",
-  "desc": "Twelve signs: their dates, symbols, elements and ruling planets, round the zodiac wheel.",
+  "desc": "Twelve signs: their dates, symbols and elements, round the zodiac wheel.",
   "icon": "sparkles",
   "order": 10
  },
@@ -1053,21 +1054,13 @@
    "label": "Element",
    "plural": "elements",
    "role": "meta"
-  },
-  {
-   "key": "planet",
-   "label": "Ruling planet",
-   "short": "Planet",
-   "plural": "planets",
-   "role": "meta"
   }
  ],
  "hideable": [
   "name",
   "dates",
   "symbol",
-  "element",
-  "planet"
+  "element"
  ],
  "questions": [
   {
@@ -1094,11 +1087,6 @@
    "from": "name",
    "to": "element",
    "ask": "Which element is it?"
-  },
-  {
-   "from": "name",
-   "to": "planet",
-   "ask": "What's its ruling planet?"
   }
  ],
  "match": [
@@ -1117,7 +1105,6 @@
    "dates": "21 Mar – 19 Apr",
    "symbol": "The Ram",
    "element": "Fire",
-   "planet": "Mars",
    "hook": "The golden ram that flew Phrixus to safety. Its fleece became the Golden Fleece that Jason went looking for.",
    "accept": {
     "symbol": [
@@ -1130,7 +1117,6 @@
    "dates": "20 Apr – 20 May",
    "symbol": "The Bull",
    "element": "Earth",
-   "planet": "Venus",
    "hook": "Zeus as a white bull, carrying Europa off across the sea. She gave her name to Europe."
   },
   {
@@ -1138,7 +1124,6 @@
    "dates": "21 May – 20 Jun",
    "symbol": "The Twins",
    "element": "Air",
-   "planet": "Mercury",
    "hook": "Castor and Pollux. When Castor died, Pollux shared his immortality so the twins could stay together."
   },
   {
@@ -1146,33 +1131,20 @@
    "dates": "21 Jun – 22 Jul",
    "symbol": "The Crab",
    "element": "Water",
-   "planet": "The Moon",
-   "hook": "The crab Hera sent to nip Heracles while he fought the Hydra. He trod on it; Hera put it in the stars.",
-   "accept": {
-    "planet": [
-     "The Moon"
-    ]
-   }
+   "hook": "The crab Hera sent to nip Heracles while he fought the Hydra. He trod on it; Hera put it in the stars."
   },
   {
    "name": "Leo",
    "dates": "23 Jul – 22 Aug",
    "symbol": "The Lion",
    "element": "Fire",
-   "planet": "The Sun",
-   "hook": "The Nemean lion, whose hide no weapon could pierce: Heracles' first labour.",
-   "accept": {
-    "planet": [
-     "The Sun"
-    ]
-   }
+   "hook": "The Nemean lion, whose hide no weapon could pierce: Heracles' first labour."
   },
   {
    "name": "Virgo",
    "dates": "23 Aug – 22 Sep",
    "symbol": "The Maiden",
    "element": "Earth",
-   "planet": "Mercury",
    "hook": "Often Astraea, goddess of justice and the last immortal to leave the Earth. Her scales hang next door, in Libra.",
    "accept": {
     "symbol": [
@@ -1185,7 +1157,6 @@
    "dates": "23 Sep – 22 Oct",
    "symbol": "The Scales",
    "element": "Air",
-   "planet": "Venus",
    "hook": "The only sign that's an object rather than a creature: the scales of justice."
   },
   {
@@ -1193,20 +1164,13 @@
    "dates": "23 Oct – 21 Nov",
    "symbol": "The Scorpion",
    "element": "Water",
-   "planet": "Pluto",
-   "hook": "The scorpion sent to kill the hunter Orion. They sit on opposite sides of the sky, so one sets as the other rises. Its traditional ruler is Mars.",
-   "accept": {
-    "planet": [
-     "Mars"
-    ]
-   }
+   "hook": "The scorpion sent to kill the hunter Orion. They sit on opposite sides of the sky, so one sets as the other rises."
   },
   {
    "name": "Sagittarius",
    "dates": "22 Nov – 21 Dec",
    "symbol": "The Archer",
    "element": "Fire",
-   "planet": "Jupiter",
    "hook": "A centaur archer, drawn with his arrow aimed at the heart of the Scorpion next door."
   },
   {
@@ -1214,7 +1178,6 @@
    "dates": "22 Dec – 19 Jan",
    "symbol": "The Goat",
    "element": "Earth",
-   "planet": "Saturn",
    "hook": "A sea-goat, goat in front and fish behind: said to be Pan, half-changed into a fish as he fled the monster Typhon.",
    "accept": {
     "symbol": [
@@ -1228,12 +1191,8 @@
    "dates": "20 Jan – 18 Feb",
    "symbol": "The Water-bearer",
    "element": "Air",
-   "planet": "Uranus",
-   "hook": "Ganymede, the boy Zeus carried off to pour drinks for the gods. Its traditional ruler is Saturn.",
+   "hook": "Ganymede, the boy Zeus carried off to pour drinks for the gods.",
    "accept": {
-    "planet": [
-     "Saturn"
-    ],
     "symbol": [
      "Water bearer",
      "Water carrier"
@@ -1245,12 +1204,8 @@
    "dates": "19 Feb – 20 Mar",
    "symbol": "The Fish",
    "element": "Water",
-   "planet": "Neptune",
-   "hook": "Aphrodite and Eros, turned into fish to escape Typhon and tied together with a cord so they wouldn't lose each other. Its traditional ruler is Jupiter.",
+   "hook": "Aphrodite and Eros, turned into fish to escape Typhon and tied together with a cord so they wouldn't lose each other.",
    "accept": {
-    "planet": [
-     "Jupiter"
-    ],
     "symbol": [
      "Fishes",
      "Two fish"
@@ -1333,18 +1288,20 @@
   const filterValue = (f, it) => f.firstLetterOf ? firstLetter(it[f.firstLetterOf]) : it[f.key];
 
   const state = { hide: null, group: "all", filters: {}, sort: "default", order: items.map((it) => it.id), revealed: new Set() };
+  // the values chosen on a filter: one at most, or any number where the topic marks it "multi"
+  const chosen = (f) => state.filters[f.key] || [];
 
   const isHidden = (item, field) => state.hide === field.key && !state.revealed.has(`${item.id}:${field.key}`);
   const shown = (item, field) => isHidden(item, field) ? "?" : esc(item[field.key]);
 
   const passes = (it) => (state.group === "all" || it.group === state.group) &&
-    FILTERS.every((f) => !state.filters[f.key] || filterValue(f, it) === state.filters[f.key]);
+    FILTERS.every((f) => !chosen(f).length || chosen(f).includes(filterValue(f, it)));
   const journeyOrder = (list) => list.filter((it) => it[JOURNEY.by] != null)
     .sort((a, b) => (JOURNEY.order === "asc" ? 1 : -1) * (a[JOURNEY.by] - b[JOURNEY.by]));
   const visibleItems = () => state.order.map((id) => itemById[id]).filter(passes);
-  const isFiltered = () => state.group !== "all" || FILTERS.some((f) => state.filters[f.key]);
+  const isFiltered = () => state.group !== "all" || FILTERS.some((f) => chosen(f).length);
   function scopeLabel() {
-    const bits = FILTERS.filter((f) => state.filters[f.key]).map((f) => `${f.label} ${state.filters[f.key]}`);
+    const bits = FILTERS.filter((f) => chosen(f).length).map((f) => `${chosen(f).length > 1 ? f.plural || `${f.label}s` : f.label} ${chosen(f).join(", ")}`);
     if (state.group !== "all") bits.push((DATA.groups.find((g) => g.key === state.group) || {}).label);
     return bits.join(" · ");
   }
@@ -1460,10 +1417,10 @@
     $("filter-chips").hidden = !FILTERS.length;
     $("filter-chips").innerHTML = FILTERS.map((f) => {
       const values = [...new Set(items.map((it) => filterValue(f, it)))].filter(Boolean).sort();
-      const cur = state.filters[f.key] || null;
-      return `<span class="tool-label">${esc(f.label)}</span>` +
-        `<button type="button" class="chip" data-filter="${esc(f.key)}" data-value="" aria-pressed="${!cur}">All</button>` +
-        values.map((v) => `<button type="button" class="chip letter" data-filter="${esc(f.key)}" data-value="${esc(v)}" aria-pressed="${cur === v}">${esc(v)}</button>`).join("");
+      const cur = chosen(f);
+      return `<span class="tool-label">${esc(f.multi ? f.plural || `${f.label}s` : f.label)}${f.multi ? `<span class="tool-hint">pick any</span>` : ""}</span>` +
+        `<button type="button" class="chip" data-filter="${esc(f.key)}" data-value="" aria-pressed="${!cur.length}">All</button>` +
+        values.map((v) => `<button type="button" class="chip letter" data-filter="${esc(f.key)}" data-value="${esc(v)}" aria-pressed="${cur.includes(v)}">${esc(v)}</button>`).join("");
     }).join("");
     if (JOURNEY) {
       $("order-group").hidden = false;
@@ -1545,7 +1502,10 @@
   $("filter-chips").addEventListener("click", (e) => {
     const b = e.target.closest("[data-filter]");
     if (!b) return;
-    state.filters[b.dataset.filter] = b.dataset.value || null;
+    const f = FILTERS.find((x) => x.key === b.dataset.filter), v = b.dataset.value, cur = chosen(f);
+    // "All" clears; on a multi filter each chip toggles in or out, otherwise it replaces the choice
+    state.filters[f.key] = !v ? [] : !f.multi ? (cur.length === 1 && cur[0] === v ? [] : [v])
+      : cur.includes(v) ? cur.filter((x) => x !== v) : [...cur, v].sort();
     renderToolbar(); renderGroups(); updateMap();
   });
 

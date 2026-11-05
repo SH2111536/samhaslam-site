@@ -439,6 +439,7 @@
     color: var(--text-faint);
     margin-right: 0.25rem;
   }
+  .tool-hint { display: block; text-transform: none; letter-spacing: 0; font-size: 0.6875rem; color: var(--text-muted); }
   .tool-actions { margin-left: auto; }
 
   @media (max-width: 760px) {
@@ -1662,18 +1663,20 @@
   const filterValue = (f, it) => f.firstLetterOf ? firstLetter(it[f.firstLetterOf]) : it[f.key];
 
   const state = { hide: null, group: "all", filters: {}, sort: "default", order: items.map((it) => it.id), revealed: new Set() };
+  // the values chosen on a filter: one at most, or any number where the topic marks it "multi"
+  const chosen = (f) => state.filters[f.key] || [];
 
   const isHidden = (item, field) => state.hide === field.key && !state.revealed.has(`${item.id}:${field.key}`);
   const shown = (item, field) => isHidden(item, field) ? "?" : esc(item[field.key]);
 
   const passes = (it) => (state.group === "all" || it.group === state.group) &&
-    FILTERS.every((f) => !state.filters[f.key] || filterValue(f, it) === state.filters[f.key]);
+    FILTERS.every((f) => !chosen(f).length || chosen(f).includes(filterValue(f, it)));
   const journeyOrder = (list) => list.filter((it) => it[JOURNEY.by] != null)
     .sort((a, b) => (JOURNEY.order === "asc" ? 1 : -1) * (a[JOURNEY.by] - b[JOURNEY.by]));
   const visibleItems = () => state.order.map((id) => itemById[id]).filter(passes);
-  const isFiltered = () => state.group !== "all" || FILTERS.some((f) => state.filters[f.key]);
+  const isFiltered = () => state.group !== "all" || FILTERS.some((f) => chosen(f).length);
   function scopeLabel() {
-    const bits = FILTERS.filter((f) => state.filters[f.key]).map((f) => `${f.label} ${state.filters[f.key]}`);
+    const bits = FILTERS.filter((f) => chosen(f).length).map((f) => `${chosen(f).length > 1 ? f.plural || `${f.label}s` : f.label} ${chosen(f).join(", ")}`);
     if (state.group !== "all") bits.push((DATA.groups.find((g) => g.key === state.group) || {}).label);
     return bits.join(" · ");
   }
@@ -1789,10 +1792,10 @@
     $("filter-chips").hidden = !FILTERS.length;
     $("filter-chips").innerHTML = FILTERS.map((f) => {
       const values = [...new Set(items.map((it) => filterValue(f, it)))].filter(Boolean).sort();
-      const cur = state.filters[f.key] || null;
-      return `<span class="tool-label">${esc(f.label)}</span>` +
-        `<button type="button" class="chip" data-filter="${esc(f.key)}" data-value="" aria-pressed="${!cur}">All</button>` +
-        values.map((v) => `<button type="button" class="chip letter" data-filter="${esc(f.key)}" data-value="${esc(v)}" aria-pressed="${cur === v}">${esc(v)}</button>`).join("");
+      const cur = chosen(f);
+      return `<span class="tool-label">${esc(f.multi ? f.plural || `${f.label}s` : f.label)}${f.multi ? `<span class="tool-hint">pick any</span>` : ""}</span>` +
+        `<button type="button" class="chip" data-filter="${esc(f.key)}" data-value="" aria-pressed="${!cur.length}">All</button>` +
+        values.map((v) => `<button type="button" class="chip letter" data-filter="${esc(f.key)}" data-value="${esc(v)}" aria-pressed="${cur.includes(v)}">${esc(v)}</button>`).join("");
     }).join("");
     if (JOURNEY) {
       $("order-group").hidden = false;
@@ -1874,7 +1877,10 @@
   $("filter-chips").addEventListener("click", (e) => {
     const b = e.target.closest("[data-filter]");
     if (!b) return;
-    state.filters[b.dataset.filter] = b.dataset.value || null;
+    const f = FILTERS.find((x) => x.key === b.dataset.filter), v = b.dataset.value, cur = chosen(f);
+    // "All" clears; on a multi filter each chip toggles in or out, otherwise it replaces the choice
+    state.filters[f.key] = !v ? [] : !f.multi ? (cur.length === 1 && cur[0] === v ? [] : [v])
+      : cur.includes(v) ? cur.filter((x) => x !== v) : [...cur, v].sort();
     renderToolbar(); renderGroups(); updateMap();
   });
 

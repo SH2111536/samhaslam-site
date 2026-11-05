@@ -2,7 +2,7 @@
   "slug": "elements",
   "title": "The elements.",
   "eyebrow": "Compendium · Science",
-  "lede": "The first twenty elements and the pub-quiz regulars from further along: their symbols and atomic numbers, sorted by family, with the table filling in as I learn them.",
+  "lede": "The first twenty elements and the pub-quiz regulars from further along: their symbols, sorted by family, with the table filling in as I learn them.",
   "noun": {
     "one": "element",
     "many": "elements"
@@ -11,7 +11,7 @@
   "card": {
     "tag": "Science",
     "title": "The elements",
-    "desc": "Thirty-nine elements, their symbols and atomic numbers, on a periodic table that fills in as I learn.",
+    "desc": "Thirty-nine elements and their symbols, on a periodic table that fills in as I learn.",
     "icon": "atom",
     "order": 5
   },
@@ -49,8 +49,7 @@
   ],
   "hideable": [
     "name",
-    "symbol",
-    "number"
+    "symbol"
   ],
   "questions": [
     {
@@ -62,26 +61,12 @@
       "from": "symbol",
       "to": "name",
       "ask": "Which element is this?"
-    },
-    {
-      "from": "name",
-      "to": "number",
-      "ask": "What's its atomic number?"
-    },
-    {
-      "from": "number",
-      "to": "name",
-      "ask": "Which element has this atomic number?"
     }
   ],
   "match": [
     {
       "left": "name",
       "right": "symbol"
-    },
-    {
-      "left": "name",
-      "right": "number"
     }
   ],
   "groups": [

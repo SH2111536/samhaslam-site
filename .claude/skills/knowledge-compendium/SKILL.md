@@ -157,7 +157,10 @@ the browser. It's recall practice, so it doesn't count towards mastery.
 `"filters": [{ "key": "letter", "label": "Letter", "firstLetterOf": "name" }]` adds a row of chips
 (one per first letter of that field) that combines with the group chips: "B" plus "Africa". The
 cards, the map's dimming, the quiz, the match game and the journey all use the filtered set.
-`"groupLabel": "Region"` labels the group chips.
+`"groupLabel": "Region"` labels the group chips. Add `"multi": true` (and `"plural": "Letters"`) to a filter to let its
+chips be picked in any combination, "A" plus "B" plus "F", with "All" clearing them; tapping a
+chosen chip takes it out again. The countries' letters use it so far; it's meant to spread to
+other topics' filters, and to group chips, once tried out there.
 
 `"journey": { "by": "lon", "order": "asc", "label": "West to east", "ask": "capital" }` adds a
 **Journey** button and an "Order: A–Z / West to east" switch. The journey walks the filtered
