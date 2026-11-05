@@ -581,6 +581,7 @@
   td.ko .res { font-size: 0.85rem; min-width: 0; height: 1.35rem; margin-right: 0.35rem; vertical-align: middle; }
   td.ko .score { font-family: var(--font-sport); font-weight: 700; font-size: 1rem; color: var(--white); font-variant-numeric: tabular-nums; white-space: nowrap; }
   td.opp .scorers-line { display: block; margin-top: 0.15rem; font-size: 0.75rem; color: var(--text-muted); }
+  td.opp .scorers-line.clash { color: var(--draw); }
   tr.fixture.is-next td.md { color: var(--accent-300); font-weight: 600; }
   .next-tag { display: inline-block; margin-left: 0.5rem; padding: 0 0.35rem; border-radius: 4px; background: var(--accent-600); color: var(--white); font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; vertical-align: 1px; }
   .readout .r-score { font-family: var(--font-sport); font-style: normal; font-weight: 700; font-size: 1.4rem; margin-right: 0.4rem; }
@@ -899,12 +900,16 @@
     Simons: 'Xavier Simons', Erhahon: 'Ethan Erhahon', Rodrigues: 'Rúben Rodrigues', Larrazabal: 'Gaizka Larrazabal'
   };
 
-  FIXTURES.forEach(function (f) {
-    var r = RESULTS[f.md];
-    if (!r) return;
+  // Every result says where it came from: 'reports' (the list above, checked
+  // by hand against match reports) or 'feed' (openfootball only, see LIVE DATA
+  // below). `feed` holds openfootball's score for the same game, when it has one.
+  function setResult(f, r) {
     f.result = r;
     f.outcome = r.gf > r.ga ? 'W' : r.gf < r.ga ? 'L' : 'D';
     if (r.date) f.date = r.date;
+  }
+  FIXTURES.forEach(function (f) {
+    if (RESULTS[f.md]) { RESULTS[f.md].source = 'reports'; setResult(f, RESULTS[f.md]); }
   });
 
   // ===========================================================================
@@ -941,8 +946,11 @@
   var rows = [];
   var nextIdx = null;   // the first fixture without a result
 
-  (function buildTable() {
+  function buildTable() {
     var lastMonth = null;
+    tbody.innerHTML = '';
+    rows = [];
+    nextIdx = null;
 
     FIXTURES.forEach(function (f, i) {
       var d = parseDate(f.date);
@@ -982,7 +990,9 @@
           (home ? 'Toughsheet' : club.stadium) +
           (f.tv && !r ? '<span class="tv">' + f.tv + '</span>' : '') +
           (nextIdx === i ? '<span class="next-tag">Next</span>' : '') + '</span>' +
-          (r && r.scorers.length ? '<span class="scorers-line">' + r.scorers.join(', ') + '</span>' : '') + '</td>' +
+          (r && r.scorers.length ? '<span class="scorers-line">' + r.scorers.join(', ') + '</span>' : '') +
+          (r && r.source === 'feed' ? '<span class="scorers-line">Score from openfootball</span>' : '') +
+          (r && r.feed && !r.feed.agrees ? '<span class="scorers-line clash">openfootball has ' + r.feed.gf + '–' + r.feed.ga + '</span>' : '') + '</td>' +
         '<td class="ko">' + (r
           ? '<span class="res ' + f.outcome + '">' + f.outcome + '</span><span class="score">' + r.gf + '–' + r.ga + '</span>'
           : f.ko) + '</td>' +
@@ -997,12 +1007,14 @@
 
       tbody.appendChild(tr);
       rows.push(tr);
+      bindRow(tr);
     });
-  }());
+  }
+  buildTable();
 
   // ---- summary --------------------------------------------------------------
 
-  (function stats() {
+  function stats() {
     var homeN = 0, awayN = 0, miles = 0;
     FIXTURES.forEach(function (f) {
       if (f.venue === 'H') { homeN++; } else { awayN++; miles += CLUBS[f.opp].miles * 2; }
@@ -1013,14 +1025,15 @@
     document.getElementById('tablefoot').textContent =
       FIXTURES.length + ' league fixtures · ' + miles.toLocaleString('en-GB') +
       ' miles of away-day round trips · click a row to pin it to the map';
-  }());
+  }
+  stats();
 
 
   // ===========================================================================
   // THE SEASON SO FAR
   // ===========================================================================
 
-  (function season() {
+  function season() {
     var played = FIXTURES.filter(function (f) { return f.result; });
     var pts = function (f) { return f.outcome === 'W' ? 3 : f.outcome === 'D' ? 1 : 0; };
     var count = function (list, o) { return list.filter(function (f) { return f.outcome === o; }).length; };
@@ -1119,8 +1132,19 @@
     $('s-talk').innerHTML = talk.map(function (t) {
       return '<li style="grid-template-columns:8rem minmax(0,1fr)"><span>' + t[0] + '</span><span><span class="res ' + t[2] + '" style="margin-right:0.4rem">' + t[1].outcome + '</span>' + esc(desc(t[1])) + '</span></li>';
     }).join('');
-    $('s-sources').textContent = 'Results from match reports (Sky Sports, Football Web Pages, the clubs’ own sites). Updated after matchday ' + played[played.length - 1].md + '.';
-  }());
+    var confirmed = played.filter(function (f) { return f.result.feed && f.result.feed.agrees; }).length;
+    var fromFeed = played.filter(function (f) { return f.result.source === 'feed'; }).length;
+    var clash = played.filter(function (f) { return f.result.feed && !f.result.feed.agrees; }).length;
+    $('s-sources').textContent =
+      played.length + ' results: ' + (played.length - fromFeed) + ' from match reports' +
+      (fromFeed ? ', ' + fromFeed + ' from openfootball alone' : '') +
+      (feedStatus.loaded ? '; openfootball’s free data confirms ' + confirmed +
+        (feedStatus.lastMd ? ' (it runs to matchday ' + feedStatus.lastMd + ')' : '') : '') +
+      (clash ? '; ' + clash + (clash === 1 ? ' disagrees' : ' disagree') + ', flagged in the table' : '') + '.' +
+      (feedStatus.failed ? ' openfootball couldn’t be reached just now.' : '');
+  }
+  var feedStatus = { loaded: false, failed: false, lastMd: 0 };
+  season();
 
   // ===========================================================================
   // MAP
@@ -1137,13 +1161,23 @@
     if (key === 'bolton') return;
     var c = CLUBS[key];
     var g = el('g', { class: 'marker is-shown' });
-    var away = FIXTURES.filter(function (f) { return f.opp === key && f.venue === 'A' && f.result; })[0];
-    g.appendChild(el('circle', { class: 'dot-far' + (away ? ' ' + away.outcome : ''), cx: 0, cy: 0, r: away ? 3.6 : 2.8 }));
+    g.appendChild(el('circle', { class: 'dot-far', cx: 0, cy: 0, r: 2.8 }));
     g.dataset.x = c.x;
     g.dataset.y = c.y;
     dots.appendChild(g);
     dotFor[key] = g;
   });
+
+  // colour each away ground by how the trip there went
+  function colourDots() {
+    Object.keys(dotFor).forEach(function (key) {
+      var away = FIXTURES.filter(function (f) { return f.opp === key && f.venue === 'A' && f.result; })[0];
+      var c = dotFor[key].firstChild;
+      c.setAttribute('class', 'dot-far' + (away ? ' ' + away.outcome : ''));
+      c.setAttribute('r', away ? 3.6 : 2.8);
+    });
+  }
+  colourDots();
 
   function makePin(cls) {
     var g = el('g', { class: 'marker' });
@@ -1254,8 +1288,12 @@
       sc.className = 'r-score ' + f.outcome;
       sc.textContent = f.outcome + ' ' + f.result.gf + '–' + f.result.ga;
       rTitle.insertBefore(sc, rTitle.firstChild);
-      rSub.textContent = f.result.note + (f.result.scorers.length ? ' Bolton: ' + f.result.scorers.join(', ') + '.' : '') +
-        (f.result.att ? ' Crowd ' + f.result.att.toLocaleString('en-GB') + '.' : '');
+      var r = f.result;
+      rSub.textContent = (r.note ? r.note : '') + (r.scorers.length ? ' Bolton: ' + r.scorers.join(', ') + '.' : '') +
+        (r.att ? ' Crowd ' + r.att.toLocaleString('en-GB') + '.' : '') +
+        (r.source === 'feed' ? ' Score from openfootball; no match report added yet.'
+          : r.feed && r.feed.agrees ? ' Confirmed by openfootball.'
+          : r.feed ? ' openfootball has ' + r.feed.gf + '–' + r.feed.ga + '; the match reports say otherwise.' : '');
     }
   }
 
@@ -1355,7 +1393,7 @@
     }, 140);
   }
 
-  rows.forEach(function (tr) {
+  function bindRow(tr) {
     var i = +tr.dataset.i;
     tr.addEventListener('mouseenter', function () { preview(i); });
     tr.addEventListener('mouseleave', endPreview);
@@ -1370,13 +1408,15 @@
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tr.click(); }
       if (e.key === 'Escape') { pinned = null; setActive(null, true); tr.blur(); }
     });
-  });
+  }
 
   // ---- filter ---------------------------------------------------------------
 
   var filterButtons = Array.prototype.slice.call(document.querySelectorAll('.segmented button'));
 
+  var filterMode = 'all';
   function applyFilter(mode) {
+    filterMode = mode;
     filterButtons.forEach(function (b) {
       b.setAttribute('aria-pressed', String(b.dataset.filter === mode));
     });
@@ -1407,6 +1447,81 @@
     });
   });
 
+
+  // ===========================================================================
+  // LIVE DATA — openfootball
+  // ---------------------------------------------------------------------------
+  // openfootball/football.json is a free, public-domain (CC0) set of league
+  // fixtures and results kept on GitHub by volunteers. We read its Championship
+  // file straight from GitHub each time the page opens. It's a second layer:
+  //   - a game it has that we don't: its score fills the gap (no scorers);
+  //   - a game we both have: it confirms our score, or is flagged if it doesn't;
+  //   - if it can't be reached, or is out of date, the page carries on as before.
+  // Nothing is stored, and nothing on the site changes, so it costs no deploys.
+  // ===========================================================================
+
+  var FEED_URL = 'https://raw.githubusercontent.com/openfootball/football.json/master/2026-27/en.2.json';
+
+  // "Bolton Wanderers FC" and "Bolton Wanderers" should count as the same club
+  function sameClub(a, b) {
+    var norm = function (t) { return t.toLowerCase().replace(/\b(a?fc)\b/g, '').replace(/[^a-z]/g, ''); };
+    return norm(a) === norm(b);
+  }
+
+  function mergeFeed(data) {
+    var changed = false;
+    (data.matches || []).forEach(function (m) {
+      var md = parseInt(String(m.round).replace(/\D/g, ''), 10);
+      var home = sameClub(m.team1, HOME.name), away = sameClub(m.team2, HOME.name);
+      if (!home && !away) return;
+      // a finished game has a full-time score, either { ft: [h, a] } or [h, a]
+      var ft = Array.isArray(m.score) ? m.score : m.score && m.score.ft;
+      if (!ft) return;
+      feedStatus.lastMd = Math.max(feedStatus.lastMd, md);
+      var f = FIXTURES.filter(function (x) { return x.md === md; })[0];
+      // only trust it if the opponent and venue line up with our fixture list
+      if (!f || !sameClub(home ? m.team2 : m.team1, CLUBS[f.opp].name) || (home ? 'H' : 'A') !== f.venue) {
+        if (window.console) console.warn('openfootball: matchday ' + md + ' does not match our fixture list', m);
+        return;
+      }
+      var score = { gf: home ? ft[0] : ft[1], ga: home ? ft[1] : ft[0] };
+      if (f.result) {
+        score.agrees = score.gf === f.result.gf && score.ga === f.result.ga;
+        f.result.feed = score;
+      } else {
+        setResult(f, { gf: score.gf, ga: score.ga, scorers: [], source: 'feed', feed: { gf: score.gf, ga: score.ga, agrees: true } });
+      }
+      changed = true;
+    });
+    return changed;
+  }
+
+  function redraw() {
+    buildTable();
+    applyFilter(filterMode);
+    stats();
+    season();
+    colourDots();
+    if (pinned !== null) setActive(pinned, true);
+  }
+
+  function loadFeed() {
+    if (!window.fetch) return;
+    var timeout = new Promise(function (_, reject) { setTimeout(function () { reject(new Error('timed out')); }, 8000); });
+    Promise.race([fetch(FEED_URL, { cache: 'no-cache' }), timeout])
+      .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+      .then(function (data) {
+        feedStatus.loaded = true;
+        mergeFeed(data);
+        redraw();
+      })
+      .catch(function (err) {
+        feedStatus.failed = true;
+        season();
+        if (window.console) console.warn('openfootball unavailable:', err.message);
+      });
+  }
+
   // ---- go -------------------------------------------------------------------
 
   var svg = document.getElementById('map');
@@ -1419,6 +1534,7 @@
   requestAnimationFrame(function () {
     requestAnimationFrame(function () { svg.classList.remove('no-anim'); });
   });
+  loadFeed();
 }());
 </script>
 </body>
