@@ -6,26 +6,32 @@
 <title>Bolton Wanderers 2026/27 — Sam Haslam</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
     color-scheme: dark;
 
-    --neutral-950: oklch(0.15 0.01 250);
-    --neutral-900: oklch(0.18 0.011 250);
-    --neutral-800: oklch(0.21 0.012 250);
-    --neutral-700: oklch(0.26 0.012 250);
-    --neutral-600: oklch(0.32 0.012 250);
-    --neutral-500: oklch(0.45 0.012 250);
-    --neutral-400: oklch(0.55 0.01 250);
-    --neutral-300: oklch(0.65 0.01 250);
-    --neutral-200: oklch(0.78 0.008 250);
-    --neutral-50:  oklch(0.96 0.004 250);
+    /* Wanderers navy, from deep to pale, with the white of the shirt and a red trim */
+    --neutral-950: oklch(0.17 0.045 265);
+    --neutral-900: oklch(0.21 0.055 265);
+    --neutral-800: oklch(0.25 0.06 265);
+    --neutral-700: oklch(0.31 0.06 265);
+    --neutral-600: oklch(0.38 0.055 265);
+    --neutral-500: oklch(0.52 0.04 265);
+    --neutral-400: oklch(0.64 0.03 265);
+    --neutral-300: oklch(0.76 0.02 265);
+    --neutral-200: oklch(0.86 0.012 265);
+    --neutral-50:  oklch(0.985 0.003 265);
 
-    --accent-600: oklch(0.52 0.14 250);
-    --accent-500: oklch(0.62 0.14 250);
-    --accent-400: oklch(0.68 0.13 250);
-    --accent-300: oklch(0.76 0.10 250);
+    --accent-600: oklch(0.52 0.20 25);
+    --accent-500: oklch(0.58 0.21 25);
+    --accent-400: oklch(0.64 0.19 25);
+    --accent-300: oklch(0.74 0.14 25);
+
+    --win: oklch(0.72 0.15 150);
+    --draw: oklch(0.80 0.12 85);
+    --loss: oklch(0.64 0.19 25);
+    --white: var(--neutral-50);
 
     --bg-page: var(--neutral-950);
     --bg-surface: var(--neutral-900);
@@ -40,6 +46,7 @@
     --text-faint: var(--neutral-500);
 
     --font-display: 'Newsreader', Georgia, 'Times New Roman', serif;
+    --font-sport: 'Barlow Condensed', 'Arial Narrow', 'Roboto Condensed', sans-serif;
     --font-body: 'Public Sans', system-ui, -apple-system, sans-serif;
 
     --duration-fast: 120ms;
@@ -49,11 +56,11 @@
     --ease-map: cubic-bezier(0.32, 0.72, 0.24, 1);
 
     /* map-only surfaces — lightness steps of the same cool neutral scale */
-    --map-sea: oklch(0.165 0.011 250);
-    --map-land: oklch(0.25 0.015 250);
-    --map-land-edge: oklch(0.44 0.022 250);
-    --map-land-far: oklch(0.20 0.011 250);
-    --map-land-far-edge: oklch(0.28 0.012 250);
+    --map-sea: oklch(0.19 0.05 265);
+    --map-land: oklch(0.29 0.055 265);
+    --map-land-edge: oklch(0.50 0.05 265);
+    --map-land-far: oklch(0.23 0.05 265);
+    --map-land-far-edge: oklch(0.32 0.05 265);
 
     /* both columns of the split are exactly this tall so they line up */
     --panel-h: clamp(440px, 64vh, 720px);
@@ -69,7 +76,7 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  body { padding: 3rem 1.5rem 4.5rem; }
+  body { padding: 3rem 1.5rem 4.5rem; overflow-x: clip; }
 
   .page {
     width: 100%;
@@ -252,7 +259,7 @@
     cursor: default;
     transition: background var(--duration-fast) var(--ease-standard);
   }
-  tbody tr.fixture + tr.fixture td { border-top: 1px solid oklch(0.22 0.012 250); }
+  tbody tr.fixture + tr.fixture td { border-top: 1px solid var(--neutral-800); }
 
   tbody tr.fixture td {
     padding: 0.6rem 0.75rem;
@@ -266,7 +273,7 @@
     background: var(--bg-surface-raised);
     outline: none;
   }
-  tbody tr.fixture.is-pinned { background: oklch(0.24 0.02 250); }
+  tbody tr.fixture.is-pinned { background: var(--neutral-700); }
   tbody tr.fixture:focus-visible td:first-child { box-shadow: inset 2px 0 0 var(--accent-400); }
   tbody tr.fixture.is-active td:first-child,
   tbody tr.fixture.is-pinned td:first-child { box-shadow: inset 2px 0 0 var(--accent-400); }
@@ -388,11 +395,11 @@
   .marker.is-shown { opacity: 1; }
 
   .dot-far { fill: var(--neutral-500); }
-  .dot-far.is-dim { fill: oklch(0.34 0.012 250); }
+  .dot-far.is-dim { fill: var(--neutral-600); }
 
   .pin-ring { fill: none; stroke: var(--accent-400); stroke-width: 1.25; opacity: 0.55; }
   .pin-core { fill: var(--accent-400); }
-  .pin-core.home { fill: var(--accent-300); }
+  .pin-core.home { fill: var(--white); }
   .pin-halo { fill: var(--accent-500); opacity: 0.14; }
 
   .pin-label {
@@ -464,13 +471,132 @@
   .legend i {
     width: 8px; height: 8px; border-radius: 50%; display: inline-block;
   }
-  .legend i.home { background: var(--accent-300); }
+  .legend i.home { background: var(--white); }
   .legend i.away { background: var(--accent-400); }
   .legend i.other { background: var(--neutral-600); }
 
   footer {
     font-size: 0.8125rem;
     color: var(--text-faint);
+  }
+
+
+  /* ---------- club band, header ---------- */
+
+  .kit-band {
+    height: 8px;
+    width: 100vw;
+    margin: -3rem 0 0 calc(50% - 50vw);
+    background: linear-gradient(90deg, var(--white) 0 46%, var(--accent-500) 46% 54%, var(--neutral-800) 54%);
+  }
+  h1.club {
+    font-family: var(--font-sport);
+    font-style: normal;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    font-size: clamp(2.6rem, 1.8rem + 4vw, 4.75rem);
+    line-height: 0.92;
+  }
+  h1.club span { color: var(--accent-400); }
+
+  /* ---------- season so far ---------- */
+
+  .season { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 1rem; }
+  .tile {
+    grid-column: span 3;
+    min-width: 0;
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    background: var(--bg-surface);
+  }
+  .tile.wide { grid-column: span 6; }
+  .tile h3 {
+    margin: 0 0 0.6rem;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+  .big {
+    font-family: var(--font-sport);
+    font-weight: 700;
+    font-size: 2.6rem;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: var(--white);
+  }
+  .big small { font-size: 1rem; font-weight: 600; color: var(--text-muted); margin-left: 0.3rem; letter-spacing: 0.02em; }
+  .tile p { margin: 0.5rem 0 0; font-size: 0.8125rem; line-height: 1.5; color: var(--text-muted); }
+
+  .wdl { display: flex; gap: 0.75rem; align-items: baseline; }
+  .wdl b { font-family: var(--font-sport); font-size: 1.9rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .wdl .w { color: var(--win); } .wdl .d { color: var(--draw); } .wdl .l { color: var(--loss); }
+  .wdl span { font-size: 0.75rem; color: var(--text-faint); margin-left: 0.15rem; }
+
+  .form { display: flex; flex-wrap: wrap; gap: 4px; }
+  .res {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.6rem;
+    height: 1.6rem;
+    padding: 0 0.3rem;
+    border-radius: 4px;
+    font-family: var(--font-sport);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--neutral-950);
+  }
+  .res.W { background: var(--win); } .res.D { background: var(--draw); } .res.L { background: var(--loss); color: var(--white); }
+
+  .next .opp-big { font-family: var(--font-sport); font-weight: 700; font-size: 1.6rem; line-height: 1.05; text-transform: uppercase; color: var(--white); }
+  .next .when { margin-top: 0.35rem; font-size: 0.8125rem; color: var(--text-secondary); }
+  .countdown { margin-top: 0.6rem; display: inline-block; padding: 0.2rem 0.55rem; border-radius: 4px; background: var(--accent-600); color: var(--white); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.03em; }
+
+  .split-ha { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .split-ha .lab { font-size: 0.75rem; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+  .split-ha .pts { font-family: var(--font-sport); font-weight: 700; font-size: 2rem; color: var(--white); }
+  .split-ha .pts small { font-size: 0.9rem; color: var(--text-muted); font-weight: 600; margin-left: 0.25rem; }
+  .split-ha .rec { font-size: 0.8125rem; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+
+  .scorers { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.45rem; }
+  .scorers li { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr) 1.5rem; align-items: center; gap: 0.6rem; font-size: 0.8125rem; color: var(--text-secondary); }
+  .scorers .bar { height: 10px; border-radius: 2px; background: var(--neutral-700); position: relative; overflow: hidden; }
+  .scorers .bar i { position: absolute; inset: 0 auto 0 0; background: var(--white); border-radius: 2px; }
+  .scorers li:first-child .bar i { background: var(--accent-500); }
+  .scorers .n { font-family: var(--font-sport); font-weight: 700; font-size: 1.05rem; text-align: right; color: var(--white); font-variant-numeric: tabular-nums; }
+
+  svg.race { display: block; width: 100%; height: auto; overflow: visible; }
+  .race .grid { stroke: var(--neutral-700); stroke-width: 1; }
+  .race .axis { fill: var(--text-faint); font-family: var(--font-body); font-size: 10px; font-variant-numeric: tabular-nums; }
+  .race .line { fill: none; stroke: var(--white); stroke-width: 2.25; stroke-linejoin: round; stroke-linecap: round; }
+  .race .area { fill: var(--white); opacity: 0.07; }
+  .race .pt.W { fill: var(--win); } .race .pt.D { fill: var(--draw); } .race .pt.L { fill: var(--loss); }
+  .race .end { fill: var(--white); font-family: var(--font-sport); font-weight: 700; font-size: 14px; }
+
+  /* results in the fixture table */
+  td.ko { white-space: nowrap; width: 5rem; }
+  td.ko .res { font-size: 0.85rem; min-width: 0; height: 1.35rem; margin-right: 0.35rem; vertical-align: middle; }
+  td.ko .score { font-family: var(--font-sport); font-weight: 700; font-size: 1rem; color: var(--white); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  td.opp .scorers-line { display: block; margin-top: 0.15rem; font-size: 0.75rem; color: var(--text-muted); }
+  tr.fixture.is-next td.md { color: var(--accent-300); font-weight: 600; }
+  .next-tag { display: inline-block; margin-left: 0.5rem; padding: 0 0.35rem; border-radius: 4px; background: var(--accent-600); color: var(--white); font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; vertical-align: 1px; }
+  .readout .r-score { font-family: var(--font-sport); font-style: normal; font-weight: 700; font-size: 1.4rem; margin-right: 0.4rem; }
+  .readout .r-score.W { color: var(--win); } .readout .r-score.D { color: var(--draw); } .readout .r-score.L { color: var(--loss); }
+  .dot-far.W { fill: var(--win); } .dot-far.D { fill: var(--draw); } .dot-far.L { fill: var(--loss); }
+  .legend { row-gap: 0.5rem; }
+  .legend .rule { flex-basis: 100%; height: 0; }
+  .legend i.W { background: var(--win); } .legend i.D { background: var(--draw); } .legend i.L { background: var(--loss); }
+
+  @media (max-width: 1100px) {
+    .tile { grid-column: span 6; }
+    .tile.wide { grid-column: span 12; }
+  }
+  @media (max-width: 640px) {
+    .tile, .tile.wide { grid-column: span 12; }
+    .scorers li { grid-template-columns: 7.5rem minmax(0, 1fr) 1.5rem; }
   }
 
   /* ---------- responsive ---------- */
@@ -486,7 +612,12 @@
 
   @media (max-width: 640px) {
     body { padding: 2.5rem 1rem 3.5rem; }
-    td.ko, th.ko, td.dist, th.dist { display: none; }
+    td.dist, th.dist { display: none; }
+    td.ko { width: auto; }
+    td.date .dow { display: none; }
+    tbody tr.fixture td, thead th { padding-left: 0.45rem; padding-right: 0.45rem; }
+    td.md { width: 1.75rem; }
+    td.venue { width: 2.25rem; }
     td.opp .ground { display: none; }
   }
 
@@ -497,19 +628,64 @@
 </head>
 <body>
 <div class="page">
+  <div class="kit-band" aria-hidden="true"></div>
 
   <header>
     <a class="back" href="../main/index.html">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>
       Back
     </a>
-    <span class="eyebrow">Side project · Championship</span>
-    <h1>Bolton Wanderers, 2026/27.</h1>
+    <span class="eyebrow">Side project · Championship 2026/27</span>
+    <h1 class="club">Bolton <span>Wanderers</span></h1>
     <p class="lede">
-      Forty-six league games, back in the Championship. Hover or tap a fixture and the map follows
-      it — home games settle on the Toughsheet, away games draw the line I'd have to travel.
+      Forty-six league games, back in the Championship for the first time in seven years. Results
+      so far, who's scoring, and the season still to come. Hover or tap a fixture and the map
+      follows it: home games settle on the Toughsheet, away games draw the line I'd have to travel.
     </p>
   </header>
+
+  <section aria-labelledby="season-heading">
+    <h2 id="season-heading" class="eyebrow" style="margin-top:0">The season so far</h2>
+    <div class="season">
+      <div class="tile">
+        <h3>Points</h3>
+        <div class="big" id="s-points">—</div>
+        <p id="s-played"></p>
+      </div>
+      <div class="tile">
+        <h3>Record</h3>
+        <div class="wdl" id="s-wdl"></div>
+        <p id="s-goals"></p>
+      </div>
+      <div class="tile">
+        <h3>Form, oldest to latest</h3>
+        <div class="form" id="s-form"></div>
+        <p id="s-form-note"></p>
+      </div>
+      <div class="tile next">
+        <h3>Next up</h3>
+        <div id="s-next"></div>
+      </div>
+      <div class="tile wide">
+        <h3>Points, match by match</h3>
+        <svg class="race" id="s-race" viewBox="0 0 560 170" role="img" aria-label="Running points total after each league match"></svg>
+      </div>
+      <div class="tile wide">
+        <h3>League goals</h3>
+        <ul class="scorers" id="s-scorers"></ul>
+      </div>
+      <div class="tile wide">
+        <h3>Home and away</h3>
+        <div class="split-ha" id="s-ha"></div>
+        <p id="s-ha-note"></p>
+      </div>
+      <div class="tile wide">
+        <h3>Talking points</h3>
+        <ul class="scorers" id="s-talk" style="gap:0.6rem"></ul>
+        <p id="s-sources"></p>
+      </div>
+    </div>
+  </section>
 
   <div class="split">
 
@@ -541,7 +717,7 @@
               <th scope="col">Date</th>
               <th scope="col"><span aria-label="Home or away">H/A</span></th>
               <th scope="col">Opponent</th>
-              <th class="ko" scope="col">KO</th>
+              <th class="ko" scope="col">KO / FT</th>
               <th class="dist num" scope="col">Miles</th>
             </tr>
           </thead>
@@ -579,7 +755,11 @@
         <div class="legend">
           <span><i class="home"></i> Toughsheet</span>
           <span><i class="away"></i> Away ground</span>
-          <span><i class="other"></i> Other grounds</span>
+          <span><i class="other"></i> Away grounds to come</span>
+          <span class="rule"></span>
+          <span><i class="W"></i> Won there</span>
+          <span><i class="D"></i> Drew</span>
+          <span><i class="L"></i> Lost</span>
         </div>
       </div>
     </section>
@@ -687,6 +867,46 @@
     { md: 46, date: '2027-05-01', ko: '12:30', opp: 'west-brom',       venue: 'A' }
   ];
 
+
+  // ---------------------------------------------------------------------------
+  // RESULTS — league matches played so far, keyed by matchday. Bolton's goals
+  // first. `date` is set where the game moved from the original list.
+  // Checked against match reports (Sky Sports, Football Web Pages, club sites);
+  // Southampton (md 11) rests on match-stats sites only.
+  // Shape: { gf, ga, scorers: [...], att?, note, date? }
+  // ---------------------------------------------------------------------------
+
+  var RESULTS = {
+    1:  { gf: 2, ga: 1, scorers: ['Dalby 15', 'Gale 25'], note: "Bolton's first Championship win in seven years; Preston's Jusef Erabi pulled one back late." },
+    2:  { gf: 0, ga: 0, scorers: [], note: "Goalless at Loftus Road, where QPR's Richard Kone missed several chances." },
+    3:  { gf: 0, ga: 1, scorers: [], note: "Ben House scored the only goal for Lincoln midway through the second half." },
+    4:  { gf: 2, ga: 3, scorers: ['Simons 1', 'Dalby 67'], att: 25714, note: "Ahead after a minute and again after 67, then Romelle Donovan won it in the 93rd." },
+    5:  { gf: 0, ga: 4, scorers: [], att: 19012, note: "Lyndon Dykes scored twice late on; Josh Sheehan was sent off." },
+    6:  { gf: 2, ga: 3, scorers: ['Erhahon 18', 'Rodrigues 27 pen'], att: 25510, note: "2-2 at half-time; Jarrod Bowen's second took West Ham top." },
+    7:  { gf: 1, ga: 0, scorers: ['Gale 90'], att: 21543, note: "Thierry Gale won it in the 90th minute." },
+    8:  { gf: 4, ga: 3, scorers: ['Gale 8', 'Larrazabal 42', 'Dalby 47', 'Ito 72'], date: '2026-09-20', note: "A seven-goal thriller, settled by Atsuki Ito off the bench. Played on the Sunday." },
+    9:  { gf: 1, ga: 2, scorers: ['Bair 90+2'], att: 26018, note: "Stoke were two up before Theo Bair's stoppage-time reply." },
+    10: { gf: 3, ga: 1, scorers: ['Sheehan', 'Dalby', 'Ito'], note: "Wolves' first home league defeat of the season." },
+    11: { gf: 0, ga: 0, scorers: [], note: "A goalless draw at St Mary's." },
+    12: { gf: 1, ga: 5, scorers: ['Bair 45+2'], note: "Will Lankshear scored twice as Middlesbrough went top of the league." },
+    13: { gf: 2, ga: 3, scorers: ['Sheehan 16', 'Dalby 57'], note: "2-1 up with six minutes left; Scott Twine won it for Bristol City in the 93rd." },
+    14: { gf: 1, ga: 0, scorers: ['Dalby 18'], date: '2026-11-03', note: "Sam Dalby's sixth of the season. Played on the Tuesday." }
+  };
+
+  // the full name behind each scorer's surname, for the goals chart
+  var PLAYERS = {
+    Dalby: 'Sam Dalby', Gale: 'Thierry Gale', Ito: 'Atsuki Ito', Sheehan: 'Josh Sheehan', Bair: 'Theo Bair',
+    Simons: 'Xavier Simons', Erhahon: 'Ethan Erhahon', Rodrigues: 'Rúben Rodrigues', Larrazabal: 'Gaizka Larrazabal'
+  };
+
+  FIXTURES.forEach(function (f) {
+    var r = RESULTS[f.md];
+    if (!r) return;
+    f.result = r;
+    f.outcome = r.gf > r.ga ? 'W' : r.gf < r.ga ? 'L' : 'D';
+    if (r.date) f.date = r.date;
+  });
+
   // ===========================================================================
   // SETUP
   // ===========================================================================
@@ -719,6 +939,7 @@
 
   var tbody = document.getElementById('tbody');
   var rows = [];
+  var nextIdx = null;   // the first fixture without a result
 
   (function buildTable() {
     var lastMonth = null;
@@ -747,6 +968,9 @@
       tr.dataset.venue = f.venue;
 
       var home = f.venue === 'H';
+      var r = f.result;
+      if (!r && nextIdx === null) nextIdx = i;
+      if (nextIdx === i) tr.classList.add('is-next');
       tr.innerHTML =
         '<td class="md">' + f.md + '</td>' +
         '<td class="date"><span class="dow">' + DOW[d.getUTCDay()] + '</span>' +
@@ -756,15 +980,20 @@
         '<td class="opp"><span class="name">' + club.name +
           '</span><span class="ground">' +
           (home ? 'Toughsheet' : club.stadium) +
-          (f.tv ? '<span class="tv">' + f.tv + '</span>' : '') + '</span></td>' +
-        '<td class="ko">' + f.ko + '</td>' +
+          (f.tv && !r ? '<span class="tv">' + f.tv + '</span>' : '') +
+          (nextIdx === i ? '<span class="next-tag">Next</span>' : '') + '</span>' +
+          (r && r.scorers.length ? '<span class="scorers-line">' + r.scorers.join(', ') + '</span>' : '') + '</td>' +
+        '<td class="ko">' + (r
+          ? '<span class="res ' + f.outcome + '">' + f.outcome + '</span><span class="score">' + r.gf + '–' + r.ga + '</span>'
+          : f.ko) + '</td>' +
         '<td class="dist">' + (home ? '—' : club.miles + ' mi') + '</td>';
 
       tr.setAttribute('aria-label',
         DOW[d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + MON[d.getUTCMonth()] + ' ' +
         d.getUTCFullYear() + ', ' + f.ko + ', ' + (home ? 'home to ' : 'away at ') +
         club.name + ', ' + (home ? HOME.stadium : club.stadium) +
-        (f.tv ? ', live on ' + f.tv : ''));
+        (r ? ', ' + {W: 'won', D: 'drew', L: 'lost'}[f.outcome] + ' ' + r.gf + '–' + r.ga : '') +
+        (f.tv && !r ? ', live on ' + f.tv : ''));
 
       tbody.appendChild(tr);
       rows.push(tr);
@@ -786,6 +1015,113 @@
       ' miles of away-day round trips · click a row to pin it to the map';
   }());
 
+
+  // ===========================================================================
+  // THE SEASON SO FAR
+  // ===========================================================================
+
+  (function season() {
+    var played = FIXTURES.filter(function (f) { return f.result; });
+    var pts = function (f) { return f.outcome === 'W' ? 3 : f.outcome === 'D' ? 1 : 0; };
+    var count = function (list, o) { return list.filter(function (f) { return f.outcome === o; }).length; };
+    var sum = function (list, k) { return list.reduce(function (a, f) { return a + f.result[k]; }, 0); };
+    var total = played.reduce(function (a, f) { return a + pts(f); }, 0);
+    var gf = sum(played, 'gf'), ga = sum(played, 'ga');
+    var $ = function (id) { return document.getElementById(id); };
+    var esc = function (t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+
+    $('s-points').innerHTML = total + '<small>pts</small>';
+    $('s-played').textContent = played.length + ' of ' + FIXTURES.length + ' played · ' +
+      (total / played.length).toFixed(2) + ' a game';
+    $('s-wdl').innerHTML =
+      '<b class="w">' + count(played, 'W') + '</b><span>won</span>' +
+      '<b class="d">' + count(played, 'D') + '</b><span>drawn</span>' +
+      '<b class="l">' + count(played, 'L') + '</b><span>lost</span>';
+    $('s-goals').textContent = gf + ' scored, ' + ga + ' conceded (' + (gf - ga > 0 ? '+' : '') + (gf - ga) + ')';
+
+    $('s-form').innerHTML = played.map(function (f) {
+      return '<span class="res ' + f.outcome + '" title="' + esc((f.venue === 'H' ? 'v ' : 'at ') + CLUBS[f.opp].name + ', ' + f.result.gf + '–' + f.result.ga) + '">' + f.outcome + '</span>';
+    }).join('');
+    var last5 = played.slice(-5);
+    $('s-form-note').textContent = 'Last five: ' + last5.reduce(function (a, f) { return a + pts(f); }, 0) + ' points from 15.';
+
+    var next = FIXTURES.filter(function (f) { return !f.result; })[0];
+    if (next) {
+      var nd = parseDate(next.date), club = CLUBS[next.opp];
+      var today = new Date(); var t0 = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+      var days = Math.round((nd - t0) / 86400000);
+      var when = days < 0 ? 'Result to come' : days === 0 ? 'Today' : days === 1 ? 'Tomorrow' : 'In ' + days + ' days';
+      $('s-next').innerHTML =
+        '<div class="opp-big">' + (next.venue === 'H' ? 'v ' : 'at ') + esc(club.name) + '</div>' +
+        '<div class="when">' + DOW[nd.getUTCDay()] + ' ' + nd.getUTCDate() + ' ' + MON[nd.getUTCMonth()] + ' · ' + next.ko +
+        (next.tv ? ' · ' + esc(next.tv) : '') + '<br>' + esc(next.venue === 'H' ? HOME.stadium : club.stadium) + '</div>' +
+        '<span class="countdown">' + when + '</span>';
+    }
+
+    // points race
+    var svg = $('s-race'), Wd = 560, Hd = 170, L = 26, R = 26, T = 12, B = 22;
+    var n = FIXTURES.length, maxPts = Math.max(30, Math.ceil(total / 10) * 10 + 10);
+    var x = function (md) { return L + (md / n) * (Wd - L - R); };
+    var y = function (p) { return T + (1 - p / maxPts) * (Hd - T - B); };
+    var out = '';
+    for (var g = 0; g <= maxPts; g += 10) {
+      out += '<line class="grid" x1="' + L + '" x2="' + (Wd - R) + '" y1="' + y(g) + '" y2="' + y(g) + '"/>' +
+             '<text class="axis" x="' + (L - 6) + '" y="' + (y(g) + 3) + '" text-anchor="end">' + g + '</text>';
+    }
+    [1, 10, 20, 30, 40, 46].forEach(function (md) {
+      out += '<text class="axis" x="' + x(md) + '" y="' + (Hd - 6) + '" text-anchor="middle">' + md + '</text>';
+    });
+    var run = 0, pts2 = [[x(0), y(0)]], marks = '';
+    played.forEach(function (f) {
+      run += pts(f);
+      pts2.push([x(f.md), y(run)]);
+      marks += '<circle class="pt ' + f.outcome + '" cx="' + x(f.md) + '" cy="' + y(run) + '" r="3.5"><title>Matchday ' + f.md + ': ' + f.outcome + ' ' + f.result.gf + '–' + f.result.ga + ', ' + run + ' pts</title></circle>';
+    });
+    var line = pts2.map(function (p, i) { return (i ? 'L' : 'M') + p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join('');
+    var lastP = pts2[pts2.length - 1];
+    out += '<path class="area" d="' + line + 'L' + lastP[0].toFixed(1) + ',' + y(0) + 'L' + x(0) + ',' + y(0) + 'Z"/>' +
+           '<path class="line" d="' + line + '"/>' + marks +
+           '<text class="end" x="' + (lastP[0] + 8) + '" y="' + (lastP[1] + 5) + '">' + total + '</text>';
+    svg.innerHTML = out;
+
+    // scorers
+    var goals = {};
+    played.forEach(function (f) {
+      f.result.scorers.forEach(function (sc) { var who = sc.split(' ')[0]; goals[who] = (goals[who] || 0) + 1; });
+    });
+    var table = Object.keys(goals).sort(function (a, b) { return goals[b] - goals[a] || a.localeCompare(b); });
+    var top = goals[table[0]] || 1;
+    $('s-scorers').innerHTML = table.map(function (k) {
+      return '<li><span>' + esc(PLAYERS[k] || k) + '</span><span class="bar"><i style="width:' + (goals[k] / top * 100) + '%"></i></span><span class="n">' + goals[k] + '</span></li>';
+    }).join('');
+
+    // home and away
+    function line2(list, lab) {
+      var p = list.reduce(function (a, f) { return a + pts(f); }, 0);
+      return '<div><div class="lab">' + lab + '</div><div class="pts">' + p + '<small>pts</small></div>' +
+        '<div class="rec">W' + count(list, 'W') + ' D' + count(list, 'D') + ' L' + count(list, 'L') + ' · ' +
+        sum(list, 'gf') + '–' + sum(list, 'ga') + '</div></div>';
+    }
+    var homeP = played.filter(function (f) { return f.venue === 'H'; });
+    var awayP = played.filter(function (f) { return f.venue === 'A'; });
+    $('s-ha').innerHTML = line2(homeP, 'At the Toughsheet') + line2(awayP, 'On the road');
+    var hp = homeP.reduce(function (a, f) { return a + pts(f); }, 0), ap = awayP.reduce(function (a, f) { return a + pts(f); }, 0);
+    $('s-ha-note').textContent = ap > hp
+      ? 'Better away from home so far: ' + ap + ' points from ' + awayP.length + ' on the road, ' + hp + ' from ' + homeP.length + ' at the Toughsheet.'
+      : hp > ap ? 'Stronger at home so far.' : 'Level home and away.';
+
+    // talking points
+    var byMargin = played.slice().sort(function (a, b) { return (b.result.gf - b.result.ga) - (a.result.gf - a.result.ga) || b.result.gf - a.result.gf; });
+    var best = byMargin[0], worst = byMargin[byMargin.length - 1];
+    var wild = played.slice().sort(function (a, b) { return (b.result.gf + b.result.ga) - (a.result.gf + a.result.ga); })[0];
+    var desc = function (f) { return (f.venue === 'H' ? 'v ' : 'at ') + CLUBS[f.opp].name + ', ' + f.result.gf + '–' + f.result.ga; };
+    var talk = [['Best result', best, 'W'], ['Heaviest defeat', worst, 'L'], ['Most goals', wild, wild.outcome]];
+    $('s-talk').innerHTML = talk.map(function (t) {
+      return '<li style="grid-template-columns:8rem minmax(0,1fr)"><span>' + t[0] + '</span><span><span class="res ' + t[2] + '" style="margin-right:0.4rem">' + t[1].outcome + '</span>' + esc(desc(t[1])) + '</span></li>';
+    }).join('');
+    $('s-sources').textContent = 'Results from match reports (Sky Sports, Football Web Pages, the clubs’ own sites). Updated after matchday ' + played[played.length - 1].md + '.';
+  }());
+
   // ===========================================================================
   // MAP
   // ===========================================================================
@@ -801,7 +1137,8 @@
     if (key === 'bolton') return;
     var c = CLUBS[key];
     var g = el('g', { class: 'marker is-shown' });
-    g.appendChild(el('circle', { class: 'dot-far', cx: 0, cy: 0, r: 2.8 }));
+    var away = FIXTURES.filter(function (f) { return f.opp === key && f.venue === 'A' && f.result; })[0];
+    g.appendChild(el('circle', { class: 'dot-far' + (away ? ' ' + away.outcome : ''), cx: 0, cy: 0, r: away ? 3.6 : 2.8 }));
     g.dataset.x = c.x;
     g.dataset.y = c.y;
     dots.appendChild(g);
@@ -908,10 +1245,18 @@
   var rTitle = document.getElementById('r-title');
   var rSub = document.getElementById('r-sub');
 
-  function setReadout(meta, title, sub) {
+  function setReadout(meta, title, sub, f) {
     rMeta.textContent = meta;
     rTitle.textContent = title;
     rSub.textContent = sub;
+    if (f && f.result) {
+      var sc = document.createElement('span');
+      sc.className = 'r-score ' + f.outcome;
+      sc.textContent = f.outcome + ' ' + f.result.gf + '–' + f.result.ga;
+      rTitle.insertBefore(sc, rTitle.firstChild);
+      rSub.textContent = f.result.note + (f.result.scorers.length ? ' Bolton: ' + f.result.scorers.join(', ') + '.' : '') +
+        (f.result.att ? ' Crowd ' + f.result.att.toLocaleString('en-GB') + '.' : '');
+    }
   }
 
   // ===========================================================================
@@ -926,7 +1271,7 @@
     awayPin.classList.remove('is-shown');
     for (var k in dotFor) dotFor[k].firstChild.classList.remove('is-dim');
     setReadout('The season', FIXTURES.length + ' league games',
-      'Pick a fixture to see it on the map.');
+      'Pick a fixture to see it on the map. Away grounds are coloured by how it went there.');
   }
 
   // Zoom so both grounds sit inside the stage with room for their labels. The
@@ -960,8 +1305,8 @@
       homePin.classList.add('is-shown');
       awayPin.classList.remove('is-shown');
       applyCamera(3.6, HOME.x, HOME.y);
-      setReadout('Home · ' + dateStr + ' · ' + f.ko + tvSuffix, HOME.stadium,
-        'Bolton Wanderers v ' + club.name + ' · matchday ' + f.md + '.');
+      setReadout('Home · ' + dateStr + (f.result ? ' · matchday ' + f.md : ' · ' + f.ko + tvSuffix), HOME.stadium,
+        'Bolton Wanderers v ' + club.name + ' · matchday ' + f.md + '.', f);
     } else {
       var k = fitTwo(HOME, club);
       var cx = (HOME.x + club.x) / 2;
@@ -971,9 +1316,9 @@
       awayPin.classList.add('is-shown');
       applyCamera(k, cx, (HOME.y + club.y) / 2);
       drawArc(club, k);
-      setReadout('Away · ' + dateStr + ' · ' + f.ko + tvSuffix, club.stadium,
+      setReadout('Away · ' + dateStr + (f.result ? ' · ' + club.miles + ' miles' : ' · ' + f.ko + tvSuffix), club.stadium,
         club.name + ' v Bolton Wanderers · ' + club.city + ' · ' +
-        club.miles + ' miles from the Toughsheet.');
+        club.miles + ' miles from the Toughsheet.', f);
     }
   }
 
@@ -1068,6 +1413,9 @@
   svg.classList.add('no-anim');
   applyFilter('all');
   restState();
+  if (nextIdx !== null && window.matchMedia('(min-width: 1101px)').matches) {
+    tableWrap.scrollTop = Math.max(0, rows[nextIdx].offsetTop - 120);
+  }
   requestAnimationFrame(function () {
     requestAnimationFrame(function () { svg.classList.remove('no-anim'); });
   });
