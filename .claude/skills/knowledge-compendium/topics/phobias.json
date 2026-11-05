@@ -52,6 +52,12 @@
       "right": "fear"
     }
   ],
+  "crossword": [
+    {
+      "answer": "phobia",
+      "clue": "Fear of {fear:lower}"
+    }
+  ],
   "groups": [
     {
       "key": "everyday",

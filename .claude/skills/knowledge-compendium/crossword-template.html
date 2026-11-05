@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>The Daily Crossword — Sam Haslam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=Kalam:wght@400;700&display=swap">
+{{GATE}}
+<style>
+  /* An exercise-book page: the grid on squared paper beside a ruled list of clues, stacking on phones */
+  :root {
+    --paper: #fbfaf4;
+    --square: #fffef9;
+    --grid-line: #c9d7ea;
+    --rule: #e0a3a3;
+    --ink: #1d2a44;
+    --pen: #1f47b8;
+    --muted: #5d6a82;
+    --block: #1d2a44;
+    --hl-word: #fff1b8;
+    --hl-cell: #ffd66b;
+    --good: #1f7a4d;
+    --bad: #c0392b;
+    --tag-bg: #eef2f9;
+    --font-display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
+    --font-body: "Atkinson Hyperlegible", system-ui, sans-serif;
+    --font-hand: "Kalam", "Comic Sans MS", "Marker Felt", cursive;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #12203a; --square: #243d6b; --grid-line: #27406a; --rule: #7a3b4b; --ink: #e6edf8; --pen: #9cc2ff; --muted: #9aaac4;
+      --block: #050b18; --hl-word: #2b3d63; --hl-cell: #8a6a1f; --good: #5fd39a; --bad: #ff8a7a; --tag-bg: #1c2f52; color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html, body { margin: 0; }
+  body {
+    background:
+      linear-gradient(90deg, transparent 0 46px, var(--rule) 46px 48px, transparent 48px),
+      linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0 / 22px 22px,
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0 / 22px 22px,
+      var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+  }
+  .page {
+    max-width: 1120px; margin: 0 auto;
+    padding-block: 24px 56px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  a.back { display: inline-flex; gap: 6px; align-items: center; color: var(--muted); font-size: 14px; text-decoration: none; padding-left: 44px; }
+  a.back:hover { color: var(--ink); }
+  header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; margin: 14px 0 22px; padding-left: 44px; }
+  .eyebrow { font: 700 12px/1 var(--font-body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  h1 { font: 800 clamp(30px, 6vw, 52px)/0.95 var(--font-display); margin: 6px 0 0; letter-spacing: -0.02em; text-wrap: balance; }
+  h1 span { color: var(--pen); font-family: var(--font-hand); font-weight: 700; letter-spacing: 0; }
+  .dateline { display: flex; align-items: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+  .dateline .when { font: 700 18px var(--font-hand); color: var(--pen); }
+  .dateline button {
+    font: 700 13px var(--font-body); color: var(--ink); background: var(--paper); border: 2px solid var(--ink); border-radius: 4px;
+    padding: 4px 10px; cursor: pointer;
+  }
+  .dateline button:disabled { opacity: 0.35; cursor: default; }
+  .tally { font: 700 15px var(--font-hand); color: var(--pen); text-align: right; line-height: 1.4; }
+  .tally b { font-size: 26px; }
+
+  .layout { display: grid; grid-template-columns: minmax(0, auto) minmax(0, 1fr); gap: 28px; align-items: start; }
+  .board-wrap { display: flex; flex-direction: column; gap: 14px; position: relative; min-width: 0; }
+  .current {
+    min-height: 54px; background: var(--paper); border: 2px solid var(--ink); border-radius: 4px; padding: 8px 12px;
+    display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; box-shadow: 4px 4px 0 var(--ink);
+  }
+  .current .num { font: 800 18px var(--font-display); color: var(--pen); white-space: nowrap; }
+  .current .txt { font-size: 17px; line-height: 1.35; min-width: 0; }
+  .board {
+    --cell: min(38px, calc((100vw - 2 * max(16px, env(safe-area-inset-left, 0px)) - 6px - (var(--n) - 1) * 1px) / var(--n)));
+    display: grid; grid-template-columns: repeat(var(--cols), var(--cell)); grid-auto-rows: var(--cell);
+    border: 3px solid var(--ink); background: var(--block); width: max-content; gap: 1px;
+  }
+  .cell { position: relative; background: var(--square); cursor: pointer; display: grid; place-items: center; user-select: none; }
+  .cell.blank { background: var(--block); cursor: default; }
+  .cell .n { position: absolute; top: 1px; left: 2px; font: 700 calc(var(--cell) * 0.26) / 1 var(--font-body); color: var(--muted); }
+  .cell .l { font: 700 calc(var(--cell) * 0.62) / 1 var(--font-hand); color: var(--pen); text-transform: uppercase; translate: 0 6%; }
+  .cell.in-word { background: var(--hl-word); }
+  .cell.focus { background: var(--hl-cell); }
+  .cell.wrong .l { color: var(--bad); text-decoration: line-through; text-decoration-thickness: 2px; }
+  .cell.revealed .l { color: var(--muted); }
+  .cell.solved .l { color: var(--good); }
+  .cell.join-a::after { content: ""; position: absolute; right: -1px; top: 20%; bottom: 20%; width: 3px; background: var(--ink); }
+  .cell.join-d::after { content: ""; position: absolute; bottom: -1px; left: 20%; right: 20%; height: 3px; background: var(--ink); }
+  #keys { position: absolute; opacity: 0; width: 1px; height: 1px; left: 0; top: 0; border: 0; padding: 0; font-size: 16px; }
+
+  .tools { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tools button {
+    font: 700 14px var(--font-body); color: var(--ink); background: var(--paper); border: 2px solid var(--ink); border-radius: 4px;
+    padding: 7px 12px; cursor: pointer; box-shadow: 2px 2px 0 var(--ink);
+  }
+  .tools button:hover { background: var(--hl-word); }
+  .tools button:active { translate: 2px 2px; box-shadow: none; }
+  button:focus-visible, .clue:focus-visible { outline: 3px solid var(--pen); outline-offset: 2px; }
+
+  .clues { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 8px 28px; min-width: 0; }
+  .clues h2 { font: 800 22px var(--font-display); margin: 0 0 6px; border-bottom: 2px solid var(--ink); padding-bottom: 4px; }
+  .clues ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .clue {
+    all: unset; display: grid; grid-template-columns: 2.2em 1fr; gap: 0 6px; padding: 7px 6px; cursor: pointer; border-radius: 3px;
+    line-height: 1.35; width: 100%; box-sizing: border-box;
+  }
+  .clue:hover { background: var(--hl-word); }
+  .clue.active { background: var(--hl-cell); }
+  .clue .cn { font: 800 15px var(--font-display); color: var(--pen); text-align: right; }
+  .clue .ct { min-width: 0; }
+  .clue .meta { grid-column: 2; display: flex; gap: 8px; align-items: center; margin-top: 3px; }
+  .tag { font: 700 11px var(--font-body); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); background: var(--tag-bg); padding: 2px 7px; border-radius: 99px; }
+  .len { font-size: 13px; color: var(--muted); }
+  .clue.done .ct { text-decoration: line-through; text-decoration-color: var(--good); text-decoration-thickness: 2px; color: var(--muted); }
+
+  .banner { margin-top: 6px; padding: 12px 14px; border: 2px dashed var(--good); color: var(--good); font: 700 20px var(--font-hand); border-radius: 4px; }
+  footer { margin-top: 36px; padding-left: 44px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: minmax(0, 1fr); }
+    header, a.back, footer { padding-left: 0; }
+    .board { margin: 0 auto; }
+    .tally { text-align: left; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .cell.pop .l { animation: pop 0.25s ease; }
+    @keyframes pop { from { transform: scale(1.5); } }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <a class="back" href="../index.html">&larr; Compendium</a>
+  <header>
+    <div>
+      <div class="eyebrow">From the compendium · a new one every day</div>
+      <h1>The Daily <span>Crossword</span></h1>
+      <div class="dateline">
+        <button type="button" id="prev" aria-label="Previous day's puzzle">&larr;</button>
+        <span class="when" id="when"></span>
+        <button type="button" id="next" aria-label="Next day's puzzle">&rarr;</button>
+        <button type="button" id="today" hidden>Today</button>
+      </div>
+    </div>
+    <div class="tally" id="tally"></div>
+  </header>
+
+  <div class="layout">
+    <div class="board-wrap">
+      <div class="current" id="current" aria-live="polite"></div>
+      <div class="board" id="board" role="grid" aria-label="Crossword grid"></div>
+      <input id="keys" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Type letters into the grid">
+      <div class="tools">
+        <button type="button" id="check-word">Check word</button>
+        <button type="button" id="check-all">Check grid</button>
+        <button type="button" id="reveal-letter">Reveal letter</button>
+        <button type="button" id="reveal-word">Reveal word</button>
+        <button type="button" id="clear">Clear</button>
+      </div>
+      <div class="banner" id="banner" hidden></div>
+    </div>
+    <div class="clues">
+      <section><h2>Across</h2><ol id="across"></ol></section>
+      <section><h2>Down</h2><ol id="down"></ol></section>
+    </div>
+  </div>
+
+  <footer>Every clue comes from a compendium topic, and a new grid is built from them each day: the same one for everyone, all day. Your letters are saved in this browser.</footer>
+</div>
+
+<script type="application/json" id="bank">{{BANK_JSON}}</script>
+<script>
+(() => {
+  const BANK = JSON.parse(document.getElementById("bank").textContent);
+  const START = "{{START}}";
+  const MAX_SPAN = 15;          // the grid is at most 15 squares each way
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
+  };
+
+  // ---------- dates: a puzzle per local calendar day ----------
+
+  const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const fromIso = (s) => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d, 12); };
+  const addDays = (s, n) => { const d = fromIso(s); d.setDate(d.getDate() + n); return iso(d); };
+  const dayNo = (s) => Math.round((fromIso(s) - fromIso(START)) / 86400000) + 1;
+  const TODAY = iso(new Date()) < START ? START : iso(new Date());
+  const longDate = (s) => fromIso(s).toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" });
+
+  // ---------- the day's grid: seeded, so everyone gets the same one ----------
+
+  function rngFor(seedText) {
+    let h = 1779033703 ^ seedText.length;
+    for (let i = 0; i < seedText.length; i++) { h = Math.imul(h ^ seedText.charCodeAt(i), 3432918353); h = (h << 13) | (h >>> 19); }
+    let a = h >>> 0;
+    return () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  }
+  const shuffled = (arr, rng) => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+  // candidates: topics take turns, so no one topic swamps the grid
+  function candidates(rng) {
+    const byTopic = {};
+    BANK.forEach((e) => (byTopic[e.t] = byTopic[e.t] || []).push(e));
+    const lists = shuffled(Object.keys(byTopic), rng).map((t) => shuffled(byTopic[t], rng));
+    const out = [], seen = new Set();
+    for (let round = 0; out.length < 60 && round < 6; round++) {
+      lists.forEach((l) => {
+        const e = l[round];
+        if (e && !seen.has(e.a)) { seen.add(e.a); out.push(e); }
+      });
+    }
+    return out;
+  }
+
+  function attempt(words, rng) {
+    const g = new Map();                // "r,c" -> { ch, dirs: Set }
+    const placed = [];
+    const at = (r, c) => g.get(r + "," + c);
+    const bounds = () => {
+      let r0 = Infinity, r1 = -Infinity, c0 = Infinity, c1 = -Infinity;
+      g.forEach((_, k) => { const [r, c] = k.split(",").map(Number); r0 = Math.min(r0, r); r1 = Math.max(r1, r); c0 = Math.min(c0, c); c1 = Math.max(c1, c); });
+      return { r0, r1, c0, c1 };
+    };
+    function fits(w, r, c, d) {
+      const dr = d === "A" ? 0 : 1, dc = d === "A" ? 1 : 0;
+      if (at(r - dr, c - dc) || at(r + dr * w.length, c + dc * w.length)) return -1;
+      let cross = 0;
+      for (let i = 0; i < w.length; i++) {
+        const rr = r + dr * i, cc = c + dc * i, cell = at(rr, cc);
+        if (cell) {
+          if (cell.ch !== w[i] || cell.dirs.has(d)) return -1;
+          cross++;
+        } else if (at(rr + dc, cc + dr) || at(rr - dc, cc - dr)) return -1;   // no letters alongside
+      }
+      return cross;
+    }
+    function put(e, r, c, d) {
+      const dr = d === "A" ? 0 : 1, dc = d === "A" ? 1 : 0;
+      for (let i = 0; i < e.a.length; i++) {
+        const k = (r + dr * i) + "," + (c + dc * i), cell = g.get(k);
+        if (cell) cell.dirs.add(d); else g.set(k, { ch: e.a[i], dirs: new Set([d]) });
+      }
+      placed.push({ e, r, c, d });
+    }
+    put(words[0], 0, 0, rng() < 0.5 ? "A" : "D");
+    let rest = words.slice(1);
+    for (let pass = 0; pass < 2; pass++) {
+      const left = [];
+      for (const e of rest) {
+        let best = null;
+        const b = bounds();
+        g.forEach((cell, k) => {
+          const [r, c] = k.split(",").map(Number);
+          for (let i = 0; i < e.a.length; i++) {
+            if (e.a[i] !== cell.ch) continue;
+            for (const d of ["A", "D"]) {
+              if (cell.dirs.has(d)) continue;
+              const rr = d === "A" ? r : r - i, cc = d === "A" ? c - i : c;
+              const x = fits(e.a, rr, cc, d);
+              if (x <= 0) continue;
+              const r0 = Math.min(b.r0, rr), c0 = Math.min(b.c0, cc);
+              const r1 = Math.max(b.r1, d === "D" ? rr + e.a.length - 1 : rr), c1 = Math.max(b.c1, d === "A" ? cc + e.a.length - 1 : cc);
+              const span = Math.max(r1 - r0, c1 - c0) + 1;
+              if (span > MAX_SPAN) continue;
+              const key = x * 100 - span + rng();
+              if (!best || key > best.key) best = { key, r: rr, c: cc, d };
+            }
+          }
+        });
+        if (best) put(e, best.r, best.c, best.d); else left.push(e);
+      }
+      rest = left;
+    }
+    return { placed, bounds: bounds() };
+  }
+
+  function buildPuzzle(date) {
+    const rng = rngFor("compendium-crossword:" + date);
+    const pool = candidates(rng);
+    let best = null;
+    for (let t = 0; t < 40; t++) {
+      const order = shuffled(pool, rng).slice(0, 34).sort((a, b) => b.a.length - a.a.length);
+      // longest first gives the grid a spine; then a shuffle keeps it varied
+      const words = [order[0], ...shuffled(order.slice(1), rng)];
+      const res = attempt(words, rng);
+      const topics = new Set(res.placed.map((p) => p.e.t)).size;
+      const { r0, r1, c0, c1 } = res.bounds;
+      const score = res.placed.length * 10 + topics * 4 - Math.abs((r1 - r0) - (c1 - c0));
+      if (!best || score > best.score) best = { score, res };
+      if (res.placed.length >= 24 && topics >= 12) break;
+    }
+    const { placed, bounds } = best.res;
+    return {
+      rows: bounds.r1 - bounds.r0 + 1,
+      cols: bounds.c1 - bounds.c0 + 1,
+      words: placed.map((p) => ({ answer: p.e.a, clue: p.e.c, topic: p.e.t, enumeration: p.e.e, row: p.r - bounds.r0, col: p.c - bounds.c0, dir: p.d })),
+    };
+  }
+
+  // a hook for automated checks: /crossword/?test exposes the generator
+  if (/[?&]test\b/.test(location.search)) window.__crossword = { buildPuzzle };
+
+  // ---------- state ----------
+
+  let date = TODAY;
+  let P, R, C, sol, words, numOf, fill, marks, cur;
+  const solvedDays = () => store.get("compendium-crossword:solved", {});
+  const keyOf = (r, c) => r * C + c;
+  const wordsAt = (k) => words.filter((w) => w.cells.includes(k));
+  const curWord = () => wordsAt(cur.k).find((w) => w.dir === cur.dir) || wordsAt(cur.k)[0];
+  const saveFill = () => store.set("compendium-crossword:" + date, { fill, marks });
+
+  function load(d) {
+    date = d;
+    P = buildPuzzle(date);
+    R = P.rows; C = P.cols;
+    sol = Array(R * C).fill(null);
+    words = P.words.map((w) => ({ ...w, cells: [...w.answer].map((_, i) => w.dir === "A" ? keyOf(w.row, w.col + i) : keyOf(w.row + i, w.col)) }));
+    words.forEach((w) => w.cells.forEach((k, i) => { sol[k] = w.answer[i]; }));
+    const starts = [...new Set(words.map((w) => w.cells[0]))].sort((a, b) => a - b);
+    numOf = new Map(starts.map((k, i) => [k, i + 1]));
+    words.forEach((w) => { w.num = numOf.get(w.cells[0]); w.id = w.num + w.dir; });
+    words.sort((a, b) => a.num - b.num || (a.dir < b.dir ? -1 : 1));
+    const saved = store.get("compendium-crossword:" + date, null);
+    fill = saved && saved.fill && saved.fill.length === R * C ? saved.fill : Array(R * C).fill("");
+    marks = saved && saved.marks && saved.marks.length === R * C ? saved.marks : Array(R * C).fill("");
+    cur = { k: words[0].cells[0], dir: words[0].dir };
+    render();
+  }
+
+  // ---------- render ----------
+
+  const board = $("board");
+  function render() {
+    board.style.setProperty("--cols", C);
+    board.style.setProperty("--n", Math.max(R, C));
+    // where a multi-word answer splits, a short bar marks the gap
+    const joins = new Map();
+    words.forEach((w) => {
+      if (!w.enumeration) return;
+      let at = 0;
+      w.enumeration.split(/[,-]/).slice(0, -1).forEach((n) => { at += Number(n); joins.set(w.cells[at - 1], (joins.get(w.cells[at - 1]) || "") + " join-" + w.dir.toLowerCase()); });
+    });
+    board.innerHTML = Array.from({ length: R * C }, (_, k) => sol[k]
+      ? `<div class="cell${joins.get(k) || ""}" data-k="${k}" role="gridcell">${numOf.has(k) ? `<span class="n">${numOf.get(k)}</span>` : ""}<span class="l"></span></div>`
+      : `<div class="cell blank" aria-hidden="true"></div>`).join("");
+    const clueHTML = (w) => `<li><button type="button" class="clue" data-word="${w.id}"><span class="cn">${w.num}</span><span class="ct">${esc(w.clue)} <span class="len">(${w.enumeration || w.answer.length})</span></span><span class="meta"><span class="tag">${esc(w.topic)}</span></span></button></li>`;
+    $("across").innerHTML = words.filter((w) => w.dir === "A").map(clueHTML).join("");
+    $("down").innerHTML = words.filter((w) => w.dir === "D").map(clueHTML).join("");
+    const n = dayNo(date);
+    $("when").textContent = `No. ${n} · ${longDate(date)}`;
+    $("prev").disabled = date <= START;
+    $("next").disabled = date >= TODAY;
+    $("today").hidden = date === TODAY;
+    document.title = `The Daily Crossword, No. ${n} — Sam Haslam`;
+    paint();
+  }
+
+  const cellEl = (k) => board.querySelector(`[data-k="${k}"]`);
+  const solvedWord = (w) => w.cells.every((k) => fill[k] === sol[k]);
+
+  function streak() {
+    const s = solvedDays();
+    let d = s[TODAY] ? TODAY : addDays(TODAY, -1), n = 0;
+    while (s[d] && d >= START) { n++; d = addDays(d, -1); }
+    return n;
+  }
+
+  function paint() {
+    const w = curWord();
+    board.querySelectorAll(".cell[data-k]").forEach((el) => {
+      const k = Number(el.dataset.k);
+      el.querySelector(".l").textContent = fill[k];
+      el.classList.toggle("in-word", w.cells.includes(k));
+      el.classList.toggle("focus", k === cur.k);
+      el.classList.toggle("wrong", marks[k] === "wrong");
+      el.classList.toggle("revealed", marks[k] === "revealed");
+      el.classList.toggle("solved", marks[k] !== "revealed" && wordsAt(k).some(solvedWord));
+      el.setAttribute("aria-label", `${fill[k] || "empty"}${numOf.has(k) ? `, ${numOf.get(k)}` : ""}`);
+    });
+    let done = 0;
+    words.forEach((x) => {
+      const ok = solvedWord(x);
+      if (ok) done++;
+      const el = document.querySelector(`[data-word="${x.id}"]`);
+      el.classList.toggle("done", ok);
+      el.classList.toggle("active", x === w);
+    });
+    $("current").innerHTML = `<span class="num">${w.num} ${w.dir === "A" ? "across" : "down"}</span><span class="txt">${esc(w.clue)} <span class="len">(${w.enumeration || w.answer.length})</span></span><span class="tag">${esc(w.topic)}</span>`;
+    const all = sol.every((s, k) => !s || fill[k] === s);
+    if (all) {
+      const s = solvedDays();
+      if (!s[date]) { s[date] = { clean: !marks.includes("revealed") }; store.set("compendium-crossword:solved", s); }
+    }
+    const st = streak();
+    $("tally").innerHTML = `<b>${done}</b> of ${words.length} solved<br>${st ? `${st}-day streak` : "Solve today's to start a streak"}`;
+    $("banner").hidden = !all;
+    if (all) $("banner").textContent = marks.includes("revealed")
+      ? `Finished, with a little help. All ${words.length} answers in.`
+      : `Finished, unaided! All ${words.length} answers in.`;
+  }
+
+  // ---------- input ----------
+
+  const keys = $("keys");
+  const focusKeys = () => keys.focus({ preventScroll: true });
+  function select(k, dir) {
+    const ws = wordsAt(k);
+    if (!ws.length) return;
+    if (dir && ws.some((w) => w.dir === dir)) cur = { k, dir };
+    else cur = { k, dir: ws.some((w) => w.dir === cur.dir) ? cur.dir : ws[0].dir };
+    paint();
+  }
+  board.addEventListener("click", (e) => {
+    const el = e.target.closest("[data-k]");
+    if (!el) return;
+    const k = Number(el.dataset.k);
+    if (k === cur.k && wordsAt(k).length > 1) cur.dir = cur.dir === "A" ? "D" : "A";
+    select(k);
+    focusKeys();
+  });
+  document.querySelector(".clues").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-word]");
+    if (!b) return;
+    const w = words.find((x) => x.id === b.dataset.word);
+    select(w.cells.find((k) => !fill[k]) ?? w.cells[0], w.dir);
+    focusKeys();
+    if (innerWidth < 860) board.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+  function step(d) { const w = curWord(), i = w.cells.indexOf(cur.k) + d; if (i >= 0 && i < w.cells.length) cur.k = w.cells[i]; }
+  function nextWord(d) {
+    const i = words.indexOf(curWord());
+    const w = words[(i + d + words.length) % words.length];
+    select(w.cells.find((k) => !fill[k]) ?? w.cells[0], w.dir);
+  }
+  function type(ch) {
+    fill[cur.k] = ch; marks[cur.k] = "";
+    const el = cellEl(cur.k); el.classList.remove("pop"); void el.offsetWidth; el.classList.add("pop");
+    step(1);   // on to the next square, filled or not, so typing a whole answer lines up
+    saveFill(); paint();
+  }
+  function back() {
+    if (fill[cur.k]) { fill[cur.k] = ""; marks[cur.k] = ""; } else { step(-1); fill[cur.k] = ""; marks[cur.k] = ""; }
+    saveFill(); paint();
+  }
+  function move(dr, dc) {
+    let r = Math.floor(cur.k / C), c = cur.k % C;
+    for (;;) {
+      r += dr; c += dc;
+      if (r < 0 || c < 0 || r >= R || c >= C) return;
+      if (sol[keyOf(r, c)]) { select(keyOf(r, c), dr ? "D" : "A"); return; }
+    }
+  }
+  keys.addEventListener("keydown", (e) => {
+    if (e.key === "Backspace") { e.preventDefault(); back(); }
+    else if (e.key === "ArrowRight") { e.preventDefault(); move(0, 1); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); move(0, -1); }
+    else if (e.key === "ArrowDown") { e.preventDefault(); move(1, 0); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); move(-1, 0); }
+    else if (e.key === "Tab" || e.key === "Enter") { e.preventDefault(); nextWord(e.shiftKey ? -1 : 1); }
+    else if (e.key === " ") { e.preventDefault(); if (wordsAt(cur.k).length > 1) { cur.dir = cur.dir === "A" ? "D" : "A"; paint(); } }
+    else if (/^[a-z]$/i.test(e.key) && !e.ctrlKey && !e.metaKey) { e.preventDefault(); type(e.key.toUpperCase()); }
+  });
+  keys.addEventListener("input", () => {
+    const v = keys.value.replace(/[^a-z]/gi, "").toUpperCase();
+    keys.value = "";
+    for (const ch of v) type(ch);
+  });
+
+  // ---------- tools ----------
+
+  const allCells = () => sol.map((s, k) => s ? k : -1).filter((k) => k >= 0);
+  function check(cells) { cells.forEach((k) => { if (fill[k] && fill[k] !== sol[k]) marks[k] = "wrong"; }); saveFill(); paint(); }
+  $("check-word").addEventListener("click", () => { check(curWord().cells); focusKeys(); });
+  $("check-all").addEventListener("click", () => { check(allCells()); focusKeys(); });
+  $("reveal-letter").addEventListener("click", () => { fill[cur.k] = sol[cur.k]; marks[cur.k] = "revealed"; saveFill(); paint(); focusKeys(); });
+  $("reveal-word").addEventListener("click", () => { curWord().cells.forEach((k) => { if (fill[k] !== sol[k]) { fill[k] = sol[k]; marks[k] = "revealed"; } }); saveFill(); paint(); focusKeys(); });
+  $("clear").addEventListener("click", () => { fill = Array(R * C).fill(""); marks = Array(R * C).fill(""); saveFill(); select(words[0].cells[0], words[0].dir); focusKeys(); });
+
+  // ---------- days ----------
+
+  const go = (d) => { load(d); history.replaceState(null, "", d === TODAY ? location.pathname : "#" + d); };
+  $("prev").addEventListener("click", () => go(addDays(date, -1)));
+  $("next").addEventListener("click", () => go(addDays(date, 1)));
+  $("today").addEventListener("click", () => go(TODAY));
+  const asked = location.hash.slice(1);
+  load(/^\d{4}-\d{2}-\d{2}$/.test(asked) && asked >= START && asked <= TODAY ? asked : TODAY);
+})();
+</script>
+</body>
+</html>

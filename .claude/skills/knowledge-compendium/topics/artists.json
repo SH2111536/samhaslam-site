@@ -35,6 +35,7 @@
     { "left": "work", "right": "artist" },
     { "left": "artist", "right": "style" }
   ],
+  "crossword": [{ "answer": "artist", "clue": "Painter of {work}" }],
   "items": [
     { "work": "Mona Lisa", "artist": "Leonardo da Vinci", "style": "High Renaissance", "lived": "1452–1519", "era": "15th–16th century",
       "accept": { "artist": ["Leonardo", "Da Vinci"], "work": ["La Gioconda"] },

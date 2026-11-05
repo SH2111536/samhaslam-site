@@ -52,6 +52,12 @@
       "right": "real"
     }
   ],
+  "crossword": [
+    {
+      "answer": "stage",
+      "clue": "{real}, better known as…"
+    }
+  ],
   "groups": [
     {
       "key": "music",

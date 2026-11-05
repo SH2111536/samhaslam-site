@@ -26,6 +26,7 @@
     { "left": "name", "right": "domain" },
     { "left": "name", "right": "symbol" }
   ],
+  "crossword": [{ "answer": "name", "clue": "Greek deity: {domain:lower}" }],
   "items": [
     { "name": "Zeus", "domain": "King of the gods; sky and thunder", "symbol": "Eagle and thunderbolt", "icon": "zap",
       "hook": "Ruled from the top of Mount Olympus and settled arguments by throwing lightning at them." },

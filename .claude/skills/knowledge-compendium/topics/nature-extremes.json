@@ -66,6 +66,12 @@
       "right": "record"
     }
   ],
+  "crossword": [
+    {
+      "answer": "holder",
+      "clue": "{record}"
+    }
+  ],
   "groups": [
     {
       "key": "giants",

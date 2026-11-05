@@ -1,0 +1,4866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>The Daily Crossword — Sam Haslam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=Kalam:wght@400;700&display=swap">
+<script>
+  if (sessionStorage.getItem("sh-authed") !== "1") {
+    window.location.href = "../../index.html";
+  }
+</script>
+<style>
+  /* An exercise-book page: the grid on squared paper beside a ruled list of clues, stacking on phones */
+  :root {
+    --paper: #fbfaf4;
+    --square: #fffef9;
+    --grid-line: #c9d7ea;
+    --rule: #e0a3a3;
+    --ink: #1d2a44;
+    --pen: #1f47b8;
+    --muted: #5d6a82;
+    --block: #1d2a44;
+    --hl-word: #fff1b8;
+    --hl-cell: #ffd66b;
+    --good: #1f7a4d;
+    --bad: #c0392b;
+    --tag-bg: #eef2f9;
+    --font-display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
+    --font-body: "Atkinson Hyperlegible", system-ui, sans-serif;
+    --font-hand: "Kalam", "Comic Sans MS", "Marker Felt", cursive;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #12203a; --square: #243d6b; --grid-line: #27406a; --rule: #7a3b4b; --ink: #e6edf8; --pen: #9cc2ff; --muted: #9aaac4;
+      --block: #050b18; --hl-word: #2b3d63; --hl-cell: #8a6a1f; --good: #5fd39a; --bad: #ff8a7a; --tag-bg: #1c2f52; color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html, body { margin: 0; }
+  body {
+    background:
+      linear-gradient(90deg, transparent 0 46px, var(--rule) 46px 48px, transparent 48px),
+      linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0 / 22px 22px,
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0 / 22px 22px,
+      var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+  }
+  .page {
+    max-width: 1120px; margin: 0 auto;
+    padding-block: 24px 56px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  a.back { display: inline-flex; gap: 6px; align-items: center; color: var(--muted); font-size: 14px; text-decoration: none; padding-left: 44px; }
+  a.back:hover { color: var(--ink); }
+  header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; margin: 14px 0 22px; padding-left: 44px; }
+  .eyebrow { font: 700 12px/1 var(--font-body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  h1 { font: 800 clamp(30px, 6vw, 52px)/0.95 var(--font-display); margin: 6px 0 0; letter-spacing: -0.02em; text-wrap: balance; }
+  h1 span { color: var(--pen); font-family: var(--font-hand); font-weight: 700; letter-spacing: 0; }
+  .dateline { display: flex; align-items: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+  .dateline .when { font: 700 18px var(--font-hand); color: var(--pen); }
+  .dateline button {
+    font: 700 13px var(--font-body); color: var(--ink); background: var(--paper); border: 2px solid var(--ink); border-radius: 4px;
+    padding: 4px 10px; cursor: pointer;
+  }
+  .dateline button:disabled { opacity: 0.35; cursor: default; }
+  .tally { font: 700 15px var(--font-hand); color: var(--pen); text-align: right; line-height: 1.4; }
+  .tally b { font-size: 26px; }
+
+  .layout { display: grid; grid-template-columns: minmax(0, auto) minmax(0, 1fr); gap: 28px; align-items: start; }
+  .board-wrap { display: flex; flex-direction: column; gap: 14px; position: relative; min-width: 0; }
+  .current {
+    min-height: 54px; background: var(--paper); border: 2px solid var(--ink); border-radius: 4px; padding: 8px 12px;
+    display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; box-shadow: 4px 4px 0 var(--ink);
+  }
+  .current .num { font: 800 18px var(--font-display); color: var(--pen); white-space: nowrap; }
+  .current .txt { font-size: 17px; line-height: 1.35; min-width: 0; }
+  .board {
+    --cell: min(38px, calc((100vw - 2 * max(16px, env(safe-area-inset-left, 0px)) - 6px - (var(--n) - 1) * 1px) / var(--n)));
+    display: grid; grid-template-columns: repeat(var(--cols), var(--cell)); grid-auto-rows: var(--cell);
+    border: 3px solid var(--ink); background: var(--block); width: max-content; gap: 1px;
+  }
+  .cell { position: relative; background: var(--square); cursor: pointer; display: grid; place-items: center; user-select: none; }
+  .cell.blank { background: var(--block); cursor: default; }
+  .cell .n { position: absolute; top: 1px; left: 2px; font: 700 calc(var(--cell) * 0.26) / 1 var(--font-body); color: var(--muted); }
+  .cell .l { font: 700 calc(var(--cell) * 0.62) / 1 var(--font-hand); color: var(--pen); text-transform: uppercase; translate: 0 6%; }
+  .cell.in-word { background: var(--hl-word); }
+  .cell.focus { background: var(--hl-cell); }
+  .cell.wrong .l { color: var(--bad); text-decoration: line-through; text-decoration-thickness: 2px; }
+  .cell.revealed .l { color: var(--muted); }
+  .cell.solved .l { color: var(--good); }
+  .cell.join-a::after { content: ""; position: absolute; right: -1px; top: 20%; bottom: 20%; width: 3px; background: var(--ink); }
+  .cell.join-d::after { content: ""; position: absolute; bottom: -1px; left: 20%; right: 20%; height: 3px; background: var(--ink); }
+  #keys { position: absolute; opacity: 0; width: 1px; height: 1px; left: 0; top: 0; border: 0; padding: 0; font-size: 16px; }
+
+  .tools { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tools button {
+    font: 700 14px var(--font-body); color: var(--ink); background: var(--paper); border: 2px solid var(--ink); border-radius: 4px;
+    padding: 7px 12px; cursor: pointer; box-shadow: 2px 2px 0 var(--ink);
+  }
+  .tools button:hover { background: var(--hl-word); }
+  .tools button:active { translate: 2px 2px; box-shadow: none; }
+  button:focus-visible, .clue:focus-visible { outline: 3px solid var(--pen); outline-offset: 2px; }
+
+  .clues { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 8px 28px; min-width: 0; }
+  .clues h2 { font: 800 22px var(--font-display); margin: 0 0 6px; border-bottom: 2px solid var(--ink); padding-bottom: 4px; }
+  .clues ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .clue {
+    all: unset; display: grid; grid-template-columns: 2.2em 1fr; gap: 0 6px; padding: 7px 6px; cursor: pointer; border-radius: 3px;
+    line-height: 1.35; width: 100%; box-sizing: border-box;
+  }
+  .clue:hover { background: var(--hl-word); }
+  .clue.active { background: var(--hl-cell); }
+  .clue .cn { font: 800 15px var(--font-display); color: var(--pen); text-align: right; }
+  .clue .ct { min-width: 0; }
+  .clue .meta { grid-column: 2; display: flex; gap: 8px; align-items: center; margin-top: 3px; }
+  .tag { font: 700 11px var(--font-body); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); background: var(--tag-bg); padding: 2px 7px; border-radius: 99px; }
+  .len { font-size: 13px; color: var(--muted); }
+  .clue.done .ct { text-decoration: line-through; text-decoration-color: var(--good); text-decoration-thickness: 2px; color: var(--muted); }
+
+  .banner { margin-top: 6px; padding: 12px 14px; border: 2px dashed var(--good); color: var(--good); font: 700 20px var(--font-hand); border-radius: 4px; }
+  footer { margin-top: 36px; padding-left: 44px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: minmax(0, 1fr); }
+    header, a.back, footer { padding-left: 0; }
+    .board { margin: 0 auto; }
+    .tally { text-align: left; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .cell.pop .l { animation: pop 0.25s ease; }
+    @keyframes pop { from { transform: scale(1.5); } }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <a class="back" href="../index.html">&larr; Compendium</a>
+  <header>
+    <div>
+      <div class="eyebrow">From the compendium · a new one every day</div>
+      <h1>The Daily <span>Crossword</span></h1>
+      <div class="dateline">
+        <button type="button" id="prev" aria-label="Previous day's puzzle">&larr;</button>
+        <span class="when" id="when"></span>
+        <button type="button" id="next" aria-label="Next day's puzzle">&rarr;</button>
+        <button type="button" id="today" hidden>Today</button>
+      </div>
+    </div>
+    <div class="tally" id="tally"></div>
+  </header>
+
+  <div class="layout">
+    <div class="board-wrap">
+      <div class="current" id="current" aria-live="polite"></div>
+      <div class="board" id="board" role="grid" aria-label="Crossword grid"></div>
+      <input id="keys" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Type letters into the grid">
+      <div class="tools">
+        <button type="button" id="check-word">Check word</button>
+        <button type="button" id="check-all">Check grid</button>
+        <button type="button" id="reveal-letter">Reveal letter</button>
+        <button type="button" id="reveal-word">Reveal word</button>
+        <button type="button" id="clear">Clear</button>
+      </div>
+      <div class="banner" id="banner" hidden></div>
+    </div>
+    <div class="clues">
+      <section><h2>Across</h2><ol id="across"></ol></section>
+      <section><h2>Down</h2><ol id="down"></ol></section>
+    </div>
+  </div>
+
+  <footer>Every clue comes from a compendium topic, and a new grid is built from them each day: the same one for everyone, all day. Your letters are saved in this browser.</footer>
+</div>
+
+<script type="application/json" id="bank">[
+ {
+  "a": "CALF",
+  "c": "Baby cow",
+  "t": "Animal young"
+ },
+ {
+  "a": "CALF",
+  "c": "Baby elephant",
+  "t": "Animal young"
+ },
+ {
+  "a": "CALF",
+  "c": "Baby whale",
+  "t": "Animal young"
+ },
+ {
+  "a": "CALF",
+  "c": "Baby giraffe",
+  "t": "Animal young"
+ },
+ {
+  "a": "CALF",
+  "c": "Baby camel",
+  "t": "Animal young"
+ },
+ {
+  "a": "CALF",
+  "c": "Baby rhinoceros",
+  "t": "Animal young"
+ },
+ {
+  "a": "CALF",
+  "c": "Baby hippopotamus",
+  "t": "Animal young"
+ },
+ {
+  "a": "CALF",
+  "c": "Baby moose",
+  "t": "Animal young"
+ },
+ {
+  "a": "CALF",
+  "c": "Baby reindeer",
+  "t": "Animal young"
+ },
+ {
+  "a": "CALF",
+  "c": "Baby walrus",
+  "t": "Animal young"
+ },
+ {
+  "a": "PUP",
+  "c": "Baby dog",
+  "t": "Animal young"
+ },
+ {
+  "a": "PUP",
+  "c": "Baby wolf",
+  "t": "Animal young"
+ },
+ {
+  "a": "PUP",
+  "c": "Baby seal",
+  "t": "Animal young"
+ },
+ {
+  "a": "PUP",
+  "c": "Baby shark",
+  "t": "Animal young"
+ },
+ {
+  "a": "PUP",
+  "c": "Baby bat",
+  "t": "Animal young"
+ },
+ {
+  "a": "PUP",
+  "c": "Baby rat",
+  "t": "Animal young"
+ },
+ {
+  "a": "PUP",
+  "c": "Baby mouse",
+  "t": "Animal young"
+ },
+ {
+  "a": "PUP",
+  "c": "Baby otter",
+  "t": "Animal young"
+ },
+ {
+  "a": "PUP",
+  "c": "Baby guinea pig",
+  "t": "Animal young"
+ },
+ {
+  "a": "PUP",
+  "c": "Baby stingray",
+  "t": "Animal young"
+ },
+ {
+  "a": "CUB",
+  "c": "Baby bear",
+  "t": "Animal young"
+ },
+ {
+  "a": "CUB",
+  "c": "Baby lion",
+  "t": "Animal young"
+ },
+ {
+  "a": "CUB",
+  "c": "Baby tiger",
+  "t": "Animal young"
+ },
+ {
+  "a": "CUB",
+  "c": "Baby leopard",
+  "t": "Animal young"
+ },
+ {
+  "a": "CUB",
+  "c": "Baby fox",
+  "t": "Animal young"
+ },
+ {
+  "a": "CUB",
+  "c": "Baby badger",
+  "t": "Animal young"
+ },
+ {
+  "a": "KITTEN",
+  "c": "Baby cat",
+  "t": "Animal young"
+ },
+ {
+  "a": "KIT",
+  "c": "Baby rabbit",
+  "t": "Animal young"
+ },
+ {
+  "a": "KIT",
+  "c": "Baby skunk",
+  "t": "Animal young"
+ },
+ {
+  "a": "KIT",
+  "c": "Baby ferret",
+  "t": "Animal young"
+ },
+ {
+  "a": "KIT",
+  "c": "Baby beaver",
+  "t": "Animal young"
+ },
+ {
+  "a": "KIT",
+  "c": "Baby squirrel",
+  "t": "Animal young"
+ },
+ {
+  "a": "FOAL",
+  "c": "Baby horse",
+  "t": "Animal young"
+ },
+ {
+  "a": "FOAL",
+  "c": "Baby zebra",
+  "t": "Animal young"
+ },
+ {
+  "a": "FOAL",
+  "c": "Baby donkey",
+  "t": "Animal young"
+ },
+ {
+  "a": "CHICK",
+  "c": "Baby penguin",
+  "t": "Animal young"
+ },
+ {
+  "a": "CHICK",
+  "c": "Baby ostrich",
+  "t": "Animal young"
+ },
+ {
+  "a": "KID",
+  "c": "Baby goat",
+  "t": "Animal young"
+ },
+ {
+  "a": "LAMB",
+  "c": "Baby sheep",
+  "t": "Animal young"
+ },
+ {
+  "a": "FAWN",
+  "c": "Baby deer",
+  "t": "Animal young"
+ },
+ {
+  "a": "PIGLET",
+  "c": "Baby pig",
+  "t": "Animal young"
+ },
+ {
+  "a": "DUCKLING",
+  "c": "Baby duck",
+  "t": "Animal young"
+ },
+ {
+  "a": "GOSLING",
+  "c": "Baby goose",
+  "t": "Animal young"
+ },
+ {
+  "a": "CRIA",
+  "c": "Baby alpaca",
+  "t": "Animal young"
+ },
+ {
+  "a": "CRIA",
+  "c": "Baby llama",
+  "t": "Animal young"
+ },
+ {
+  "a": "LEVERET",
+  "c": "Baby hare",
+  "t": "Animal young"
+ },
+ {
+  "a": "PUGGLE",
+  "c": "Baby platypus",
+  "t": "Animal young"
+ },
+ {
+  "a": "PUGGLE",
+  "c": "Baby echidna",
+  "t": "Animal young"
+ },
+ {
+  "a": "JOEY",
+  "c": "Baby kangaroo",
+  "t": "Animal young"
+ },
+ {
+  "a": "JOEY",
+  "c": "Baby koala",
+  "t": "Animal young"
+ },
+ {
+  "a": "JOEY",
+  "c": "Baby possum",
+  "t": "Animal young"
+ },
+ {
+  "a": "JOEY",
+  "c": "Baby wombat",
+  "t": "Animal young"
+ },
+ {
+  "a": "CYGNET",
+  "c": "Baby swan",
+  "t": "Animal young"
+ },
+ {
+  "a": "SQUAB",
+  "c": "Baby pigeon",
+  "t": "Animal young"
+ },
+ {
+  "a": "SQUAB",
+  "c": "Baby dove",
+  "t": "Animal young"
+ },
+ {
+  "a": "ELVER",
+  "c": "Baby eel",
+  "t": "Animal young"
+ },
+ {
+  "a": "PORCUPETTE",
+  "c": "Baby porcupine",
+  "t": "Animal young"
+ },
+ {
+  "a": "POULT",
+  "c": "Baby turkey",
+  "t": "Animal young"
+ },
+ {
+  "a": "EYAS",
+  "c": "Baby hawk",
+  "t": "Animal young"
+ },
+ {
+  "a": "EYAS",
+  "c": "Baby falcon",
+  "t": "Animal young"
+ },
+ {
+  "a": "EPHYRA",
+  "c": "Baby jellyfish",
+  "t": "Animal young"
+ },
+ {
+  "a": "OWLET",
+  "c": "Baby owl",
+  "t": "Animal young"
+ },
+ {
+  "a": "FRY",
+  "c": "Baby fish",
+  "t": "Animal young"
+ },
+ {
+  "a": "TADPOLE",
+  "c": "Baby frog",
+  "t": "Animal young"
+ },
+ {
+  "a": "TADPOLE",
+  "c": "Baby toad",
+  "t": "Animal young"
+ },
+ {
+  "a": "SQUEAKER",
+  "c": "Baby wild boar",
+  "t": "Animal young"
+ },
+ {
+  "a": "SPIDERLING",
+  "c": "Baby spider",
+  "t": "Animal young"
+ },
+ {
+  "a": "CLAUDEMONET",
+  "c": "Painter of Water Lilies",
+  "t": "Artists and their works",
+  "e": "6,5"
+ },
+ {
+  "a": "CLAUDEMONET",
+  "c": "Painter of Impression, Sunrise",
+  "t": "Artists and their works",
+  "e": "6,5"
+ },
+ {
+  "a": "PABLOPICASSO",
+  "c": "Painter of Guernica",
+  "t": "Artists and their works",
+  "e": "5,7"
+ },
+ {
+  "a": "GRANTWOOD",
+  "c": "Painter of American Gothic",
+  "t": "Artists and their works",
+  "e": "5,4"
+ },
+ {
+  "a": "SALVADORDALI",
+  "c": "Painter of The Persistence of Memory",
+  "t": "Artists and their works",
+  "e": "8,4"
+ },
+ {
+  "a": "MURDER",
+  "c": "A group of crows",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "PARLIAMENT",
+  "c": "A group of owls",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "MURMURATION",
+  "c": "A group of starlings",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "UNKINDNESS",
+  "c": "A group of ravens",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "EXALTATION",
+  "c": "A group of larks",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "GAGGLE",
+  "c": "A group of geese (on the ground)",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "SKEIN",
+  "c": "A group of geese (in flight)",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "FLAMBOYANCE",
+  "c": "A group of flamingos",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "PANDEMONIUM",
+  "c": "A group of parrots",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "WADDLE",
+  "c": "A group of penguins (on land)",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "RAFT",
+  "c": "A group of penguins (in water)",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "OSTENTATION",
+  "c": "A group of peafowl",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "CRASH",
+  "c": "A group of rhinoceroses",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "TOWER",
+  "c": "A group of giraffes",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "BUSINESS",
+  "c": "A group of ferrets",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "PRICKLE",
+  "c": "A group of porcupines",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "SLEUTH",
+  "c": "A group of bears",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "SKULK",
+  "c": "A group of foxes",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "COALITION",
+  "c": "A group of cheetahs",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "CACKLE",
+  "c": "A group of hyenas",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "SHREWDNESS",
+  "c": "A group of apes",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "CONSPIRACY",
+  "c": "A group of lemurs",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "MOB",
+  "c": "A group of kangaroos",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "GRUMBLE",
+  "c": "A group of pugs",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "SHIVER",
+  "c": "A group of sharks",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "SMACK",
+  "c": "A group of jellyfish",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "FEVER",
+  "c": "A group of stingrays",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "ARMY",
+  "c": "A group of frogs",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "KNOT",
+  "c": "A group of toads",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "BASK",
+  "c": "A group of crocodiles",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "BALE",
+  "c": "A group of turtles",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "ARMY",
+  "c": "A group of caterpillars",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "KALEIDOSCOPE",
+  "c": "A group of butterflies",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "PLAGUE",
+  "c": "A group of locusts",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "CLUSTER",
+  "c": "A group of spiders",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "PACK",
+  "c": "A group of wolves",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "PACK",
+  "c": "A group of dogs",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "PRIDE",
+  "c": "A group of lions",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "POD",
+  "c": "A group of whales",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "POD",
+  "c": "A group of dolphins",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "POD",
+  "c": "A group of seals",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "HERD",
+  "c": "A group of cattle and other grazers",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "FLOCK",
+  "c": "A group of birds",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "FLOCK",
+  "c": "A group of sheep",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "SWARM",
+  "c": "A group of insects on the move",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "COLONY",
+  "c": "A group of insects settled in a nest",
+  "t": "Collective nouns"
+ },
+ {
+  "a": "HYDROGEN",
+  "c": "Element with the symbol H",
+  "t": "The elements"
+ },
+ {
+  "a": "CARBON",
+  "c": "Element with the symbol C",
+  "t": "The elements"
+ },
+ {
+  "a": "NITROGEN",
+  "c": "Element with the symbol N",
+  "t": "The elements"
+ },
+ {
+  "a": "OXYGEN",
+  "c": "Element with the symbol O",
+  "t": "The elements"
+ },
+ {
+  "a": "PHOSPHORUS",
+  "c": "Element with the symbol P",
+  "t": "The elements"
+ },
+ {
+  "a": "SULPHUR",
+  "c": "Element with the symbol S",
+  "t": "The elements"
+ },
+ {
+  "a": "HELIUM",
+  "c": "Element with the symbol He",
+  "t": "The elements"
+ },
+ {
+  "a": "NEON",
+  "c": "Element with the symbol Ne",
+  "t": "The elements"
+ },
+ {
+  "a": "ARGON",
+  "c": "Element with the symbol Ar",
+  "t": "The elements"
+ },
+ {
+  "a": "KRYPTON",
+  "c": "Element with the symbol Kr",
+  "t": "The elements"
+ },
+ {
+  "a": "FLUORINE",
+  "c": "Element with the symbol F",
+  "t": "The elements"
+ },
+ {
+  "a": "CHLORINE",
+  "c": "Element with the symbol Cl",
+  "t": "The elements"
+ },
+ {
+  "a": "IODINE",
+  "c": "Element with the symbol I",
+  "t": "The elements"
+ },
+ {
+  "a": "LITHIUM",
+  "c": "Element with the symbol Li",
+  "t": "The elements"
+ },
+ {
+  "a": "SODIUM",
+  "c": "Element with the symbol Na",
+  "t": "The elements"
+ },
+ {
+  "a": "POTASSIUM",
+  "c": "Element with the symbol K",
+  "t": "The elements"
+ },
+ {
+  "a": "BERYLLIUM",
+  "c": "Element with the symbol Be",
+  "t": "The elements"
+ },
+ {
+  "a": "MAGNESIUM",
+  "c": "Element with the symbol Mg",
+  "t": "The elements"
+ },
+ {
+  "a": "CALCIUM",
+  "c": "Element with the symbol Ca",
+  "t": "The elements"
+ },
+ {
+  "a": "RADIUM",
+  "c": "Element with the symbol Ra",
+  "t": "The elements"
+ },
+ {
+  "a": "TITANIUM",
+  "c": "Element with the symbol Ti",
+  "t": "The elements"
+ },
+ {
+  "a": "IRON",
+  "c": "Element with the symbol Fe",
+  "t": "The elements"
+ },
+ {
+  "a": "NICKEL",
+  "c": "Element with the symbol Ni",
+  "t": "The elements"
+ },
+ {
+  "a": "COPPER",
+  "c": "Element with the symbol Cu",
+  "t": "The elements"
+ },
+ {
+  "a": "ZINC",
+  "c": "Element with the symbol Zn",
+  "t": "The elements"
+ },
+ {
+  "a": "SILVER",
+  "c": "Element with the symbol Ag",
+  "t": "The elements"
+ },
+ {
+  "a": "TUNGSTEN",
+  "c": "Element with the symbol W",
+  "t": "The elements"
+ },
+ {
+  "a": "PLATINUM",
+  "c": "Element with the symbol Pt",
+  "t": "The elements"
+ },
+ {
+  "a": "GOLD",
+  "c": "Element with the symbol Au",
+  "t": "The elements"
+ },
+ {
+  "a": "MERCURY",
+  "c": "Element with the symbol Hg",
+  "t": "The elements"
+ },
+ {
+  "a": "ALUMINIUM",
+  "c": "Element with the symbol Al",
+  "t": "The elements"
+ },
+ {
+  "a": "TIN",
+  "c": "Element with the symbol Sn",
+  "t": "The elements"
+ },
+ {
+  "a": "LEAD",
+  "c": "Element with the symbol Pb",
+  "t": "The elements"
+ },
+ {
+  "a": "BORON",
+  "c": "Element with the symbol B",
+  "t": "The elements"
+ },
+ {
+  "a": "SILICON",
+  "c": "Element with the symbol Si",
+  "t": "The elements"
+ },
+ {
+  "a": "ARSENIC",
+  "c": "Element with the symbol As",
+  "t": "The elements"
+ },
+ {
+  "a": "ANTIMONY",
+  "c": "Element with the symbol Sb",
+  "t": "The elements"
+ },
+ {
+  "a": "URANIUM",
+  "c": "Element with the symbol U",
+  "t": "The elements"
+ },
+ {
+  "a": "PLUTONIUM",
+  "c": "Element with the symbol Pu",
+  "t": "The elements"
+ },
+ {
+  "a": "ZEUS",
+  "c": "Greek deity: king of the gods; sky and thunder",
+  "t": "Greek gods"
+ },
+ {
+  "a": "POSEIDON",
+  "c": "Greek deity: the sea, earthquakes and horses",
+  "t": "Greek gods"
+ },
+ {
+  "a": "HADES",
+  "c": "Greek deity: the underworld and the dead",
+  "t": "Greek gods"
+ },
+ {
+  "a": "HERA",
+  "c": "Greek deity: queen of the gods; marriage and family",
+  "t": "Greek gods"
+ },
+ {
+  "a": "DEMETER",
+  "c": "Greek deity: the harvest, grain and fertile earth",
+  "t": "Greek gods"
+ },
+ {
+  "a": "HEPHAESTUS",
+  "c": "Greek deity: fire, forges and craftsmen",
+  "t": "Greek gods"
+ },
+ {
+  "a": "ARES",
+  "c": "Greek deity: war, violence and bloodlust",
+  "t": "Greek gods"
+ },
+ {
+  "a": "APOLLO",
+  "c": "Greek deity: music, prophecy, light and healing",
+  "t": "Greek gods"
+ },
+ {
+  "a": "ARTEMIS",
+  "c": "Greek deity: the hunt, the moon and wild things",
+  "t": "Greek gods"
+ },
+ {
+  "a": "APHRODITE",
+  "c": "Greek deity: love and beauty",
+  "t": "Greek gods"
+ },
+ {
+  "a": "HERMES",
+  "c": "Greek deity: messengers, travel, trade and thieves",
+  "t": "Greek gods"
+ },
+ {
+  "a": "DIONYSUS",
+  "c": "Greek deity: wine, festivity and theatre",
+  "t": "Greek gods"
+ },
+ {
+  "a": "ATHENA",
+  "c": "Greek deity: wisdom, crafts and strategy",
+  "t": "Greek gods"
+ },
+ {
+  "a": "HESTIA",
+  "c": "Greek deity: the hearth, home and family",
+  "t": "Greek gods"
+ },
+ {
+  "a": "NORMAN",
+  "c": "Royal house of William I",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "NORMAN",
+  "c": "Royal house of William II",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "NORMAN",
+  "c": "Royal house of Henry I",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "NORMAN",
+  "c": "Royal house of Stephen",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "PLANTAGENET",
+  "c": "Royal house of Henry II",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "PLANTAGENET",
+  "c": "Royal house of Richard I",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "PLANTAGENET",
+  "c": "Royal house of John",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "PLANTAGENET",
+  "c": "Royal house of Henry III",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "PLANTAGENET",
+  "c": "Royal house of Edward I",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "PLANTAGENET",
+  "c": "Royal house of Edward II",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "PLANTAGENET",
+  "c": "Royal house of Edward III",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "PLANTAGENET",
+  "c": "Royal house of Richard II",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "LANCASTER",
+  "c": "Royal house of Henry IV",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "LANCASTER",
+  "c": "Royal house of Henry V",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "LANCASTER",
+  "c": "Royal house of Henry VI",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "YORK",
+  "c": "Royal house of Edward IV",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "YORK",
+  "c": "Royal house of Edward V",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "YORK",
+  "c": "Royal house of Richard III",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "TUDOR",
+  "c": "Royal house of Henry VII",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "TUDOR",
+  "c": "Royal house of Henry VIII",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "TUDOR",
+  "c": "Royal house of Edward VI",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "TUDOR",
+  "c": "Royal house of Mary I",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "TUDOR",
+  "c": "Royal house of Elizabeth I",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "STUART",
+  "c": "Royal house of James I",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "STUART",
+  "c": "Royal house of Charles I",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "STUART",
+  "c": "Royal house of Charles II",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "STUART",
+  "c": "Royal house of James II",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "STUART",
+  "c": "Royal house of William III",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "STUART",
+  "c": "Royal house of Mary II",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "STUART",
+  "c": "Royal house of Anne",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "HANOVER",
+  "c": "Royal house of George I",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "HANOVER",
+  "c": "Royal house of George II",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "HANOVER",
+  "c": "Royal house of George III",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "HANOVER",
+  "c": "Royal house of George IV",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "HANOVER",
+  "c": "Royal house of William IV",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "HANOVER",
+  "c": "Royal house of Victoria",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "WINDSOR",
+  "c": "Royal house of George V",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "WINDSOR",
+  "c": "Royal house of Edward VIII",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "WINDSOR",
+  "c": "Royal house of George VI",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "WINDSOR",
+  "c": "Royal house of Elizabeth II",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "WINDSOR",
+  "c": "Royal house of Charles III",
+  "t": "Kings and queens"
+ },
+ {
+  "a": "BLUEWHALE",
+  "c": "Largest animal",
+  "t": "Nature's extremes",
+  "e": "4,5"
+ },
+ {
+  "a": "HONEYFUNGUS",
+  "c": "Largest organism by area",
+  "t": "Nature's extremes",
+  "e": "5,6"
+ },
+ {
+  "a": "PANDO",
+  "c": "Largest organism by mass",
+  "t": "Nature's extremes"
+ },
+ {
+  "a": "HYPERION",
+  "c": "Tallest tree",
+  "t": "Nature's extremes"
+ },
+ {
+  "a": "CHEETAH",
+  "c": "Fastest land animal",
+  "t": "Nature's extremes"
+ },
+ {
+  "a": "ARCTICTERN",
+  "c": "Longest migration",
+  "t": "Nature's extremes",
+  "e": "6,4"
+ },
+ {
+  "a": "SPERMWHALE",
+  "c": "Loudest animal",
+  "t": "Nature's extremes",
+  "e": "5,5"
+ },
+ {
+  "a": "COLOSSALSQUID",
+  "c": "Largest eyes",
+  "t": "Nature's extremes",
+  "e": "8,5"
+ },
+ {
+  "a": "SCALLOP",
+  "c": "Most eyes",
+  "t": "Nature's extremes"
+ },
+ {
+  "a": "JONATHAN",
+  "c": "Oldest living land animal",
+  "t": "Nature's extremes"
+ },
+ {
+  "a": "MAYFLY",
+  "c": "Shortest lifespan",
+  "t": "Nature's extremes"
+ },
+ {
+  "a": "TARDIGRADE",
+  "c": "Toughest creature",
+  "t": "Nature's extremes"
+ },
+ {
+  "a": "BOXJELLYFISH",
+  "c": "Most venomous marine animal",
+  "t": "Nature's extremes",
+  "e": "3,9"
+ },
+ {
+  "a": "MOSQUITO",
+  "c": "Deadliest animal to humans",
+  "t": "Nature's extremes"
+ },
+ {
+  "a": "ELTONJOHN",
+  "c": "Reginald Dwight, better known as…",
+  "t": "Not-name names",
+  "e": "5,4"
+ },
+ {
+  "a": "DAVIDBOWIE",
+  "c": "David Jones, better known as…",
+  "t": "Not-name names",
+  "e": "5,5"
+ },
+ {
+  "a": "STING",
+  "c": "Gordon Sumner, better known as…",
+  "t": "Not-name names"
+ },
+ {
+  "a": "BONO",
+  "c": "Paul Hewson, better known as…",
+  "t": "Not-name names"
+ },
+ {
+  "a": "RINGOSTARR",
+  "c": "Richard Starkey, better known as…",
+  "t": "Not-name names",
+  "e": "5,5"
+ },
+ {
+  "a": "BOBDYLAN",
+  "c": "Robert Zimmerman, better known as…",
+  "t": "Not-name names",
+  "e": "3,5"
+ },
+ {
+  "a": "CLIFFRICHARD",
+  "c": "Harry Webb, better known as…",
+  "t": "Not-name names",
+  "e": "5,7"
+ },
+ {
+  "a": "LADYGAGA",
+  "c": "Stefani Germanotta, better known as…",
+  "t": "Not-name names",
+  "e": "4,4"
+ },
+ {
+  "a": "BRUNOMARS",
+  "c": "Peter Hernandez, better known as…",
+  "t": "Not-name names",
+  "e": "5,4"
+ },
+ {
+  "a": "KATYPERRY",
+  "c": "Katheryn Hudson, better known as…",
+  "t": "Not-name names",
+  "e": "4,5"
+ },
+ {
+  "a": "TINATURNER",
+  "c": "Anna Mae Bullock, better known as…",
+  "t": "Not-name names",
+  "e": "4,6"
+ },
+ {
+  "a": "GEORGEMICHAEL",
+  "c": "Georgios Panayiotou, better known as…",
+  "t": "Not-name names",
+  "e": "6,7"
+ },
+ {
+  "a": "CATSTEVENS",
+  "c": "Steven Georgiou, better known as…",
+  "t": "Not-name names",
+  "e": "3,7"
+ },
+ {
+  "a": "ELVISCOSTELLO",
+  "c": "Declan MacManus, better known as…",
+  "t": "Not-name names",
+  "e": "5,8"
+ },
+ {
+  "a": "IGGYPOP",
+  "c": "James Osterberg, better known as…",
+  "t": "Not-name names",
+  "e": "4,3"
+ },
+ {
+  "a": "BOYGEORGE",
+  "c": "George O'Dowd, better known as…",
+  "t": "Not-name names",
+  "e": "3,6"
+ },
+ {
+  "a": "BILLYIDOL",
+  "c": "William Broad, better known as…",
+  "t": "Not-name names",
+  "e": "5,4"
+ },
+ {
+  "a": "CILLABLACK",
+  "c": "Priscilla White, better known as…",
+  "t": "Not-name names",
+  "e": "5,5"
+ },
+ {
+  "a": "DIDO",
+  "c": "Florian Cloud de Bounevialle O'Malley Armstrong, better known as…",
+  "t": "Not-name names"
+ },
+ {
+  "a": "JOHNWAYNE",
+  "c": "Marion Morrison, better known as…",
+  "t": "Not-name names",
+  "e": "4,5"
+ },
+ {
+  "a": "CARYGRANT",
+  "c": "Archibald Leach, better known as…",
+  "t": "Not-name names",
+  "e": "4,5"
+ },
+ {
+  "a": "MARILYNMONROE",
+  "c": "Norma Jeane Mortenson, better known as…",
+  "t": "Not-name names",
+  "e": "7,6"
+ },
+ {
+  "a": "MICHAELCAINE",
+  "c": "Maurice Micklewhite, better known as…",
+  "t": "Not-name names",
+  "e": "7,5"
+ },
+ {
+  "a": "JUDYGARLAND",
+  "c": "Frances Gumm, better known as…",
+  "t": "Not-name names",
+  "e": "4,7"
+ },
+ {
+  "a": "TOMCRUISE",
+  "c": "Thomas Mapother IV, better known as…",
+  "t": "Not-name names",
+  "e": "3,6"
+ },
+ {
+  "a": "JAMIEFOXX",
+  "c": "Eric Bishop, better known as…",
+  "t": "Not-name names",
+  "e": "5,4"
+ },
+ {
+  "a": "VINDIESEL",
+  "c": "Mark Sinclair, better known as…",
+  "t": "Not-name names",
+  "e": "3,6"
+ },
+ {
+  "a": "NICOLASCAGE",
+  "c": "Nicolas Coppola, better known as…",
+  "t": "Not-name names",
+  "e": "7,4"
+ },
+ {
+  "a": "CHARLIESHEEN",
+  "c": "Carlos Estévez, better known as…",
+  "t": "Not-name names",
+  "e": "7,5"
+ },
+ {
+  "a": "MICHAELKEATON",
+  "c": "Michael Douglas, better known as…",
+  "t": "Not-name names",
+  "e": "7,6"
+ },
+ {
+  "a": "BENKINGSLEY",
+  "c": "Krishna Bhanji, better known as…",
+  "t": "Not-name names",
+  "e": "3,8"
+ },
+ {
+  "a": "HELENMIRREN",
+  "c": "Ilyena Mironoff, better known as…",
+  "t": "Not-name names",
+  "e": "5,6"
+ },
+ {
+  "a": "WOODYALLEN",
+  "c": "Allan Konigsberg, better known as…",
+  "t": "Not-name names",
+  "e": "5,5"
+ },
+ {
+  "a": "KIRKDOUGLAS",
+  "c": "Issur Danielovitch, better known as…",
+  "t": "Not-name names",
+  "e": "4,7"
+ },
+ {
+  "a": "STANLAUREL",
+  "c": "Arthur Stanley Jefferson, better known as…",
+  "t": "Not-name names",
+  "e": "4,6"
+ },
+ {
+  "a": "ERICMORECAMBE",
+  "c": "John Eric Bartholomew, better known as…",
+  "t": "Not-name names",
+  "e": "4,9"
+ },
+ {
+  "a": "ERNIEWISE",
+  "c": "Ernest Wiseman, better known as…",
+  "t": "Not-name names",
+  "e": "5,4"
+ },
+ {
+  "a": "GEORGEORWELL",
+  "c": "Eric Blair, better known as…",
+  "t": "Not-name names",
+  "e": "6,6"
+ },
+ {
+  "a": "MARKTWAIN",
+  "c": "Samuel Clemens, better known as…",
+  "t": "Not-name names",
+  "e": "4,5"
+ },
+ {
+  "a": "LEWISCARROLL",
+  "c": "Charles Dodgson, better known as…",
+  "t": "Not-name names",
+  "e": "5,7"
+ },
+ {
+  "a": "GEORGEELIOT",
+  "c": "Mary Ann Evans, better known as…",
+  "t": "Not-name names",
+  "e": "6,5"
+ },
+ {
+  "a": "DRSEUSS",
+  "c": "Theodor Geisel, better known as…",
+  "t": "Not-name names",
+  "e": "2,5"
+ },
+ {
+  "a": "JOHNLECARRE",
+  "c": "David Cornwell, better known as…",
+  "t": "Not-name names",
+  "e": "4,2,5"
+ },
+ {
+  "a": "VOLTAIRE",
+  "c": "François-Marie Arouet, better known as…",
+  "t": "Not-name names"
+ },
+ {
+  "a": "LENIN",
+  "c": "Vladimir Ulyanov, better known as…",
+  "t": "Not-name names"
+ },
+ {
+  "a": "STALIN",
+  "c": "Ioseb Jughashvili, better known as…",
+  "t": "Not-name names"
+ },
+ {
+  "a": "TROTSKY",
+  "c": "Lev Bronstein, better known as…",
+  "t": "Not-name names"
+ },
+ {
+  "a": "MOTHERTERESA",
+  "c": "Anjezë Gonxhe Bojaxhiu, better known as…",
+  "t": "Not-name names",
+  "e": "6,6"
+ },
+ {
+  "a": "POPEFRANCIS",
+  "c": "Jorge Mario Bergoglio, better known as…",
+  "t": "Not-name names",
+  "e": "4,7"
+ },
+ {
+  "a": "POPELEOXIV",
+  "c": "Robert Prevost, better known as…",
+  "t": "Not-name names",
+  "e": "4,3,3"
+ },
+ {
+  "a": "MUHAMMADALI",
+  "c": "Cassius Clay, better known as…",
+  "t": "Not-name names",
+  "e": "8,3"
+ },
+ {
+  "a": "PELE",
+  "c": "Edson Arantes do Nascimento, better known as…",
+  "t": "Not-name names"
+ },
+ {
+  "a": "TIGERWOODS",
+  "c": "Eldrick Woods, better known as…",
+  "t": "Not-name names",
+  "e": "5,5"
+ },
+ {
+  "a": "HARRYHOUDINI",
+  "c": "Erik Weisz, better known as…",
+  "t": "Not-name names",
+  "e": "5,7"
+ },
+ {
+  "a": "TWIGGY",
+  "c": "Lesley Hornby, better known as…",
+  "t": "Not-name names"
+ },
+ {
+  "a": "HULKHOGAN",
+  "c": "Terry Bollea, better known as…",
+  "t": "Not-name names",
+  "e": "4,5"
+ },
+ {
+  "a": "OCTOPUS",
+  "c": "3 hearts and 9 brains",
+  "t": "Odd body parts"
+ },
+ {
+  "a": "SQUID",
+  "c": "3 hearts",
+  "t": "Odd body parts"
+ },
+ {
+  "a": "EARTHWORM",
+  "c": "5 pairs of aortic arches",
+  "t": "Odd body parts"
+ },
+ {
+  "a": "LEECH",
+  "c": "32 brains and up to 10 stomachs",
+  "t": "Odd body parts"
+ },
+ {
+  "a": "HAGFISH",
+  "c": "4 hearts and 1 nostril",
+  "t": "Odd body parts"
+ },
+ {
+  "a": "RUMINANTS",
+  "c": "4 stomach chambers",
+  "t": "Odd body parts"
+ },
+ {
+  "a": "PLATYPUS",
+  "c": "No stomach",
+  "t": "Odd body parts"
+ },
+ {
+  "a": "TUATARA",
+  "c": "A third eye",
+  "t": "Odd body parts"
+ },
+ {
+  "a": "BOXJELLYFISH",
+  "c": "24 eyes",
+  "t": "Odd body parts",
+  "e": "3,9"
+ },
+ {
+  "a": "STARFISH",
+  "c": "An eye at the tip of every arm",
+  "t": "Odd body parts"
+ },
+ {
+  "a": "CENTIPEDES",
+  "c": "Never exactly 100 legs",
+  "t": "Odd body parts"
+ },
+ {
+  "a": "INSECTS",
+  "c": "6 legs",
+  "t": "Odd body parts"
+ },
+ {
+  "a": "ARACHNIDS",
+  "c": "8 legs",
+  "t": "Odd body parts"
+ },
+ {
+  "a": "DECAPODS",
+  "c": "10 legs",
+  "t": "Odd body parts"
+ },
+ {
+  "a": "WOODLICE",
+  "c": "14 legs",
+  "t": "Odd body parts"
+ },
+ {
+  "a": "GARDENSNAIL",
+  "c": "14,000 to 25,000 teeth",
+  "t": "Odd body parts",
+  "e": "6,5"
+ },
+ {
+  "a": "NARWHAL",
+  "c": "1 giant tooth",
+  "t": "Odd body parts"
+ },
+ {
+  "a": "MOSTMAMMALS",
+  "c": "7 neck bones",
+  "t": "Odd body parts",
+  "e": "4,7"
+ },
+ {
+  "a": "MANATEE",
+  "c": "6 neck bones",
+  "t": "Odd body parts"
+ },
+ {
+  "a": "SLOTHS",
+  "c": "5 to 10 neck bones",
+  "t": "Odd body parts"
+ },
+ {
+  "a": "ACROPHOBIA",
+  "c": "Fear of heights",
+  "t": "Names of fears"
+ },
+ {
+  "a": "AGORAPHOBIA",
+  "c": "Fear of open or crowded spaces",
+  "t": "Names of fears"
+ },
+ {
+  "a": "BOGYPHOBIA",
+  "c": "Fear of the bogeyman",
+  "t": "Names of fears"
+ },
+ {
+  "a": "CYNOPHOBIA",
+  "c": "Fear of dogs",
+  "t": "Names of fears"
+ },
+ {
+  "a": "GLOSSOPHOBIA",
+  "c": "Fear of public speaking",
+  "t": "Names of fears"
+ },
+ {
+  "a": "MYSOPHOBIA",
+  "c": "Fear of dirt and germs",
+  "t": "Names of fears"
+ },
+ {
+  "a": "OPHIDIOPHOBIA",
+  "c": "Fear of snakes",
+  "t": "Names of fears"
+ },
+ {
+  "a": "POGONOPHOBIA",
+  "c": "Fear of beards",
+  "t": "Names of fears"
+ },
+ {
+  "a": "XANTHOPHOBIA",
+  "c": "Fear of the colour yellow",
+  "t": "Names of fears"
+ },
+ {
+  "a": "NOMOPHOBIA",
+  "c": "Fear of being without your mobile",
+  "t": "Names of fears"
+ },
+ {
+  "a": "COULROPHOBIA",
+  "c": "Fear of clowns",
+  "t": "Names of fears"
+ },
+ {
+  "a": "TRYPOPHOBIA",
+  "c": "Fear of clusters of small holes",
+  "t": "Names of fears"
+ },
+ {
+  "a": "HAEMATOPHOBIA",
+  "c": "Fear of blood",
+  "t": "Names of fears"
+ },
+ {
+  "a": "NECROPHOBIA",
+  "c": "Fear of corpses",
+  "t": "Names of fears"
+ },
+ {
+  "a": "PYROPHOBIA",
+  "c": "Fear of fire",
+  "t": "Names of fears"
+ },
+ {
+  "a": "HYDROPHOBIA",
+  "c": "Fear of water",
+  "t": "Names of fears"
+ },
+ {
+  "a": "PANOPHOBIA",
+  "c": "Fear of everything",
+  "t": "Names of fears"
+ },
+ {
+  "a": "PHOBOPHOBIA",
+  "c": "Fear of fear itself",
+  "t": "Names of fears"
+ },
+ {
+  "a": "ROBERTWALPOLE",
+  "c": "PM nicknamed The Great Man",
+  "t": "Prime Ministers",
+  "e": "6,7"
+ },
+ {
+  "a": "PITTTHEELDER",
+  "c": "PM nicknamed The Great Commoner",
+  "t": "Prime Ministers",
+  "e": "4,3,5"
+ },
+ {
+  "a": "EDWARDHEATH",
+  "c": "PM nicknamed Ted",
+  "t": "Prime Ministers",
+  "e": "6,5"
+ },
+ {
+  "a": "DAVIDCAMERON",
+  "c": "PM nicknamed Dave",
+  "t": "Prime Ministers",
+  "e": "5,7"
+ },
+ {
+  "a": "BORISJOHNSON",
+  "c": "PM nicknamed Boris",
+  "t": "Prime Ministers",
+  "e": "5,7"
+ },
+ {
+  "a": "ANDYBURNHAM",
+  "c": "PM nicknamed King of the North",
+  "t": "Prime Ministers",
+  "e": "4,7"
+ },
+ {
+  "a": "NILE",
+  "c": "The world's longest river; flows through Cairo and Khartoum",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "AMAZON",
+  "c": "The largest river by volume",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "CONGO",
+  "c": "The deepest river",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "DANUBE",
+  "c": "Crosses the most countries (10) and four capitals: Vienna, Bratislava, Budapest and Belgrade",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "YANGTZE",
+  "c": "The longest river in Asia",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "SEINE",
+  "c": "Paris",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "TIBER",
+  "c": "Rome",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "THAMES",
+  "c": "London; the longest river in England",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "LIFFEY",
+  "c": "Dublin",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "POTOMAC",
+  "c": "Washington, D.C.",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "TIGRIS",
+  "c": "Baghdad; with the Euphrates, the river of Mesopotamia",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "YAMUNA",
+  "c": "New Delhi",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "SEVERN",
+  "c": "The longest river in the UK",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "TAY",
+  "c": "The longest river in Scotland",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "SHANNON",
+  "c": "The longest river in Ireland",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "MERSEY",
+  "c": "Liverpool",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "TYNE",
+  "c": "Newcastle",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "CLYDE",
+  "c": "Glasgow",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "CHICAGORIVER",
+  "c": "Flows backwards",
+  "t": "Famous rivers",
+  "e": "7,5"
+ },
+ {
+  "a": "COLORADO",
+  "c": "Carved the Grand Canyon",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "RUBICON",
+  "c": "Julius Caesar crossed it in 49 BC",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "EUPHRATES",
+  "c": "With the Tigris, the river of Mesopotamia",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "STYX",
+  "c": "Greek underworld: the river of hatred",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "ACHERON",
+  "c": "Greek underworld: the river of woe",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "LETHE",
+  "c": "Greek underworld: the river of forgetfulness",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "PHLEGETHON",
+  "c": "Greek underworld: the river of fire",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "COCYTUS",
+  "c": "Greek underworld: the river of wailing",
+  "t": "Famous rivers"
+ },
+ {
+  "a": "JUPITER",
+  "c": "Roman deity: king of the gods; sky and thunder",
+  "t": "Roman gods"
+ },
+ {
+  "a": "NEPTUNE",
+  "c": "Roman deity: the sea, earthquakes and horses",
+  "t": "Roman gods"
+ },
+ {
+  "a": "PLUTO",
+  "c": "Roman deity: the underworld and its riches",
+  "t": "Roman gods"
+ },
+ {
+  "a": "JUNO",
+  "c": "Roman deity: queen of the gods; marriage and childbirth",
+  "t": "Roman gods"
+ },
+ {
+  "a": "CERES",
+  "c": "Roman deity: grain, harvest and farming",
+  "t": "Roman gods"
+ },
+ {
+  "a": "VESTA",
+  "c": "Roman deity: the hearth, home and family",
+  "t": "Roman gods"
+ },
+ {
+  "a": "MARS",
+  "c": "Roman deity: war",
+  "t": "Roman gods"
+ },
+ {
+  "a": "VENUS",
+  "c": "Roman deity: love and beauty",
+  "t": "Roman gods"
+ },
+ {
+  "a": "VULCAN",
+  "c": "Roman deity: fire, forges and smithing",
+  "t": "Roman gods"
+ },
+ {
+  "a": "BACCHUS",
+  "c": "Roman deity: wine and revelry",
+  "t": "Roman gods"
+ },
+ {
+  "a": "JANUS",
+  "c": "Roman deity: beginnings, doorways and endings",
+  "t": "Roman gods"
+ },
+ {
+  "a": "MERCURY",
+  "c": "Roman deity: messengers, trade, travel and thieves",
+  "t": "Roman gods"
+ },
+ {
+  "a": "MINERVA",
+  "c": "Roman deity: wisdom, crafts and strategy",
+  "t": "Roman gods"
+ },
+ {
+  "a": "APOLLO",
+  "c": "Roman deity: music, poetry, prophecy and healing",
+  "t": "Roman gods"
+ },
+ {
+  "a": "DIANA",
+  "c": "Roman deity: the hunt, the moon and wild things",
+  "t": "Roman gods"
+ },
+ {
+  "a": "HARTFORD",
+  "c": "Capital of Connecticut",
+  "t": "American states"
+ },
+ {
+  "a": "DOVER",
+  "c": "Capital of Delaware",
+  "t": "American states"
+ },
+ {
+  "a": "AUGUSTA",
+  "c": "Capital of Maine",
+  "t": "American states"
+ },
+ {
+  "a": "ANNAPOLIS",
+  "c": "Capital of Maryland",
+  "t": "American states"
+ },
+ {
+  "a": "BOSTON",
+  "c": "Capital of Massachusetts",
+  "t": "American states"
+ },
+ {
+  "a": "CONCORD",
+  "c": "Capital of New Hampshire",
+  "t": "American states"
+ },
+ {
+  "a": "TRENTON",
+  "c": "Capital of New Jersey",
+  "t": "American states"
+ },
+ {
+  "a": "ALBANY",
+  "c": "Capital of New York",
+  "t": "American states"
+ },
+ {
+  "a": "HARRISBURG",
+  "c": "Capital of Pennsylvania",
+  "t": "American states"
+ },
+ {
+  "a": "PROVIDENCE",
+  "c": "Capital of Rhode Island",
+  "t": "American states"
+ },
+ {
+  "a": "MONTPELIER",
+  "c": "Capital of Vermont",
+  "t": "American states"
+ },
+ {
+  "a": "MONTGOMERY",
+  "c": "Capital of Alabama",
+  "t": "American states"
+ },
+ {
+  "a": "LITTLEROCK",
+  "c": "Capital of Arkansas",
+  "t": "American states",
+  "e": "6,4"
+ },
+ {
+  "a": "TALLAHASSEE",
+  "c": "Capital of Florida",
+  "t": "American states"
+ },
+ {
+  "a": "ATLANTA",
+  "c": "Capital of Georgia",
+  "t": "American states"
+ },
+ {
+  "a": "FRANKFORT",
+  "c": "Capital of Kentucky",
+  "t": "American states"
+ },
+ {
+  "a": "BATONROUGE",
+  "c": "Capital of Louisiana",
+  "t": "American states",
+  "e": "5,5"
+ },
+ {
+  "a": "JACKSON",
+  "c": "Capital of Mississippi",
+  "t": "American states"
+ },
+ {
+  "a": "RALEIGH",
+  "c": "Capital of North Carolina",
+  "t": "American states"
+ },
+ {
+  "a": "COLUMBIA",
+  "c": "Capital of South Carolina",
+  "t": "American states"
+ },
+ {
+  "a": "NASHVILLE",
+  "c": "Capital of Tennessee",
+  "t": "American states"
+ },
+ {
+  "a": "RICHMOND",
+  "c": "Capital of Virginia",
+  "t": "American states"
+ },
+ {
+  "a": "CHARLESTON",
+  "c": "Capital of West Virginia",
+  "t": "American states"
+ },
+ {
+  "a": "SPRINGFIELD",
+  "c": "Capital of Illinois",
+  "t": "American states"
+ },
+ {
+  "a": "INDIANAPOLIS",
+  "c": "Capital of Indiana",
+  "t": "American states"
+ },
+ {
+  "a": "DESMOINES",
+  "c": "Capital of Iowa",
+  "t": "American states",
+  "e": "3,6"
+ },
+ {
+  "a": "TOPEKA",
+  "c": "Capital of Kansas",
+  "t": "American states"
+ },
+ {
+  "a": "LANSING",
+  "c": "Capital of Michigan",
+  "t": "American states"
+ },
+ {
+  "a": "SAINTPAUL",
+  "c": "Capital of Minnesota",
+  "t": "American states",
+  "e": "5,4"
+ },
+ {
+  "a": "JEFFERSONCITY",
+  "c": "Capital of Missouri",
+  "t": "American states",
+  "e": "9,4"
+ },
+ {
+  "a": "LINCOLN",
+  "c": "Capital of Nebraska",
+  "t": "American states"
+ },
+ {
+  "a": "BISMARCK",
+  "c": "Capital of North Dakota",
+  "t": "American states"
+ },
+ {
+  "a": "COLUMBUS",
+  "c": "Capital of Ohio",
+  "t": "American states"
+ },
+ {
+  "a": "PIERRE",
+  "c": "Capital of South Dakota",
+  "t": "American states"
+ },
+ {
+  "a": "MADISON",
+  "c": "Capital of Wisconsin",
+  "t": "American states"
+ },
+ {
+  "a": "PHOENIX",
+  "c": "Capital of Arizona",
+  "t": "American states"
+ },
+ {
+  "a": "SANTAFE",
+  "c": "Capital of New Mexico",
+  "t": "American states",
+  "e": "5,2"
+ },
+ {
+  "a": "OKLAHOMACITY",
+  "c": "Capital of Oklahoma",
+  "t": "American states",
+  "e": "8,4"
+ },
+ {
+  "a": "AUSTIN",
+  "c": "Capital of Texas",
+  "t": "American states"
+ },
+ {
+  "a": "JUNEAU",
+  "c": "Capital of Alaska",
+  "t": "American states"
+ },
+ {
+  "a": "SACRAMENTO",
+  "c": "Capital of California",
+  "t": "American states"
+ },
+ {
+  "a": "DENVER",
+  "c": "Capital of Colorado",
+  "t": "American states"
+ },
+ {
+  "a": "HONOLULU",
+  "c": "Capital of Hawaii",
+  "t": "American states"
+ },
+ {
+  "a": "BOISE",
+  "c": "Capital of Idaho",
+  "t": "American states"
+ },
+ {
+  "a": "HELENA",
+  "c": "Capital of Montana",
+  "t": "American states"
+ },
+ {
+  "a": "CARSONCITY",
+  "c": "Capital of Nevada",
+  "t": "American states",
+  "e": "6,4"
+ },
+ {
+  "a": "SALEM",
+  "c": "Capital of Oregon",
+  "t": "American states"
+ },
+ {
+  "a": "SALTLAKECITY",
+  "c": "Capital of Utah",
+  "t": "American states",
+  "e": "4,4,4"
+ },
+ {
+  "a": "OLYMPIA",
+  "c": "Capital of Washington",
+  "t": "American states"
+ },
+ {
+  "a": "CHEYENNE",
+  "c": "Capital of Wyoming",
+  "t": "American states"
+ },
+ {
+  "a": "CONNECTICUT",
+  "c": "US state whose capital is Hartford",
+  "t": "American states"
+ },
+ {
+  "a": "DELAWARE",
+  "c": "US state whose capital is Dover",
+  "t": "American states"
+ },
+ {
+  "a": "MAINE",
+  "c": "US state whose capital is Augusta",
+  "t": "American states"
+ },
+ {
+  "a": "MARYLAND",
+  "c": "US state whose capital is Annapolis",
+  "t": "American states"
+ },
+ {
+  "a": "MASSACHUSETTS",
+  "c": "US state whose capital is Boston",
+  "t": "American states"
+ },
+ {
+  "a": "NEWHAMPSHIRE",
+  "c": "US state whose capital is Concord",
+  "t": "American states",
+  "e": "3,9"
+ },
+ {
+  "a": "NEWJERSEY",
+  "c": "US state whose capital is Trenton",
+  "t": "American states",
+  "e": "3,6"
+ },
+ {
+  "a": "NEWYORK",
+  "c": "US state whose capital is Albany",
+  "t": "American states",
+  "e": "3,4"
+ },
+ {
+  "a": "PENNSYLVANIA",
+  "c": "US state whose capital is Harrisburg",
+  "t": "American states"
+ },
+ {
+  "a": "RHODEISLAND",
+  "c": "US state whose capital is Providence",
+  "t": "American states",
+  "e": "5,6"
+ },
+ {
+  "a": "VERMONT",
+  "c": "US state whose capital is Montpelier",
+  "t": "American states"
+ },
+ {
+  "a": "ALABAMA",
+  "c": "US state whose capital is Montgomery",
+  "t": "American states"
+ },
+ {
+  "a": "ARKANSAS",
+  "c": "US state whose capital is Little Rock",
+  "t": "American states"
+ },
+ {
+  "a": "FLORIDA",
+  "c": "US state whose capital is Tallahassee",
+  "t": "American states"
+ },
+ {
+  "a": "GEORGIA",
+  "c": "US state whose capital is Atlanta",
+  "t": "American states"
+ },
+ {
+  "a": "KENTUCKY",
+  "c": "US state whose capital is Frankfort",
+  "t": "American states"
+ },
+ {
+  "a": "LOUISIANA",
+  "c": "US state whose capital is Baton Rouge",
+  "t": "American states"
+ },
+ {
+  "a": "MISSISSIPPI",
+  "c": "US state whose capital is Jackson",
+  "t": "American states"
+ },
+ {
+  "a": "NORTHCAROLINA",
+  "c": "US state whose capital is Raleigh",
+  "t": "American states",
+  "e": "5,8"
+ },
+ {
+  "a": "SOUTHCAROLINA",
+  "c": "US state whose capital is Columbia",
+  "t": "American states",
+  "e": "5,8"
+ },
+ {
+  "a": "TENNESSEE",
+  "c": "US state whose capital is Nashville",
+  "t": "American states"
+ },
+ {
+  "a": "VIRGINIA",
+  "c": "US state whose capital is Richmond",
+  "t": "American states"
+ },
+ {
+  "a": "WESTVIRGINIA",
+  "c": "US state whose capital is Charleston",
+  "t": "American states",
+  "e": "4,8"
+ },
+ {
+  "a": "ILLINOIS",
+  "c": "US state whose capital is Springfield",
+  "t": "American states"
+ },
+ {
+  "a": "IOWA",
+  "c": "US state whose capital is Des Moines",
+  "t": "American states"
+ },
+ {
+  "a": "KANSAS",
+  "c": "US state whose capital is Topeka",
+  "t": "American states"
+ },
+ {
+  "a": "MICHIGAN",
+  "c": "US state whose capital is Lansing",
+  "t": "American states"
+ },
+ {
+  "a": "MINNESOTA",
+  "c": "US state whose capital is Saint Paul",
+  "t": "American states"
+ },
+ {
+  "a": "MISSOURI",
+  "c": "US state whose capital is Jefferson City",
+  "t": "American states"
+ },
+ {
+  "a": "NEBRASKA",
+  "c": "US state whose capital is Lincoln",
+  "t": "American states"
+ },
+ {
+  "a": "NORTHDAKOTA",
+  "c": "US state whose capital is Bismarck",
+  "t": "American states",
+  "e": "5,6"
+ },
+ {
+  "a": "OHIO",
+  "c": "US state whose capital is Columbus",
+  "t": "American states"
+ },
+ {
+  "a": "SOUTHDAKOTA",
+  "c": "US state whose capital is Pierre",
+  "t": "American states",
+  "e": "5,6"
+ },
+ {
+  "a": "WISCONSIN",
+  "c": "US state whose capital is Madison",
+  "t": "American states"
+ },
+ {
+  "a": "ARIZONA",
+  "c": "US state whose capital is Phoenix",
+  "t": "American states"
+ },
+ {
+  "a": "NEWMEXICO",
+  "c": "US state whose capital is Santa Fe",
+  "t": "American states",
+  "e": "3,6"
+ },
+ {
+  "a": "TEXAS",
+  "c": "US state whose capital is Austin",
+  "t": "American states"
+ },
+ {
+  "a": "ALASKA",
+  "c": "US state whose capital is Juneau",
+  "t": "American states"
+ },
+ {
+  "a": "CALIFORNIA",
+  "c": "US state whose capital is Sacramento",
+  "t": "American states"
+ },
+ {
+  "a": "COLORADO",
+  "c": "US state whose capital is Denver",
+  "t": "American states"
+ },
+ {
+  "a": "HAWAII",
+  "c": "US state whose capital is Honolulu",
+  "t": "American states"
+ },
+ {
+  "a": "IDAHO",
+  "c": "US state whose capital is Boise",
+  "t": "American states"
+ },
+ {
+  "a": "MONTANA",
+  "c": "US state whose capital is Helena",
+  "t": "American states"
+ },
+ {
+  "a": "NEVADA",
+  "c": "US state whose capital is Carson City",
+  "t": "American states"
+ },
+ {
+  "a": "OREGON",
+  "c": "US state whose capital is Salem",
+  "t": "American states"
+ },
+ {
+  "a": "UTAH",
+  "c": "US state whose capital is Salt Lake City",
+  "t": "American states"
+ },
+ {
+  "a": "WASHINGTON",
+  "c": "US state whose capital is Olympia",
+  "t": "American states"
+ },
+ {
+  "a": "WYOMING",
+  "c": "US state whose capital is Cheyenne",
+  "t": "American states"
+ },
+ {
+  "a": "ALGIERS",
+  "c": "Capital of Algeria",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "LUANDA",
+  "c": "Capital of Angola",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "PORTONOVO",
+  "c": "Capital of Benin",
+  "t": "Countries of the world",
+  "e": "5-4"
+ },
+ {
+  "a": "GABORONE",
+  "c": "Capital of Botswana",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "OUAGADOUGOU",
+  "c": "Capital of Burkina Faso",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "GITEGA",
+  "c": "Capital of Burundi",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "YAOUNDE",
+  "c": "Capital of Cameroon",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "PRAIA",
+  "c": "Capital of Cape Verde",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BANGUI",
+  "c": "Capital of Central African Republic",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "NDJAMENA",
+  "c": "Capital of Chad",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MORONI",
+  "c": "Capital of Comoros",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BRAZZAVILLE",
+  "c": "Capital of Congo",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "KINSHASA",
+  "c": "Capital of DR Congo",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "CAIRO",
+  "c": "Capital of Egypt",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MALABO",
+  "c": "Capital of Equatorial Guinea",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ASMARA",
+  "c": "Capital of Eritrea",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MBABANE",
+  "c": "Capital of Eswatini",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ADDISABABA",
+  "c": "Capital of Ethiopia",
+  "t": "Countries of the world",
+  "e": "5,5"
+ },
+ {
+  "a": "LIBREVILLE",
+  "c": "Capital of Gabon",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BANJUL",
+  "c": "Capital of Gambia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ACCRA",
+  "c": "Capital of Ghana",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "CONAKRY",
+  "c": "Capital of Guinea",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "YAMOUSSOUKRO",
+  "c": "Capital of Ivory Coast",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "NAIROBI",
+  "c": "Capital of Kenya",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MASERU",
+  "c": "Capital of Lesotho",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MONROVIA",
+  "c": "Capital of Liberia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "TRIPOLI",
+  "c": "Capital of Libya",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ANTANANARIVO",
+  "c": "Capital of Madagascar",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "LILONGWE",
+  "c": "Capital of Malawi",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BAMAKO",
+  "c": "Capital of Mali",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "NOUAKCHOTT",
+  "c": "Capital of Mauritania",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "PORTLOUIS",
+  "c": "Capital of Mauritius",
+  "t": "Countries of the world",
+  "e": "4,5"
+ },
+ {
+  "a": "RABAT",
+  "c": "Capital of Morocco",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MAPUTO",
+  "c": "Capital of Mozambique",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "WINDHOEK",
+  "c": "Capital of Namibia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "NIAMEY",
+  "c": "Capital of Niger",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ABUJA",
+  "c": "Capital of Nigeria",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "KIGALI",
+  "c": "Capital of Rwanda",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "DAKAR",
+  "c": "Capital of Senegal",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "VICTORIA",
+  "c": "Capital of Seychelles",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "FREETOWN",
+  "c": "Capital of Sierra Leone",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MOGADISHU",
+  "c": "Capital of Somalia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "PRETORIA",
+  "c": "Capital of South Africa",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "JUBA",
+  "c": "Capital of South Sudan",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "KHARTOUM",
+  "c": "Capital of Sudan",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "DODOMA",
+  "c": "Capital of Tanzania",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "LOME",
+  "c": "Capital of Togo",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "KAMPALA",
+  "c": "Capital of Uganda",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "LUSAKA",
+  "c": "Capital of Zambia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "HARARE",
+  "c": "Capital of Zimbabwe",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "KABUL",
+  "c": "Capital of Afghanistan",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "YEREVAN",
+  "c": "Capital of Armenia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BAKU",
+  "c": "Capital of Azerbaijan",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MANAMA",
+  "c": "Capital of Bahrain",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "DHAKA",
+  "c": "Capital of Bangladesh",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "THIMPHU",
+  "c": "Capital of Bhutan",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "PHNOMPENH",
+  "c": "Capital of Cambodia",
+  "t": "Countries of the world",
+  "e": "5,4"
+ },
+ {
+  "a": "BEIJING",
+  "c": "Capital of China",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "TBILISI",
+  "c": "Capital of Georgia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "NEWDELHI",
+  "c": "Capital of India",
+  "t": "Countries of the world",
+  "e": "3,5"
+ },
+ {
+  "a": "JAKARTA",
+  "c": "Capital of Indonesia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "TEHRAN",
+  "c": "Capital of Iran",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BAGHDAD",
+  "c": "Capital of Iraq",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "JERUSALEM",
+  "c": "Capital of Israel",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "TOKYO",
+  "c": "Capital of Japan",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "AMMAN",
+  "c": "Capital of Jordan",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ASTANA",
+  "c": "Capital of Kazakhstan",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "KUWAITCITY",
+  "c": "Capital of Kuwait",
+  "t": "Countries of the world",
+  "e": "6,4"
+ },
+ {
+  "a": "BISHKEK",
+  "c": "Capital of Kyrgyzstan",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "VIENTIANE",
+  "c": "Capital of Laos",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BEIRUT",
+  "c": "Capital of Lebanon",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "KUALALUMPUR",
+  "c": "Capital of Malaysia",
+  "t": "Countries of the world",
+  "e": "5,6"
+ },
+ {
+  "a": "MALE",
+  "c": "Capital of Maldives",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ULAANBAATAR",
+  "c": "Capital of Mongolia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "NAYPYIDAW",
+  "c": "Capital of Myanmar",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "KATHMANDU",
+  "c": "Capital of Nepal",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "PYONGYANG",
+  "c": "Capital of North Korea",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MUSCAT",
+  "c": "Capital of Oman",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ISLAMABAD",
+  "c": "Capital of Pakistan",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "RAMALLAH",
+  "c": "Capital of Palestine",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MANILA",
+  "c": "Capital of Philippines",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "DOHA",
+  "c": "Capital of Qatar",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "RIYADH",
+  "c": "Capital of Saudi Arabia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "SEOUL",
+  "c": "Capital of South Korea",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "DAMASCUS",
+  "c": "Capital of Syria",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "TAIPEI",
+  "c": "Capital of Taiwan",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "DUSHANBE",
+  "c": "Capital of Tajikistan",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BANGKOK",
+  "c": "Capital of Thailand",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "DILI",
+  "c": "Capital of Timor-Leste",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ANKARA",
+  "c": "Capital of Turkey",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ASHGABAT",
+  "c": "Capital of Turkmenistan",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ABUDHABI",
+  "c": "Capital of United Arab Emirates",
+  "t": "Countries of the world",
+  "e": "3,5"
+ },
+ {
+  "a": "TASHKENT",
+  "c": "Capital of Uzbekistan",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "HANOI",
+  "c": "Capital of Vietnam",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "SANAA",
+  "c": "Capital of Yemen",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "TIRANA",
+  "c": "Capital of Albania",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "VIENNA",
+  "c": "Capital of Austria",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MINSK",
+  "c": "Capital of Belarus",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BRUSSELS",
+  "c": "Capital of Belgium",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "SARAJEVO",
+  "c": "Capital of Bosnia and Herzegovina",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "SOFIA",
+  "c": "Capital of Bulgaria",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ZAGREB",
+  "c": "Capital of Croatia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "NICOSIA",
+  "c": "Capital of Cyprus",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "PRAGUE",
+  "c": "Capital of Czechia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "COPENHAGEN",
+  "c": "Capital of Denmark",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "TALLINN",
+  "c": "Capital of Estonia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "HELSINKI",
+  "c": "Capital of Finland",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "PARIS",
+  "c": "Capital of France",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BERLIN",
+  "c": "Capital of Germany",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ATHENS",
+  "c": "Capital of Greece",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BUDAPEST",
+  "c": "Capital of Hungary",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "REYKJAVIK",
+  "c": "Capital of Iceland",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "DUBLIN",
+  "c": "Capital of Ireland",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ROME",
+  "c": "Capital of Italy",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "PRISTINA",
+  "c": "Capital of Kosovo",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "RIGA",
+  "c": "Capital of Latvia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "VADUZ",
+  "c": "Capital of Liechtenstein",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "VILNIUS",
+  "c": "Capital of Lithuania",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "VALLETTA",
+  "c": "Capital of Malta",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "CHISINAU",
+  "c": "Capital of Moldova",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "PODGORICA",
+  "c": "Capital of Montenegro",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "AMSTERDAM",
+  "c": "Capital of Netherlands",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "SKOPJE",
+  "c": "Capital of North Macedonia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "OSLO",
+  "c": "Capital of Norway",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "WARSAW",
+  "c": "Capital of Poland",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "LISBON",
+  "c": "Capital of Portugal",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BUCHAREST",
+  "c": "Capital of Romania",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MOSCOW",
+  "c": "Capital of Russia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BELGRADE",
+  "c": "Capital of Serbia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BRATISLAVA",
+  "c": "Capital of Slovakia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "LJUBLJANA",
+  "c": "Capital of Slovenia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MADRID",
+  "c": "Capital of Spain",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "STOCKHOLM",
+  "c": "Capital of Sweden",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BERN",
+  "c": "Capital of Switzerland",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "KYIV",
+  "c": "Capital of Ukraine",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "LONDON",
+  "c": "Capital of United Kingdom",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "STJOHNS",
+  "c": "Capital of Antigua and Barbuda",
+  "t": "Countries of the world",
+  "e": "2,5"
+ },
+ {
+  "a": "NASSAU",
+  "c": "Capital of Bahamas",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BRIDGETOWN",
+  "c": "Capital of Barbados",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BELMOPAN",
+  "c": "Capital of Belize",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "OTTAWA",
+  "c": "Capital of Canada",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "SANJOSE",
+  "c": "Capital of Costa Rica",
+  "t": "Countries of the world",
+  "e": "3,4"
+ },
+ {
+  "a": "HAVANA",
+  "c": "Capital of Cuba",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ROSEAU",
+  "c": "Capital of Dominica",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "SANTODOMINGO",
+  "c": "Capital of Dominican Republic",
+  "t": "Countries of the world",
+  "e": "5,7"
+ },
+ {
+  "a": "SANSALVADOR",
+  "c": "Capital of El Salvador",
+  "t": "Countries of the world",
+  "e": "3,8"
+ },
+ {
+  "a": "STGEORGES",
+  "c": "Capital of Grenada",
+  "t": "Countries of the world",
+  "e": "2,7"
+ },
+ {
+  "a": "GUATEMALACITY",
+  "c": "Capital of Guatemala",
+  "t": "Countries of the world",
+  "e": "9,4"
+ },
+ {
+  "a": "PORTAUPRINCE",
+  "c": "Capital of Haiti",
+  "t": "Countries of the world",
+  "e": "4-2-6"
+ },
+ {
+  "a": "TEGUCIGALPA",
+  "c": "Capital of Honduras",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "KINGSTON",
+  "c": "Capital of Jamaica",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MEXICOCITY",
+  "c": "Capital of Mexico",
+  "t": "Countries of the world",
+  "e": "6,4"
+ },
+ {
+  "a": "MANAGUA",
+  "c": "Capital of Nicaragua",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "PANAMACITY",
+  "c": "Capital of Panama",
+  "t": "Countries of the world",
+  "e": "6,4"
+ },
+ {
+  "a": "BASSETERRE",
+  "c": "Capital of Saint Kitts and Nevis",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "CASTRIES",
+  "c": "Capital of Saint Lucia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "KINGSTOWN",
+  "c": "Capital of Saint Vincent and the Grenadines",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "PORTOFSPAIN",
+  "c": "Capital of Trinidad and Tobago",
+  "t": "Countries of the world",
+  "e": "4,2,5"
+ },
+ {
+  "a": "WASHINGTONDC",
+  "c": "Capital of United States",
+  "t": "Countries of the world",
+  "e": "10,2"
+ },
+ {
+  "a": "BUENOSAIRES",
+  "c": "Capital of Argentina",
+  "t": "Countries of the world",
+  "e": "6,5"
+ },
+ {
+  "a": "SUCRE",
+  "c": "Capital of Bolivia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BRASILIA",
+  "c": "Capital of Brazil",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "SANTIAGO",
+  "c": "Capital of Chile",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BOGOTA",
+  "c": "Capital of Colombia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "QUITO",
+  "c": "Capital of Ecuador",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "GEORGETOWN",
+  "c": "Capital of Guyana",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ASUNCION",
+  "c": "Capital of Paraguay",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "LIMA",
+  "c": "Capital of Peru",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "PARAMARIBO",
+  "c": "Capital of Suriname",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MONTEVIDEO",
+  "c": "Capital of Uruguay",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "CARACAS",
+  "c": "Capital of Venezuela",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "CANBERRA",
+  "c": "Capital of Australia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "SUVA",
+  "c": "Capital of Fiji",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "SOUTHTARAWA",
+  "c": "Capital of Kiribati",
+  "t": "Countries of the world",
+  "e": "5,6"
+ },
+ {
+  "a": "MAJURO",
+  "c": "Capital of Marshall Islands",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "PALIKIR",
+  "c": "Capital of Micronesia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "YAREN",
+  "c": "Capital of Nauru",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "WELLINGTON",
+  "c": "Capital of New Zealand",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "NGERULMUD",
+  "c": "Capital of Palau",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "PORTMORESBY",
+  "c": "Capital of Papua New Guinea",
+  "t": "Countries of the world",
+  "e": "4,7"
+ },
+ {
+  "a": "APIA",
+  "c": "Capital of Samoa",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "HONIARA",
+  "c": "Capital of Solomon Islands",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "NUKUALOFA",
+  "c": "Capital of Tonga",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "FUNAFUTI",
+  "c": "Capital of Tuvalu",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "PORTVILA",
+  "c": "Capital of Vanuatu",
+  "t": "Countries of the world",
+  "e": "4,4"
+ },
+ {
+  "a": "ALGERIA",
+  "c": "Country whose capital is Algiers",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ANGOLA",
+  "c": "Country whose capital is Luanda",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BENIN",
+  "c": "Country whose capital is Porto-Novo",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BOTSWANA",
+  "c": "Country whose capital is Gaborone",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BURKINAFASO",
+  "c": "Country whose capital is Ouagadougou",
+  "t": "Countries of the world",
+  "e": "7,4"
+ },
+ {
+  "a": "BURUNDI",
+  "c": "Country whose capital is Gitega",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "CAMEROON",
+  "c": "Country whose capital is Yaoundé",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "CAPEVERDE",
+  "c": "Country whose capital is Praia",
+  "t": "Countries of the world",
+  "e": "4,5"
+ },
+ {
+  "a": "CHAD",
+  "c": "Country whose capital is N'Djamena",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "COMOROS",
+  "c": "Country whose capital is Moroni",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "CONGO",
+  "c": "Country whose capital is Brazzaville",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "DRCONGO",
+  "c": "Country whose capital is Kinshasa",
+  "t": "Countries of the world",
+  "e": "2,5"
+ },
+ {
+  "a": "EGYPT",
+  "c": "Country whose capital is Cairo",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ERITREA",
+  "c": "Country whose capital is Asmara",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ESWATINI",
+  "c": "Country whose capital is Mbabane",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ETHIOPIA",
+  "c": "Country whose capital is Addis Ababa",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "GABON",
+  "c": "Country whose capital is Libreville",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "GAMBIA",
+  "c": "Country whose capital is Banjul",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "GHANA",
+  "c": "Country whose capital is Accra",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "GUINEA",
+  "c": "Country whose capital is Conakry",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "GUINEABISSAU",
+  "c": "Country whose capital is Bissau",
+  "t": "Countries of the world",
+  "e": "6-6"
+ },
+ {
+  "a": "IVORYCOAST",
+  "c": "Country whose capital is Yamoussoukro",
+  "t": "Countries of the world",
+  "e": "5,5"
+ },
+ {
+  "a": "KENYA",
+  "c": "Country whose capital is Nairobi",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "LESOTHO",
+  "c": "Country whose capital is Maseru",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "LIBERIA",
+  "c": "Country whose capital is Monrovia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "LIBYA",
+  "c": "Country whose capital is Tripoli",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MADAGASCAR",
+  "c": "Country whose capital is Antananarivo",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MALAWI",
+  "c": "Country whose capital is Lilongwe",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MALI",
+  "c": "Country whose capital is Bamako",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MAURITANIA",
+  "c": "Country whose capital is Nouakchott",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MAURITIUS",
+  "c": "Country whose capital is Port Louis",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MOROCCO",
+  "c": "Country whose capital is Rabat",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MOZAMBIQUE",
+  "c": "Country whose capital is Maputo",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "NAMIBIA",
+  "c": "Country whose capital is Windhoek",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "NIGER",
+  "c": "Country whose capital is Niamey",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "NIGERIA",
+  "c": "Country whose capital is Abuja",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "RWANDA",
+  "c": "Country whose capital is Kigali",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "SENEGAL",
+  "c": "Country whose capital is Dakar",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "SEYCHELLES",
+  "c": "Country whose capital is Victoria",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "SIERRALEONE",
+  "c": "Country whose capital is Freetown",
+  "t": "Countries of the world",
+  "e": "6,5"
+ },
+ {
+  "a": "SOMALIA",
+  "c": "Country whose capital is Mogadishu",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "SOUTHAFRICA",
+  "c": "Country whose capital is Pretoria",
+  "t": "Countries of the world",
+  "e": "5,6"
+ },
+ {
+  "a": "SOUTHSUDAN",
+  "c": "Country whose capital is Juba",
+  "t": "Countries of the world",
+  "e": "5,5"
+ },
+ {
+  "a": "SUDAN",
+  "c": "Country whose capital is Khartoum",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "TANZANIA",
+  "c": "Country whose capital is Dodoma",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "TOGO",
+  "c": "Country whose capital is Lomé",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "TUNISIA",
+  "c": "Country whose capital is Tunis",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "UGANDA",
+  "c": "Country whose capital is Kampala",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ZAMBIA",
+  "c": "Country whose capital is Lusaka",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ZIMBABWE",
+  "c": "Country whose capital is Harare",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "AFGHANISTAN",
+  "c": "Country whose capital is Kabul",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ARMENIA",
+  "c": "Country whose capital is Yerevan",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "AZERBAIJAN",
+  "c": "Country whose capital is Baku",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BAHRAIN",
+  "c": "Country whose capital is Manama",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BANGLADESH",
+  "c": "Country whose capital is Dhaka",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BHUTAN",
+  "c": "Country whose capital is Thimphu",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BRUNEI",
+  "c": "Country whose capital is Bandar Seri Begawan",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "CAMBODIA",
+  "c": "Country whose capital is Phnom Penh",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "CHINA",
+  "c": "Country whose capital is Beijing",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "GEORGIA",
+  "c": "Country whose capital is Tbilisi",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "INDIA",
+  "c": "Country whose capital is New Delhi",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "INDONESIA",
+  "c": "Country whose capital is Jakarta",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "IRAN",
+  "c": "Country whose capital is Tehran",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "IRAQ",
+  "c": "Country whose capital is Baghdad",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ISRAEL",
+  "c": "Country whose capital is Jerusalem",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "JAPAN",
+  "c": "Country whose capital is Tokyo",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "JORDAN",
+  "c": "Country whose capital is Amman",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "KAZAKHSTAN",
+  "c": "Country whose capital is Astana",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "KYRGYZSTAN",
+  "c": "Country whose capital is Bishkek",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "LAOS",
+  "c": "Country whose capital is Vientiane",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "LEBANON",
+  "c": "Country whose capital is Beirut",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MALAYSIA",
+  "c": "Country whose capital is Kuala Lumpur",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MALDIVES",
+  "c": "Country whose capital is Malé",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MONGOLIA",
+  "c": "Country whose capital is Ulaanbaatar",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MYANMAR",
+  "c": "Country whose capital is Naypyidaw",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "NEPAL",
+  "c": "Country whose capital is Kathmandu",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "NORTHKOREA",
+  "c": "Country whose capital is Pyongyang",
+  "t": "Countries of the world",
+  "e": "5,5"
+ },
+ {
+  "a": "OMAN",
+  "c": "Country whose capital is Muscat",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "PAKISTAN",
+  "c": "Country whose capital is Islamabad",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "PALESTINE",
+  "c": "Country whose capital is Ramallah",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "PHILIPPINES",
+  "c": "Country whose capital is Manila",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "QATAR",
+  "c": "Country whose capital is Doha",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "SAUDIARABIA",
+  "c": "Country whose capital is Riyadh",
+  "t": "Countries of the world",
+  "e": "5,6"
+ },
+ {
+  "a": "SOUTHKOREA",
+  "c": "Country whose capital is Seoul",
+  "t": "Countries of the world",
+  "e": "5,5"
+ },
+ {
+  "a": "SRILANKA",
+  "c": "Country whose capital is Sri Jayawardenepura Kotte",
+  "t": "Countries of the world",
+  "e": "3,5"
+ },
+ {
+  "a": "SYRIA",
+  "c": "Country whose capital is Damascus",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "TAIWAN",
+  "c": "Country whose capital is Taipei",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "TAJIKISTAN",
+  "c": "Country whose capital is Dushanbe",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "THAILAND",
+  "c": "Country whose capital is Bangkok",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "TIMORLESTE",
+  "c": "Country whose capital is Dili",
+  "t": "Countries of the world",
+  "e": "5-5"
+ },
+ {
+  "a": "TURKEY",
+  "c": "Country whose capital is Ankara",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "TURKMENISTAN",
+  "c": "Country whose capital is Ashgabat",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "UZBEKISTAN",
+  "c": "Country whose capital is Tashkent",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "VIETNAM",
+  "c": "Country whose capital is Hanoi",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "YEMEN",
+  "c": "Country whose capital is Sana'a",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ALBANIA",
+  "c": "Country whose capital is Tirana",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "AUSTRIA",
+  "c": "Country whose capital is Vienna",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BELARUS",
+  "c": "Country whose capital is Minsk",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BELGIUM",
+  "c": "Country whose capital is Brussels",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BULGARIA",
+  "c": "Country whose capital is Sofia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "CROATIA",
+  "c": "Country whose capital is Zagreb",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "CYPRUS",
+  "c": "Country whose capital is Nicosia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "CZECHIA",
+  "c": "Country whose capital is Prague",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "DENMARK",
+  "c": "Country whose capital is Copenhagen",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ESTONIA",
+  "c": "Country whose capital is Tallinn",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "FINLAND",
+  "c": "Country whose capital is Helsinki",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "FRANCE",
+  "c": "Country whose capital is Paris",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "GERMANY",
+  "c": "Country whose capital is Berlin",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "GREECE",
+  "c": "Country whose capital is Athens",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "HUNGARY",
+  "c": "Country whose capital is Budapest",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ICELAND",
+  "c": "Country whose capital is Reykjavik",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "IRELAND",
+  "c": "Country whose capital is Dublin",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ITALY",
+  "c": "Country whose capital is Rome",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "KOSOVO",
+  "c": "Country whose capital is Pristina",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "LATVIA",
+  "c": "Country whose capital is Riga",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "LIECHTENSTEIN",
+  "c": "Country whose capital is Vaduz",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "LITHUANIA",
+  "c": "Country whose capital is Vilnius",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MALTA",
+  "c": "Country whose capital is Valletta",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MOLDOVA",
+  "c": "Country whose capital is Chișinău",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MONTENEGRO",
+  "c": "Country whose capital is Podgorica",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "NETHERLANDS",
+  "c": "Country whose capital is Amsterdam",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "NORWAY",
+  "c": "Country whose capital is Oslo",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "POLAND",
+  "c": "Country whose capital is Warsaw",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "PORTUGAL",
+  "c": "Country whose capital is Lisbon",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ROMANIA",
+  "c": "Country whose capital is Bucharest",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "RUSSIA",
+  "c": "Country whose capital is Moscow",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "SERBIA",
+  "c": "Country whose capital is Belgrade",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "SLOVAKIA",
+  "c": "Country whose capital is Bratislava",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "SLOVENIA",
+  "c": "Country whose capital is Ljubljana",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "SPAIN",
+  "c": "Country whose capital is Madrid",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "SWEDEN",
+  "c": "Country whose capital is Stockholm",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "SWITZERLAND",
+  "c": "Country whose capital is Bern",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "UKRAINE",
+  "c": "Country whose capital is Kyiv",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "UNITEDKINGDOM",
+  "c": "Country whose capital is London",
+  "t": "Countries of the world",
+  "e": "6,7"
+ },
+ {
+  "a": "BAHAMAS",
+  "c": "Country whose capital is Nassau",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BARBADOS",
+  "c": "Country whose capital is Bridgetown",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BELIZE",
+  "c": "Country whose capital is Belmopan",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "CANADA",
+  "c": "Country whose capital is Ottawa",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "COSTARICA",
+  "c": "Country whose capital is San José",
+  "t": "Countries of the world",
+  "e": "5,4"
+ },
+ {
+  "a": "CUBA",
+  "c": "Country whose capital is Havana",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "DOMINICA",
+  "c": "Country whose capital is Roseau",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ELSALVADOR",
+  "c": "Country whose capital is San Salvador",
+  "t": "Countries of the world",
+  "e": "2,8"
+ },
+ {
+  "a": "GRENADA",
+  "c": "Country whose capital is St George's",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "HAITI",
+  "c": "Country whose capital is Port-au-Prince",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "HONDURAS",
+  "c": "Country whose capital is Tegucigalpa",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "JAMAICA",
+  "c": "Country whose capital is Kingston",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "NICARAGUA",
+  "c": "Country whose capital is Managua",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "SAINTLUCIA",
+  "c": "Country whose capital is Castries",
+  "t": "Countries of the world",
+  "e": "5,5"
+ },
+ {
+  "a": "UNITEDSTATES",
+  "c": "Country whose capital is Washington, D.C.",
+  "t": "Countries of the world",
+  "e": "6,6"
+ },
+ {
+  "a": "ARGENTINA",
+  "c": "Country whose capital is Buenos Aires",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BOLIVIA",
+  "c": "Country whose capital is Sucre",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "BRAZIL",
+  "c": "Country whose capital is Brasília",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "CHILE",
+  "c": "Country whose capital is Santiago",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "COLOMBIA",
+  "c": "Country whose capital is Bogotá",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ECUADOR",
+  "c": "Country whose capital is Quito",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "GUYANA",
+  "c": "Country whose capital is Georgetown",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "PARAGUAY",
+  "c": "Country whose capital is Asunción",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "PERU",
+  "c": "Country whose capital is Lima",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "SURINAME",
+  "c": "Country whose capital is Paramaribo",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "URUGUAY",
+  "c": "Country whose capital is Montevideo",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "VENEZUELA",
+  "c": "Country whose capital is Caracas",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "AUSTRALIA",
+  "c": "Country whose capital is Canberra",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "FIJI",
+  "c": "Country whose capital is Suva",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "KIRIBATI",
+  "c": "Country whose capital is South Tarawa",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "MICRONESIA",
+  "c": "Country whose capital is Palikir",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "NAURU",
+  "c": "Country whose capital is Yaren",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "NEWZEALAND",
+  "c": "Country whose capital is Wellington",
+  "t": "Countries of the world",
+  "e": "3,7"
+ },
+ {
+  "a": "PALAU",
+  "c": "Country whose capital is Ngerulmud",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "SAMOA",
+  "c": "Country whose capital is Apia",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "TONGA",
+  "c": "Country whose capital is Nuku'alofa",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "TUVALU",
+  "c": "Country whose capital is Funafuti",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "VANUATU",
+  "c": "Country whose capital is Port Vila",
+  "t": "Countries of the world"
+ },
+ {
+  "a": "ARIES",
+  "c": "Star sign for 21 Mar – 19 Apr",
+  "t": "The zodiac"
+ },
+ {
+  "a": "TAURUS",
+  "c": "Star sign for 20 Apr – 20 May",
+  "t": "The zodiac"
+ },
+ {
+  "a": "GEMINI",
+  "c": "Star sign for 21 May – 20 Jun",
+  "t": "The zodiac"
+ },
+ {
+  "a": "CANCER",
+  "c": "Star sign for 21 Jun – 22 Jul",
+  "t": "The zodiac"
+ },
+ {
+  "a": "LEO",
+  "c": "Star sign for 23 Jul – 22 Aug",
+  "t": "The zodiac"
+ },
+ {
+  "a": "VIRGO",
+  "c": "Star sign for 23 Aug – 22 Sep",
+  "t": "The zodiac"
+ },
+ {
+  "a": "LIBRA",
+  "c": "Star sign for 23 Sep – 22 Oct",
+  "t": "The zodiac"
+ },
+ {
+  "a": "SCORPIO",
+  "c": "Star sign for 23 Oct – 21 Nov",
+  "t": "The zodiac"
+ },
+ {
+  "a": "SAGITTARIUS",
+  "c": "Star sign for 22 Nov – 21 Dec",
+  "t": "The zodiac"
+ },
+ {
+  "a": "CAPRICORN",
+  "c": "Star sign for 22 Dec – 19 Jan",
+  "t": "The zodiac"
+ },
+ {
+  "a": "AQUARIUS",
+  "c": "Star sign for 20 Jan – 18 Feb",
+  "t": "The zodiac"
+ },
+ {
+  "a": "PISCES",
+  "c": "Star sign for 19 Feb – 20 Mar",
+  "t": "The zodiac"
+ },
+ {
+  "a": "ARIES",
+  "c": "Star sign of the Ram",
+  "t": "The zodiac"
+ },
+ {
+  "a": "TAURUS",
+  "c": "Star sign of the Bull",
+  "t": "The zodiac"
+ },
+ {
+  "a": "GEMINI",
+  "c": "Star sign of the Twins",
+  "t": "The zodiac"
+ },
+ {
+  "a": "CANCER",
+  "c": "Star sign of the Crab",
+  "t": "The zodiac"
+ },
+ {
+  "a": "LEO",
+  "c": "Star sign of the Lion",
+  "t": "The zodiac"
+ },
+ {
+  "a": "VIRGO",
+  "c": "Star sign of the Maiden",
+  "t": "The zodiac"
+ },
+ {
+  "a": "LIBRA",
+  "c": "Star sign of the Scales",
+  "t": "The zodiac"
+ },
+ {
+  "a": "SAGITTARIUS",
+  "c": "Star sign of the Archer",
+  "t": "The zodiac"
+ },
+ {
+  "a": "CAPRICORN",
+  "c": "Star sign of the Goat",
+  "t": "The zodiac"
+ },
+ {
+  "a": "AQUARIUS",
+  "c": "Star sign of the Water-bearer",
+  "t": "The zodiac"
+ },
+ {
+  "a": "PISCES",
+  "c": "Star sign of the Fish",
+  "t": "The zodiac"
+ }
+]</script>
+<script>
+(() => {
+  const BANK = JSON.parse(document.getElementById("bank").textContent);
+  const START = "2026-11-05";
+  const MAX_SPAN = 15;          // the grid is at most 15 squares each way
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
+  };
+
+  // ---------- dates: a puzzle per local calendar day ----------
+
+  const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const fromIso = (s) => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d, 12); };
+  const addDays = (s, n) => { const d = fromIso(s); d.setDate(d.getDate() + n); return iso(d); };
+  const dayNo = (s) => Math.round((fromIso(s) - fromIso(START)) / 86400000) + 1;
+  const TODAY = iso(new Date()) < START ? START : iso(new Date());
+  const longDate = (s) => fromIso(s).toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" });
+
+  // ---------- the day's grid: seeded, so everyone gets the same one ----------
+
+  function rngFor(seedText) {
+    let h = 1779033703 ^ seedText.length;
+    for (let i = 0; i < seedText.length; i++) { h = Math.imul(h ^ seedText.charCodeAt(i), 3432918353); h = (h << 13) | (h >>> 19); }
+    let a = h >>> 0;
+    return () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  }
+  const shuffled = (arr, rng) => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+  // candidates: topics take turns, so no one topic swamps the grid
+  function candidates(rng) {
+    const byTopic = {};
+    BANK.forEach((e) => (byTopic[e.t] = byTopic[e.t] || []).push(e));
+    const lists = shuffled(Object.keys(byTopic), rng).map((t) => shuffled(byTopic[t], rng));
+    const out = [], seen = new Set();
+    for (let round = 0; out.length < 60 && round < 6; round++) {
+      lists.forEach((l) => {
+        const e = l[round];
+        if (e && !seen.has(e.a)) { seen.add(e.a); out.push(e); }
+      });
+    }
+    return out;
+  }
+
+  function attempt(words, rng) {
+    const g = new Map();                // "r,c" -> { ch, dirs: Set }
+    const placed = [];
+    const at = (r, c) => g.get(r + "," + c);
+    const bounds = () => {
+      let r0 = Infinity, r1 = -Infinity, c0 = Infinity, c1 = -Infinity;
+      g.forEach((_, k) => { const [r, c] = k.split(",").map(Number); r0 = Math.min(r0, r); r1 = Math.max(r1, r); c0 = Math.min(c0, c); c1 = Math.max(c1, c); });
+      return { r0, r1, c0, c1 };
+    };
+    function fits(w, r, c, d) {
+      const dr = d === "A" ? 0 : 1, dc = d === "A" ? 1 : 0;
+      if (at(r - dr, c - dc) || at(r + dr * w.length, c + dc * w.length)) return -1;
+      let cross = 0;
+      for (let i = 0; i < w.length; i++) {
+        const rr = r + dr * i, cc = c + dc * i, cell = at(rr, cc);
+        if (cell) {
+          if (cell.ch !== w[i] || cell.dirs.has(d)) return -1;
+          cross++;
+        } else if (at(rr + dc, cc + dr) || at(rr - dc, cc - dr)) return -1;   // no letters alongside
+      }
+      return cross;
+    }
+    function put(e, r, c, d) {
+      const dr = d === "A" ? 0 : 1, dc = d === "A" ? 1 : 0;
+      for (let i = 0; i < e.a.length; i++) {
+        const k = (r + dr * i) + "," + (c + dc * i), cell = g.get(k);
+        if (cell) cell.dirs.add(d); else g.set(k, { ch: e.a[i], dirs: new Set([d]) });
+      }
+      placed.push({ e, r, c, d });
+    }
+    put(words[0], 0, 0, rng() < 0.5 ? "A" : "D");
+    let rest = words.slice(1);
+    for (let pass = 0; pass < 2; pass++) {
+      const left = [];
+      for (const e of rest) {
+        let best = null;
+        const b = bounds();
+        g.forEach((cell, k) => {
+          const [r, c] = k.split(",").map(Number);
+          for (let i = 0; i < e.a.length; i++) {
+            if (e.a[i] !== cell.ch) continue;
+            for (const d of ["A", "D"]) {
+              if (cell.dirs.has(d)) continue;
+              const rr = d === "A" ? r : r - i, cc = d === "A" ? c - i : c;
+              const x = fits(e.a, rr, cc, d);
+              if (x <= 0) continue;
+              const r0 = Math.min(b.r0, rr), c0 = Math.min(b.c0, cc);
+              const r1 = Math.max(b.r1, d === "D" ? rr + e.a.length - 1 : rr), c1 = Math.max(b.c1, d === "A" ? cc + e.a.length - 1 : cc);
+              const span = Math.max(r1 - r0, c1 - c0) + 1;
+              if (span > MAX_SPAN) continue;
+              const key = x * 100 - span + rng();
+              if (!best || key > best.key) best = { key, r: rr, c: cc, d };
+            }
+          }
+        });
+        if (best) put(e, best.r, best.c, best.d); else left.push(e);
+      }
+      rest = left;
+    }
+    return { placed, bounds: bounds() };
+  }
+
+  function buildPuzzle(date) {
+    const rng = rngFor("compendium-crossword:" + date);
+    const pool = candidates(rng);
+    let best = null;
+    for (let t = 0; t < 40; t++) {
+      const order = shuffled(pool, rng).slice(0, 34).sort((a, b) => b.a.length - a.a.length);
+      // longest first gives the grid a spine; then a shuffle keeps it varied
+      const words = [order[0], ...shuffled(order.slice(1), rng)];
+      const res = attempt(words, rng);
+      const topics = new Set(res.placed.map((p) => p.e.t)).size;
+      const { r0, r1, c0, c1 } = res.bounds;
+      const score = res.placed.length * 10 + topics * 4 - Math.abs((r1 - r0) - (c1 - c0));
+      if (!best || score > best.score) best = { score, res };
+      if (res.placed.length >= 24 && topics >= 12) break;
+    }
+    const { placed, bounds } = best.res;
+    return {
+      rows: bounds.r1 - bounds.r0 + 1,
+      cols: bounds.c1 - bounds.c0 + 1,
+      words: placed.map((p) => ({ answer: p.e.a, clue: p.e.c, topic: p.e.t, enumeration: p.e.e, row: p.r - bounds.r0, col: p.c - bounds.c0, dir: p.d })),
+    };
+  }
+
+  // a hook for automated checks: /crossword/?test exposes the generator
+  if (/[?&]test\b/.test(location.search)) window.__crossword = { buildPuzzle };
+
+  // ---------- state ----------
+
+  let date = TODAY;
+  let P, R, C, sol, words, numOf, fill, marks, cur;
+  const solvedDays = () => store.get("compendium-crossword:solved", {});
+  const keyOf = (r, c) => r * C + c;
+  const wordsAt = (k) => words.filter((w) => w.cells.includes(k));
+  const curWord = () => wordsAt(cur.k).find((w) => w.dir === cur.dir) || wordsAt(cur.k)[0];
+  const saveFill = () => store.set("compendium-crossword:" + date, { fill, marks });
+
+  function load(d) {
+    date = d;
+    P = buildPuzzle(date);
+    R = P.rows; C = P.cols;
+    sol = Array(R * C).fill(null);
+    words = P.words.map((w) => ({ ...w, cells: [...w.answer].map((_, i) => w.dir === "A" ? keyOf(w.row, w.col + i) : keyOf(w.row + i, w.col)) }));
+    words.forEach((w) => w.cells.forEach((k, i) => { sol[k] = w.answer[i]; }));
+    const starts = [...new Set(words.map((w) => w.cells[0]))].sort((a, b) => a - b);
+    numOf = new Map(starts.map((k, i) => [k, i + 1]));
+    words.forEach((w) => { w.num = numOf.get(w.cells[0]); w.id = w.num + w.dir; });
+    words.sort((a, b) => a.num - b.num || (a.dir < b.dir ? -1 : 1));
+    const saved = store.get("compendium-crossword:" + date, null);
+    fill = saved && saved.fill && saved.fill.length === R * C ? saved.fill : Array(R * C).fill("");
+    marks = saved && saved.marks && saved.marks.length === R * C ? saved.marks : Array(R * C).fill("");
+    cur = { k: words[0].cells[0], dir: words[0].dir };
+    render();
+  }
+
+  // ---------- render ----------
+
+  const board = $("board");
+  function render() {
+    board.style.setProperty("--cols", C);
+    board.style.setProperty("--n", Math.max(R, C));
+    // where a multi-word answer splits, a short bar marks the gap
+    const joins = new Map();
+    words.forEach((w) => {
+      if (!w.enumeration) return;
+      let at = 0;
+      w.enumeration.split(/[,-]/).slice(0, -1).forEach((n) => { at += Number(n); joins.set(w.cells[at - 1], (joins.get(w.cells[at - 1]) || "") + " join-" + w.dir.toLowerCase()); });
+    });
+    board.innerHTML = Array.from({ length: R * C }, (_, k) => sol[k]
+      ? `<div class="cell${joins.get(k) || ""}" data-k="${k}" role="gridcell">${numOf.has(k) ? `<span class="n">${numOf.get(k)}</span>` : ""}<span class="l"></span></div>`
+      : `<div class="cell blank" aria-hidden="true"></div>`).join("");
+    const clueHTML = (w) => `<li><button type="button" class="clue" data-word="${w.id}"><span class="cn">${w.num}</span><span class="ct">${esc(w.clue)} <span class="len">(${w.enumeration || w.answer.length})</span></span><span class="meta"><span class="tag">${esc(w.topic)}</span></span></button></li>`;
+    $("across").innerHTML = words.filter((w) => w.dir === "A").map(clueHTML).join("");
+    $("down").innerHTML = words.filter((w) => w.dir === "D").map(clueHTML).join("");
+    const n = dayNo(date);
+    $("when").textContent = `No. ${n} · ${longDate(date)}`;
+    $("prev").disabled = date <= START;
+    $("next").disabled = date >= TODAY;
+    $("today").hidden = date === TODAY;
+    document.title = `The Daily Crossword, No. ${n} — Sam Haslam`;
+    paint();
+  }
+
+  const cellEl = (k) => board.querySelector(`[data-k="${k}"]`);
+  const solvedWord = (w) => w.cells.every((k) => fill[k] === sol[k]);
+
+  function streak() {
+    const s = solvedDays();
+    let d = s[TODAY] ? TODAY : addDays(TODAY, -1), n = 0;
+    while (s[d] && d >= START) { n++; d = addDays(d, -1); }
+    return n;
+  }
+
+  function paint() {
+    const w = curWord();
+    board.querySelectorAll(".cell[data-k]").forEach((el) => {
+      const k = Number(el.dataset.k);
+      el.querySelector(".l").textContent = fill[k];
+      el.classList.toggle("in-word", w.cells.includes(k));
+      el.classList.toggle("focus", k === cur.k);
+      el.classList.toggle("wrong", marks[k] === "wrong");
+      el.classList.toggle("revealed", marks[k] === "revealed");
+      el.classList.toggle("solved", marks[k] !== "revealed" && wordsAt(k).some(solvedWord));
+      el.setAttribute("aria-label", `${fill[k] || "empty"}${numOf.has(k) ? `, ${numOf.get(k)}` : ""}`);
+    });
+    let done = 0;
+    words.forEach((x) => {
+      const ok = solvedWord(x);
+      if (ok) done++;
+      const el = document.querySelector(`[data-word="${x.id}"]`);
+      el.classList.toggle("done", ok);
+      el.classList.toggle("active", x === w);
+    });
+    $("current").innerHTML = `<span class="num">${w.num} ${w.dir === "A" ? "across" : "down"}</span><span class="txt">${esc(w.clue)} <span class="len">(${w.enumeration || w.answer.length})</span></span><span class="tag">${esc(w.topic)}</span>`;
+    const all = sol.every((s, k) => !s || fill[k] === s);
+    if (all) {
+      const s = solvedDays();
+      if (!s[date]) { s[date] = { clean: !marks.includes("revealed") }; store.set("compendium-crossword:solved", s); }
+    }
+    const st = streak();
+    $("tally").innerHTML = `<b>${done}</b> of ${words.length} solved<br>${st ? `${st}-day streak` : "Solve today's to start a streak"}`;
+    $("banner").hidden = !all;
+    if (all) $("banner").textContent = marks.includes("revealed")
+      ? `Finished, with a little help. All ${words.length} answers in.`
+      : `Finished, unaided! All ${words.length} answers in.`;
+  }
+
+  // ---------- input ----------
+
+  const keys = $("keys");
+  const focusKeys = () => keys.focus({ preventScroll: true });
+  function select(k, dir) {
+    const ws = wordsAt(k);
+    if (!ws.length) return;
+    if (dir && ws.some((w) => w.dir === dir)) cur = { k, dir };
+    else cur = { k, dir: ws.some((w) => w.dir === cur.dir) ? cur.dir : ws[0].dir };
+    paint();
+  }
+  board.addEventListener("click", (e) => {
+    const el = e.target.closest("[data-k]");
+    if (!el) return;
+    const k = Number(el.dataset.k);
+    if (k === cur.k && wordsAt(k).length > 1) cur.dir = cur.dir === "A" ? "D" : "A";
+    select(k);
+    focusKeys();
+  });
+  document.querySelector(".clues").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-word]");
+    if (!b) return;
+    const w = words.find((x) => x.id === b.dataset.word);
+    select(w.cells.find((k) => !fill[k]) ?? w.cells[0], w.dir);
+    focusKeys();
+    if (innerWidth < 860) board.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+  function step(d) { const w = curWord(), i = w.cells.indexOf(cur.k) + d; if (i >= 0 && i < w.cells.length) cur.k = w.cells[i]; }
+  function nextWord(d) {
+    const i = words.indexOf(curWord());
+    const w = words[(i + d + words.length) % words.length];
+    select(w.cells.find((k) => !fill[k]) ?? w.cells[0], w.dir);
+  }
+  function type(ch) {
+    fill[cur.k] = ch; marks[cur.k] = "";
+    const el = cellEl(cur.k); el.classList.remove("pop"); void el.offsetWidth; el.classList.add("pop");
+    step(1);   // on to the next square, filled or not, so typing a whole answer lines up
+    saveFill(); paint();
+  }
+  function back() {
+    if (fill[cur.k]) { fill[cur.k] = ""; marks[cur.k] = ""; } else { step(-1); fill[cur.k] = ""; marks[cur.k] = ""; }
+    saveFill(); paint();
+  }
+  function move(dr, dc) {
+    let r = Math.floor(cur.k / C), c = cur.k % C;
+    for (;;) {
+      r += dr; c += dc;
+      if (r < 0 || c < 0 || r >= R || c >= C) return;
+      if (sol[keyOf(r, c)]) { select(keyOf(r, c), dr ? "D" : "A"); return; }
+    }
+  }
+  keys.addEventListener("keydown", (e) => {
+    if (e.key === "Backspace") { e.preventDefault(); back(); }
+    else if (e.key === "ArrowRight") { e.preventDefault(); move(0, 1); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); move(0, -1); }
+    else if (e.key === "ArrowDown") { e.preventDefault(); move(1, 0); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); move(-1, 0); }
+    else if (e.key === "Tab" || e.key === "Enter") { e.preventDefault(); nextWord(e.shiftKey ? -1 : 1); }
+    else if (e.key === " ") { e.preventDefault(); if (wordsAt(cur.k).length > 1) { cur.dir = cur.dir === "A" ? "D" : "A"; paint(); } }
+    else if (/^[a-z]$/i.test(e.key) && !e.ctrlKey && !e.metaKey) { e.preventDefault(); type(e.key.toUpperCase()); }
+  });
+  keys.addEventListener("input", () => {
+    const v = keys.value.replace(/[^a-z]/gi, "").toUpperCase();
+    keys.value = "";
+    for (const ch of v) type(ch);
+  });
+
+  // ---------- tools ----------
+
+  const allCells = () => sol.map((s, k) => s ? k : -1).filter((k) => k >= 0);
+  function check(cells) { cells.forEach((k) => { if (fill[k] && fill[k] !== sol[k]) marks[k] = "wrong"; }); saveFill(); paint(); }
+  $("check-word").addEventListener("click", () => { check(curWord().cells); focusKeys(); });
+  $("check-all").addEventListener("click", () => { check(allCells()); focusKeys(); });
+  $("reveal-letter").addEventListener("click", () => { fill[cur.k] = sol[cur.k]; marks[cur.k] = "revealed"; saveFill(); paint(); focusKeys(); });
+  $("reveal-word").addEventListener("click", () => { curWord().cells.forEach((k) => { if (fill[k] !== sol[k]) { fill[k] = sol[k]; marks[k] = "revealed"; } }); saveFill(); paint(); focusKeys(); });
+  $("clear").addEventListener("click", () => { fill = Array(R * C).fill(""); marks = Array(R * C).fill(""); saveFill(); select(words[0].cells[0], words[0].dir); focusKeys(); });
+
+  // ---------- days ----------
+
+  const go = (d) => { load(d); history.replaceState(null, "", d === TODAY ? location.pathname : "#" + d); };
+  $("prev").addEventListener("click", () => go(addDays(date, -1)));
+  $("next").addEventListener("click", () => go(addDays(date, 1)));
+  $("today").addEventListener("click", () => go(TODAY));
+  const asked = location.hash.slice(1);
+  load(/^\d{4}-\d{2}-\d{2}$/.test(asked) && asked >= START && asked <= TODAY ? asked : TODAY);
+})();
+</script>
+</body>
+</html>

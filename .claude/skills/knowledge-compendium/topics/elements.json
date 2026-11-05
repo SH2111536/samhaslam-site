@@ -69,6 +69,12 @@
       "right": "symbol"
     }
   ],
+  "crossword": [
+    {
+      "answer": "name",
+      "clue": "Element with the symbol {symbol}"
+    }
+  ],
   "groups": [
     {
       "key": "nonmetals",
