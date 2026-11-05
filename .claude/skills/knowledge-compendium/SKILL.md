@@ -213,6 +213,22 @@ A tool can take its facts from its topic rather than keeping its own copy: write
 so the cards and the game can never disagree. Holly's five tools (Top Trumps, the storybook, the
 letterpress, the X-ray lab and the river cruise) all work this way.
 
+### The daily crossword
+
+`compendium/crossword/` builds a fresh crossword each day from every topic. A topic joins in with
+`"crossword": [{ "answer": "<field>", "clue": "Capital of {name}", "skip": [titles] }]`:
+`{field}` drops in the item's value, `{field:lower}` lower-cases its first letter, and `skip`
+leaves out items whose clue wouldn't read well. Answers keep their letters (spaces and hyphens set
+the enumeration, "(5,5)" or "(5-5)"), must be 3–13 letters, and a clue that contains its own
+answer is dropped. `build.py` gathers these into one word bank in the page.
+
+The grid itself is made in the browser, seeded by the date, so everyone sees the same puzzle all
+day and a new one at midnight, with nothing to deploy. Topics take turns supplying words, so no
+one topic swamps a grid. Puzzle no. 1 is `CROSSWORD_START` in `build.py`; don't change it, or
+every past puzzle changes too. Adding or editing topics changes future grids, and today's too if
+it's rebuilt mid-day. Progress and the streak live in the browser. Open `crossword/?test` to get
+`window.__crossword.buildPuzzle(date)` for automated checks.
+
 ## Build, check, share
 
 ```bash

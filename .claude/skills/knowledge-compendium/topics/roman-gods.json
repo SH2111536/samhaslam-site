@@ -27,6 +27,7 @@
     { "left": "name", "right": "domain" },
     { "left": "name", "right": "symbol" }
   ],
+  "crossword": [{ "answer": "name", "clue": "Roman deity: {domain:lower}" }],
   "items": [
     { "name": "Jupiter", "domain": "King of the gods; sky and thunder", "symbol": "Eagle and thunderbolt", "icon": "zap",
       "hook": "The biggest planet, for the biggest ego. When someone says “By Jove!”, that's him too." },

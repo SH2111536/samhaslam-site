@@ -67,6 +67,12 @@
       "right": "noun"
     }
   ],
+  "crossword": [
+    {
+      "answer": "noun",
+      "clue": "A group of {animals:lower}"
+    }
+  ],
   "groups": [
     {
       "key": "birds",

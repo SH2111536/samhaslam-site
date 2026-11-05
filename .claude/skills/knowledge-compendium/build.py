@@ -270,9 +270,69 @@ def build_hub(topics, out_dir, gate):
         entries.append({**t["card"], "slug": t["slug"], "count": len(t["items"]), "noun": t["noun"]["many"], "ids": ids})
     icons = UI_ICONS + [e["icon"] for e in entries if e.get("icon")]
     page = (page.replace("{{GATE}}", GATE.format(root="../") if gate else "")
+                .replace("{{START}}", CROSSWORD_START)
                 .replace("{{ICON_SPRITE}}", sprite(icons))
                 .replace("{{DATA_JSON}}", as_script_json(entries)))
     dest = out_dir / "index.html"
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text(page)
+    return dest
+
+
+CROSSWORD_START = "2026-11-05"   # puzzle no. 1
+
+
+def crossword_bank(topics):
+    """Every clue/answer pair the daily crossword can draw on, from each topic's "crossword"
+    patterns: {"answer": field, "clue": "Capital of {name}", "skip": [titles]}. "{f:lower}"
+    lower-cases the first letter. Answers keep letters only; spaces give the enumeration."""
+    bank = []
+    for t in topics:
+        title_key = next(f["key"] for f in t["fields"] if f["role"] == "title")
+        for pat in t.get("crossword", []):
+            for it in t["items"]:
+                if it.get(title_key) in pat.get("skip", []):
+                    continue
+                raw = it.get(pat["answer"])
+                if not raw:
+                    continue
+                # "Timor-Leste" -> TIMORLESTE (5-5); "Addis Ababa" -> ADDISABABA (5,5)
+                words = [w for w in re.split(r"\s+", strip_accents(str(raw)).upper()) if w]
+                pieces = [[re.sub(r"[^A-Z]", "", h) for h in w.split("-")] for w in words]
+                parts = [p for w in pieces for p in w]
+                letters = "".join(parts)
+                if not 3 <= len(letters) <= 13 or any(not p for p in parts):
+                    continue
+                ok = True
+                def fill(m):
+                    nonlocal ok
+                    v = it.get(m.group(1))
+                    if not v:
+                        ok = False
+                        return ""
+                    v = str(v)
+                    if m.group(2) and not (len(v) > 1 and v[1].isupper()):
+                        v = v[0].lower() + v[1:]
+                    return v
+                clue = re.sub(r"\{(\w+)(:lower)?\}", fill, pat["clue"])
+                if not ok or letters in re.sub(r"[^A-Z]", "", strip_accents(clue).upper()):
+                    continue   # a clue that gives its own answer away
+                entry = {"a": letters, "c": clue, "t": t["card"]["title"]}
+                if len(parts) > 1:
+                    entry["e"] = ",".join("-".join(str(len(h)) for h in w) for w in pieces)
+                bank.append(entry)
+    return bank
+
+
+def build_crossword(topics, out_dir, gate):
+    bank = crossword_bank(topics)
+    if len(bank) < 60:
+        fail(f"crossword bank too small ({len(bank)} clues)")
+    page = (SKILL / "crossword-template.html").read_text()
+    page = (page.replace("{{GATE}}", GATE.format(root="../../") if gate else "")
+                .replace("{{START}}", CROSSWORD_START)
+                .replace("{{BANK_JSON}}", as_script_json(bank)))
+    dest = out_dir / "crossword" / "index.html"
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(page)
     return dest
@@ -294,6 +354,7 @@ def main():
     for t in topics:
         if not args.slugs or t["slug"] in args.slugs:
             print("wrote", build_topic(t, out_dir, gate).relative_to(out_dir.parent))
+    print("wrote", build_crossword(topics, out_dir, gate).relative_to(out_dir.parent))
     print("wrote", build_hub(topics, out_dir, gate).relative_to(out_dir.parent))
 
 
